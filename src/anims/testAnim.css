@@ -1,0 +1,39 @@
+@keyframes testAnim {
+ 0% {
+   transform: translateY(0px);
+ }
+ 100% {
+   transform: translateY(50px);
+ }
+}
+
+.test-anim {
+  animation: testAnim 0.5s linear;
+  animation-fill-mode: forwards; 
+  /* animation-iteration-count: infinite; */
+}
+
+@keyframes shake{
+    0% {transform: rotate(0deg);}
+    20% {transform: rotate(-10deg);}
+    40% {transform: rotate(0deg);}
+    60% {transform: rotate(10deg);}
+    100% {transform: rotate(0deg);}
+}
+
+.shake{
+    animation: shake 0.1s linear infinite;
+}
+
+@keyframes text-glitch{
+    0% {text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green}
+    40% {text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green}
+    60% {text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green}
+    100% {text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green}
+}
+
+.test-text{
+    font-size:2rem;
+    animation: text-glitch 5s linear;
+    animation-delay: 1s;
+}
