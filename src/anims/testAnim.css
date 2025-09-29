@@ -35,5 +35,5 @@
 .test-text{
     font-size:2rem;
     animation: text-glitch 5s linear;
-    animation-delay: 1s;
+    animation-delay: 0.2s;
 }
