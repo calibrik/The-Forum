@@ -8,9 +8,8 @@
 }
 
 .test-anim {
-  animation: testAnim 0.5s linear;
+  animation: testAnim 0.5s linear infinite alternate;
   animation-fill-mode: forwards; 
-  /* animation-iteration-count: infinite; */
 }
 
 @keyframes shake{
@@ -36,4 +35,13 @@
     font-size:2rem;
     animation: text-glitch 5s linear;
     animation-delay: 0.2s;
+}
+
+@keyframes moveDown {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(200px); }
+}
+
+.move-down{
+  animation: moveDown 4s ease-in-out infinite alternate;
 }

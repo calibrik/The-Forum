@@ -1,0 +1,27 @@
+$binary-anim: linear-gradient(180deg, #470001 33.65%, rgba(255, 255, 255, 1) 94.23%);
+.box{
+  
+  width: 100px;
+  height: 100px;
+  position: absolute;
+}
+
+.box-container{
+  width: 200px;
+  height: 300px;
+  background-image: $binary-anim;
+  mask-image: linear-gradient(to bottom, black 33.65%, transparent 94.23%); 
+  clip-path: url(#box);
+  position: relative;
+  overflow: hidden;
+}
+
+.test-canvas{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+}
