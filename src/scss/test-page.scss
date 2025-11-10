@@ -18,10 +18,24 @@ $binary-anim: linear-gradient(180deg, #470001 33.65%, rgba(255, 255, 255, 1) 94.
 
 .test-canvas{
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 49.5%;
+  left: 4.5%;
+  width: 19%;
+  height: 50.4%;
   pointer-events: none;
   z-index: -1;
+}
+
+.onscreen-text{
+  color:white;
+  font-size:clamp(20px,2.7vw,65px);
+  word-break: normal;
+  position: absolute;
+  top: 37.2%;
+  left: 64%;
+  height: 26.7%;
+  width: 21.1%;
+  margin:0;
+  font-family:monospace;
+  line-height: normal;
 }
