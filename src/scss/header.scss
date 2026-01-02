@@ -1,0 +1,22 @@
+@use 'colors.scss' as colors;
+@use 'fonts.scss';
+
+.header-title{
+    color:colors.$secondary-color;
+    font: bold clamp(1.5rem,1.66vw,3rem) 'Roboto';
+}
+.header-title .highlight{
+    color:colors.$primary-color;
+}
+
+.header{
+    border-bottom: colors.$secondary-color 0.5px solid;
+    display: flex;
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0px;
+    position: absolute;
+    top:0;
+    width: 100%;
+}

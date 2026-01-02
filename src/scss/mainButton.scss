@@ -1,0 +1,38 @@
+@use './fonts.scss';
+@use './colors.scss' as colors;
+
+.primary-button {
+    background-color: colors.$primary-color;
+    border: none;
+    border-radius: 6px;
+    color: colors.$primary-button-text-color;
+    font-family: Roboto;
+    transition: 0.5s;
+}
+
+.primary-button:active,
+.secondary-button:active {
+    transform: scale(0.9);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.secondary-button {
+    background-color: colors.$secondary-color;
+    border: none;
+    border-radius: 6px;
+    color: colors.$secondary-color-text-color;
+    font-family: Roboto;
+    transition: 0.5s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .primary-button:hover {
+        background-color: #ae0003;
+        cursor: pointer;
+    }
+
+    .secondary-button:hover {
+        background-color: #c5c5c5;
+        cursor: pointer;
+    }
+}

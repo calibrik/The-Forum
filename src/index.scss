@@ -1,11 +1,15 @@
+@use './scss/fonts.scss';
+@use './scss/colors.scss' as colors;
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgb(0, 0, 0);
-  background-color: #252525;
+  background-image: colors.$bg;
+  background-attachment: fixed;
+  height:100%;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
