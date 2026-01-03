@@ -1,24 +1,33 @@
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, type FC, type RefObject } from "react";
 import '../scss/binaryAnimation.scss';
 
 interface IBinaryAnimationProps {
     className?: string;
-    isFlash?: boolean;
+    isFlash: RefObject<boolean>;
 };
 
 export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const baseBinaryAnimFontSize = 40;
-    const binaryAnimFontSize=useRef<number>(baseBinaryAnimFontSize);
+    const baseBinaryAnimFontSize = 30;
+    const binaryAnimFontSize = useRef<number>(baseBinaryAnimFontSize);
     let drops: string[] = [
-        "01110111011010000110000101110100001000",
-        "00011101110110111100100000011101000110",
-        "11110010000001101110011011110111010000",
-        "10000001100010011001010010000001100001",
-        "0110110001101111011011100110010100111111",
+        "0111011101101000011",
+        "0000101110100001000",
+        "0001110111011011110",
+        "0100000011101000110",
+        "1111001000000110111",
+        "0011011110111010000",
+        "1000000110001001100",
+        "1010010000001100001",
+        "0110110001101111011",
+        "011100110010100111111",
     ];
     const frame = useRef<number>(0);
-    const speed: number[] = [0.1, -0.1, 0.15, 0.08, -0.15, 0.12];
+    const speed: number[] = [0.08, -0.1, 0.05,  0.1, -0.18, -0.15, 0.17, -0.2, 0.1, -0.1]
+    // for (let i = 0; i < drops.length; i++) { 
+    //     speed.push(Math.random()*0.6 - 0.3);
+    // }
+    console.log(speed);
     const BASE_HEIGHT = 932;
     const offsetX = 0;
 
@@ -30,20 +39,24 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
             return;
 
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        const gradient = ctx.createLinearGradient(canvasRef.current.width / 2, 0, canvasRef.current.width / 2, canvasRef.current.height);
-        gradient.addColorStop(0.20, '#470001');
-        gradient.addColorStop(0.9423, 'rgba(255, 255, 255, 0)');
-        ctx.fillStyle = gradient;
-        let startX=0;
+        if (!props.isFlash.current) {
+            const gradient = ctx.createLinearGradient(canvasRef.current.width / 2, 0, canvasRef.current.width / 2, canvasRef.current.height);
+            gradient.addColorStop(0.20, '#470001');
+            gradient.addColorStop(0.9423, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = gradient;
+        } else {
+            ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+        }
+        let startX = 0;
         // const totalSize=(binaryAnimFontSize + offsetX) * drops.length-offsetX;
         // startX=(canvasRef.current.width - totalSize)/2;
         for (let i = 0; i < drops.length; i++) {
             for (let j = 0; j < drops[i].length; j++) {
                 const char = drops[i][j];
                 ctx.font = `${binaryAnimFontSize.current}px Courier Prime`;
-                const x = startX+(binaryAnimFontSize.current + offsetX) * i;
+                const x = startX + (binaryAnimFontSize.current + offsetX) * i;
 
-                const y1 = (j * binaryAnimFontSize.current) + ((speed[i] * newFrameTime) % (drops[i].length * binaryAnimFontSize.current));
+                const y1 = (j * binaryAnimFontSize.current) + ((speed[i]*window.innerHeight / BASE_HEIGHT * newFrameTime) % (drops[i].length * binaryAnimFontSize.current));
                 const dir = speed[i] > 0 ? -1 : 1;
                 const y2 = y1 + dir * (drops[i].length * binaryAnimFontSize.current);
                 ctx.fillText(char, x, y1);
@@ -62,7 +75,6 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
             canvasRef.current.height = canvasRef.current.clientHeight;
         }
         binaryAnimFontSize.current = baseBinaryAnimFontSize * window.innerHeight / BASE_HEIGHT;
-        console.log(binaryAnimFontSize.current);
     }
 
     useEffect(() => {

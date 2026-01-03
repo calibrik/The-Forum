@@ -14,7 +14,7 @@ const router = createBrowserRouter([
         Component: WelcomePage,
       },
       {
-        path: "test",
+        path: "/test",
         Component: TestPage,
       }
     ]

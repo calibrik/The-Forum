@@ -1,24 +1,25 @@
 @use 'colors.scss' as colors;
-@use 'fonts.scss';
-
-.container-info{
-    margin-top: 16.73vh;
-    gap:15px;
-    display:flex;
-    flex-direction: column;
-}
 
 .container{
-    padding: 0 10.93vw;
+    margin-top: 16.73cqh;
+    padding: 0 10.93cqw;
+    gap:1.6cqh;
     display:flex;
     flex-direction: column;
-    height:calc(100vh - var(--header-height,100px));
+    height:calc(100cqh - 16.73cqh - var(--header-height,100px));
+    container-type: inline-size;
+    @container (min-width:600px)
+    {
+        margin-top: 10cqh;
+        height:calc(100cqh - 10cqh - var(--header-height,100px));
+        padding: 0 5.83cqw;
+    }
 }
 
 .welcome{
     margin:0;
-    width:80%;
-    font: bold 36px Roboto;
+    font-style: bold;
+    font-size: clamp(2.25rem,6cqw,4rem);
 }
 
 .welcome .highlight{
@@ -28,7 +29,7 @@
 .tagline{
     margin:0;
     color: colors.$tertiary-color;
-    font: 16px Roboto;
+    font-size: clamp(1rem,2.5cqw,1.2rem);
 }
 
 .buttons{
@@ -40,7 +41,7 @@
 .binary-animation{
     margin-top:auto;
     width: 100%;
-    height:40%;
+    height:50%;
     display:flex;
     justify-content: center;
 }

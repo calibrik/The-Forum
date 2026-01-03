@@ -1,13 +1,20 @@
-@use './fonts.scss';
 @use './colors.scss' as colors;
+
+.primary-button,
+.secondary-button{
+    border: none;
+    border-radius: 6px;
+    transition: 0.5s;
+    font-family: Roboto;
+}
 
 .primary-button {
     background-color: colors.$primary-color;
-    border: none;
-    border-radius: 6px;
     color: colors.$primary-button-text-color;
-    font-family: Roboto;
-    transition: 0.5s;
+}
+
+.primary-button:active{
+    background-color: #ae0003;
 }
 
 .primary-button:active,
@@ -18,11 +25,11 @@
 
 .secondary-button {
     background-color: colors.$secondary-color;
-    border: none;
-    border-radius: 6px;
     color: colors.$secondary-color-text-color;
-    font-family: Roboto;
-    transition: 0.5s;
+}
+
+.secondary-button:active{
+    background-color: #c5c5c5;
 }
 
 @media (hover: hover) and (pointer: fine) {

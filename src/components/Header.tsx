@@ -7,8 +7,8 @@ interface IHeaderProps {
 
 export const Header: FC<IHeaderProps> = (props) => {
     return (
-        <div ref={props.ref} className="header">
-            <span className="header-title">The<span className="highlight">Forum</span></span>
+        <div id="header-div" ref={props.ref} className="header">
+            <span id="header-text" className="header-title">The<span id="header-text" className="highlight">Forum</span></span>
         </div>
     );
 }

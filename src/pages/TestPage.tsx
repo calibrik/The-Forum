@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import '../anims/testAnim.scss';
 import '../scss/test-page.scss';
-import { Header } from "../components/Header";
-import { BinaryAnimation } from "../components/BinaryAnimation";
 interface ITestPageProps { };
 
 export const TestPage: FC<ITestPageProps> = (_) => {
@@ -35,7 +33,6 @@ export const TestPage: FC<ITestPageProps> = (_) => {
                     <p className="test-text test-anim">{text}</p>
                 </div> 
                 <button onClick={onClick} style={{ marginTop: "5vh" }}>Press ME</button>
-                <BinaryAnimation/>
                 <p className="onscreen-text">{text}</p>
             </div>
         </div>

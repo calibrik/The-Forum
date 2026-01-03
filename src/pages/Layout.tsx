@@ -20,11 +20,11 @@ export const Layout: FC<ILayoutProps> = (_) => {
         }
     },[]);
     return (
-        <div>
+        <>
             <Header ref={header}/>
             <div className="container-main">
                 <Outlet/>
             </div>
-        </div>
+        </>
     );
 }
