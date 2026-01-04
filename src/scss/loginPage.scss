@@ -1,0 +1,83 @@
+@use 'colors.scss' as colors;
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.login-container .card {
+    // height:calc(100cqh - var(--header-height,100px));
+    margin-top: calc(25.07cqh - var(--header-height, 100px));
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 12px;
+    background-color: colors.$card-bg;
+    border-radius: 6px;
+    gap: 15px;
+
+    @container (min-width:750px){
+        width:60%;
+    }
+
+    @container (min-width:1000px){
+        width:40%;
+    }
+
+    @container (min-width:1400px){
+        width:30%;
+    }
+
+    @container (min-width:2000px){
+        width:20%;
+    }
+}
+
+.login-container .title {
+    margin: 0;
+    font-size: clamp(2.25rem,6cqw,3rem);
+}
+
+.login-container .inputs {
+    margin-top: 10px;
+    gap: 17px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.login-container .forgot-password {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.login-container a {
+    margin: 0;
+    color: colors.$secondary-color;
+    font-size: clamp(0.8rem,2.5cqw,1rem);
+    font-weight: bold;
+    transition: 0.5s;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .login-container a:hover {
+        color: #c0c0c0;
+        cursor: pointer;
+    }
+}
+
+.login-container a:active {
+    transform: scale(0.9);
+}
+
+.login-container .signup {
+    color: colors.$tertiary-color;
+    margin: 0;
+    font-size: clamp(0.8rem,2.5cqw,1rem);
+}

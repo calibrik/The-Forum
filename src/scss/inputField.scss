@@ -1,0 +1,63 @@
+@use 'colors.scss' as colors;
+
+.input-wrapper {
+    background-color: colors.$input-bg;
+    border: 1px solid colors.$input-border;
+    border-radius: 6px;
+    transition: 0.5s;
+    display: flex;
+    gap: 5px;
+}
+
+.input-field {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    flex-grow: 1;
+    color: colors.$input-text-color;
+}
+
+.input-wrapper.small .input-field {
+    font-size: clamp(1rem, 2.5cqw, 1.2rem);
+}
+
+.input-field::placeholder {
+    color: colors.$placeholder-text;
+}
+
+.input-wrapper:hover {
+    background-color: #262626;
+}
+
+.input-wrapper:focus-within {
+    outline: none;
+    border: 1px solid colors.$primary-color;
+    box-shadow: 0 0 7px colors.$primary-color;
+}
+
+.input-wrapper.small {
+    padding: 10px 8px;
+}
+
+.input-wrapper.error {
+    border: 1px solid colors.$error-color;
+    box-shadow: 0 0 7px colors.$error-color;
+}
+
+.input-div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-div .errorMsg {
+    color: colors.$error-color;
+    font-size: clamp(1rem, 2.5cqw, 1.2rem);
+    padding: 0 8px;
+}
+
+.input-div .icon {
+    color: colors.$input-text-color;
+    font-size: clamp(1rem, 2.5cqw, 1.2rem);
+}

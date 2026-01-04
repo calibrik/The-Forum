@@ -3,10 +3,8 @@
 
 .header-title{
     color:colors.$secondary-color;
-    font: bold clamp(1.5rem,1.66vw,3rem) 'Roboto';
-}
-.header-title .highlight{
-    color:colors.$primary-color;
+    font-size: clamp(1.5rem,1.66vw,3rem);
+    font-weight:bold;
 }
 
 .header{
@@ -16,7 +14,7 @@
     justify-content: center;
     align-items: center;
     padding: 5px 0px;
-    position: absolute;
+    position: sticky;
     top:0;
     width: 100%;
 }

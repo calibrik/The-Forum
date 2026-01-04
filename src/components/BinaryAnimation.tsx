@@ -24,10 +24,6 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
     ];
     const frame = useRef<number>(0);
     const speed: number[] = [0.08, -0.1, 0.05,  0.1, -0.18, -0.15, 0.17, -0.2, 0.1, -0.1]
-    // for (let i = 0; i < drops.length; i++) { 
-    //     speed.push(Math.random()*0.6 - 0.3);
-    // }
-    console.log(speed);
     const BASE_HEIGHT = 932;
     const offsetX = 0;
 

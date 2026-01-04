@@ -1,6 +1,6 @@
 @use 'colors.scss' as colors;
 
-.container{
+.welcome-container{
     margin-top: 16.73cqh;
     padding: 0 10.93cqw;
     gap:1.6cqh;
@@ -18,12 +18,8 @@
 
 .welcome{
     margin:0;
-    font-style: bold;
+    font-weight: bold;
     font-size: clamp(2.25rem,6cqw,4rem);
-}
-
-.welcome .highlight{
-    color:colors.$primary-color;
 }
 
 .tagline{
@@ -32,7 +28,7 @@
     font-size: clamp(1rem,2.5cqw,1.2rem);
 }
 
-.buttons{
+.welcome-container .buttons{
     margin-top:31px;
     display: flex;
     gap:16px;

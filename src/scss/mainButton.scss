@@ -6,6 +6,9 @@
     border-radius: 6px;
     transition: 0.5s;
     font-family: Roboto;
+    display:flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .primary-button {
@@ -21,6 +24,11 @@
 .secondary-button:active {
     transform: scale(0.9);
     -webkit-tap-highlight-color: transparent;
+}
+
+.primary-button:focus,
+.secondary-button:focus {
+    outline:none;
 }
 
 .secondary-button {

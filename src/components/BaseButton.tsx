@@ -4,12 +4,13 @@ interface IBaseButtonProps {
     onClick?:()=>Promise<void>|void;
     className?:string;
     animId?:string
+    type?:"submit" | "reset" | "button" | undefined;
 };
 
 export const BaseButton: FC<IBaseButtonProps> = (props) => {
     return (
         <div> 
-            <button id={props.animId} data-isbutton="true" onClick={props.onClick} className={props.className}>{props.children}</button>
+            <button type={props.type} id={props.animId} data-isbutton="true" onClick={props.onClick} className={props.className}>{props.children}</button>
         </div>
     );
 }
