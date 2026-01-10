@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef, useState, type ChangeEvent, type ReactNode } from "react";
-import "../scss/inputField.scss";
+import styles from  "../scss/inputField.module.scss";
 import { Eye, EyeSlash } from "./Icons";
 interface IInputFieldProps {
     type: string;
@@ -47,16 +47,16 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             setType("password");
     }
 
-    const passwordEye = type == "password" ? <Eye className="icon" onClick={onPasswordEyeClick} /> : <EyeSlash className="icon" onClick={onPasswordEyeClick} />
-    const className = `input-wrapper ${props.size} ${errMsg != "" ? "error" : ""}`;
+    const passwordEye = type == "password" ? <Eye className={styles.icon} onClick={onPasswordEyeClick} /> : <EyeSlash className={styles.icon} onClick={onPasswordEyeClick} />
+    const className = `${styles.inputWrapper} ${styles[props.size]} ${errMsg != "" ? styles.error : ""}`;
     return (
-        <div className="input-div">
+        <div className={styles.inputDiv}>
             <div className={className}>
                 {props.icon ?? ""}
-                <input ref={inputRef} onChange={onChange} type={type} name={props.name} placeholder={props.placeholder} className="input-field" />
+                <input ref={inputRef} onChange={onChange} type={type} name={props.name} placeholder={props.placeholder} className={styles.inputField} />
                 {props.type == "password" ? passwordEye : ""}
             </div>
-            <span className="errorMsg">{errMsg}</span>
+            <span className={styles.errorMsg}>{errMsg}</span>
         </div>
     );
 });

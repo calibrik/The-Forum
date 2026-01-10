@@ -1,0 +1,127 @@
+@use "./colors.scss" as colors;
+
+.pfp {
+    border-radius: 50px;
+    object-fit: cover;
+    object-position: center;
+    height: clamp(20px, 5cqw, 30px);
+    width: clamp(20px, 5cqw, 30px);
+}
+
+.card-container {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px,2.3cqw,15px);
+    padding: 7px 15px;
+    background-color: colors.$card-bg;
+    border-radius: 6px;
+}
+
+.user-container {
+    container-type: inline-size;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.username {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.7rem, 2.8cqw, 1.1rem);
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(1.25rem, 5cqw, 2rem);
+}
+
+.content-with-img,
+.content {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.85rem, 3.4cqw, 1.25rem);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.content-with-img {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.content {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+}
+
+.reactions-container {
+    container-type: inline-size;
+    display: flex;
+    gap: 1.5cqw;
+    align-items: center;
+}
+
+.reaction-button {
+    background-color: transparent;
+    border: 1px solid colors.$secondary-color;
+    color: colors.$secondary-color;
+    gap: 2px;
+    padding: 4px 6px;
+    font-size: clamp(0.75rem, 3cqw, 1.15rem);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+}
+
+.reaction-button.liked {
+    border: 1px solid colors.$primary-color;
+}
+
+.icon-liked {
+    color: colors.$primary-color;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .reaction-button:hover {
+        color: #c5c5c5;
+        border: 1px solid #c5c5c5;
+        cursor: pointer;
+    }
+
+    .reaction-button.liked:hover {
+        border: 1px solid #670002;
+    }
+
+    .reaction-button.liked:hover .icon-liked {
+        color: #670002;
+    }
+}
+
+.reaction-button.liked:active {
+    border: 1px solid #670002;
+}
+
+.reaction-button:active {
+    color: #c5c5c5;
+    border: 1px solid #c5c5c5;
+}
+
+.views {
+    margin-left: auto;
+    color: colors.$tertiary-color;
+    font-size: clamp(0.75rem, 3cqw, 1.15rem);
+}
+
+.post-img {
+    max-height: 500px;
+    object-fit: contain;
+    object-position: center;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+}
+
+.post-img-wrapper {
+    background-color: colors.$secondary-card-bg;
+}

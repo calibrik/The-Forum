@@ -1,5 +1,5 @@
 import { useEffect, useRef, type FC, type RefObject } from "react";
-import '../scss/binaryAnimation.scss';
+import styles from '../scss/binaryAnimation.module.scss';
 
 interface IBinaryAnimationProps {
     className?: string;
@@ -85,7 +85,7 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
 
     return (
         <div className={props.className}>
-            <canvas className="canvas" ref={canvasRef}></canvas>
+            <canvas className={styles.canvas} ref={canvasRef}></canvas>
         </div>
     );
 }

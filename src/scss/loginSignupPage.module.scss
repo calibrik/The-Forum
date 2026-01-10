@@ -1,0 +1,90 @@
+@use 'colors.scss' as colors;
+
+.login-signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    container-type: inline-size;
+    box-sizing: border-box;
+    max-width: 700px;
+    padding: 20px;
+}
+
+.card {
+    margin-top: 15cqh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    background-color: colors.$card-bg;
+    border-radius: 6px;
+    gap: 15px;
+    container-type: inline-size;
+
+    @container main (min-width:701px) {
+        margin-top: 20cqh;
+    }
+}
+
+.title {
+    margin: 0;
+    font-size: clamp(2.25rem, 11.7cqw, 3rem);
+}
+
+.inputs-container {
+    margin-top: 10px;
+    gap: 17px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    container-type: inline-size;
+}
+
+.forgot-password-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    container-type: inline-size;
+}
+
+.link {
+    margin: 0;
+    color: colors.$secondary-color;
+    font-size: clamp(0.8rem, 4.1cqw, 1rem);
+    font-weight: bold;
+    transition: 0.5s;
+    display: inline-block;
+    text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        color: #c0c0c0;
+        cursor: pointer;
+    }
+}
+
+.link:active {
+    transform: scale(0.9);
+    color: #c0c0c0;
+}
+
+.hint {
+    color: colors.$tertiary-color;
+    margin: 0;
+    font-size: clamp(0.8rem, 4.1cqw, 1rem);
+}
+
+.disclaimer {
+    margin-top: 5cqh;
+    width: 100%;
+    text-align: center;
+    color: colors.$tertiary-color;
+    font-size: clamp(0.8rem, 4.1cqw, 1rem);
+    padding: 0 12px;
+}

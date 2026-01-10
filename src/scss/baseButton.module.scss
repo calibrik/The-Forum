@@ -1,14 +1,16 @@
 @use './colors.scss' as colors;
+@use './globals.scss' as globals;
+@use './fonts.scss';
 
-.primary-button,
-.secondary-button{
+.button{
     border: none;
     border-radius: 6px;
-    transition: 0.5s;
-    font-family: Roboto;
+    transition: globals.$transition;
     display:flex;
 	justify-content: center;
 	align-items: center;
+    font-family:Roboto;
+    gap:5px;
 }
 
 .primary-button {
@@ -20,14 +22,12 @@
     background-color: #ae0003;
 }
 
-.primary-button:active,
-.secondary-button:active {
+button:active {
     transform: scale(0.9);
     -webkit-tap-highlight-color: transparent;
 }
 
-.primary-button:focus,
-.secondary-button:focus {
+button:focus {
     outline:none;
 }
 
@@ -41,13 +41,15 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+    .button{
+        cursor: pointer;
+    }
+
     .primary-button:hover {
         background-color: #ae0003;
-        cursor: pointer;
     }
 
     .secondary-button:hover {
         background-color: #c5c5c5;
-        cursor: pointer;
     }
 }

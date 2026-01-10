@@ -1,3 +1,54 @@
+@use 'fonts.scss';
+@use 'colors.scss' as colors;
+
+.box {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+}
+
+.box-container {
+  width: 200px;
+  height: 300px;
+  background-image: colors.$binary-anim;
+  mask-image: linear-gradient(to bottom, black 33.65%, transparent 94.23%);
+  clip-path: url(#box);
+  position: relative;
+  overflow: hidden;
+}
+
+.test-canvas {
+  position: absolute;
+  top: 49.5%;
+  left: 4.5%;
+  width: 19%;
+  height: 50.4%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.test-text {
+  font-family: Roboto;
+  font-size: 2rem;
+  animation: text-glitch 5s linear;
+  animation-delay: 0.2s;
+}
+
+.onscreen-text {
+  color: white;
+  font-size: clamp(20px, 2.7vw, 65px);
+  word-break: normal;
+  position: absolute;
+  top: 37.2%;
+  left: 64%;
+  height: 26.7%;
+  width: 21.1%;
+  margin: 0;
+  font-family: 'Courier Prime';
+  line-height: normal;
+
+}
+
 @keyframes testAnim {
  0% {
    transform: translateY(0px);

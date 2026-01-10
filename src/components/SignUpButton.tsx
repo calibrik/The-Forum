@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { BaseButton } from "./BaseButton";
-import "../scss/signupButton.scss";
-import "../scss/mainButton.scss";
+import styles from "../scss/signupButton.module.scss";
+import baseButtonStyles from "../scss/baseButton.module.scss";
 import { useNavigate } from "react-router";
 interface ISignUpButtonProps {
     animId?:string
@@ -18,6 +18,6 @@ export const SignUpButton: FC<ISignUpButtonProps> = (props) => {
         }
     }
     return (
-        <BaseButton onClick={onClick} type={props.isNavigate?undefined:"submit"} animId={props.animId} className="secondary-button signup-button">Sign Up</BaseButton>
+        <BaseButton onClick={onClick} type={props.isNavigate?undefined:"submit"} animId={props.animId} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
     );
 }

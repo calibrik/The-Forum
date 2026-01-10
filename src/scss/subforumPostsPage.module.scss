@@ -1,0 +1,9 @@
+@use "./globals.scss" as globals;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 0;
+    container-type: inline-size;
+}

@@ -1,0 +1,42 @@
+@use 'colors.scss' as colors;
+
+.menu-container {
+    padding: 2.3cqw 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    container-type: inline-size
+}
+
+.option {
+    font-size: clamp(0.9rem, 3cqw, 1.4rem);
+    padding: 3px 5px;
+    color: colors.$tertiary-color;
+    transition: 0.5s;
+    will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .option:hover {
+        color: #c9c9c9;
+        cursor: pointer;
+    }
+
+    .active:hover {
+        border-bottom: 1px solid #c9c9c9;
+    }
+}
+
+.option:active {
+    transform: scale(0.9);
+    color: #c9c9c9;
+}
+
+.active:active {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.active {
+    color: colors.$secondary-color;
+    border-bottom: 1px solid colors.$secondary-color;
+}

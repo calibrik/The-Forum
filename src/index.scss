@@ -9,6 +9,7 @@
 	color-scheme: light dark;
 	background-image: colors.$bg;
 	background-attachment: fixed;
+	will-change: transform;
 	height: 100%;
 
 	font-synthesis: none;

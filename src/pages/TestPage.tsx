@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type FC } from "react";
-import '../anims/testAnim.scss';
-import '../scss/test-page.scss';
+import styles from '../scss/test-page.module.scss';
 interface ITestPageProps { };
 
 export const TestPage: FC<ITestPageProps> = (_) => {
@@ -23,17 +22,17 @@ export const TestPage: FC<ITestPageProps> = (_) => {
     }, [])
 
     function onClick(e: any) {
-        e.currentTarget.classList.add("test-anim");
+        e.currentTarget.classList.add(styles.testAnim);
     }
 
     return (
         <div>
             <div className="" style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: "column" }}>
                 <div style={{ border: "2px solid red" }}>
-                    <p className="test-text test-anim">{text}</p>
+                    <p className={`${styles.testText} ${styles.testAnim}`}>{text}</p>
                 </div> 
                 <button onClick={onClick} style={{ marginTop: "5vh" }}>Press ME</button>
-                <p className="onscreen-text">{text}</p>
+                <p className={styles.onscreenText}>{text}</p>
             </div>
         </div>
     );

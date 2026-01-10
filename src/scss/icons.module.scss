@@ -1,6 +1,9 @@
+@use './globals.scss' as globals;
+
 .icon-wrapper{
     display:flex;
     justify-content: center;
     align-items: center;
     width:fit-content;
+    transition:globals.$transition;
 }

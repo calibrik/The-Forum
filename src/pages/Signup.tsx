@@ -1,8 +1,8 @@
 import { useRef, type FC } from "react";
-import "../scss/signupPage.scss";
+import styles from '../scss/loginSignupPage.module.scss'
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { SignUpButton } from "../components/SignUpButton";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;
@@ -14,7 +14,6 @@ export const Signup: FC<ISignupProps> = (_) => {
     const nicknameInputRef = useRef<InputFieldHandle>(null);
     const passwordInputRef = useRef<InputFieldHandle>(null);
     const confirmPasswordInputRef = useRef<InputFieldHandle>(null);
-    let navigate = useNavigate();
 
     function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -45,18 +44,18 @@ export const Signup: FC<ISignupProps> = (_) => {
     }
 
     return (
-        <div className="signup-container">
-            <form className="card" onSubmit={onSubmit}>
-                <h1 className="title">Sign Up</h1>
-                <div className="inputs">
+        <div className={styles.loginSignupContainer}>
+            <form className={styles.card} onSubmit={onSubmit}>
+                <h1 className={styles.title}>Sign Up</h1>
+                <div className={styles.inputsContainer}>
                     <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" size="small" />
                     <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" size="small" />
                     <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" size="small" />
                 </div>
                 <SignUpButton />
-                <p className="login">Already have an account? <a onClick={(e: any) => { e.preventDefault(); navigate("/login"); }}>Login</a></p>
+                <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
             </form>
-            <p className="disclaimer">Account is not real and saved locally without encryption, so don’t use your real passwords</p>
+            <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>
         </div>
     );
 }
