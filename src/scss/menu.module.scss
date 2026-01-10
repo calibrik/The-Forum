@@ -18,22 +18,22 @@
 
 @media (hover: hover) and (pointer: fine) {
     .option:hover {
-        color: #c9c9c9;
+        color: colors.$secondary-color;
         cursor: pointer;
     }
 
     .active:hover {
-        border-bottom: 1px solid #c9c9c9;
+        border-bottom: 1px solid colors.$secondary-color;
     }
 }
 
 .option:active {
-    transform: scale(0.9);
-    color: #c9c9c9;
+    // transform: scale(0.9);
+    color: colors.$secondary-color;
 }
 
 .active:active {
-    border-bottom: 1px solid #c9c9c9;
+    border-bottom: 1px solid colors.$secondary-color;
 }
 
 .active {

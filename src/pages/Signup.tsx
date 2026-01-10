@@ -48,9 +48,9 @@ export const Signup: FC<ISignupProps> = (_) => {
             <form className={styles.card} onSubmit={onSubmit}>
                 <h1 className={styles.title}>Sign Up</h1>
                 <div className={styles.inputsContainer}>
-                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" size="small" />
-                    <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" size="small" />
-                    <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" size="small" />
+                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" className={styles.input} />
+                    <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
+                    <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
                 </div>
                 <SignUpButton />
                 <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>

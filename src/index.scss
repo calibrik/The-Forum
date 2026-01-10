@@ -17,6 +17,10 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
+	overflow-y: scroll;
+	scrollbar-gutter: stable;
+	scrollbar-color: colors.$tertiary-color black;
+	scrollbar-width: thin;
 	// @media (pointer: coarse) {
 	// 	-webkit-user-select: none;
 	// 	user-select: none;

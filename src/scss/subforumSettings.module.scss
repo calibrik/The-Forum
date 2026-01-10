@@ -14,11 +14,25 @@
     padding:10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2cqw;
 }
 
 .title{
     margin:0;
     font-weight: bold;
     font-size: clamp(1rem, 3.2cqw, 1.5rem);
+}
+
+.input{
+    padding: 6px 8px;
+    font-size: clamp(0.75rem, 5.4cqw, 1rem);
+}
+
+.input-div{
+    width:50%;
+}
+
+.submit-button{
+    padding: 8px 12px;
+    font-size: clamp(0.8rem, 2.8cqw, 1rem);
 }

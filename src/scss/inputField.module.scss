@@ -7,6 +7,17 @@
     transition: 0.5s;
     display: flex;
     gap: 5px;
+    position: relative;
+    align-items: center;
+}
+
+.icon{
+    color: colors.$placeholder-text;
+}
+
+.input-wrapper input{
+    font-size:inherit;
+    font-family: Roboto;
 }
 
 .input-field {
@@ -16,10 +27,6 @@
     padding: 0;
     flex-grow: 1;
     color: colors.$input-text-color;
-}
-
-.input-wrapper.small .input-field {
-    font-size: clamp(1rem, 2.5cqw, 1.2rem);
 }
 
 .input-field::placeholder {
@@ -36,19 +43,17 @@
     box-shadow: 0 0 7px colors.$primary-color;
 }
 
-.input-wrapper.small {
-    padding: 10px 8px;
-}
-
 .input-wrapper.error {
     border: 1px solid colors.$error-color;
     box-shadow: 0 0 7px colors.$error-color;
 }
 
-.input-div {
+.container {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    position: relative;
+    container-type: inline-size;
 }
 
 .errorMsg {
@@ -57,7 +62,22 @@
     padding: 0 8px;
 }
 
-.icon {
+.password-icon {
     color: colors.$placeholder-text;
     font-size: clamp(1rem, 2.5cqw, 1.2rem);
+}
+
+.dropdown{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+    background-color: colors.$secondary-card-bg;
+    border-radius: 6px;
+    position: absolute;
+    width: 100%;
+    top:calc(100% - 5px);
+    padding: 5px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    max-height:100px;
 }

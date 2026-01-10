@@ -34,8 +34,8 @@ export const Login: FC<ILoginProps> = (_) => {
             <form className={styles.card} onSubmit={onSubmit}>
                 <h1 className={styles.title}>Login</h1>
                 <div className={styles.inputsContainer}>
-                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" size="small" />
-                    <InputField ref={passwordInputRef} type="password" name="password" placeholder="Password" size="small" />
+                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" className={styles.input} />
+                    <InputField ref={passwordInputRef} type="password" name="password" placeholder="Password" className={styles.input} />
                 </div>
                 <div className={styles.forgotPasswordContainer}>
                     <a className={styles.link} onClick={(e: any) => e.preventDefault()}>Forgot password?</a>

@@ -8,6 +8,7 @@ import { Subforum } from './pages/Subforum';
 import { Error } from './pages/Error';
 import { SubforumPosts } from './pages/SubforumPosts';
 import { SubforumMembers } from './pages/SubforumMembers';
+import { SubforumSettings } from './pages/SubforumSettings';
 
 const router = createBrowserRouter([
 	{
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: "settings",
-						Component: Welcome,
+						Component: SubforumSettings,
 					},
 				]
 			}

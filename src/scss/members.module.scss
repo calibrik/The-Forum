@@ -1,0 +1,50 @@
+@use "./colors.scss" as colors;
+@use "./globals.scss" as globals;
+
+.container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    transition: globals.$transition;
+    container-type: inline-size;
+}
+
+.pfp {
+    width: clamp(25px, 5.8cqw, 35px);
+    height: clamp(25px, 5.8cqw, 35px);
+    border-radius: 100px;
+}
+
+.name {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.75rem, 2.7cqw, 1rem);
+    transition: globals.$transition;
+}
+
+.icon{
+    color: colors.$tertiary-color;
+    font-size: clamp(1.1rem, 4cqw, 1.4rem);
+}
+
+.selected .name,
+.selected .icon{
+    color:colors.$secondary-color;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .container:hover {
+        cursor: pointer;
+    }
+
+    .container:hover .name {
+        color: colors.$secondary-color;
+    }
+}
+
+.container:active .name{
+    transform: scale(0.9);
+}
+
+.container:active .name {
+    color: colors.$secondary-color;
+}
