@@ -8,7 +8,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
     
     return (
         <div className={styles.container}>
-            <Header />
+            <Header isLoggedIn />
             <div className={styles.containerMain}>
                 <Outlet />
             </div>

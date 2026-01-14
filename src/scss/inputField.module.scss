@@ -18,6 +18,7 @@
 .input-wrapper input{
     font-size:inherit;
     font-family: Roboto;
+    width: 100%;
 }
 
 .input-field {
@@ -53,7 +54,9 @@
     flex-direction: column;
     gap: 5px;
     position: relative;
-    container-type: inline-size;
+    width: 100%;
+    box-sizing: border-box;
+    // container-type: inline-size;
 }
 
 .errorMsg {
@@ -75,9 +78,10 @@
     border-radius: 6px;
     position: absolute;
     width: 100%;
-    top:calc(100% - 5px);
+    top:100%;
     padding: 5px;
     box-sizing: border-box;
     overflow-y: auto;
-    max-height:100px;
+    max-height:200px;
+    z-index: 7;
 }

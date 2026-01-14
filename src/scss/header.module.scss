@@ -1,22 +1,79 @@
 @use 'colors.scss' as colors;
 @use 'fonts.scss';
 
-.header-title{
-    color:colors.$secondary-color;
-    font-size: clamp(1.5rem,1.66vw,3rem);
-    font-weight:bold;
+.title {
+    color: colors.$secondary-color;
+    font-size: clamp(1.2rem, 3cqw, 2rem);
+    font-weight: bold;
 }
 
-.header{
-    border-bottom: colors.$tertiary-color 0.5px solid;
-    display: flex;
-    background-color: black;
-    justify-content: center;
-    align-items: center;
-    padding: 5px 0px;
-    box-sizing: border-box;
+.container {
+    container-type: inline-size;
     position: sticky;
-    top:0;
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: colors.$tertiary-color 0.5px solid;
+    box-sizing: border-box;
+    background-color: black;
+    align-items: center;
+    padding: 10px 10px;
     z-index: 5;
+    top: 0;
+    font-size: clamp(1.4rem, 5.3cqw, 2rem);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 10px;
+    position: relative;
+
+    @container (min-width:700px) {
+        justify-content: start;
+    }
+}
+
+.person {
+    @container (min-width:700px) {
+        margin-left: auto;
+    }
+}
+
+.input {
+    padding: 4px 8px;
+    font-size: clamp(0.75rem, 2cqw, 1.1rem);
+}
+
+.input-div {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    max-width: 300px;
+
+    @container (min-width:700px) {
+        max-width: 400px;
+        box-sizing: border-box;
+        position: absolute;
+        z-index: 6;
+    }
+}
+
+.icon {
+    color: colors.$secondary-color
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .icon:hover {
+        cursor: pointer;
+        color: #c5c5c5;
+    }
+}
+
+.icon:active {
+    transform: scale(0.9);
+    color: #c5c5c5;
 }

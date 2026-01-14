@@ -11,3 +11,5 @@ createRoot(document.getElementById('root')!).render(
 
 
 //TODO: issue with browser suggesting to save password even tho user just presses the link (not that serious tho)
+//TODO: modals
+//TODO: add some delays on some actions to make it believable

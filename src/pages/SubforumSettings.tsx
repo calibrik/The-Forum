@@ -26,12 +26,14 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
         setSelectedUsers(n);
     }
 
-    useEffect(() => {
-        console.log(selectedUsers)
-    }, [selectedUsers])
+    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        console.log(selectedUsers);
+        setSelectedUsers(new Set<string>());
+    }
 
     return (
-        <form className={styles.section}>
+        <form className={styles.section} onSubmit={onSubmit}>
             <h1 className={styles.title}>{props.title}</h1>
             <div className={styles.inputDiv}>
                 <InputField onSuggestionClick={addUser} isSearch placeholder={`Search`} type={"text"} className={styles.input} />

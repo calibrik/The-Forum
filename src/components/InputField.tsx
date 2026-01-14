@@ -21,12 +21,12 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const [errMsg, setErrMsg] = useState<string>("");
     const inputRef = useRef<HTMLInputElement>(null);
     const [type, setType] = useState<string>(props.type);
-    const testUsers: string[] = ["user1", "user2", "user3", "user4", "user5", "user6"];
+    const testUsers: string[] = ["user1", "user2", "user3", "user4", "user5", "user6","user1", "user2", "user3", "user4", "user5", "user6","user1", "user2", "user3", "user4", "user5", "user6"];
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
 
     function onChange(event: ChangeEvent<HTMLInputElement>) {
-        let value = event.target.value.toLowerCase() ?? "";
+        let value = event.target.value ?? "";
         setErrMsg("");
         if (props.onChange) {
             props.onChange(value);
@@ -34,7 +34,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         }
         if (!props.isSearch)
             return;
-        setSuggestions(testUsers.filter((v: string) => v.includes(value)));
+        setSuggestions(testUsers.filter((v: string) => v.includes(value.toLowerCase())));
     }
 
     useImperativeHandle(ref, () => ({
@@ -78,14 +78,18 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                 <input ref={inputRef} onChange={onChange} type={type} name={props.name} placeholder={props.placeholder} className={styles.inputField} />
                 {props.type == "password" ? passwordEye : ""}
             </div>
-            <div className={styles.dropdown} style={{ display: isFocused && props.isSearch && suggestions.length != 0 ? "" : "none" }}>
-                {
-                    suggestions.map((value, index) => (
-                        <SMEntry onSelect={onSuggestionClick} key={index} type="user" name={value} />
-                    ))
-                }
-            </div>
-            <span className={styles.errorMsg}>{errMsg}</span>
+            {isFocused && props.isSearch && suggestions.length != 0 ?
+                <div className={styles.dropdown}>
+                    {
+                        suggestions.map((value, index) => (
+                            <SMEntry onSelect={onSuggestionClick} key={index} type="user" name={value} />
+                        ))
+                    }
+                </div>
+                : ""}
+            {errMsg != "" ?
+                <span className={styles.errorMsg}>{errMsg}</span>
+                : ""}
         </div>
     );
 });
