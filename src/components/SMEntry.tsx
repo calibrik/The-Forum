@@ -2,20 +2,25 @@ import { type FC } from "react";
 import styles from "../scss/members.module.scss"
 import { getImageUrl } from "../utils";
 import { CheckCircleFill } from "./Icons";
+import { useNavigate } from "react-router";
 interface ISMEntryProps {
     isSelected?: boolean
     name: string
     type:"subforum"|"user"
-    onSelect?: (name:string) => void | Promise<void>
+    destination?:string
+    onClick?: (name:string) => void | Promise<void>
 };
 
 export const SMEntry: FC<ISMEntryProps> = (props) => {
-    // const [isSelected, setIsSelected] = useState<boolean>(false);
+    let navigate=useNavigate();
 
     function onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.preventDefault();
-        if (props.onSelect)
-            props.onSelect(props.name);
+        e.stopPropagation();
+        if (props.onClick)
+            props.onClick(props.name);
+        if (props.destination)
+            navigate(props.destination);
     }
 
     // const icon = props.isSelected ? <CheckCircleFill className={styles.icon} /> : <CheckCircle className={styles.icon} />

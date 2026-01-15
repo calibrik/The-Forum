@@ -11,21 +11,9 @@ interface IBaseButtonProps {
 };
 
 export const BaseButton: FC<IBaseButtonProps> = (props) => {
-
-    let children: ReactNode;
-    if (props.icon) {
-        if (props.iconPos === 'start') {
-            children = [props.icon, (props.children ?? "")];
-        }
-        else {
-            children = [(props.children ?? ""),props.icon];
-        }
-    }
-    else {
-        children = props.children;
-    }
+    const iconPos = props.iconPos ?? "start";
 
     return (
-        <button type={props.type} id={props.animId} data-istransition="true" onClick={props.onClick} className={`${styles.button} ${props.className}`}>{children}</button>
+        <button type={props.type} id={props.animId} data-istransition="true" onClick={props.onClick} className={`${styles.button} ${props.className}`}>{iconPos == "start" ? props.icon : ""}{props.children}{iconPos == "end" ? props.icon : ""}</button>
     );
 }

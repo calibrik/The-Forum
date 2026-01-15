@@ -62,18 +62,3 @@
     }
 }
 
-.icon {
-    color: colors.$secondary-color
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .icon:hover {
-        cursor: pointer;
-        color: #c5c5c5;
-    }
-}
-
-.icon:active {
-    transform: scale(0.9);
-    color: #c5c5c5;
-}

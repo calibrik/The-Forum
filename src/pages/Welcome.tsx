@@ -1,4 +1,4 @@
-import { useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { LoginButton } from "../components/LoginButton";
 import { SignUpButton } from "../components/SignUpButton";
 import styles from "../scss/welcomePage.module.scss";
@@ -12,40 +12,64 @@ gsap.registerPlugin(useGSAP);
 export const Welcome: FC<IWelcomeProps> = (_) => {
     const container = useRef<HTMLDivElement>(null);
     const isFlash = useRef<boolean>(false);
+    const tl = useRef<gsap.core.Timeline>(null)
 
-    useGSAP(() => {
+    useGSAP((_, contextSafe) => {
+        if (!contextSafe)
+            return;
         const bgColor = "#0000ffff"
         const textColor = "#FFFFFF"
-        const tl = gsap.timeline({
-            repeat: -1,
-            repeatRefresh: true,
-            delay: 3
+
+        const rebuildTimeline = contextSafe(() => {
+            console.log("new anim rebuild");
+            tl.current?.kill();
+            gsap.set("#text, #button,:root, #header-div, #header-text,#header-input,[data-istransition='true']", {
+                clearProps: "all",
+            });
+            isFlash.current = false;
+
+            tl.current = gsap.timeline({
+                repeat: -1,
+                repeatRefresh: true,
+                delay: 3,
+            })
+                .set("[data-istransition='true']", {
+                    transition: "none"
+                })
+                .add(() => { isFlash.current = true; })
+                .set("#button", {
+                    backgroundColor: textColor,
+                    fontFamily: "Courier Prime",
+                    color: bgColor,
+                })
+                .set("#header-input", {
+                    borderColor: textColor,
+                    color: textColor,
+                    backgroundColor: bgColor,
+                    fontFamily: "Courier Prime",
+                })
+                .set("#text, #header-text", {
+                    color: textColor,
+                    fontFamily: "Courier Prime",
+                })
+                .set(":root, #header-div", {
+                    backgroundColor: bgColor,
+                    backgroundImage: "none"
+                })
+                .set("#text, #button,:root, #header-div, #header-text,#header-input", {
+                    clearProps: "color,backgroundColor,fontFamily,backgroundImage,borderColor",
+                }, "+=2")
+                .add(() => { isFlash.current = false; })
+                .add(() => { tl.current?.repeatDelay(gsap.utils.random(5, 10)); })
+                .set("[data-istransition='true']", {
+                    clearProps: "transition",
+                }, "+=0.1");
         })
-            .set("[data-istransition='true']", {
-                transition: "none"
-            })
-            .add(() => { isFlash.current = true; })
-            .set("#button", {
-                backgroundColor: textColor,
-                fontFamily: "Courier Prime",
-                color: bgColor,
-            })
-            .set("#text, #header-text", {
-                color: textColor,
-                fontFamily: "Courier Prime",
-            })
-            .set(":root, #header-div", {
-                backgroundColor: bgColor,
-                backgroundImage: "none"
-            })
-            .set("#text, #button,:root, #header-div, #header-text", {
-                clearProps: "color,backgroundColor,fontFamily,backgroundImage",
-            }, "+=2")
-            .add(() => { isFlash.current = false; })
-            .add(() => { tl.repeatDelay(gsap.utils.random(5, 10)); })
-            .set("[data-istransition='true']", {
-                clearProps: "transition",
-            }, "+=0.1");
+
+        window.addEventListener("DOMRebuild", rebuildTimeline);
+        return () => {
+            window.removeEventListener("DOMRebuild", rebuildTimeline);
+        }
     })
 
     return (

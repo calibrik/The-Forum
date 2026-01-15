@@ -10,6 +10,7 @@ interface IInputFieldProps {
     onChange?: (value: string) => void | Promise<void>
     onSuggestionClick?: (name: string) => void | Promise<void>
     isSearch?: boolean;
+    id?: string
 };
 type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -21,9 +22,10 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const [errMsg, setErrMsg] = useState<string>("");
     const inputRef = useRef<HTMLInputElement>(null);
     const [type, setType] = useState<string>(props.type);
-    const testUsers: string[] = ["user1", "user2", "user3", "user4", "user5", "user6","user1", "user2", "user3", "user4", "user5", "user6","user1", "user2", "user3", "user4", "user5", "user6"];
+    const testUsers: string[] = ["user1", "user2", "user3", "user4", "user5", "user6", "user1", "user2", "user3", "user4", "user5", "user6", "user1", "user2", "user3", "user4", "user5", "user6"];
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
+    const placeholder=useRef<HTMLSpanElement>(null);
 
     function onChange(event: ChangeEvent<HTMLInputElement>) {
         let value = event.target.value ?? "";
@@ -63,6 +65,18 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         setIsFocused(false);
     }
 
+    function onInputFocus(e: React.FocusEvent){
+        if (placeholder.current) {
+            placeholder.current.style.display = "none";
+        }
+    }
+
+    function onInputBlur(e: React.FocusEvent){
+        if (placeholder.current && inputRef.current?.value.trim()=="") {
+            placeholder.current.style.display="";
+        }
+    }
+
     async function onSuggestionClick(name: string) {
         if (props.onSuggestionClick)
             await props.onSuggestionClick(name);
@@ -73,16 +87,19 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""}`;
     return (
         <div className={styles.container} onFocus={() => { setIsFocused(true) }} onBlur={onBlur}>
-            <div className={className}>
-                {props.isSearch ? <Search className={styles.icon} /> : ""}
-                <input ref={inputRef} onChange={onChange} type={type} name={props.name} placeholder={props.placeholder} className={styles.inputField} />
+            <div className={className} data-istransition="true" id={props.id}>
+                {props.isSearch ? <Search id={props.id} className={styles.icon} /> : ""}
+                <div className={styles.input}>
+                    <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
+                    <input ref={inputRef} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
+                </div>
                 {props.type == "password" ? passwordEye : ""}
             </div>
             {isFocused && props.isSearch && suggestions.length != 0 ?
                 <div className={styles.dropdown}>
                     {
                         suggestions.map((value, index) => (
-                            <SMEntry onSelect={onSuggestionClick} key={index} type="user" name={value} />
+                            <SMEntry onClick={onSuggestionClick} key={index} type="user" name={value} />
                         ))
                     }
                 </div>

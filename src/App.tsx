@@ -9,6 +9,7 @@ import { Error } from './pages/Error';
 import { SubforumPosts } from './pages/SubforumPosts';
 import { SubforumMembers } from './pages/SubforumMembers';
 import { SubforumSettings } from './pages/SubforumSettings';
+import { PostPage } from './pages/PostPage';
 
 const router = createBrowserRouter([
 	{
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
 			{
 				path: "/signup",
 				Component: Signup,
+			},
+			{
+				path: "/post",
+				Component: PostPage,
 			},
 			{
 				path: "/subforum",

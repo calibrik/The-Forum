@@ -1,0 +1,61 @@
+@use "./colors.scss" as colors;
+
+.reaction-button {
+    background-color: transparent;
+    border: 1px solid colors.$secondary-color;
+    color: colors.$secondary-color;
+    gap: 2px;
+    padding: 4px 6px;
+    font-size: clamp(0.75rem, 3cqw, 1.15rem);
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+}
+
+.reaction-button.liked {
+    border: 1px solid colors.$primary-color;
+}
+
+.icon-liked {
+    color: colors.$primary-color;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .reaction-button:hover {
+        color: #c5c5c5;
+        border: 1px solid #c5c5c5;
+        cursor: pointer;
+    }
+
+    .reaction-button.liked:hover {
+        border: 1px solid #670002;
+    }
+
+    .reaction-button.liked:hover .icon-liked {
+        color: #670002;
+    }
+}
+
+.reaction-button.liked:active {
+    border: 1px solid #670002;
+}
+
+.reaction-button:active {
+    color: #c5c5c5;
+    border: 1px solid #c5c5c5;
+}
+
+.reactions-container {
+    container-type: inline-size;
+    display: flex;
+    gap: 1.5cqw;
+    align-items: center;
+}
+
+
+
+.views {
+    margin-left: auto;
+    color: colors.$tertiary-color;
+    font-size: clamp(0.75rem, 3cqw, 1.15rem);
+}

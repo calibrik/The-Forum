@@ -23,27 +23,31 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
         return () => {
             window.removeEventListener("resize", onResize);
         }
-    })
+    },[])
+
+    useEffect(()=>{
+        window.dispatchEvent(new Event("DOMRebuild"));
+    },[isMobile])
 
     return (
-        <div className={styles.container}>
+        <div id="header-div" className={styles.container}>
             {!isMobile ?
                 <div className={styles.inputDiv}>
-                    <InputField className={styles.input} isSearch placeholder="Search" type={"text"} />
+                    <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                 </div>
                 : ""}
-            <div ref={div} id="header-div" className={styles.headerContainer}>
-                <Menu className={styles.icon} />
+            <div ref={div} className={styles.headerContainer}>
+                <Menu interactive className={styles.icon} />
                 {!isMobile ?
                     <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
                     : ""}
                 {isMobile ?
                     <div className={styles.inputDiv}>
                         <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
-                        <InputField className={styles.input} isSearch placeholder="Search" type={"text"} />
+                        <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                     </div>
                     : ""}
-                <Person className={`${styles.person} ${styles.icon}`} />
+                <Person interactive className={`${styles.person} ${styles.icon}`} />
             </div>
         </div>
     );
@@ -51,7 +55,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
 
 const HeaderLoggedOff: FC<IHeaderLoggedOffProps> = (_) => {
     return (
-        <div className={styles.container}>
+        <div id="header-div" className={styles.container}>
             <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
         </div>
     );

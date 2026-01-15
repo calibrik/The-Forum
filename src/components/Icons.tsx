@@ -3,20 +3,22 @@ import styles from "../scss/icons.module.scss"
 interface IIconProps {
     onClick?: () => void | Promise<void>
     className?: string
+    interactive?:boolean
+    id?:string
 };
 interface IIconWrapper extends IIconProps {
     icon: ReactNode
 }
 
 const IconWrapper: FC<IIconWrapper> = (props) => {
-    const className = `${styles.iconWrapper} ${props.className ?? ""}`;
+    const className = `${styles.iconWrapper} ${props.className ?? ""} ${props.interactive?styles.interactive:""}`;
     function onClick(e: any) {
         e.preventDefault();
         if (props.onClick)
             props.onClick();
     }
     return (
-        <div onClick={onClick} data-istransition="true" className={className}>
+        <div onClick={onClick} id={props.id} data-istransition="true" className={className}>
             {props.icon}
         </div>
     );
@@ -74,7 +76,7 @@ export const HeartFill: FC<IIconProps> = (props) => {
     );
 }
 
-export const Comment: FC<IIconProps> = (props) => {
+export const CommentIcon: FC<IIconProps> = (props) => {
     return (
         <IconWrapper icon={
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" className="bi bi-chat-square" viewBox="0 0 16 16">
@@ -161,7 +163,7 @@ export const Menu: FC<IIconProps> = (props) => {
     return (
         <IconWrapper icon={
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
             </svg>
         } {...props} />
     );
@@ -173,6 +175,36 @@ export const Person: FC<IIconProps> = (props) => {
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
             </svg>
+        } {...props} />
+    );
+}
+
+
+export const ArrowLeft: FC<IIconProps> = (props) => {
+    return (
+        <IconWrapper icon={
+            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
+            </svg>
+        } {...props} />
+    );
+}
+
+export const SendIcon: FC<IIconProps> = (props) => {
+    return (
+        <IconWrapper icon={
+            <svg
+   width="1em" height="1em" fill="currentColor" className="bi bi-send-fill"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <path
+     d="m 15.639967,8.4425131 a 0.5,0.5 0 0 0 0,-0.9192388 L 1.2390311,1.3516463 1.238324,1.3509392 0.79143255,1.1586061 a 0.5,0.5 0 0 0 -0.6851866,0.5692211 l 0.1060661,0.4737614 -7.071e-4,0.00212 1.28481405,5.7791828 -1.28481315,5.7791836 7.1e-6,0.0028 -0.1060661,0.473761 a 0.5,0.5 0 0 0 0.6851866,0.567807 z m -2.632558,0.040305 -10.5981158,-3e-7 0.086974,-0.3910297 a 0.5,0.5 0 0 0 10e-8,-0.2177888 l -0.086974,-0.3910302 10.5981177,7e-7 1.166018,0.4999238 z"
+     id="path1" />
+</svg>
         } {...props} />
     );
 }

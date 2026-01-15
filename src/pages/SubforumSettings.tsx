@@ -39,7 +39,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
                 <InputField onSuggestionClick={addUser} isSearch placeholder={`Search`} type={"text"} className={styles.input} />
             </div>
             {Array.from(selectedUsers).map((value, i) => (
-                <SMEntry type="user" onSelect={removeUser} isSelected key={i} name={value} />
+                <SMEntry type="user" onClick={removeUser} isSelected key={i} name={value} />
             ))}
             <div>
                 <BaseButton iconPos="start" icon={props.buttonIcon} className={`${buttonStyles.primaryButton} ${styles.submitButton}`} type="submit">{props.buttonText}</BaseButton>

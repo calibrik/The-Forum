@@ -1,0 +1,18 @@
+@use "./colors.scss" as colors;
+
+.container{
+    container-type: inline-size;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    background-color: colors.$card-bg;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.comment{
+    font-size: clamp(0.9rem,3.3cqw,1.3rem);
+    color:colors.$tertiary-color;
+    margin:0;
+}

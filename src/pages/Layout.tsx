@@ -1,6 +1,6 @@
 import { type FC } from "react";
 import { Header } from "../components/Header";
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 import styles from '../scss/layout.module.scss';
 interface ILayoutProps { };
 
@@ -11,6 +11,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
             <Header isLoggedIn />
             <div className={styles.containerMain}>
                 <Outlet />
+                <ScrollRestoration />
             </div>
         </div>
     );

@@ -1,14 +1,17 @@
 @use 'colors.scss' as colors;
+@use "./globals.scss" as globals;
 
 .input-wrapper {
     background-color: colors.$input-bg;
     border: 1px solid colors.$input-border;
     border-radius: 6px;
-    transition: 0.5s;
+    transition: globals.$transition;
     display: flex;
     gap: 5px;
     position: relative;
     align-items: center;
+    color: colors.$input-text-color;
+    font-family: Roboto;
 }
 
 .icon{
@@ -17,7 +20,7 @@
 
 .input-wrapper input{
     font-size:inherit;
-    font-family: Roboto;
+    font-family: inherit;
     width: 100%;
 }
 
@@ -27,11 +30,19 @@
     background-color: transparent;
     padding: 0;
     flex-grow: 1;
-    color: colors.$input-text-color;
+    color: inherit;
 }
 
-.input-field::placeholder {
+.input{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.placeholder {
+    position: absolute;
     color: colors.$placeholder-text;
+    pointer-events: none;
 }
 
 .input-wrapper:hover {

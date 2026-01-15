@@ -8,6 +8,7 @@ interface ISignUpButtonProps {
     isNavigate?:boolean
 };
 
+
 export const SignUpButton: FC<ISignUpButtonProps> = (props) => {
     let navigate=useNavigate();
 
