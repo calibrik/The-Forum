@@ -1,22 +1,23 @@
 import type { FC } from "react";
-import { getImageUrl } from "../utils";
-import { Outlet } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
-import baseButtonStyles from "../scss/baseButton.module.scss";
-import { BaseButton } from "../components/BaseButton";
-import { Plus } from "../components/Icons";
+import { Outlet } from "react-router";
+import { getImageUrl } from "../utils";
 import { Menu } from "../components/Menu";
-interface ISubforumProps { };
+import { Dot } from "../components/Icons";
+interface IUserPageProps { };
 
-export const Subforum: FC<ISubforumProps> = (_) => {
+export const User: FC<IUserPageProps> = (_) => {
     return (
         <div className={styles.container}>
             <img src={getImageUrl("placeholder")} className={styles.pfpBg} />
             <div className={styles.subProfileContainer}>
                 <div className={styles.headerContainer}>
                     <div className={styles.titleHeaderContainer}>
-                        <h1 className={styles.title}>f/subforum</h1>
-                        <span className={styles.followerCount}>100.1k followers</span>
+                        <h1 className={styles.title}>u/user</h1>
+                        <div className={styles.onlineContainer}>
+                            <Dot className={styles.onlineIcon}/>
+                            <span className={styles.followerCount}>Online</span>
+                        </div>
                     </div>
                     <p className={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet</p>
                 </div>
@@ -25,18 +26,14 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                         name: "Posts",
                         destination: ""
                     },
-                    members: {
-                        name: "Members",
-                        destination: "members"
+                    comments: {
+                        name: "Comments",
+                        destination: "comments"
                     },
                     settings: {
                         name: "Settings",
-                        destination: "settings"
                     }
                 }} />
-                <div className={styles.createPostContainer}>
-                    <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>Create Post</BaseButton>
-                </div>
             </div>
             <div className={styles.contentContainer}>
                 <Outlet />

@@ -4,7 +4,7 @@
     background-color: transparent;
     border: 1px solid colors.$secondary-color;
     color: colors.$secondary-color;
-    gap: 2px;
+    gap: 4px;
     padding: 4px 6px;
     font-size: clamp(0.75rem, 3cqw, 1.15rem);
     border-radius: 7px;
@@ -48,11 +48,9 @@
 .reactions-container {
     container-type: inline-size;
     display: flex;
-    gap: 1.5cqw;
+    gap: 8px;
     align-items: center;
 }
-
-
 
 .views {
     margin-left: auto;

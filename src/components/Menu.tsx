@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 interface IOption {
     name: string;
     /**without /*/
-    destination: string;
+    destination?: string;
 }
 
 interface IMenuProps {
@@ -20,7 +20,7 @@ export const Menu: FC<IMenuProps> = (props) => {
     function onOptionSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         e.preventDefault();
         const id = e.currentTarget.dataset.optionid ?? ids.current[0];
-        if (activeOption == id) {
+        if (activeOption == id||props.options[id].destination===undefined) {
             return;
         }
         setActiveOption(id);

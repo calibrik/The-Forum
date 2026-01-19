@@ -1,9 +1,10 @@
 import type { FC } from "react";
 import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
-interface ISubforumPostsProps {};
+import { Spinner } from "../components/Spinner";
+interface IUserPostsProps {};
 
-export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
+export const UserPosts: FC<IUserPostsProps> = (_) => {
     return (
         <div className={styles.container}>
             <Post/>
@@ -13,6 +14,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
             <Post img="placeholder"/>
             <Post img="placeholder"/>
             <Post/>
+            <Spinner/>
         </div>
     );
 }

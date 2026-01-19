@@ -46,7 +46,7 @@
 }
 
 .input {
-    font-size:clamp(1rem, 3.7cqw, 1.2rem);
+    font-size:clamp(0.75rem, 3.9cqw, 1.2rem);
     padding: 10px 8px;
 }
 
@@ -86,10 +86,11 @@
 }
 
 .disclaimer {
-    margin-top: 5cqh;
+    margin-top: 5vh;
     width: 100%;
     text-align: center;
     color: colors.$tertiary-color;
     font-size: clamp(0.8rem, 4.1cqw, 1rem);
     padding: 0 12px;
+    box-sizing: border-box;
 }

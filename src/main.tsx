@@ -13,4 +13,6 @@ createRoot(document.getElementById('root')!).render(
 //TODO: issue with browser suggesting to save password even tho user just presses the link (not that serious tho)
 //TODO: modals
 //TODO: add some delays on some actions to make it believable
-//TODO: consider throwing out the px for padding/gaps and move to cqw and clamps (and replace all px in clamps with rem)
+//TODO: consider throwing out the px for padding/gaps and move to cqw and clamps (and replace all px in clamps with rem) 
+// (maybe i need to clamp every gap/padding but it's batshit insane, there's should be a better way) 
+// (also some of them look good without scalable units, which is good but at the same time frustrating, cuz there is no rule)

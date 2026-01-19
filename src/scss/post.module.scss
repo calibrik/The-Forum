@@ -1,19 +1,11 @@
 @use "./colors.scss" as colors;
 @use "./globals.scss" as globals;
 
-.pfp {
-    border-radius: 50px;
-    object-fit: cover;
-    object-position: center;
-    height: clamp(20px, 5cqw, 30px);
-    width: clamp(20px, 5cqw, 30px);
-}
-
 .card-container {
     container-type: inline-size;
     display: flex;
     flex-direction: column;
-    gap: clamp(10px, 2.3cqw, 15px);
+    gap: 1.7cqw;
     padding: 7px 15px;
     background-color: colors.$card-bg;
     border-radius: 6px;
@@ -25,22 +17,6 @@
         cursor: pointer;
         background-color: #2f2f2f;
     }
-}
-
-.card-container:active {
-    background-color: #2f2f2f;
-}
-
-.user-container {
-    container-type: inline-size;
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-.username {
-    color: colors.$tertiary-color;
-    font-size: clamp(0.7rem, 2.8cqw, 1.1rem);
 }
 
 .title {
@@ -78,5 +54,6 @@
 }
 
 .post-img-wrapper {
+    display: flex;
     background-color: colors.$secondary-card-bg;
 }

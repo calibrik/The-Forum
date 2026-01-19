@@ -8,6 +8,7 @@
     width: 100%;
     container-type: inline-size;
     position:relative;
+    flex-grow:1;
     max-width: globals.$desktop-content-size;
 
     @container (min-width:calc(#{globals.$desktop-content-size} + 1px)) {
@@ -35,6 +36,7 @@
 }
 
 .sub-profile-container {
+    padding: 0 0 2.3cqw 0;
     display: flex;
     flex-direction: column;
     background-color: colors.$card-bg;
@@ -44,10 +46,10 @@
 }
 
 .header-container {
-    padding: 10px 10px;
+    padding: 2.3cqw;
     display: flex;
     flex-direction: column;
-    gap: clamp(10px,2.3cqw,15px);
+    gap: 10px;
     border-bottom: 1px solid colors.$tertiary-color;
     container-type: inline-size;
 }
@@ -56,6 +58,18 @@
     display: flex;
     flex-direction: column;
     container-type: inline-size;
+    gap:5px;
+}
+
+.online-icon{
+    color:#006f07;
+    font-size:clamp(0.25rem, 0.9cqw, 0.4rem);
+}
+
+.online-container{
+    display: flex;
+    gap:5px;
+    align-items: center;
 }
 
 .title {
@@ -77,7 +91,7 @@
 .create-post-container {
     display: flex;
     align-items: center;
-    padding: 5px 10px;
+    padding: 0 1.1cqw;
     container-type: inline-size;
 }
 
@@ -88,4 +102,6 @@
 
 .content-container {
     container-type: inline-size;
+    background-color: colors.$secondary-card-bg;
+    flex-grow:1;
 }

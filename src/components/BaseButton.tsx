@@ -2,7 +2,7 @@ import type { FC, ReactNode } from "react";
 import styles from '../scss/baseButton.module.scss';
 interface IBaseButtonProps {
     children?: string;
-    onClick?: () => Promise<void> | void;
+    onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => Promise<void> | void;
     className?: string;
     animId?: string
     type?: "submit" | "reset" | "button" | undefined;

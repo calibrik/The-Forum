@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef, useState, type ChangeEvent } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent } from "react";
 import styles from "../scss/inputField.module.scss";
 import { Eye, EyeSlash, Search } from "./Icons";
 import { SMEntry } from "./SMEntry";
@@ -11,6 +11,7 @@ interface IInputFieldProps {
     onSuggestionClick?: (name: string) => void | Promise<void>
     isSearch?: boolean;
     id?: string
+    autocomplete?:boolean
 };
 type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -25,7 +26,8 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const testUsers: string[] = ["user1", "user2", "user3", "user4", "user5", "user6", "user1", "user2", "user3", "user4", "user5", "user6", "user1", "user2", "user3", "user4", "user5", "user6"];
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
-    const placeholder=useRef<HTMLSpanElement>(null);
+    const isFocusedRef=useRef<boolean>(false);
+    const placeholder = useRef<HTMLSpanElement>(null);
 
     function onChange(event: ChangeEvent<HTMLInputElement>) {
         let value = event.target.value ?? "";
@@ -38,6 +40,20 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             return;
         setSuggestions(testUsers.filter((v: string) => v.includes(value.toLowerCase())));
     }
+
+    useEffect(() => {
+        const form = inputRef.current?.form;
+
+        if (form) {
+            form.addEventListener("reset", onReset);
+        }
+
+        return () => form?.removeEventListener("reset", onReset);
+    }, []);
+
+    useEffect(()=>{
+        isFocusedRef.current=isFocused;
+    },[isFocused])
 
     useImperativeHandle(ref, () => ({
         setError(msg: string) {
@@ -65,16 +81,21 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         setIsFocused(false);
     }
 
-    function onInputFocus(e: React.FocusEvent){
+    function onInputFocus() {
         if (placeholder.current) {
             placeholder.current.style.display = "none";
         }
     }
 
-    function onInputBlur(e: React.FocusEvent){
-        if (placeholder.current && inputRef.current?.value.trim()=="") {
-            placeholder.current.style.display="";
+    function onInputBlur() {
+        if (placeholder.current && inputRef.current?.value.trim() == "") {
+            placeholder.current.style.display = "";
         }
+    }
+
+    function onReset() {
+        if (!isFocusedRef.current)
+            placeholder.current!.style.display = "";
     }
 
     async function onSuggestionClick(name: string) {
@@ -91,7 +112,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                 {props.isSearch ? <Search id={props.id} className={styles.icon} /> : ""}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
-                    <input ref={inputRef} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
+                    <input ref={inputRef} autoComplete={props.autocomplete?"on":"off"} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
                 </div>
                 {props.type == "password" ? passwordEye : ""}
             </div>

@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import styles from "../scss/members.module.scss"
+import styles from "../scss/smentry.module.scss"
 import { getImageUrl } from "../utils";
 import { CheckCircleFill } from "./Icons";
 import { useNavigate } from "react-router";

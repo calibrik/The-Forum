@@ -3,7 +3,7 @@
 
 .container {
     display: flex;
-    gap: 10px;
+    gap: clamp(7px,1.15cqw,10px);
     align-items: center;
     transition: globals.$transition;
     container-type: inline-size;

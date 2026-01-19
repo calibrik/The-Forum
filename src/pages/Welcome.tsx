@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useRef, type FC } from "react";
 import { LoginButton } from "../components/LoginButton";
 import { SignUpButton } from "../components/SignUpButton";
 import styles from "../scss/welcomePage.module.scss";
@@ -21,7 +21,6 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
         const textColor = "#FFFFFF"
 
         const rebuildTimeline = contextSafe(() => {
-            console.log("new anim rebuild");
             tl.current?.kill();
             gsap.set("#text, #button,:root, #header-div, #header-text,#header-input,[data-istransition='true']", {
                 clearProps: "all",
@@ -66,11 +65,12 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
                 }, "+=0.1");
         })
 
+        rebuildTimeline();
         window.addEventListener("DOMRebuild", rebuildTimeline);
         return () => {
             window.removeEventListener("DOMRebuild", rebuildTimeline);
         }
-    })
+    },[])
 
     return (
         <div ref={container} className={styles.container}>

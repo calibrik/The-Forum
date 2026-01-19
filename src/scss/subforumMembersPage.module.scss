@@ -5,20 +5,25 @@
     flex-direction: column;
     container-type: inline-size;
     padding: 5px 0 0 0;
-    background-color: colors.$secondary-card-bg;
     gap:5px;
 }
 
 .section{
     background-color: colors.$card-bg;
-    padding:10px;
+    padding:12px 2.3cqw;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2.3cqw;
 }
 
 .title{
-    margin:0;
     font-weight: bold;
     font-size: clamp(1rem, 3.2cqw, 1.5rem);
+}
+
+.user-list{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    padding:0 0 0 1.5cqw;
 }

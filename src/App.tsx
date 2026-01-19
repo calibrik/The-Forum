@@ -10,6 +10,9 @@ import { SubforumPosts } from './pages/SubforumPosts';
 import { SubforumMembers } from './pages/SubforumMembers';
 import { SubforumSettings } from './pages/SubforumSettings';
 import { PostPage } from './pages/PostPage';
+import { User } from './pages/User';
+import { UserPosts } from './pages/UserPosts';
+import { UserComments } from './pages/UserComments';
 
 const router = createBrowserRouter([
 	{
@@ -39,11 +42,25 @@ const router = createBrowserRouter([
 				Component: PostPage,
 			},
 			{
+				path: "/user",
+				Component: User,
+				children: [
+					{
+						path: "",
+						Component: UserPosts,
+					},
+					{
+						path: "comments",
+						Component: UserComments,
+					},
+				]
+			},
+			{
 				path: "/subforum",
 				Component: Subforum,
 				children: [
 					{
-						path:"",
+						path: "",
 						Component: SubforumPosts,
 					},
 					{

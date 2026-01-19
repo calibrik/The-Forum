@@ -8,8 +8,13 @@ interface ILikeButtonProps { };
 export const LikeButton: FC<ILikeButtonProps> = (_) => {
     const [isLiked, setIsLiked] = useState<boolean>(false);
 
+    function onClick(e?: React.MouseEvent<HTMLButtonElement>) {
+        e?.stopPropagation();
+        setIsLiked((p) => !p)
+    }
+
     return (
-        <BaseButton onClick={() => setIsLiked((p) => !p)} icon={isLiked ? <HeartFill className={styles.iconLiked} /> : <Heart />} iconPos="start" className={`${styles.reactionButton} ${isLiked ? styles.liked : ""}`}>1.8k</BaseButton>
+        <BaseButton onClick={onClick} icon={isLiked ? <HeartFill className={styles.iconLiked} /> : <Heart />} iconPos="start" className={`${styles.reactionButton} ${isLiked ? styles.liked : ""}`}>1.8k</BaseButton>
     );
 }
 export const Reactions: FC<IReactionsProps> = (_) => {

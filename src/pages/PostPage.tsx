@@ -5,16 +5,17 @@ import { SendIcon } from "../components/Icons";
 import { Reactions } from "../components/Reactions";
 import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
-import { SMEntry } from "../components/SMEntry";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
 import { getImageUrl } from "../utils";
+import { useNavigate } from "react-router";
 interface IPostPageProps { };
 interface IComment {
     comment?: string
 }
 
 export const PostPage: FC<IPostPageProps> = (_) => {
+    let navigate=useNavigate();
     const commentsAmount: number = 10;
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -29,8 +30,12 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         <div className={styles.container}>
             <div className={styles.postContainer}>
                 <div className={styles.returnContainer}>
-                    <BackButton/>
-                    <SMEntry name="subforum" type="subforum" />
+                    <BackButton />
+                    <img onClick={()=>navigate("/subforum")} src={getImageUrl("placeholder")} alt="" className={styles.subforumPfp} />
+                    <div className={styles.authorContainer}>
+                        <span onClick={()=>navigate("/subforum")} className={styles.subforumName}>f/subforum</span>
+                        <span onClick={()=>navigate("/user")} className={styles.username}>u/user</span>
+                    </div>
                 </div>
                 <h1 className={styles.postTitle}>Title</h1>
                 <p className={styles.content}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>

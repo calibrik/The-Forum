@@ -1,5 +1,5 @@
-import { useEffect, useState, type FC, type ReactNode } from "react";
-import styles from "../scss/subforumSettings.module.scss";
+import { useState, type FC, type ReactNode } from "react";
+import styles from "../scss/subforumSettingsPage.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
 import { InputField } from "../components/InputField";
 import { SMEntry } from "../components/SMEntry";

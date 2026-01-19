@@ -1,0 +1,9 @@
+@use "./colors.scss" as colors;
+
+.container{
+    display: flex;
+    flex-direction: column;
+    container-type:inline-size;
+    gap:5px;
+    padding-top: 5px;
+}

@@ -1,0 +1,9 @@
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    container-type:inline-size;
+    padding: 20px 0;
+    font-size: clamp(2rem,7.4cqw,3rem);
+    box-sizing: border-box;
+}
