@@ -16,7 +16,7 @@
 .post-container {
     display: flex;
     flex-direction: column;
-    padding: 1.4cqw 2.3cqw;
+    padding: 1.4cqw globals.$main-hor-padding;
     gap: 1.4cqw;
     container-type: inline-size;
     border-bottom: 1px solid colors.$tertiary-color;

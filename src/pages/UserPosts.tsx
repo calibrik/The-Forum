@@ -7,13 +7,13 @@ interface IUserPostsProps {};
 export const UserPosts: FC<IUserPostsProps> = (_) => {
     return (
         <div className={styles.container}>
-            <Post/>
-            <Post img="placeholder"/>
-            <Post/>
-            <Post/>
-            <Post img="placeholder"/>
-            <Post img="placeholder"/>
-            <Post/>
+            <Post showAuthor={"subforum"}/>
+            <Post img="placeholder" showAuthor={"subforum"}/>
+            <Post showAuthor={"subforum"}/>
+            <Post showAuthor={"subforum"}/>
+            <Post img="placeholder" showAuthor={"subforum"}/>
+            <Post img="placeholder" showAuthor={"subforum"}/>
+            <Post showAuthor={"subforum"}/>
             <Spinner/>
         </div>
     );

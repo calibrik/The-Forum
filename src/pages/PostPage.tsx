@@ -9,6 +9,7 @@ import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
 import { getImageUrl } from "../utils";
 import { useNavigate } from "react-router";
+import { Spinner } from "../components/Spinner";
 interface IPostPageProps { };
 interface IComment {
     comment?: string
@@ -48,6 +49,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                         <Comment key={i} />
                     ))
                 }
+                <Spinner/>
             </div>
             <form className={styles.inputContainer} onSubmit={onSubmit}>
                 <InputField name="comment" className={styles.input} placeholder="Add comment" type="text" />

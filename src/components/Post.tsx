@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 interface IPostProps {
     img?: string
     postId?: string;
+    showAuthor:"user"|"subforum"
 };
 
 export const Post: FC<IPostProps> = (props) => {
@@ -14,7 +15,7 @@ export const Post: FC<IPostProps> = (props) => {
 
     return (
         <div onClick={()=>navigate("/post")} data-istransition="true" className={styles.cardContainer}>
-            <SMEntry destination="/user" name={"user"} type={"user"} />
+            <SMEntry destination={`/${props.showAuthor}`} name={props.showAuthor} type={props.showAuthor} />
             <h1 className={styles.title}>Title</h1>
             <p className={props.img ? styles.contentWithImg : styles.content}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>
             {props.img ?

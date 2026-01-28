@@ -36,7 +36,7 @@
 }
 
 .sub-profile-container {
-    padding: 0 0 2.3cqw 0;
+    padding: 0 0 globals.$main-hor-padding 0;
     display: flex;
     flex-direction: column;
     background-color: colors.$card-bg;
@@ -46,7 +46,7 @@
 }
 
 .header-container {
-    padding: 2.3cqw;
+    padding: globals.$main-hor-padding;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -103,5 +103,5 @@
 .content-container {
     container-type: inline-size;
     background-color: colors.$secondary-card-bg;
-    flex-grow:1;
+    // flex-grow:1;
 }
