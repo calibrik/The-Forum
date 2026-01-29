@@ -13,6 +13,7 @@ import { PostPage } from './pages/PostPage';
 import { User } from './pages/User';
 import { UserPosts } from './pages/UserPosts';
 import { UserComments } from './pages/UserComments';
+import { ChatMenu } from './pages/ChatMenu';
 
 const router = createBrowserRouter([
 	{
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
 			{
 				path: "/post",
 				Component: PostPage,
+			},
+			{
+				path: "/chat",
+				Component: ChatMenu,
 			},
 			{
 				path: "/user",

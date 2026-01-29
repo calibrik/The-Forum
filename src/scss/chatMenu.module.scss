@@ -1,0 +1,92 @@
+@use './colors.scss' as colors;
+@use './globals.scss' as globals;
+
+.container{
+    container-type:inline-size;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: globals.$desktop-content-size;
+    background-color: colors.$card-bg;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+.pfp{
+    width:clamp(50px,11.6cqw,70px);
+    height:clamp(50px,11.6cqw,70px);
+    border-radius: 100px;
+}
+
+.header-container{
+    padding: 10px;
+    border-bottom: 1px solid colors.$secondary-color;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    container-type:inline-size;
+    box-sizing: border-box;
+}
+
+.header{
+    font-size: clamp(1.5rem,5.6cqw,2.5rem);
+}
+
+.dialogs-container{
+    padding: clamp(4px,0.9cqw,8px) 0;
+    container-type: inline-size;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog{
+    padding: clamp(4px,0.9cqw,8px) clamp(5px,1.1cqw,10px);
+    display: flex;
+    gap:10px;
+    align-items: center;
+    transition: globals.$transition;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .dialog:hover {
+        cursor: pointer;
+        background-color: #2f2f2f;
+    }
+}
+
+.dialog:active {
+    background-color: #2f2f2f;
+}
+
+.last-message{
+    font-size:clamp(0.7rem,2.5cqw,1rem);
+    color:colors.$secondary-color;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
+
+.last-message.read{
+    color:colors.$tertiary-color;
+}
+
+.dot{
+    font-size:clamp(0.31rem,1.1cqw,0.5rem);
+}
+
+.nickname{
+    font-size: clamp(1rem,3.7cqw,1.5rem);
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    gap:clamp(5px,1.1cqw,10px);
+}

@@ -14,5 +14,6 @@ createRoot(document.getElementById('root')!).render(
 //TODO: modals
 //TODO: add some delays on some actions to make it believable
 //TODO: consider throwing out the px for padding/gaps and move to cqw and clamps (and replace all px in clamps with rem) 
-// (maybe i need to clamp every gap/padding but it's batshit insane, there's should be a better way) 
+// (maybe i need to clamp every gap/padding but it's batshit insane, there's should be a better way) (it might be the best way lol)
 // (also some of them look good without scalable units, which is good but at the same time frustrating, cuz there is no rule)
+//TODO: consider merging chatmenu into chat on desktop only, cuz it looks like hot garbage rn
