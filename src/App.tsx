@@ -14,12 +14,16 @@ import { User } from './pages/User';
 import { UserPosts } from './pages/UserPosts';
 import { UserComments } from './pages/UserComments';
 import { ChatMenu } from './pages/ChatMenu';
+import { Chat } from './pages/Chat';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+
+gsap.registerPlugin(useGSAP);
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: Layout,
-		// errorElement: <Error />,
 		children: [
 			{
 				index: true,
@@ -45,6 +49,10 @@ const router = createBrowserRouter([
 			{
 				path: "/chat",
 				Component: ChatMenu,
+			},
+			{
+				path: "/chat/:id",
+				Component: Chat,
 			},
 			{
 				path: "/user",

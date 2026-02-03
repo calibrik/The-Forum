@@ -1,0 +1,188 @@
+@use "./globals.scss" as globals;
+@use "./colors.scss" as colors;
+
+.pfp {
+    width: clamp(30px, 7.1cqw, 50px);
+    height: clamp(30px, 7.1cqw, 50px);
+    border-radius: 100px;
+}
+
+.authorPfp {
+    width: clamp(20px, 4.7cqw, 30px);
+    height: clamp(20px, 4.7cqw, 30px);
+    border-radius: 100px;
+}
+
+.container {
+    container-type: inline-size;
+    width: 100%;
+    max-width: globals.$desktop-content-size;
+    background-color: colors.$card-bg;
+    flex-grow: 1;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    padding: 0 10px;
+    align-items: center;
+    gap: 10px;
+}
+
+.nickname {
+    font-size: clamp(1rem, 3.8cqw, 1.3rem);
+}
+
+.arrow {
+    font-size: clamp(1.5rem, 5.7cqw, 2rem);
+}
+
+.chat-container {
+    flex: 1 1 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: colors.$tertiary-color transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: colors.$secondary-card-bg;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.message-div {
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 5px;
+}
+
+.message-div.pinged {
+    background-color: colors.$ping-bg;
+}
+
+.ping {
+    color: colors.$secondary-color;
+    font-weight: bold;
+}
+
+.author-div {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.author-name {
+    font-size: clamp(0.7rem, 2.6cqw, 1rem);
+}
+
+.message-time {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.7rem, 2.6cqw, 1rem);
+    margin-left: auto;
+}
+
+.message {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.9rem, 3.4cqw, 1.2rem);
+}
+
+.input-container {
+    display: flex;
+    margin-top: auto;
+    align-items: stretch;
+    container-type: inline-size;
+    padding: 0 10;
+    box-sizing: border-box;
+    gap: 6px;
+}
+
+.input {
+    padding: 8px 12px;
+    font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+}
+
+.send-button {
+    padding: 6px 15px;
+    font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+}
+
+.reply-author-pfp {
+    width: clamp(13px, 3.1cqw, 18px);
+    height: clamp(13px, 3.1cqw, 18px);
+    border-radius: 100px;
+}
+
+.reply-div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    border: 1px solid colors.$tertiary-color;
+    border-radius: 6px;
+    padding: 3px;
+}
+
+.reply-message-div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.reply-author-div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.reply-author-name {
+    font-size: clamp(0.6rem, 2.2cqw, 0.8rem);
+}
+
+.reply-message {
+    color: colors.$tertiary-color;
+    font-size: clamp(0.7rem, 2.6cqw, 1rem);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+.reply-arrow {
+    font-size: clamp(0.9rem, 2.6cqw, 1.3rem);
+    color: colors.$tertiary-color;
+}
+
+.indicator-div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: colors.$tertiary-color;
+}
+
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;    
+}
+
+.indicator-icon {
+    font-size: clamp(0.35rem, 1.1cqw, 0.45rem);
+}
+
+.indicator-text {
+    font-size: clamp(0.7rem, 2.6cqw, 1rem);
+}
+
+.chat-div{
+    display: flex;
+    flex-direction: column;
+    gap:2px;
+}

@@ -3,11 +3,9 @@ import { LoginButton } from "../components/LoginButton";
 import { SignUpButton } from "../components/SignUpButton";
 import styles from "../scss/welcomePage.module.scss";
 import { BinaryAnimation } from "../components/BinaryAnimation";
-import gsap from "gsap";
+import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 interface IWelcomeProps { };
-gsap.registerPlugin(useGSAP);
-
 
 export const Welcome: FC<IWelcomeProps> = (_) => {
     const container = useRef<HTMLDivElement>(null);

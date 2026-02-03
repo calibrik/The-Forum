@@ -1,0 +1,22 @@
+@use "./colors.scss" as colors;
+
+.container{
+    container-type: inline-size;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap:5px;
+    margin:1vh 0;
+}
+
+.line{
+    border-bottom: 1px solid colors.$tertiary-color;
+    width: 100%;
+}
+
+.text{
+    width: fit-content;
+    white-space: nowrap;
+    color: colors.$tertiary-color;
+    font-size: clamp(0.7rem,2.6cqw,1rem);
+}
