@@ -1,4 +1,4 @@
-import { useRef, type FC, type ReactNode } from "react";
+import { useEffect, useRef, type FC, type ReactNode } from "react";
 import { ArrowLeft, Dot, Reply, SendIcon } from "../components/Icons";
 import { getImageUrl } from "../utils";
 import { InputField } from "../components/InputField";
@@ -8,6 +8,8 @@ import buttonStyles from "../scss/baseButton.module.scss";
 import { Divider } from "../components/Divider";
 import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
+import { BackButton } from "../components/BackButton";
+import { Spinner } from "../components/Spinner";
 
 interface IChatMessage {
     author: string;
@@ -29,16 +31,18 @@ interface ITextingIndicatorProps {
 
 export const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
     const indicatorRef = useRef<HTMLDivElement>(null);
+
     useGSAP(() => {
-        const icons:Element[] = gsap.utils.toArray(`.${styles.indicatorIcon}`);
+        const icons: Element[] = gsap.utils.toArray(`.${styles.indicatorIcon}`);
         const tl = gsap.timeline({
             repeat: -1,
+            repeatDelay: 0.3,
         })
             .set("[data-istransition='true']", {
                 transition: "none"
             });
 
-        icons.forEach((icon,index) => {
+        icons.forEach((icon, index) => {
             tl
                 .to(icon, {
                     scale: 1.5,
@@ -55,8 +59,6 @@ export const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
         });
     }, [indicatorRef]);
 
-    if (props.names.length === 0)
-        return null;
     let names = `${props.names.join(", ")} typing...`;
     if (props.names.length > 2)
         names = `${props.names.length} people typing...`;
@@ -126,8 +128,14 @@ export const Chat: FC<IChatProps> = () => {
         { author: "pro_awper", content: "RTX 4080, i9-13900K, 360hz monitor", time: new Date(2026, 1, 3, 14, 45), replyTo: { author: "noob_gamer", content: "What's your setup?" } },
         { author: "player1", content: "Overkill but I respect it", time: new Date(2026, 1, 3, 14, 47), replyTo: { author: "pro_awper", content: "RTX 4080, i9-13900K, 360hz monitor" } },
         { author: "noob_gamer", content: "Anyone playing the new map tomorrow?", time: new Date(2026, 1, 3, 14, 49) },
-        { author: "pro_awper", content: "I'm down, let's stack a team", time: new Date(2026, 1, 3, 14, 51), replyTo: { author: "noob_gamer", content: "Anyone playing the new map tomorrow?" } }
+        { author: "pro_awper", content: "I'm down @noob_gamer, let's stack a team", time: new Date(2026, 1, 3, 14, 51) }
     ];
+    const typing: string[] = ["sdfsd", "asdfsdf"];
+    const chatContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        chatContainerRef.current?.scrollTo({ behavior: "smooth",top: chatContainerRef.current.scrollHeight });
+    }, [messages]);
 
     function onSendMessage(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -140,16 +148,17 @@ export const Chat: FC<IChatProps> = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <ArrowLeft interactive className={styles.arrow} />
+                <BackButton />
                 <img src={getImageUrl("placeholder")} className={styles.pfp} />
                 <div className={styles.chatDiv}>
                     <p className={styles.nickname}>Chat Name</p>
-                    <TypingIndicator names={["noob_gamer", "player1"]} />
+                    {typing.length > 0 ? <TypingIndicator names={typing} /> : <span className={styles.membersCount}>200 members</span>}
                 </div>
             </div>
-            <div className={styles.chatContainer}>
+            <div ref={chatContainerRef} className={styles.chatContainer}>
+                <Spinner />
                 {messages.map((msg, index) => (
-                    <Message key={index} message={msg} isPinged={msg.replyTo?.author == "noob_gamer"} />
+                    <Message key={index} message={msg} isPinged={msg.replyTo?.author == "noob_gamer" || msg.content.includes("@noob_gamer")} />
                 ))}
                 <Divider>3 February, 2026</Divider>
             </div>

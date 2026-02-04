@@ -1,8 +1,9 @@
 import { useRef, type FC } from "react";
-import { LoginButton } from "../components/LoginButton";
-import styles from '../scss/loginSignupPage.module.scss'
+import styles from '../scss/loginSignupPage.module.scss';
+import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { BaseButton } from "../components/BaseButton";
 interface ILoginProps { };
 
 type LoginData = {
@@ -13,6 +14,7 @@ type LoginData = {
 export const Login: FC<ILoginProps> = (_) => {
     const nicknameInputRef = useRef<InputFieldHandle>(null);
     const passwordInputRef = useRef<InputFieldHandle>(null);
+    let navigate=useNavigate();
 
     function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -40,7 +42,7 @@ export const Login: FC<ILoginProps> = (_) => {
                 <div className={styles.forgotPasswordContainer}>
                     <a className={styles.link} onClick={(e: any) => e.preventDefault()}>Forgot password?</a>
                 </div>
-                <LoginButton />
+                <BaseButton onClick={()=>navigate("/user")} type={"submit"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
                 <p className={styles.hint}>Don’t have an account yet? <Link className={styles.link} to="/signup">Sign up</Link></p>
             </form>
         </div>

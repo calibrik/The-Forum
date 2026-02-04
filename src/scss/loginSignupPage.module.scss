@@ -94,3 +94,13 @@
     padding: 0 12px;
     box-sizing: border-box;
 }
+
+.login-button {
+	padding: 10px 22px;
+	font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
+}
+
+.signup-button {
+	padding: 10px 15px;
+	font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
+}

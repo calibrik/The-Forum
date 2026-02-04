@@ -1,8 +1,9 @@
 import { useRef, type FC } from "react";
-import styles from '../scss/loginSignupPage.module.scss'
+import styles from '../scss/loginSignupPage.module.scss';
+import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
-import { SignUpButton } from "../components/SignUpButton";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { BaseButton } from "../components/BaseButton";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;
@@ -14,6 +15,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     const nicknameInputRef = useRef<InputFieldHandle>(null);
     const passwordInputRef = useRef<InputFieldHandle>(null);
     const confirmPasswordInputRef = useRef<InputFieldHandle>(null);
+    let navigate=useNavigate();
 
     function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -52,7 +54,7 @@ export const Signup: FC<ISignupProps> = (_) => {
                     <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
                     <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
                 </div>
-                <SignUpButton />
+                <BaseButton onClick={()=>navigate("/login")} type={"submit"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
                 <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
             </form>
             <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>

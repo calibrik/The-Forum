@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/header.module.scss';
 import { Menu, Person } from "./Icons";
 import { InputField } from "./InputField";
+import { useNavigate } from "react-router";
 interface IHeaderProps {
     isLoggedIn?: boolean;
 };
@@ -12,6 +13,7 @@ interface IHeaderLoggedOffProps { };
 const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
+    let navigate=useNavigate();
 
     function onResize() {
         setIsMobile((div.current?.clientWidth ?? 1) < 700)
@@ -47,7 +49,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                         <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                     </div>
                     : ""}
-                <Person interactive className={`${styles.person} ${styles.icon}`} />
+                <Person onClick={()=>navigate("/user")} interactive className={`${styles.person} ${styles.icon}`} />
             </div>
         </div>
     );

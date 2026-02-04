@@ -2,14 +2,17 @@ import type { FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
 import { getImageUrl } from "../utils";
 import { Dot } from "../components/Icons";
+import { useNavigate } from "react-router";
 interface IChatMenuProps { };
 interface IDialogProps {
     isRead?: boolean
 };
 
 const Dialog: FC<IDialogProps> = (props) => {
+    let navigate=useNavigate();
+
     return (
-        <div className={styles.dialog}>
+        <div onClick={()=>navigate("/chat/test")} className={styles.dialog}>
             <img src={getImageUrl("placeholder")} alt="" className={styles.pfp} />
             <div className={styles.info}>
                 <h3 className={styles.nickname}>u/user</h3>

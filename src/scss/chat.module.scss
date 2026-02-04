@@ -177,7 +177,9 @@
     font-size: clamp(0.35rem, 1.1cqw, 0.45rem);
 }
 
+.members-count,
 .indicator-text {
+    color: colors.$tertiary-color;
     font-size: clamp(0.7rem, 2.6cqw, 1rem);
 }
 

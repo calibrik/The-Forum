@@ -38,7 +38,10 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         }
         if (!props.isSearch)
             return;
-        setSuggestions(testUsers.filter((v: string) => v.includes(value.toLowerCase())));
+        if (value.trim()==="")
+            setSuggestions([]);
+        else
+            setSuggestions(testUsers.filter((v: string) => v.includes(value.toLowerCase())));
     }
 
     useEffect(() => {

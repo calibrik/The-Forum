@@ -1,16 +1,18 @@
 import { useRef, type FC } from "react";
-import { LoginButton } from "../components/LoginButton";
-import { SignUpButton } from "../components/SignUpButton";
 import styles from "../scss/welcomePage.module.scss";
+import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BinaryAnimation } from "../components/BinaryAnimation";
 import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
+import { BaseButton } from "../components/BaseButton";
+import { useNavigate } from "react-router";
 interface IWelcomeProps { };
 
 export const Welcome: FC<IWelcomeProps> = (_) => {
     const container = useRef<HTMLDivElement>(null);
     const isFlash = useRef<boolean>(false);
     const tl = useRef<gsap.core.Timeline>(null)
+    let navigate=useNavigate();
 
     useGSAP((_, contextSafe) => {
         if (!contextSafe)
@@ -78,8 +80,8 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
             </div>
             <p id="text" className={styles.tagline}>A web visual novel, that tells a story of a regular forum dweller.</p>
             <div className={styles.buttons}>
-                <LoginButton isNavigate animId="button" />
-                <SignUpButton isNavigate animId="button" />
+                <BaseButton onClick={()=>navigate("/login")} animId={"button"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
+                <BaseButton onClick={()=>navigate("/signup")} animId={"button"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
             </div>
             <BinaryAnimation isFlash={isFlash} className={styles.binaryAnimation} />
         </div>
