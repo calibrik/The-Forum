@@ -17,3 +17,4 @@ createRoot(document.getElementById('root')!).render(
 // (maybe i need to clamp every gap/padding but it's batshit insane, there's should be a better way) (it might be the best way lol)
 // (also some of them look good without scalable units, which is good but at the same time frustrating, cuz there is no rule)
 //TODO: consider merging chatmenu into chat on desktop only, cuz it looks like hot garbage rn
+//TODO: move from custom events to custom event bus

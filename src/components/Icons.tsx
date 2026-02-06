@@ -6,6 +6,7 @@ interface IIconProps {
     interactive?: boolean
     id?: string
     spin?: boolean
+    tabindex?:number
 };
 interface IIconWrapper extends IIconProps {
     icon: ReactNode
@@ -19,7 +20,7 @@ const IconWrapper: FC<IIconWrapper> = (props) => {
             props.onClick();
     }
     return (
-        <div onClick={onClick} id={props.id} data-istransition="true" className={className}>
+        <div onClick={onClick} tabIndex={-1} id={props.id} data-istransition="true" className={className}>
             {props.icon}
         </div>
     );

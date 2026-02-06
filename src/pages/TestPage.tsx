@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/test-page.module.scss';
+import { InputField } from "../components/InputField";
 interface ITestPageProps { };
 
 export const TestPage: FC<ITestPageProps> = (_) => {
@@ -7,6 +8,11 @@ export const TestPage: FC<ITestPageProps> = (_) => {
     const fullText = `yo testing shit yeah`;
     const intRef = useRef<number>(0);
     const iRef = useRef<number>(0);
+    const [test,setTest]=useState<boolean>(true);
+
+    function onResize(){
+        console.log("onResize");
+    }
 
     useEffect(() => {
         intRef.current = setInterval(() => {
@@ -16,10 +22,17 @@ export const TestPage: FC<ITestPageProps> = (_) => {
             }
             setText(fullText.substring(0, ++iRef.current));
         }, 100);
+        window.addEventListener("resize",onResize);
         return () => {
+            window.removeEventListener("resize",onResize);
             clearInterval(intRef.current);
         };
     }, [])
+
+    // useEffect(()=>{
+    //     window.removeEventListener("resize",onResize);
+    //     window.addEventListener("resize",onResize);
+    // },[test])
 
     function onClick(e: any) {
         e.currentTarget.classList.add(styles.testAnim);
@@ -27,6 +40,7 @@ export const TestPage: FC<ITestPageProps> = (_) => {
 
     return (
         <div>
+            <input onChange={(e)=>{setTest(e.currentTarget.checked)}} checked={test} type="checkbox"/>
             <div className="" style={{ justifyContent: "center", alignItems: "center", display: "flex", flexDirection: "column" }}>
                 <div style={{ border: "2px solid red" }}>
                     <p className={`${styles.testText} ${styles.testAnim}`}>{text}</p>

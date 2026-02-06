@@ -46,7 +46,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                     </div>
                     : ""}
                 <div ref={div} className={styles.headerContainer}>
-                    <Menu onClick={toggleSideMenu} interactive className={styles.icon} />
+                    <Menu tabindex={-1} onClick={toggleSideMenu} interactive className="toggle-sidemenu-button" />
                     {!isMobile ?
                         <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
                         : ""}
