@@ -1,17 +1,33 @@
-.container-main{
+@use './colors.scss' as colors;
+
+.container-main {
     container-type: inline-size;
     width: 100%;
-    flex-grow:1;
+    flex: 1 1 0;
     display: flex;
     align-items: center;
     flex-direction: column;
     container-name: main;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    scrollbar-color: colors.$tertiary-color transparent;
+    scrollbar-width: thin;
+    position: relative;
 }
 
-.container{
+.container-full-window{
     container-type: inline-size;
     width: 100%;
-    min-height:100vh;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.container {
+    container-type: inline-size;
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
 }

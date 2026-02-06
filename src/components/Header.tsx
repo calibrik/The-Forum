@@ -10,10 +10,12 @@ interface IHeaderProps {
 interface IHeaderLoggedInProps { };
 interface IHeaderLoggedOffProps { };
 
+
 const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
-    let navigate=useNavigate();
+
+    let navigate = useNavigate();
 
     function onResize() {
         setIsMobile((div.current?.clientWidth ?? 1) < 700)
@@ -25,33 +27,39 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
         return () => {
             window.removeEventListener("resize", onResize);
         }
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    function toggleSideMenu(){
+        window.dispatchEvent(new Event("toggleSideMenu"));
+    }
+
+    useEffect(() => {
         window.dispatchEvent(new Event("DOMRebuild"));
-    },[isMobile])
+    }, [isMobile])
 
     return (
-        <div id="header-div" className={styles.container}>
-            {!isMobile ?
-                <div className={styles.inputDiv}>
-                    <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
-                </div>
-                : ""}
-            <div ref={div} className={styles.headerContainer}>
-                <Menu interactive className={styles.icon} />
+        <>
+            <div id="header-div" className={styles.container}>
                 {!isMobile ?
-                    <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
-                    : ""}
-                {isMobile ?
                     <div className={styles.inputDiv}>
-                        <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
                         <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                     </div>
                     : ""}
-                <Person onClick={()=>navigate("/user")} interactive className={`${styles.person} ${styles.icon}`} />
+                <div ref={div} className={styles.headerContainer}>
+                    <Menu onClick={toggleSideMenu} interactive className={styles.icon} />
+                    {!isMobile ?
+                        <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
+                        : ""}
+                    {isMobile ?
+                        <div className={styles.inputDiv}>
+                            <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
+                            <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
+                        </div>
+                        : ""}
+                    <Person onClick={() => navigate("/user")} interactive className={`${styles.person} ${styles.icon}`} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

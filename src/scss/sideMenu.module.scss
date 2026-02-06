@@ -1,0 +1,61 @@
+@use 'colors.scss' as colors;
+@use './globals.scss' as globals;
+
+.container {
+    transition: globals.$transition;
+    position: absolute;
+    background-color: black;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    container-type: inline-size;
+    width: clamp(200px, 40cqw, 300px);
+    height: 100%;
+    z-index: 10;
+}
+
+.container.open{
+    transform:translateX(0);
+}
+
+.container.close{
+    transform:translateX(-100%);
+}
+
+.item-div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: clamp(10px,5cqw,15px);
+    transition: globals.$transition;
+    box-sizing: border-box;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .item-div:hover {
+        background-color: #232323;
+        cursor: pointer;
+    }
+
+    .leave-div:hover {
+        background-color: #c2000034;
+    }
+}
+
+.item-div:active {
+    background-color: #232323;
+}
+
+.leave-div:active {
+    background-color: #c2000034;
+}
+
+.icon,
+.item-name {
+    font-size: clamp(1rem, 8cqw, 1.4rem);
+}
+
+.leave-div {
+    margin-top: auto;
+    color: colors.$error-color;
+}

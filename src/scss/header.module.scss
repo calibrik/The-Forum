@@ -1,4 +1,5 @@
 @use 'colors.scss' as colors;
+@use './globals.scss' as globals;
 @use 'fonts.scss';
 
 .title {
@@ -61,4 +62,3 @@
         z-index: 6;
     }
 }
-
