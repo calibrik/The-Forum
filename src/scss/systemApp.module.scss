@@ -1,0 +1,96 @@
+@use "./colors.scss" as colors;
+@use "./globals.scss" as globals;
+
+.container {
+    background-color: black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    box-sizing: border-box;
+
+    @container main (min-width:#{globals.$system-app-size}) {
+        padding: 10vh 0;
+    }
+}
+
+.app-container {
+    max-width: globals.$system-app-size;
+    container-type: inline-size;
+    width: 100%;
+    background-color: colors.$system-app-bg;
+    border-radius: 6px;
+    border: 1px solid colors.$system-app-border;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.headerDiv {
+    background-color: colors.$system-app-header-bg;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    font-size: clamp(1.1rem, 4.2cqw, 1.4rem);
+}
+
+.app-label {
+    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
+    color: colors.$tertiary-color;
+}
+
+.actions-div {
+    background-color: colors.$system-app-actions-bg;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+}
+
+.action {
+    font-size: clamp(0.75rem, 2.8cqw, 0.9rem);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .action:hover {
+        color: #c5c5c5;
+        cursor: pointer;
+    }
+}
+
+.action:hover {
+    color: #c5c5c5;
+}
+
+.content-div {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    box-sizing: border-box;
+}
+
+.content-terminal,
+.content-notepad {
+    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+    white-space: pre-wrap; 
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.content-notepad {
+    font-family: Ubuntu;
+}
+
+.content-terminal {
+    font-family: "Courier Prime";
+}

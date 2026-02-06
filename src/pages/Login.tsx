@@ -22,13 +22,19 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData.entries()) as LoginData;
+        let isGood:boolean=true;
         if (data.nickname === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
+            isGood=false;
         }
         if (data.password === "") {
             passwordInputRef.current?.setError("Field cannot be empty");
+            isGood=false;
         }
+        if (!isGood)
+            return;
         console.log("Submitted: ", data);
+        navigate("/user")
     }
 
     return (
@@ -42,7 +48,7 @@ export const Login: FC<ILoginProps> = (_) => {
                 <div className={styles.forgotPasswordContainer}>
                     <a className={styles.link} onClick={(e: any) => e.preventDefault()}>Forgot password?</a>
                 </div>
-                <BaseButton onClick={()=>navigate("/user")} type={"submit"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
+                <BaseButton type={"submit"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
                 <p className={styles.hint}>Don’t have an account yet? <Link className={styles.link} to="/signup">Sign up</Link></p>
             </form>
         </div>

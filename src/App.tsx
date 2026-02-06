@@ -17,6 +17,9 @@ import { ChatMenu } from './pages/ChatMenu';
 import { Chat } from './pages/Chat';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { Notepad } from './pages/Notepad';
+import { EmptyLayout } from './pages/EmptyLayout';
+import { Terminal } from './pages/Terminal';
 
 gsap.registerPlugin(useGSAP);
 
@@ -87,7 +90,21 @@ const router = createBrowserRouter([
 				]
 			}
 		]
-	}
+	},
+	{
+		path: "/",
+		Component: EmptyLayout,
+		children:[
+			{
+				path:"/start",
+				Component:Notepad,
+			},
+			{
+				path:"/console",
+				Component:Terminal,
+			},
+		]
+	},
 ]);
 
 function App() {

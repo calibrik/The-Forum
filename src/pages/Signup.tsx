@@ -23,17 +23,24 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData.entries()) as SignupData;
+        let isGood:boolean=true;
         if (data.nickname.trim() === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
+            isGood=false;
         }
         if (data.password.trim() === "") {
             passwordInputRef.current?.setError("Field cannot be empty");
+            isGood=false;
         }
 
         if (data.confirmPassword.trim() === "") {
             confirmPasswordInputRef.current?.setError("Field cannot be empty");
+            isGood=false;
         }
+        if (!isGood)
+            return;
         console.log("Submitted: ", data);
+        navigate("/login")
     }
 
     function onPasswordChange(_: string) {
@@ -54,7 +61,7 @@ export const Signup: FC<ISignupProps> = (_) => {
                     <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
                     <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
                 </div>
-                <BaseButton onClick={()=>navigate("/login")} type={"submit"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
+                <BaseButton type={"submit"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
                 <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
             </form>
             <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>

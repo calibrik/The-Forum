@@ -1,5 +1,5 @@
 import { useEffect, useRef, type FC, type ReactNode } from "react";
-import { ArrowLeft, Dot, Reply, SendIcon } from "../components/Icons";
+import { Dot, Reply, SendIcon } from "../components/Icons";
 import { getImageUrl } from "../utils";
 import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
