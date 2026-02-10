@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/test-page.module.scss';
-import { InputField } from "../components/InputField";
+
 interface ITestPageProps { };
 
 export const TestPage: FC<ITestPageProps> = (_) => {

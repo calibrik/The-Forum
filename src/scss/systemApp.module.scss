@@ -13,6 +13,10 @@
     @container main (min-width:#{globals.$system-app-size}) {
         padding: 10vh 0;
     }
+    &::selection {
+	background-color: colors.$secondary-color;
+	color: black;
+}
 }
 
 .app-container {

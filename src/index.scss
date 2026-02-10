@@ -16,15 +16,15 @@
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+
 	// @media (pointer: coarse) {
 	// 	-webkit-user-select: none;
 	// 	user-select: none;
 	// }
-}
-
-::selection {
-	background-color: colors.$primary-color;
-	color: colors.$secondary-color;
+	&::selection {
+		background-color: colors.$primary-color;
+		color: colors.$secondary-color;
+	}
 }
 
 body {
@@ -35,11 +35,12 @@ body {
 	color: colors.$primary-color;
 }
 
-h1,h3{
-	margin:0;
+h1,
+h3 {
+	margin: 0;
 	line-height: 1;
 }
 
-p{
-	margin:0;
+p {
+	margin: 0;
 }
