@@ -1,0 +1,13 @@
+.cursor{
+    display: inline;
+    animation: blink step-end 0.8s infinite;
+}
+
+.cursor.normal{
+    border-right: 1px solid currentColor;
+}
+
+@keyframes blink {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}

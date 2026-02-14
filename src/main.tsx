@@ -18,3 +18,7 @@ createRoot(document.getElementById('root')!).render(
 // (also some of them look good without scalable units, which is good but at the same time frustrating, cuz there is no rule)
 //TODO: consider merging chatmenu into chat on desktop only, cuz it looks like hot garbage rn
 //TODO: move from custom events to custom event bus
+//TODO: the whole fake backend:
+//we read what step we r at rn-> we read and execute items(either effects or lines) until we hit the isAwaitingAction flag-> we react to the action by loading more items
+//need some general read and execute function, gsap involvment would be cool
+//repo for db abstracting
