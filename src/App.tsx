@@ -20,8 +20,9 @@ import gsap from 'gsap';
 import { Notepad } from './pages/Notepad';
 import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
+import { TextPlugin } from 'gsap/all';
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP,TextPlugin);
 
 const router = createBrowserRouter([
 	{

@@ -1,6 +1,7 @@
 .cursor{
     display: inline;
     animation: blink step-end 0.8s infinite;
+    visibility: hidden;
 }
 
 .cursor.normal{
