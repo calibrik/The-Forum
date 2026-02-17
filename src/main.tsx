@@ -22,3 +22,5 @@ createRoot(document.getElementById('root')!).render(
 //we read what step we r at rn-> we read and execute items(either effects or lines) until we hit the isAwaitingAction flag-> we react to the action by loading more items
 //need some general read and execute function, gsap involvment would be cool
 //repo for db abstracting
+//TODO: ditch scss colors for vars to be able to use them in anims
+//TODO: tables for users, posts, comments

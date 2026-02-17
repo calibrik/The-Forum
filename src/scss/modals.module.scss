@@ -1,0 +1,84 @@
+@use "./colors.scss" as colors;
+
+.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 50%;
+	left: 50%;
+	display: flex;
+	transform: translate(-50%, -50%);
+	justify-content: center;
+	padding: 0 5cqw;
+	background-color: #00000085;
+	z-index: 100;
+    box-sizing: border-box;
+}
+
+.overlay.open {
+	visibility: visible;
+}
+
+.overlay.close {
+	visibility: hidden;
+}
+
+.container.invincible {
+	margin-top: 35vh;
+}
+
+.container {
+	background-color: #161616;
+	height: fit-content;
+	container-type: inline-size;
+	width: 100%;
+	max-width: 500px;
+	border-radius: 6px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: center;
+	position: relative;
+	transition: 0.15s;
+}
+
+.overlay.open .container {
+	transform: scale(1);
+}
+
+.overlay.close .container {
+	transform: scale(0);
+}
+
+.close-button {
+	padding: 5px;
+	font-size: clamp(1.2rem, 5.6cqw, 1.5rem);
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.title{
+    font-size: clamp(1.7rem,8.5cqw,2.4rem);
+}
+
+.description{
+    width: 100%;
+    color:colors.$tertiary-color;
+    font-size: clamp(1rem,5.1cqw,1.4rem);
+    min-height: calc(clamp(1rem,5.1cqw,1.4rem) * 2);
+}
+
+.actions-div{
+    display: flex;
+    width: 100%;
+    gap:15px;
+    justify-content: end;
+    box-sizing: border-box;
+}
+
+.action-button{
+    font-size: clamp(1rem,5.1cqw,1.4rem);
+    padding: 5px 16px;
+}

@@ -3,6 +3,7 @@ import { Header } from "../components/Header";
 import { Outlet, ScrollRestoration } from "react-router";
 import styles from '../scss/layout.module.scss';
 import { SideMenu } from "../components/SideMenu";
+import { ModalsProvider } from "../components/Modals";
 interface ILayoutProps { };
 
 export const Layout: FC<ILayoutProps> = (_) => {
@@ -12,10 +13,12 @@ export const Layout: FC<ILayoutProps> = (_) => {
             <Header isLoggedIn />
             <div className={styles.containerFullWindow}>
                 <SideMenu />
-                <div className={styles.containerMain}>
-                    <Outlet />
-                    <ScrollRestoration />
-                </div>
+                <ModalsProvider>
+                    <div className={styles.containerMain}>
+                        <Outlet />
+                        <ScrollRestoration />
+                    </div>
+                </ModalsProvider>
             </div>
         </div>
     );

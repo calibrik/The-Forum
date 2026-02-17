@@ -1,35 +1,52 @@
 import { Dexie, type EntityTable } from "dexie"
+import script from "../assets/jsons/script.json";
+import users from "../assets/jsons/users.json";
 
-export interface StoryLine {
-  id: number
-  content:string,
-  delay:number,
-  speed:number,
-  isActionAwait?:boolean,
+export interface IStoryLine {
+	content: string,
+	speed: number,
+	delim?: string
+}
+
+export interface IEffect{
+	name:string,
+}
+
+export interface IScriptLine {
+	id: number,
+	storyline?:IStoryLine,
+	effect?:IEffect,
+	isActionAwait?: boolean,
+	offset: string,
+}
+
+export interface IUser{
+	id:number,
+	nickname:string,
+	password?:string,
+	storyId?:number
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {
-  story: EntityTable<StoryLine,"id">
+	story: EntityTable<IScriptLine, "id">
+	users: EntityTable<IUser, "id">
 }
 
-db.version(1).stores({
-  story: "++id",
+db.version(16).stores({
+	story: "++id",
+	users:"++id, nickname,storyId",
+}).upgrade(async (tx)=>{
+	await tx.table("story").clear();
+	const newScript:IScriptLine[]=(script as IScriptLine[]).map((v,i)=>({...v,id:i+1}));
+	await tx.table("story").bulkAdd(newScript);
+	await tx.table("users").clear();
+	const newUserst:IUser[]=(users as IUser[]).map((v,i)=>({...v,id:i+1}));
+	await tx.table("users").bulkAdd(newUserst);
 })
 
-db.on("populate",()=>{
-    db.story.bulkAdd([
-        {
-            content:"Hi. I am main_hero. I’m starting this file cuz I need to save my thoughts somewhere. I’ll maybe use them for the book. Or a game, like a visual novel, that’d be cool. Stuff in my head just feels too important to let it go like that, you know.",
-            delay:1,
-            speed:20,
-        },
-        {
-            content:"So, a little about me, I love gaming, especially a game called Striking Countries 2, I have more than 1000 hours and, boy, lemme tell you, I am very good at that game, I can show you.",
-            delay:0,
-            speed:20,
-            isActionAwait:true,
-        },
-    ])
+db.on("populate", async (tx) => {
+	await tx.table("story").bulkAdd(script as IScriptLine[]);
+	await tx.table("users").bulkAdd(users as IUser[]);
 })
 
 export { db }

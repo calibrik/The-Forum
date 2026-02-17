@@ -4,6 +4,8 @@ import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
+import { db } from "../backend/db";
+import { useModals } from "../components/Modals";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;
@@ -15,31 +17,47 @@ export const Signup: FC<ISignupProps> = (_) => {
     const nicknameInputRef = useRef<InputFieldHandle>(null);
     const passwordInputRef = useRef<InputFieldHandle>(null);
     const confirmPasswordInputRef = useRef<InputFieldHandle>(null);
-    let navigate=useNavigate();
+    let navigate = useNavigate();
+    const modals = useModals();
+    const answerRef = useRef<boolean>(false);
 
-    function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (nicknameInputRef.current?.getError() !== "" || passwordInputRef.current?.getError() !== "" || confirmPasswordInputRef.current?.getError() !== "")
             return;
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData.entries()) as SignupData;
-        let isGood:boolean=true;
+        if (answerRef.current)
+            proccessSubmit(data);
+        else
+            modals.invincibleModal.current?.showQuestion("Are you sure?", "Creating new account will start a new game.", () => proccessSubmit(data));
+    }
+
+    async function proccessSubmit(data: SignupData) {
+        answerRef.current = true;
+        let isGood: boolean = true;
         if (data.nickname.trim() === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
-            isGood=false;
+            isGood = false;
         }
         if (data.password.trim() === "") {
             passwordInputRef.current?.setError("Field cannot be empty");
-            isGood=false;
+            isGood = false;
         }
 
         if (data.confirmPassword.trim() === "") {
             confirmPasswordInputRef.current?.setError("Field cannot be empty");
-            isGood=false;
+            isGood = false;
         }
         if (!isGood)
             return;
-        console.log("Submitted: ", data);
+        const existingUser = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
+        if (existingUser.length > 0) {
+            nicknameInputRef.current?.setError("Nickname already exists");
+            return;
+        }
+        await db.users.where("storyId").aboveOrEqual(1).delete();
+        await db.users.add({ nickname: data.nickname.trim(), password: data.password.trim(),storyId:1 });
         navigate("/login")
     }
 

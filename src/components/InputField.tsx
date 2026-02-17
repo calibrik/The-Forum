@@ -107,7 +107,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         setIsFocused(false);
     }
 
-    const passwordEye = type == "password" ? <Eye className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash className={styles.passwordIcon} onClick={onPasswordEyeClick} />
+    const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />
     const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""}`;
     return (
         <div className={styles.container} onFocus={() => { setIsFocused(true) }} onBlur={onBlur}>

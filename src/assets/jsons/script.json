@@ -1,0 +1,24 @@
+[
+    {
+        "storyline": {
+            "content": "Hi. I am main_hero. I’m starting this file cuz I need to save my thoughts somewhere. I’ll maybe use them for the big blog post. Or a game, like a visual novel, that’d be cool. Stuff in my head just feels too important to let it go like that, you know.",
+            "speed": 50
+        },
+        "offset": ">"
+    },
+    {
+        "effect":{
+            "name":"NOTEPAD_FLASH"
+        },
+        "offset":"+=1"
+    },
+    {
+        "storyline": {
+            "content": "So, a little about me, I am a gamer with multi-year experience, especially in Striking Countries 2, I have more than 1000 hours and, boy, lemme tell you, I am very good in this game, I can show you.",
+            "speed": 50,
+            "delim":"\n\n"
+        },
+        "offset":"<",
+        "isActionAwait": true
+    }
+]

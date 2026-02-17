@@ -28,10 +28,8 @@
 }
 
 .test-text {
-  font-family: Roboto;
-  font-size: 2rem;
-  animation: text-glitch 5s linear;
-  animation-delay: 0.2s;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 
@@ -52,43 +50,74 @@
 }
 
 @keyframes testAnim {
- 0% {
-   transform: translateY(0px);
- }
- 100% {
-   transform: translateY(50px);
- }
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(50px);
+  }
 }
 
 .test-anim {
   animation: testAnim 0.5s linear infinite alternate;
-  animation-fill-mode: forwards; 
+  animation-fill-mode: forwards;
 }
 
-@keyframes shake{
-    0% {transform: rotate(0deg);}
-    20% {transform: rotate(-10deg);}
-    40% {transform: rotate(0deg);}
-    60% {transform: rotate(10deg);}
-    100% {transform: rotate(0deg);}
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  20% {
+    transform: rotate(-10deg);
+  }
+
+  40% {
+    transform: rotate(0deg);
+  }
+
+  60% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
-.shake{
-    animation: shake 0.1s linear infinite;
+.shake {
+  animation: shake 0.1s linear infinite;
 }
 
-@keyframes text-glitch{
-    0% {text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green}
-    40% {text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green}
-    60% {text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green}
-    100% {text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green}
+@keyframes text-glitch {
+  0% {
+    text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green
+  }
+
+  40% {
+    text-shadow: -2rem 5rem 5px rgba(255, 0, 0, 0.389), 2rem 5rem blue, 0 5rem green
+  }
+
+  60% {
+    text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green
+  }
+
+  100% {
+    text-shadow: 2rem 5rem 5px rgba(255, 0, 0, 0.389), -2rem 5rem blue, 0 5rem green
+  }
 }
 
 @keyframes moveDown {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(200px); }
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(200px);
+  }
 }
 
-.move-down{
+.move-down {
   animation: moveDown 4s ease-in-out infinite alternate;
 }

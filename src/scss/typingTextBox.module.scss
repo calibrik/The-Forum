@@ -1,11 +1,5 @@
-.text-div{
-    position: absolute;
-    top:0;
-}
-
-.text{
-    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+.default{
+    font-family: "Courier Prime";
     white-space: pre-wrap; 
     word-break: break-word;
-    line-height: 1.3;
 }

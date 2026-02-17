@@ -1,53 +1,62 @@
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { Cursor } from "./Cursor";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { Cursor, type ICursorHandle } from "./Cursor";
 import { useGSAP } from "@gsap/react";
-import type { StoryLine } from "../backend/db";
-import styles from "../scss/typingTextBox.module.scss";
+import type { IStoryLine } from "../backend/db";
 import gsap from 'gsap';
+import styles from "../scss/typingTextBox.module.scss";
 
 interface ITypingTextBoxProps {
-    type: "terminal" | "normal"
+    type: "terminal" | "normal",
+    className?: string,
+    id?:string
 };
 export interface ITypingTextBoxHandle {
-    showStoryLine: (stl: StoryLine) => Promise<void>
+    getTimeline: (stl: IStoryLine) => gsap.core.Timeline
+    setCursorType:(type: "terminal" | "normal")=>void
 };
 
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
     const divRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLSpanElement>(null);
     const { contextSafe } = useGSAP(() => { }, [divRef]);
+    const contentRef = useRef<string>("");
+    const cursorRef=useRef<ICursorHandle>(null);
 
-    const showStoryLine = contextSafe(async (stl: StoryLine) => {
-        let content = stl.content;
-        if (textRef.current?.textContent != "") {
-            content = textRef.current?.textContent + "\n\n" + stl.content;
-        }
-        return new Promise<void>(resolve => {
-            gsap.timeline({
-                onComplete: resolve
+    const getTimeline = contextSafe((stl: IStoryLine) => {
+        let content = contentRef.current + (stl.delim ?? "") + stl.content;
+        contentRef.current=content;
+        return gsap.timeline()
+            .set('#cursor', {
+                visibility: 'visible'
             })
-                .set('#cursor', {
-                    visibility: 'visible'
-                })
-                .to(`#text`, {
-                    duration: (stl.content.length * stl.speed) / 1000,
-                    text: {
-                        value: content,
-                        type: "diff",
-                        preserveSpaces: true
-                    },
-                    ease: "none"
-                })
-                .set('#cursor, #text', {
-                    clearProps: "all",
-                }, `+=${stl.delay}`)
-        })
+            .to(`#typingText`, {
+                duration: (stl.content.length * stl.speed) / 1000,
+                text: {
+                    value: content,
+                    type: "diff",
+                    preserveSpaces: true
+                },
+                ease: "none"
+            })
+            .set('#cursor, #typingText', {
+                clearProps: "all",
+            })
     });
 
     useImperativeHandle(ref, () => ({
-        showStoryLine
+        getTimeline,
+        setCursorType(type) {
+            cursorRef.current?.setType(type);
+        },
     }))
+
+    useEffect(()=>{
+        contentRef.current="";
+        return ()=>{
+            contentRef.current="";
+        }
+    },[])
+
     return (
-        <div ref={divRef} className={styles.textDiv}><span ref={textRef} id="text" className={styles.text}></span><Cursor type={props.type} /></div>
+        <div ref={divRef} id={props.id} className={props.className??styles.default}><span id="typingText"></span><Cursor ref={cursorRef} type={props.type} /></div>
     );
 });
