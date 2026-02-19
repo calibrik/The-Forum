@@ -2,6 +2,7 @@ import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { Home, Chat, Gear, Leave } from "./Icons";
 import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
+import { useUserState } from "../providers/UserAuth";
 
 interface ISideMenuProps {};
 
@@ -9,6 +10,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
+    const userState=useUserState();
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
         e.preventDefault();
@@ -16,6 +18,13 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
             return;
         setIsOpen(false);
         navigate(dest);
+    }
+
+    function onLogout(e: React.MouseEvent<HTMLDivElement>){
+        e.preventDefault();
+        setIsOpen(false);
+        userState.setUserLoggedIn("");
+        navigate("/login");
     }
 
     const toggleOpen=useCallback(()=>{
@@ -55,7 +64,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
                 <Gear className={styles.icon} />
                 <span className={styles.itemName}>Settings</span>
             </div>
-            <div onClick={(e) => onNavigate(e, "/login")} className={`${styles.itemDiv} ${styles.leaveDiv}`}>
+            <div onClick={onLogout} className={`${styles.itemDiv} ${styles.leaveDiv}`}>
                 <Leave className={styles.icon} />
                 <span className={styles.itemName}>Log Out</span>
             </div>

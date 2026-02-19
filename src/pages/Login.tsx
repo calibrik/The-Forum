@@ -5,6 +5,7 @@ import { InputField, type InputFieldHandle } from "../components/InputField";
 import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
+import { useUserState } from "../providers/UserAuth";
 interface ILoginProps { };
 
 type LoginData = {
@@ -16,6 +17,7 @@ export const Login: FC<ILoginProps> = (_) => {
     const nicknameInputRef = useRef<InputFieldHandle>(null);
     const passwordInputRef = useRef<InputFieldHandle>(null);
     let navigate=useNavigate();
+    const userState=useUserState();
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -45,6 +47,8 @@ export const Login: FC<ILoginProps> = (_) => {
             passwordInputRef.current?.setError("Incorrect password.");
             return;
         }
+        userState.setIsRealLoggedIn(true);
+        userState.setUserLoggedIn(data.nickname.trim());
         navigate("/user")
     }
 

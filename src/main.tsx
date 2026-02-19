@@ -24,3 +24,4 @@ createRoot(document.getElementById('root')!).render(
 //repo for db abstracting
 //TODO: ditch scss colors for vars to be able to use them in anims
 //TODO: tables for users, posts, comments
+//TODO: pause and continue functionality

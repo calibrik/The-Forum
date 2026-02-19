@@ -3,9 +3,8 @@ import styles from '../scss/header.module.scss';
 import { Menu, Person } from "./Icons";
 import { InputField } from "./InputField";
 import { useNavigate } from "react-router";
-interface IHeaderProps {
-    isLoggedIn?: boolean;
-};
+import { useUserState } from "../providers/UserAuth";
+interface IHeaderProps {};
 
 interface IHeaderLoggedInProps { };
 interface IHeaderLoggedOffProps { };
@@ -72,8 +71,9 @@ const HeaderLoggedOff: FC<IHeaderLoggedOffProps> = (_) => {
 }
 
 
-export const Header: FC<IHeaderProps> = (props) => {
+export const Header: FC<IHeaderProps> = (_) => {
+    const userState=useUserState();
     return (
-        <>{props.isLoggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOff />}</>
+        <>{userState.userLoggedIn!="" ? <HeaderLoggedIn /> : <HeaderLoggedOff />}</>
     );
 }

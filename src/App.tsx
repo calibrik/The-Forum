@@ -21,8 +21,9 @@ import { Notepad } from './pages/Notepad';
 import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
 import { TextPlugin } from 'gsap/all';
+import { UserProvider } from './providers/UserAuth';
 
-gsap.registerPlugin(useGSAP,TextPlugin);
+gsap.registerPlugin(useGSAP, TextPlugin);
 
 const router = createBrowserRouter([
 	{
@@ -95,14 +96,14 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		Component: EmptyLayout,
-		children:[
+		children: [
 			{
-				path:"/start",
-				Component:Notepad,
+				path: "/start",
+				Component: Notepad,
 			},
 			{
-				path:"/console",
-				Component:Terminal,
+				path: "/console",
+				Component: Terminal,
 			},
 		]
 	},
@@ -111,7 +112,9 @@ const router = createBrowserRouter([
 function App() {
 
 	return (
-		<RouterProvider router={router} />
+		<UserProvider>
+			<RouterProvider router={router} />
+		</UserProvider>
 	)
 }
 

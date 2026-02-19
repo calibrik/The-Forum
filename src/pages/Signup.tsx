@@ -5,7 +5,7 @@ import { InputField, type InputFieldHandle } from "../components/InputField";
 import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
-import { useModals } from "../components/Modals";
+import { useModals } from "../providers/Modals";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;

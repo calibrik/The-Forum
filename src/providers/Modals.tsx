@@ -1,8 +1,8 @@
 import { createContext, forwardRef, useContext, useImperativeHandle, useRef, useState, type FC, type ReactNode } from "react";
 import styles from "../scss/modals.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
-import { BaseButton } from "./BaseButton";
-import { X } from "./Icons";
+import { BaseButton } from "../components/BaseButton";
+import { X } from "../components/Icons";
 
 interface IInvincibleModalProps { };
 interface IInvincibleModalHandle {
