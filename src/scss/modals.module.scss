@@ -66,8 +66,8 @@
 .description{
     width: 100%;
     color:colors.$tertiary-color;
-    font-size: clamp(1rem,5.1cqw,1.4rem);
-    min-height: calc(clamp(1rem,5.1cqw,1.4rem) * 2);
+    font-size: clamp(0.9rem,4.8cqw,1.3rem);
+    min-height: calc(clamp(0.9rem,4.8cqw,1.3rem) * 2);
 }
 
 .actions-div{
@@ -76,6 +76,7 @@
     gap:15px;
     justify-content: end;
     box-sizing: border-box;
+	margin-top: 10px;
 }
 
 .action-button{

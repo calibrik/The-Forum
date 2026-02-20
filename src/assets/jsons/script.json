@@ -1,24 +1,121 @@
 [
     {
+        "effect": {
+            "name": "FADE_IN"
+        },
+        "offset": ">",
+        "where": "/start"
+    },
+    {
         "storyline": {
-            "content": "Hi. I am main_hero. I’m starting this file cuz I need to save my thoughts somewhere. I’ll maybe use them for the big blog post. Or a game, like a visual novel, that’d be cool. Stuff in my head just feels too important to let it go like that, you know.",
-            "speed": 50
+            "content": "Hi.",
+            "speed": 50,
+            "typingBoxId": 0
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I am main_hero.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "I'm starting this file cuz I need to save my thoughts somewhere.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "I'll maybe use them for the big blog post.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Or a game, like a visual novel, that'd be cool.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Stuff in my head just feels too important to let it go like that, you know?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "So, a little about me, I am a gamer with multi-year experience, especially in Striking Countries 2.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "effect": {
+            "name": "NOTEPAD_FLASH"
+        },
+        "offset": "<1"
+    },
+    {
+        "storyline": {
+            "content": "I have more than 1000 hours and, boy, lemme tell you, I am very good in this game.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "I can show you.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "effect": {
+            "name": "FADE_OUT"
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "name": "SAVE"
         },
         "offset": ">"
     },
     {
-        "effect":{
-            "name":"NOTEPAD_FLASH"
+        "action": {
+            "name": "NAVIGATE",
+            "dest": "/user"
         },
-        "offset":"+=1"
+        "offset": ">",
+        "where": "/user"
     },
     {
-        "storyline": {
-            "content": "So, a little about me, I am a gamer with multi-year experience, especially in Striking Countries 2, I have more than 1000 hours and, boy, lemme tell you, I am very good in this game, I can show you.",
-            "speed": 50,
-            "delim":"\n\n"
+        "effect": {
+            "name": "FADE_IN"
         },
-        "offset":"<",
-        "isActionAwait": true
+        "offset": ">"
     }
 ]

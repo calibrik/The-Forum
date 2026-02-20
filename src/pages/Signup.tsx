@@ -30,11 +30,12 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (answerRef.current)
             proccessSubmit(data);
         else
-            modals.invincibleModal.current?.showQuestion("Are you sure?", "Creating new account will start a new game.", () => proccessSubmit(data));
+            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data));
     }
 
     async function proccessSubmit(data: SignupData) {
         answerRef.current = true;
+        await db.users.where("storyId").aboveOrEqual(1).delete();
         let isGood: boolean = true;
         if (data.nickname.trim() === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
@@ -56,7 +57,6 @@ export const Signup: FC<ISignupProps> = (_) => {
             nicknameInputRef.current?.setError("Nickname already exists");
             return;
         }
-        await db.users.where("storyId").aboveOrEqual(1).delete();
         await db.users.add({ nickname: data.nickname.trim(), password: data.password.trim(),storyId:1 });
         navigate("/login")
     }

@@ -46,7 +46,7 @@
 }
 
 .input {
-    font-size:clamp(0.75rem, 3.9cqw, 1.2rem);
+    font-size: clamp(0.75rem, 3.9cqw, 1.2rem);
     padding: 10px 8px;
 }
 
@@ -96,11 +96,19 @@
 }
 
 .login-button {
-	padding: 10px 22px;
-	font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
+    padding: 10px 22px;
+    font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
 }
 
 .signup-button {
-	padding: 10px 15px;
-	font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
+    padding: 10px 15px;
+    font-size: clamp(0.875rem, 4.5cqw, 1.3rem);
+}
+
+.password-forget-box {
+    top: 70%;
+    width: 50cqw;
+    max-width: 500px;
+    font-size:clamp(1rem, 3.8cqw, 1.2rem);
+    z-index: 18 !important;
 }

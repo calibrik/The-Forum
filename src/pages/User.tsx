@@ -1,12 +1,28 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { getImageUrl } from "../utils";
 import { Menu } from "../components/Menu";
 import { Dot } from "../components/Icons";
+import { useUserState } from "../providers/UserAuth";
+import { useStory } from "../providers/StoryProvider";
 interface IUserPageProps { };
 
 export const User: FC<IUserPageProps> = (_) => {
+    const story=useStory();
+    const userState=useUserState();
+    let navigate=useNavigate();
+
+    useEffect(()=>{
+        if (!userState.isRealLoggedIn.current)
+        {
+            navigate("/")
+            return;
+        }
+        console.log(userState.storyId.current)
+        story.showStory(userState.storyId.current);
+    },[])
+
     return (
         <div className={styles.container}>
             <img src={getImageUrl("placeholder")} className={styles.pfpBg} />

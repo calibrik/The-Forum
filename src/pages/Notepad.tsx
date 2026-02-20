@@ -1,18 +1,40 @@
 import { useEffect, useRef, type FC } from "react";
 import { Notepad as NotepadIcon } from "../components/Icons";
 import styles from "../scss/systemApp.module.scss";
-import { useScriptTools } from "../backend/backend";
+import { useStory } from "../providers/StoryProvider";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { useUserState } from "../providers/UserAuth";
+import { useNavigate } from "react-router";
+import { db } from "../backend/db";
 
 interface INotepadProps { }
 
 export const Notepad: FC<INotepadProps> = () => {
-    const typingBox=useRef<ITypingTextBoxHandle>(null);
-    const {showStory}=useScriptTools(typingBox);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const story = useStory();
+    const userState = useUserState();
+    let navigate = useNavigate();
 
-    useEffect(()=>{
-        showStory(1);
-    },[])
+    async function init() {
+        if (!userState.isRealLoggedIn.current) {
+            navigate("/");
+            return;
+        }
+        let scl = await db.story.get(userState.storyId.current);
+        if (!scl || scl.where != window.location.pathname) {
+            navigate(scl?.where ?? "/");
+            return;
+        }
+        story.setTypingBoxes([typingBox]);
+        story.showStory(userState.storyId.current);
+    }
+
+    useEffect(() => {
+        init();
+        return()=>{
+            story.resetTypingBoxes();
+        }
+    }, [])
 
     return (
         <div id="container" className={styles.container}>
@@ -27,7 +49,7 @@ export const Notepad: FC<INotepadProps> = () => {
                     <span className={styles.action}>View</span>
                 </div>
                 <div id="contentDiv" className={styles.contentDiv}>
-                    <TypingTextBox id="textBox" ref={typingBox} className={styles.contentNotepad} type={"normal"}/>
+                    <TypingTextBox id="textBox" ref={typingBox} className={styles.contentNotepad} type={"normal"} />
                 </div>
             </div>
         </div>

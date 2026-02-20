@@ -22,91 +22,98 @@ import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
 import { TextPlugin } from 'gsap/all';
 import { UserProvider } from './providers/UserAuth';
+import { StoryProvider } from './providers/StoryProvider';
 
 gsap.registerPlugin(useGSAP, TextPlugin);
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		Component: Layout,
+		Component: StoryProvider,
 		children: [
 			{
-				index: true,
-				Component: Welcome,
-			},
-			{ path: "*", element: <Error /> },
-			{
-				path: "/test",
-				Component: TestPage,
-			},
-			{
-				path: "/login",
-				Component: Login,
-			},
-			{
-				path: "/signup",
-				Component: Signup,
-			},
-			{
-				path: "/post",
-				Component: PostPage,
-			},
-			{
-				path: "/chat",
-				Component: ChatMenu,
-			},
-			{
-				path: "/chat/:id",
-				Component: Chat,
-			},
-			{
-				path: "/user",
-				Component: User,
+				path: "/",
+				Component: Layout,
 				children: [
 					{
-						path: "",
-						Component: UserPosts,
+						index: true,
+						Component: Welcome,
+					},
+					{ path: "*", element: <Error /> },
+					{
+						path: "/test",
+						Component: TestPage,
 					},
 					{
-						path: "comments",
-						Component: UserComments,
+						path: "/login",
+						Component: Login,
 					},
+					{
+						path: "/signup",
+						Component: Signup,
+					},
+					{
+						path: "/post",
+						Component: PostPage,
+					},
+					{
+						path: "/chat",
+						Component: ChatMenu,
+					},
+					{
+						path: "/chat/:id",
+						Component: Chat,
+					},
+					{
+						path: "/user",
+						Component: User,
+						children: [
+							{
+								path: "",
+								Component: UserPosts,
+							},
+							{
+								path: "comments",
+								Component: UserComments,
+							},
+						]
+					},
+					{
+						path: "/subforum",
+						Component: Subforum,
+						children: [
+							{
+								path: "",
+								Component: SubforumPosts,
+							},
+							{
+								path: "members",
+								Component: SubforumMembers,
+							},
+							{
+								path: "settings",
+								Component: SubforumSettings,
+							},
+						]
+					}
 				]
 			},
 			{
-				path: "/subforum",
-				Component: Subforum,
+				path: "/",
+				Component: EmptyLayout,
 				children: [
 					{
-						path: "",
-						Component: SubforumPosts,
+						path: "/start",
+						Component: Notepad,
 					},
 					{
-						path: "members",
-						Component: SubforumMembers,
-					},
-					{
-						path: "settings",
-						Component: SubforumSettings,
+						path: "/console",
+						Component: Terminal,
 					},
 				]
-			}
-		]
-	},
-	{
-		path: "/",
-		Component: EmptyLayout,
-		children: [
-			{
-				path: "/start",
-				Component: Notepad,
-			},
-			{
-				path: "/console",
-				Component: Terminal,
 			},
 		]
-	},
+	}
 ]);
 
 function App() {

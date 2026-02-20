@@ -29,7 +29,7 @@ interface ITextingIndicatorProps {
     names: string[];
 };
 
-export const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
+const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
     const indicatorRef = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
