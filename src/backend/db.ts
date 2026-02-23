@@ -35,6 +35,8 @@ export interface IUser {
 	nickname: string,
 	password?: string,
 	storyId?: number
+	description?:string
+	imageName?:string
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {
@@ -42,7 +44,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(30).stores({
+db.version(34).stores({
 	story: "++id",
 	users: "++id, nickname,storyId",
 }).upgrade(async (tx) => {

@@ -32,7 +32,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             <div className={styles.postContainer}>
                 <div className={styles.returnContainer}>
                     <BackButton />
-                    <img onClick={()=>navigate("/subforum")} src={getImageUrl("placeholder")} alt="" className={styles.subforumPfp} />
+                    <img onClick={()=>navigate("/subforum")} src={getImageUrl("placeholder.png")} alt="" className={styles.subforumPfp} />
                     <div className={styles.authorContainer}>
                         <span onClick={()=>navigate("/subforum")} className={styles.subforumName}>f/subforum</span>
                         <span onClick={()=>navigate("/user")} className={styles.username}>u/user</span>
@@ -40,7 +40,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                 </div>
                 <h1 className={styles.postTitle}>Title</h1>
                 <p className={styles.content}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>
-                <img src={getImageUrl("placeholder")} alt="" className={styles.picture} />
+                <img src={getImageUrl("placeholder.png")} alt="" className={styles.picture} />
                 <Reactions />
             </div>
             <div className={styles.commentsListContainer}>

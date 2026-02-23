@@ -51,7 +51,7 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         }
         let user = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (user.length != 1) {
+        if (user.length != 1||user[0].storyId==0) {
             nicknameInputRef.current?.setError("Nickname is not found.");
             onSubmitRunning.current = false;
             return;
@@ -67,10 +67,12 @@ export const Login: FC<ILoginProps> = (_) => {
             await anim;
             userState.setUserLoggedIn(data.nickname.trim());
             userState.isRealLoggedIn.current=true;
-            userState.storyId.current=user[0].storyId??1
+            userState.storyId.current=user[0].storyId??1;
+            userState.startStory.current=true;
             navigate(scriptLine?.where ?? "/user");
             return;
         }
+        userState.startStory.current=false;
         userState.setUserLoggedIn(data.nickname.trim());
         navigate("/user")
     });

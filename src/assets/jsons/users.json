@@ -1,5 +1,11 @@
 [
     {
         "nickname":"penis"
+    },
+    {
+        "nickname":"main_hero",
+        "storyId":0,
+        "description":"I suck dicks",
+        "imageName":"placeholder.png"
     }
 ]

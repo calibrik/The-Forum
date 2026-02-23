@@ -26,12 +26,17 @@ export const Notepad: FC<INotepadProps> = () => {
             return;
         }
         story.setTypingBoxes([typingBox]);
-        story.showStory(userState.storyId.current);
+        if (userState.startStory.current) {
+            await story.getAnim("FADE_IN");
+            story.showStory(userState.storyId.current);
+            return;
+        }
+        story.initReady();
     }
 
     useEffect(() => {
         init();
-        return()=>{
+        return () => {
             story.resetTypingBoxes();
         }
     }, [])

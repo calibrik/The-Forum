@@ -7,8 +7,8 @@
     flex-direction: column;
     width: 100%;
     container-type: inline-size;
-    position:relative;
-    flex-grow:1;
+    position: relative;
+    flex-grow: 1;
     max-width: globals.$desktop-content-size;
 
     @container (min-width:calc(#{globals.$desktop-content-size} + 1px)) {
@@ -20,7 +20,7 @@
 .pfp-bg,
 .sub-profile-container {
     width: 100%;
-    
+
 }
 
 .pfp-bg {
@@ -43,6 +43,7 @@
     border-radius: 6px 6px 0 0;
     margin-top: 10.7vh;
     container-type: inline-size;
+    flex-grow: 1;
 }
 
 .header-container {
@@ -58,17 +59,17 @@
     display: flex;
     flex-direction: column;
     container-type: inline-size;
-    gap:5px;
+    gap: 5px;
 }
 
-.online-icon{
-    color:#006f07;
-    font-size:clamp(0.25rem, 0.9cqw, 0.4rem);
+.online-icon {
+    color: #006f07;
+    font-size: clamp(0.25rem, 0.9cqw, 0.4rem);
 }
 
-.online-container{
+.online-container {
     display: flex;
-    gap:5px;
+    gap: 5px;
     align-items: center;
 }
 
@@ -85,7 +86,27 @@
 .description {
     color: colors.$tertiary-color;
     font-size: clamp(0.68rem, 2.6cqw, 1.3rem);
-    margin: 0;
+}
+
+.acc-link {
+    color: colors.$link-color;
+    font-size: clamp(0.68rem, 2.6cqw, 1.3rem);
+    border-bottom: 1px solid;
+    width: fit-content;
+    padding: 0px 1px;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .acc-link:hover {
+        color: #de0004;
+        cursor: pointer;
+    }
+}
+
+.acc-link:active {
+    color: #de0004;
+    transform: scale(0.9);
 }
 
 .create-post-container {

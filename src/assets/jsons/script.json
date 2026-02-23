@@ -1,18 +1,12 @@
 [
     {
-        "effect": {
-            "name": "FADE_IN"
-        },
-        "offset": ">",
-        "where": "/start"
-    },
-    {
         "storyline": {
             "content": "Hi.",
             "speed": 50,
             "typingBoxId": 0
         },
-        "offset": "+=0.5"
+        "offset": "+=0.5",
+        "where": "/start"
     },
     {
         "storyline": {
@@ -100,12 +94,6 @@
     },
     {
         "action": {
-            "name": "SAVE"
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
             "name": "NAVIGATE",
             "dest": "/user"
         },
@@ -115,6 +103,12 @@
     {
         "effect": {
             "name": "FADE_IN"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "SAVE"
         },
         "offset": ">"
     }

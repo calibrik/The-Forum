@@ -14,6 +14,7 @@ interface IStoryProvider {
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     resetTypingBoxes: () => void
+    initReady:()=>void
 }
 
 const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
@@ -73,8 +74,8 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
                 duration: 2,
                 opacity: 0
             }, "+=0.5")
-            .set("#effectOverlay1",{
-                visibility:"hidden"
+            .set("#effectOverlay1", {
+                visibility: "hidden"
             })
     },
 }
@@ -84,21 +85,31 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
 export const StoryProvider: FC<IStoryProviderProps> = (_) => {
-    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle|null>[]>([]);
+    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);
     const isMounted = useRef<boolean>(true);
     const { contextSafe } = useGSAP();
     const loopTicket = useRef<number>(0);
     const navigate = useNavigate();
     const userState = useUserState();
     const masterRef = useRef<gsap.core.Timeline>(undefined);
-    const isStoryNavRef=useRef<boolean>(false);
+    const isStoryNavRef = useRef<boolean>(false);
+    const pageInitResolveRef = useRef<() => void>(undefined);
+
+    function waitForInit() {
+        return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
+    }
+
+    function initReady() {
+        if (pageInitResolveRef.current)
+            pageInitResolveRef.current();
+    }
 
     async function fetchScriptLine(id: number) {
         return await db.story.get(id);
     }
 
     const resetAnims = contextSafe(() => {
-        if (!masterRef.current||isStoryNavRef.current)
+        if (!masterRef.current || isStoryNavRef.current)
             return;
         masterRef.current.kill();
         for (let tb of typingBoxes.current) {
@@ -112,9 +123,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     async function processAction(action: IAction) {
         switch (action.name) {
             case "NAVIGATE":
-                isStoryNavRef.current=true;
+                isStoryNavRef.current = true;
                 navigate(action.dest ?? "");
-                isStoryNavRef.current=false;
+                await waitForInit();
+                isStoryNavRef.current = false;
                 break;
             case "SAVE":
                 await db.users.where("storyId").aboveOrEqual(1).modify({ storyId: action.storyId ?? 1 });
@@ -129,8 +141,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
 
     const showStory = contextSafe(async (fromId: number) => {
-        if (masterRef.current)
+        if (masterRef.current || !userState.startStory.current)
             return;
+        userState.startStory.current = false;
         let id = fromId;
         loopTicket.current++;
         const ticket = loopTicket.current;
@@ -178,11 +191,11 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 });
             }
         }
-        masterRef.current=master;
+        masterRef.current = master;
         console.log("play anim")
         master.play();
         await master;
-        masterRef.current=undefined;
+        masterRef.current = undefined;
     });
 
     const getAnim = contextSafe((anim: string) => {
@@ -194,7 +207,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     })
 
     function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[]) {
-        typingBoxes.current=tbs;
+        typingBoxes.current = tbs;
     }
 
     function resetTypingBoxes() {
@@ -203,17 +216,17 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     useEffect(() => {
         isMounted.current = true;
-        window.addEventListener("popstate",resetAnims);
+        window.addEventListener("popstate", resetAnims);
         return () => {
-            window.removeEventListener("popstate",resetAnims);
+            window.removeEventListener("popstate", resetAnims);
             isMounted.current = false;
         }
     }, [])
 
     return (
-        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim }}>
-            <EffectOverlay id="effectOverlay1"/>
-            <Outlet/>
+        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim,initReady }}>
+            <EffectOverlay id="effectOverlay1" />
+            <Outlet />
         </StoryContext.Provider>
     );
 }

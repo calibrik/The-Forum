@@ -6,6 +6,7 @@ interface IUser {
     isRealLoggedIn: RefObject<boolean> //means story is on
     userLoggedIn: string
     storyId:RefObject<number>
+    startStory:RefObject<boolean>
     setUserLoggedIn: (user: string) => void,
 }
 
@@ -13,11 +14,12 @@ const UserContext = createContext<IUser | null>(null);
 
 export const UserProvider: FC<IUserProviderProps> = (props) => {
     const isRealLoggedIn = useRef<boolean>(false);
+    const startStory=useRef<boolean>(false);
     const [userLoggedIn, setUserLoggedIn] = useState<string>("");
     const storyId=useRef<number>(1);
 
     return (
-        <UserContext.Provider value={{ isRealLoggedIn, userLoggedIn, storyId, setUserLoggedIn }}>
+        <UserContext.Provider value={{ isRealLoggedIn, userLoggedIn, storyId, setUserLoggedIn,startStory }}>
             {props.children}
         </UserContext.Provider>
     );

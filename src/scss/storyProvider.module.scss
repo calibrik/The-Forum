@@ -1,0 +1,40 @@
+@use "./colors.scss" as colors;
+
+.hint-text,
+.hint {
+    position: relative;
+
+    &::after {
+        content: "";
+        border: 1px solid colors.$hint-color;
+        border-radius: 6px;
+        animation: hintWave 2s linear infinite;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-shadow: 0 0 10px 0px colors.$hint-color;
+    }
+}
+
+@keyframes hintWave {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.hint-text {
+    &::after {
+        top: -5px;
+        left: -5px;
+        right: -5px;
+        bottom: -5px;
+    }
+}
