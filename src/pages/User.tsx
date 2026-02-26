@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
 import { Outlet, useNavigate } from "react-router";
 import { getImageUrl } from "../utils";
@@ -8,6 +8,7 @@ import { useUserState } from "../providers/UserAuth";
 import { useStory } from "../providers/StoryProvider";
 import { db, type IUser } from "../backend/db";
 import { Spinner } from "../components/Spinner";
+import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 interface IUserPageProps { };
 
 export const User: FC<IUserPageProps> = (_) => {
@@ -15,8 +16,12 @@ export const User: FC<IUserPageProps> = (_) => {
     const userState = useUserState();
     let navigate = useNavigate();
     const [user, setUser] = useState<IUser | undefined>(undefined)
+    const typingTextBox = useRef<ITypingTextBoxHandle>(null);
+    const loopTicket=useRef<number>(0);
 
     async function init() {
+        loopTicket.current++;
+        const ticket=loopTicket.current;
         if (!userState.isRealLoggedIn.current) {
             navigate("/")
             return;
@@ -28,12 +33,14 @@ export const User: FC<IUserPageProps> = (_) => {
             return;
         }
         setUser(users[0]);
-        if (userState.startStory.current) {
-            await story.getAnim("FADE_IN");
-            story.showStory(userState.storyId.current);
+        story.setTypingBoxes([typingTextBox]);
+        if (ticket!=loopTicket.current)
+            return;
+        story.initReady();
+        if (story.coldStartStory.current) {
+            story.showStory(story.storyId.current+1);
             return;
         }
-        story.initReady();
     }
 
     useEffect(() => {
@@ -51,37 +58,40 @@ export const User: FC<IUserPageProps> = (_) => {
         )
 
     return (
-        <div className={styles.container}>
-            <img src={getImageUrl(user.imageName ?? "placeholder.png")} className={styles.pfpBg} />
-            <div className={styles.subProfileContainer}>
-                <div className={styles.headerContainer}>
-                    <div className={styles.titleHeaderContainer}>
-                        <h1 className={styles.title}>u/{user.nickname}</h1>
-                        <div className={styles.onlineContainer}>
-                            <Dot className={styles.onlineIcon} />
-                            <span className={styles.followerCount}>Online</span>
+        <>
+            <TypingTextBox ref={typingTextBox} type={"terminal"} />
+            <div className={styles.container}>
+                <img src={getImageUrl(user.imageName ?? "placeholder.png")} className={styles.pfpBg} />
+                <div className={styles.subProfileContainer}>
+                    <div className={styles.headerContainer}>
+                        <div className={styles.titleHeaderContainer}>
+                            <h1 className={styles.title}>u/{user.nickname}</h1>
+                            <div className={styles.onlineContainer}>
+                                <Dot className={styles.onlineIcon} />
+                                <span className={styles.followerCount}>Online</span>
+                            </div>
                         </div>
+                        <p className={styles.description}>{user.description}</p>
+                        {user.storyId ? <span onClick={story.resumeStory} id="cs-profile" className={styles.accLink}>My SC2 profile</span> : ""}
                     </div>
-                    <p className={styles.description}>{user.description}</p>
-                    {user.storyId?<span className={styles.accLink}>My SC2 profile</span>:""}
+                    <Menu options={{
+                        posts: {
+                            name: "Posts",
+                            destination: ""
+                        },
+                        comments: {
+                            name: "Comments",
+                            destination: "comments"
+                        },
+                        settings: {
+                            name: "Settings",
+                        },
+                    }} />
                 </div>
-                <Menu options={{
-                    posts: {
-                        name: "Posts",
-                        destination: ""
-                    },
-                    comments: {
-                        name: "Comments",
-                        destination: "comments"
-                    },
-                    settings: {
-                        name: "Settings",
-                    },
-                }} />
+                <div className={styles.contentContainer}>
+                    <Outlet />
+                </div>
             </div>
-            <div className={styles.contentContainer}>
-                <Outlet />
-            </div>
-        </div>
+        </>
     );
 }

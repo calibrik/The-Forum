@@ -4,9 +4,9 @@ import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { db, type IAction, type IScriptLine } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useNavigate } from "react-router";
-import { useUserState } from "./UserAuth";
 import type { FC } from "react";
 import { EffectOverlay } from "../components/EffectOverlay";
+import styles from "../scss/storyProvider.module.scss";
 interface IStoryProviderProps {
 };
 interface IStoryProvider {
@@ -14,7 +14,11 @@ interface IStoryProvider {
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     resetTypingBoxes: () => void
-    initReady:()=>void
+    initReady: () => void
+    resumeStory: (e: React.MouseEvent) => void
+    storyId: RefObject<number>
+    coldStartStory: RefObject<boolean>
+    recoverStory: (id: number, scl?: IScriptLine) => Promise<void>
 }
 
 const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
@@ -90,10 +94,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const { contextSafe } = useGSAP();
     const loopTicket = useRef<number>(0);
     const navigate = useNavigate();
-    const userState = useUserState();
     const masterRef = useRef<gsap.core.Timeline>(undefined);
     const isStoryNavRef = useRef<boolean>(false);
     const pageInitResolveRef = useRef<() => void>(undefined);
+    const currHintId = useRef<string>("NON_EXISTENT_ID");
+    const storyId = useRef<number>(1);
+    const coldStartStory = useRef<boolean>(false);
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -104,8 +110,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             pageInitResolveRef.current();
     }
 
-    async function fetchScriptLine(id: number) {
-        return await db.story.get(id);
+    function isStoryGoing() {
+        return masterRef.current != undefined;
     }
 
     const resetAnims = contextSafe(() => {
@@ -124,13 +130,23 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         switch (action.name) {
             case "NAVIGATE":
                 isStoryNavRef.current = true;
+                let p = waitForInit();
                 navigate(action.dest ?? "");
-                await waitForInit();
+                await p;
                 isStoryNavRef.current = false;
                 break;
             case "SAVE":
                 await db.users.where("storyId").aboveOrEqual(1).modify({ storyId: action.storyId ?? 1 });
-                userState.storyId.current = action.storyId ?? 1;
+                storyId.current = action.storyId ?? 1;
+                break;
+            case "HINT":
+                let el = document.querySelector(`#${action.idToHint ?? ""}`);
+                if (!el) {
+                    console.error(`No element with id ${action.idToHint}`)
+                    return;
+                }
+                currHintId.current = action.idToHint ?? "NON_EXISTENT_ID";
+                el.classList.add(action.isText ? styles.hintText : styles.hint);
                 break;
             default:
                 console.error(`Unknown action ${action.name}`)
@@ -138,19 +154,44 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         }
     }
 
+    function resumeStory(e: React.MouseEvent) {
+        e.preventDefault();
+        if (isStoryGoing() || currHintId.current !== e.currentTarget.id)
+            return;
+        e.currentTarget.classList.remove(styles.hint);
+        e.currentTarget.classList.remove(styles.hintText);
+        currHintId.current = "NON_EXISTENT_ID";
+        showStory(storyId.current+1);
+    }
 
+    async function recoverStory(id: number, scl?: IScriptLine) {
+        if (!scl)
+            return;
+        storyId.current = id;
+        if (scl.hintActionPos) {
+            let p = waitForInit();
+            navigate(scl.where ?? "");
+            let hintScl = await db.story.get(id + scl.hintActionPos);
+            await p;
+            if (hintScl?.action)
+                processAction(hintScl.action);
+            return;
+        }
+        navigate(scl.where ?? "");
+        coldStartStory.current = true;
+    }
 
     const showStory = contextSafe(async (fromId: number) => {
-        if (masterRef.current || !userState.startStory.current)
+        if (masterRef.current)
             return;
-        userState.startStory.current = false;
         let id = fromId;
         loopTicket.current++;
         const ticket = loopTicket.current;
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
+        coldStartStory.current = false;
         while (!scl || !scl.isActionAwait) {
-            scl = await fetchScriptLine(id);
+            scl = await db.story.get(id);
             if (!isMounted.current || ticket != loopTicket.current)
                 return;
             id++;
@@ -184,11 +225,11 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
             else if (scl.action) {
                 const action = scl.action;
-                action.storyId = id;
+                action.storyId = id - 1;
                 master.add(() => {
                     master.pause();
                     processAction(action).then(() => master.resume());
-                });
+                }, scl.offset);
             }
         }
         masterRef.current = master;
@@ -224,7 +265,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }, [])
 
     return (
-        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim,initReady }}>
+        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, coldStartStory, recoverStory }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
         </StoryContext.Provider>

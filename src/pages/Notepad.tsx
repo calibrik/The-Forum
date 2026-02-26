@@ -5,7 +5,6 @@ import { useStory } from "../providers/StoryProvider";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
-import { db } from "../backend/db";
 
 interface INotepadProps { }
 
@@ -14,24 +13,28 @@ export const Notepad: FC<INotepadProps> = () => {
     const story = useStory();
     const userState = useUserState();
     let navigate = useNavigate();
+    const loopTicket=useRef<number>(0);
 
     async function init() {
+        loopTicket.current++;
+        const ticket=loopTicket.current;
         if (!userState.isRealLoggedIn.current) {
             navigate("/");
             return;
         }
-        let scl = await db.story.get(userState.storyId.current);
-        if (!scl || scl.where != window.location.pathname) {
-            navigate(scl?.where ?? "/");
-            return;
-        }
+        // let scl = await db.story.get(story.storyId.current);
+        // if (!scl || scl.where != window.location.pathname) {
+        //     navigate(scl?.where ?? "/");
+        //     return;
+        // }
         story.setTypingBoxes([typingBox]);
-        if (userState.startStory.current) {
-            await story.getAnim("FADE_IN");
-            story.showStory(userState.storyId.current);
+        if (ticket!=loopTicket.current)
+            return;
+        story.initReady();
+        if (story.coldStartStory.current) {
+            story.showStory(story.storyId.current+1);
             return;
         }
-        story.initReady();
     }
 
     useEffect(() => {

@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/Spinner"; 
 interface IUserPostsProps {};
 
 export const UserPosts: FC<IUserPostsProps> = (_) => {

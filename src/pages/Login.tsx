@@ -62,17 +62,16 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         }
         if (!userState.isRealLoggedIn.current) {
-            const scriptLine = await db.story.get(user[0].storyId ?? 1);
+            const scriptLine = await db.story.get(user[0].storyId ?? 0);
             const anim = story.getAnim("FADE_OUT");
             await anim;
             userState.setUserLoggedIn(data.nickname.trim());
             userState.isRealLoggedIn.current=true;
-            userState.storyId.current=user[0].storyId??1;
-            userState.startStory.current=true;
-            navigate(scriptLine?.where ?? "/user");
+            story.recoverStory(user[0].storyId ?? 0,scriptLine);
+            await story.getAnim("FADE_IN");
             return;
         }
-        userState.startStory.current=false;
+        story.coldStartStory.current=false;
         userState.setUserLoggedIn(data.nickname.trim());
         navigate("/user")
     });

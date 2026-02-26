@@ -18,6 +18,8 @@ export interface IAction {
 	name: string,
 	dest?: string
 	storyId?:number
+	idToHint?:string
+	isText?:boolean
 }
 
 export interface IScriptLine {
@@ -28,6 +30,7 @@ export interface IScriptLine {
 	isActionAwait?: boolean,
 	offset: string,
 	where?: string,
+	hintActionPos?:number
 }
 
 export interface IUser {
@@ -44,7 +47,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(34).stores({
+db.version(38).stores({
 	story: "++id",
 	users: "++id, nickname,storyId",
 }).upgrade(async (tx) => {

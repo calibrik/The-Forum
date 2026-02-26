@@ -1,12 +1,15 @@
 [
     {
+        "where": "/start",
+        "offset":">"
+    },
+    {
         "storyline": {
             "content": "Hi.",
             "speed": 50,
             "typingBoxId": 0
         },
-        "offset": "+=0.5",
-        "where": "/start"
+        "offset": "+=3"
     },
     {
         "storyline": {
@@ -97,8 +100,7 @@
             "name": "NAVIGATE",
             "dest": "/user"
         },
-        "offset": ">",
-        "where": "/user"
+        "offset": ">"
     },
     {
         "effect": {
@@ -108,8 +110,80 @@
     },
     {
         "action": {
+            "name": "HINT",
+            "idToHint": "cs-profile",
+            "isText": true
+        }
+    },
+    {
+        "action": {
             "name": "SAVE"
         },
+        "offset": ">",
+        "isActionAwait": true,
+        "where": "/user",
+        "hintActionPos": -1
+    },
+    {
+        "storyline": {
+            "content": "…",
+            "speed": 500,
+            "typingBoxId": 0
+        },
         "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "you know what, matchmaking in this game is unfair bullshit, I always play with weak ass teammates and sweats in the opposite team.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Also, they always use meta weapons that are impossible to counter.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Also, I was playing after a long break, almost two days, so yeah, I am a bit rusty.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "But usually I play a lot better than this, trust.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Anyway, I'm well respected in sc2 community, people know my name.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Lemme show them to you.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
     }
 ]

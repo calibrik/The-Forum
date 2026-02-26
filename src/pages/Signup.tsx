@@ -35,7 +35,6 @@ export const Signup: FC<ISignupProps> = (_) => {
 
     async function proccessSubmit(data: SignupData) {
         answerRef.current = true;
-        await db.users.where("storyId").aboveOrEqual(1).delete();
         let isGood: boolean = true;
         if (data.nickname.trim() === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
@@ -53,7 +52,7 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (!isGood)
             return;
         const existingUser = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (existingUser.length > 0) {
+        if (existingUser.length > 0&&!(existingUser.length==1&&existingUser[0].storyId)) {
             nicknameInputRef.current?.setError("Nickname already exists");
             return;
         }
