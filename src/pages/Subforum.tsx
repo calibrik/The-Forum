@@ -11,7 +11,7 @@ interface ISubforumProps { };
 export const Subforum: FC<ISubforumProps> = (_) => {
     return (
         <div className={styles.container}>
-            <img src={getImageUrl("placeholder")} className={styles.pfpBg} />
+            <img src={getImageUrl("placeholder.png")} className={styles.pfpBg} />
             <div className={styles.subProfileContainer}>
                 <div className={styles.headerContainer}>
                     <div className={styles.titleHeaderContainer}>

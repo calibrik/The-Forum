@@ -10,6 +10,7 @@ interface ITypingTextBoxProps {
     id?: string
     content?: string
     addDefaultClass?: boolean
+    style?: React.CSSProperties
 };
 
 export interface ITypingBoxArgs {
@@ -17,12 +18,14 @@ export interface ITypingBoxArgs {
     speed: number,
     delim?: string,
     clearAfter?: string
+    style?: React.CSSProperties
 }
 
 export interface ITypingTextBoxHandle {
-    getTimeline: (args:ITypingBoxArgs) => gsap.core.Timeline
+    getTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => void
+    applyStyle:(style:React.CSSProperties)=>void
 };
 
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
@@ -31,13 +34,19 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     const contentRef = useRef<string>("");
     const cursorRef = useRef<ICursorHandle>(null);
 
-    const getTimeline = contextSafe((args:ITypingBoxArgs) => {
+    const getTimeline = contextSafe((args: ITypingBoxArgs) => {
         let finContent = contentRef.current + (args.delim ?? "") + args.content;
         contentRef.current = finContent;
         const tl = gsap.timeline()
-            .set('#cursor', {
-                visibility: 'visible'
-            })
+            .set(`#${props.id??"box"}`, {
+                display: "block"
+            });
+        if (args.style) {
+            tl.set(`#${props.id??"box"}`, args.style);
+        }
+        tl.set('#cursor', {
+            visibility: 'visible'
+        })
             .to(`#typingText`, {
                 duration: ((args.content.length + (args.delim?.length ?? 0)) * args.speed) / 1000,
                 text: {
@@ -47,15 +56,12 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 },
                 ease: "none"
             });
-        // .set('#cursor, #typingText', {
-        //     clearProps: "all",
-        // })
         if (args.clearAfter) {
             contentRef.current = "";
             tl.set("#typingText", {
                 text: ""
             }, args.clearAfter)
-                .set('#cursor, #typingText', {
+                .set(`#cursor, #typingText,#${props.id??"box"}`, {
                     clearProps: "all",
                 });
         }
@@ -64,7 +70,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
 
     const reset = contextSafe(() => {
         return gsap.timeline()
-            .set('#cursor, #typingText', {
+            .set(`#cursor, #typingText,#${props.id??"box"}`, {
                 clearProps: "all",
             })
             .set("#typingText", {
@@ -77,7 +83,12 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         setCursorType(type) {
             cursorRef.current?.setType(type);
         },
-        reset: reset
+        reset,
+        applyStyle(style) {
+            if (divRef.current) {
+                divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
+            }
+        },
     }))
 
     useEffect(() => {
@@ -94,6 +105,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         className = props.className ?? styles.default;
 
     return (
-        <div ref={divRef} id={props.id} className={className}><span id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} /></div>
+        <div style={props.style} ref={divRef} id={props.id??"box"} className={className}><span id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} /></div>
     );
 });

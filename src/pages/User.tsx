@@ -15,7 +15,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const story = useStory();
     const userState = useUserState();
     let navigate = useNavigate();
-    const [user, setUser] = useState<IUser | undefined>(undefined)
+    const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
     const typingTextBox = useRef<ITypingTextBoxHandle>(null);
     const loopTicket=useRef<number>(0);
 
@@ -52,6 +52,9 @@ export const User: FC<IUserPageProps> = (_) => {
             <div className={styles.container}>
                 <img src={getImageUrl("placeholder.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>
+                    <Spinner />
+                </div>
+                <div className={styles.contentContainer}>
                     <Spinner />
                 </div>
             </div>

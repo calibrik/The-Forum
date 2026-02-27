@@ -8,11 +8,11 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     return (
         <div className={styles.container}>
             <Post showAuthor={"user"}/>
-            <Post img="placeholder" showAuthor={"user"}/>
+            <Post img="placeholder.png" showAuthor={"user"}/>
             <Post showAuthor={"user"}/>
             <Post showAuthor={"user"}/>
-            <Post img="placeholder" showAuthor={"user"}/>
-            <Post img="placeholder" showAuthor={"user"}/>
+            <Post img="placeholder.png" showAuthor={"user"}/>
+            <Post img="placeholder.png" showAuthor={"user"}/>
             <Post showAuthor={"user"}/>
             <Spinner/>
         </div>

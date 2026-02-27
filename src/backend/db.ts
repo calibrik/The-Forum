@@ -7,7 +7,7 @@ export interface IStoryLine {
 	speed: number,
 	delim?: string,
 	typingBoxId:number,
-	cleanAfter?:string
+	clearAfter?:string
 }
 
 export interface IEffect {
@@ -18,8 +18,9 @@ export interface IAction {
 	name: string,
 	dest?: string
 	storyId?:number
-	idToHint?:string
+	id?:string|number
 	isText?:boolean
+	style?:React.CSSProperties
 }
 
 export interface IScriptLine {
@@ -47,7 +48,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(38).stores({
+db.version(45).stores({
 	story: "++id",
 	users: "++id, nickname,storyId",
 }).upgrade(async (tx) => {

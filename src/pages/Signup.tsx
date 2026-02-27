@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useModals } from "../providers/Modals";
+import { useStory } from "../providers/StoryProvider";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;
@@ -20,6 +21,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     let navigate = useNavigate();
     const modals = useModals();
     const answerRef = useRef<boolean>(false);
+    const story=useStory();
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -57,6 +59,7 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         }
         await db.users.where("storyId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(),storyId:1 });
+        await story.customizeStory(data.nickname.trim());
         navigate("/login")
     }
 

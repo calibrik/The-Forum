@@ -19,6 +19,7 @@ interface IStoryProvider {
     storyId: RefObject<number>
     coldStartStory: RefObject<boolean>
     recoverStory: (id: number, scl?: IScriptLine) => Promise<void>
+    customizeStory:(nickname:string)=>Promise<void>
 }
 
 const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
@@ -140,13 +141,16 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 storyId.current = action.storyId ?? 1;
                 break;
             case "HINT":
-                let el = document.querySelector(`#${action.idToHint ?? ""}`);
+                let el = document.querySelector(`#${action.id ?? ""}`);
                 if (!el) {
-                    console.error(`No element with id ${action.idToHint}`)
+                    console.error(`No element with id ${action.id}`)
                     return;
                 }
-                currHintId.current = action.idToHint ?? "NON_EXISTENT_ID";
+                currHintId.current = action.id as string ?? "NON_EXISTENT_ID";
                 el.classList.add(action.isText ? styles.hintText : styles.hint);
+                break;
+            case "APPLY_STYLE_TO_BOX":
+                typingBoxes.current[action.id as number].current?.applyStyle(action.style??{});
                 break;
             default:
                 console.error(`Unknown action ${action.name}`)
@@ -181,6 +185,19 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         coldStartStory.current = true;
     }
 
+    async function customizeStory(nickname:string){
+        let story=await db.story.toArray();
+        for (let scl of story){
+            if (!scl.storyline)
+                continue;
+            const content=scl.storyline.content.replace(/main_hero/g,nickname);
+            if (content==scl.storyline.content)
+                continue;
+            scl.storyline.content=content;
+            await db.story.update(scl.id,{storyline:scl.storyline});
+        }
+    }
+
     const showStory = contextSafe(async (fromId: number) => {
         if (masterRef.current)
             return;
@@ -212,7 +229,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     content: stl.content,
                     speed: stl.speed,
                     delim: stl.delim,
-                    clearAfter: stl.cleanAfter
+                    clearAfter: stl.clearAfter
                 }), scl.offset);
             }
 
@@ -265,7 +282,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }, [])
 
     return (
-        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, coldStartStory, recoverStory }}>
+        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, coldStartStory, recoverStory,customizeStory }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
         </StoryContext.Provider>
