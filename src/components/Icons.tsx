@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react";
 import styles from "../scss/icons.module.scss"
 interface IIconProps {
-    onClick?: () => void | Promise<void>
+    onClick?: (e?: React.MouseEvent<HTMLDivElement>) => void | Promise<void>
     className?: string
     interactive?: boolean
     id?: string
@@ -14,10 +14,10 @@ interface IIconWrapper extends IIconProps {
 
 const IconWrapper: FC<IIconWrapper> = (props) => {
     const className = `${styles.iconWrapper} ${props.className ?? ""} ${props.interactive ? styles.interactive : ""} ${props.spin ? styles.spin : ""}`;
-    function onClick(e: any) {
+    function onClick(e: React.MouseEvent<HTMLDivElement>) {
         e.preventDefault();
         if (props.onClick)
-            props.onClick();
+            props.onClick(e);
     }
     return (
         <div onClick={onClick} tabIndex={-1} id={props.id} data-istransition="true" className={className}>

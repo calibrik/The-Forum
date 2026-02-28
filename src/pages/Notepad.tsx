@@ -1,7 +1,7 @@
 import { useEffect, useRef, type FC } from "react";
 import { Notepad as NotepadIcon } from "../components/Icons";
 import styles from "../scss/systemApp.module.scss";
-import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../providers/StoryProvider";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
@@ -10,38 +10,20 @@ interface INotepadProps { }
 
 export const Notepad: FC<INotepadProps> = () => {
     const typingBox = useRef<ITypingTextBoxHandle>(null);
-    const story = useStory();
+    const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
-    const loopTicket=useRef<number>(0);
 
-    async function init() {
-        loopTicket.current++;
-        const ticket=loopTicket.current;
+
+    function init() {
         if (!userState.isRealLoggedIn.current) {
             navigate("/");
-            return;
-        }
-        // let scl = await db.story.get(story.storyId.current);
-        // if (!scl || scl.where != window.location.pathname) {
-        //     navigate(scl?.where ?? "/");
-        //     return;
-        // }
-        story.setTypingBoxes([typingBox]);
-        if (ticket!=loopTicket.current)
-            return;
-        story.initReady();
-        if (story.coldStartStory.current) {
-            story.showStory(story.storyId.current+1);
             return;
         }
     }
 
     useEffect(() => {
-        init();
-        return () => {
-            story.resetTypingBoxes();
-        }
+        storyInit(1, [typingBox], init);
     }, [])
 
     return (

@@ -1,6 +1,9 @@
 [
     {
-        "where": "/start",
+        "dest": {
+            "where": "/start",
+            "level": 1
+        },
         "offset": ">"
     },
     {
@@ -98,7 +101,10 @@
     {
         "action": {
             "name": "NAVIGATE",
-            "dest": "/user"
+            "dest": {
+                "where": "/user",
+                "level": 1
+            }
         },
         "offset": ">"
     },
@@ -111,8 +117,7 @@
     {
         "action": {
             "name": "HINT",
-            "id": "cs-profile",
-            "isText": true
+            "id": "cs-profile-text"
         },
         "offset": ">"
     },
@@ -122,7 +127,10 @@
         },
         "offset": ">",
         "isActionAwait": true,
-        "where": "/user",
+        "dest": {
+            "where": "/user",
+            "level": 1
+        },
         "hintActionPos": -1
     },
     {
@@ -189,7 +197,7 @@
             "style": {
                 "top": "20%",
                 "left": "5%",
-                "width": "clamp(150px,36cqw,300px)"
+                "width": "clamp(150px,36cqw,400px)"
             }
         },
         "offset": ">"
@@ -210,5 +218,34 @@
             "typingBoxId": 0
         },
         "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "name": "NAVIGATE",
+            "dest": {
+                "where": "SAME",
+                "level": 0
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "HINT",
+            "id": "menu-icon-text"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "SAVE"
+        },
+        "offset": ">",
+        "isActionAwait": true,
+        "dest": {
+            "where": "/user",
+            "level": 0
+        },
+        "hintActionPos": -1
     }
 ]

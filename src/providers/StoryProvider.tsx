@@ -1,9 +1,9 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IScriptLine } from "../backend/db";
+import { db, type IAction, type IDestination, type IScriptLine } from "../backend/db";
 import gsap from 'gsap';
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
 import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
@@ -13,13 +13,14 @@ interface IStoryProvider {
     setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[]) => void,
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
-    resetTypingBoxes: () => void
+    getChildLevel: () => number;
+    // resetAnims: () => void
     initReady: () => void
-    resumeStory: (e: React.MouseEvent) => void
+    resumeStory: (e: React.MouseEvent) => boolean
     storyId: RefObject<number>
-    coldStartStory: RefObject<boolean>
-    recoverStory: (id: number, scl?: IScriptLine) => Promise<void>
-    customizeStory:(nickname:string)=>Promise<void>
+    recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
+    recoverStoryOnPage: () => void
+    customizeStory: (nickname: string) => Promise<void>
 }
 
 const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
@@ -100,7 +101,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const pageInitResolveRef = useRef<() => void>(undefined);
     const currHintId = useRef<string>("NON_EXISTENT_ID");
     const storyId = useRef<number>(1);
-    const coldStartStory = useRef<boolean>(false);
+    const destRef = useRef<IDestination>(undefined);
+    const location = useLocation();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -118,10 +120,19 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const resetAnims = contextSafe(() => {
         if (!masterRef.current || isStoryNavRef.current)
             return;
+        if (destRef.current) {
+            const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
+            const targetLocation = destRef.current.where.split('/').slice(0, destRef.current.level + 1).join('/');
+            if (location == targetLocation)
+                return;
+        }
         masterRef.current.kill();
+        masterRef.current = undefined;
         for (let tb of typingBoxes.current) {
             tb.current?.reset();
         }
+        typingBoxes.current = [];
+        document.querySelector(`#${currHintId.current}`)?.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
         gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#dissapear,#appContainer,#contentDiv", {
             clearProps: "all"
         })
@@ -131,9 +142,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         switch (action.name) {
             case "NAVIGATE":
                 isStoryNavRef.current = true;
-                let p = waitForInit();
-                navigate(action.dest ?? "");
-                await p;
+                destRef.current = action.dest;
+                if (action.dest?.where != "SAME") {
+                    let p = waitForInit();
+                    navigate(action.dest?.where ?? "");
+                    await p;
+                }
                 isStoryNavRef.current = false;
                 break;
             case "SAVE":
@@ -147,10 +161,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     return;
                 }
                 currHintId.current = action.id as string ?? "NON_EXISTENT_ID";
-                el.classList.add(action.isText ? styles.hintText : styles.hint);
+                el.classList.add(currHintId.current.includes("text") ? styles.hintText : styles.hint);
                 break;
             case "APPLY_STYLE_TO_BOX":
-                typingBoxes.current[action.id as number].current?.applyStyle(action.style??{});
+                typingBoxes.current[action.id as number].current?.applyStyle(action.style ?? {});
                 break;
             default:
                 console.error(`Unknown action ${action.name}`)
@@ -158,55 +172,68 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         }
     }
 
-    function resumeStory(e: React.MouseEvent) {
+    function resumeStory(e: React.MouseEvent): boolean {
         e.preventDefault();
         if (isStoryGoing() || currHintId.current !== e.currentTarget.id)
-            return;
-        e.currentTarget.classList.remove(styles.hint);
-        e.currentTarget.classList.remove(styles.hintText);
-        currHintId.current = "NON_EXISTENT_ID";
-        showStory(storyId.current+1);
+            return false;
+        e.currentTarget.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
+        // currHintId.current = "NON_EXISTENT_ID";
+        showStory(storyId.current + 1);
+        return true;
     }
 
-    async function recoverStory(id: number, scl?: IScriptLine) {
+    async function recoverCheckpoint(id: number, scl?: IScriptLine) {
         if (!scl)
             return;
         storyId.current = id;
+        destRef.current = scl.dest;
         if (scl.hintActionPos) {
-            let p = waitForInit();
-            navigate(scl.where ?? "");
             let hintScl = await db.story.get(id + scl.hintActionPos);
-            await p;
-            if (hintScl?.action)
-                processAction(hintScl.action);
-            return;
+            currHintId.current = hintScl?.action?.id as string;
         }
-        navigate(scl.where ?? "");
-        coldStartStory.current = true;
+        navigate(scl.dest?.where ?? "");
     }
 
-    async function customizeStory(nickname:string){
-        let story=await db.story.toArray();
-        for (let scl of story){
+    function recoverStoryOnPage() {
+        if (isStoryNavRef.current)
+            return;
+        if (destRef.current && destRef.current.level > 0) {
+            const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
+            const targetLocation = destRef.current.where.split('/').slice(0, destRef.current.level + 1).join('/');
+            if (location != targetLocation)
+                return;
+        }
+        if (currHintId.current !== "NON_EXISTENT_ID") {
+            processAction({
+                name: "HINT",
+                id: currHintId.current
+            });
+            return;
+        }
+        showStory(storyId.current)
+    }
+
+    async function customizeStory(nickname: string) {
+        let story = await db.story.toArray();
+        for (let scl of story) {
             if (!scl.storyline)
                 continue;
-            const content=scl.storyline.content.replace(/main_hero/g,nickname);
-            if (content==scl.storyline.content)
+            const content = scl.storyline.content.replace(/main_hero/g, nickname);
+            if (content == scl.storyline.content)
                 continue;
-            scl.storyline.content=content;
-            await db.story.update(scl.id,{storyline:scl.storyline});
+            scl.storyline.content = content;
+            await db.story.update(scl.id, { storyline: scl.storyline });
         }
     }
 
     const showStory = contextSafe(async (fromId: number) => {
-        if (masterRef.current)
+        if (isStoryGoing())
             return;
         let id = fromId;
         loopTicket.current++;
         const ticket = loopTicket.current;
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
-        coldStartStory.current = false;
         while (!scl || !scl.isActionAwait) {
             scl = await db.story.get(id);
             if (!isMounted.current || ticket != loopTicket.current)
@@ -268,21 +295,23 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         typingBoxes.current = tbs;
     }
 
-    function resetTypingBoxes() {
-        typingBoxes.current = [];
-    }
-
     useEffect(() => {
         isMounted.current = true;
-        window.addEventListener("popstate", resetAnims);
         return () => {
-            window.removeEventListener("popstate", resetAnims);
             isMounted.current = false;
         }
     }, [])
 
+    useEffect(() => {
+        resetAnims();
+    }, [location.pathname])
+
     return (
-        <StoryContext.Provider value={{ setTypingBoxes, resetTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, coldStartStory, recoverStory,customizeStory }}>
+        <StoryContext.Provider value={{
+            setTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, recoverCheckpoint, customizeStory, recoverStoryOnPage, getChildLevel() {
+                return destRef.current?.level ?? 0;
+            },
+        }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
         </StoryContext.Provider>
@@ -299,3 +328,22 @@ export function useStory() {
 }
 
 
+export function useStoryInit() {
+    const story = useStory();
+    const loopTicket = useRef<number>(0);
+
+    async function storyInit(childLevel: number, typingBoxes: RefObject<ITypingTextBoxHandle | null>[], pageInit?: () => Promise<void> | void) {
+        loopTicket.current++;
+        const ticket = loopTicket.current;
+        if (pageInit)
+            await pageInit();
+        story.setTypingBoxes(typingBoxes);
+        if (ticket != loopTicket.current)
+            return;
+        story.initReady();
+        if (childLevel == story.getChildLevel())
+            story.recoverStoryOnPage();
+    }
+
+    return storyInit;
+}

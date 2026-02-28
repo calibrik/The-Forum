@@ -7,9 +7,10 @@ const useTestHook=()=>{
 
     async function test(){
         loop.current++;
+        const ticket=loop.current;
         console.log("fetching smth")
         await delay(1);
-        console.log(isMounted.current,loop.current);
+        console.log(isMounted.current,loop.current,ticket);
     }
 
     useEffect(() => {

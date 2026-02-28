@@ -4,6 +4,7 @@ import { Menu, Person } from "./Icons";
 import { InputField } from "./InputField";
 import { useNavigate } from "react-router";
 import { useUserState } from "../providers/UserAuth";
+import { useStory } from "../providers/StoryProvider";
 interface IHeaderProps {};
 
 interface IHeaderLoggedInProps { };
@@ -13,6 +14,7 @@ interface IHeaderLoggedOffProps { };
 const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
+    const story=useStory();
 
     let navigate = useNavigate();
 
@@ -28,7 +30,10 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
         }
     }, [])
 
-    function toggleSideMenu(){
+    function toggleSideMenu(e?: React.MouseEvent<HTMLDivElement>){
+        if (!e)
+            return;
+        story.resumeStory(e);
         window.dispatchEvent(new Event("toggleSideMenu"));
     }
 
@@ -45,7 +50,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                     </div>
                     : ""}
                 <div ref={div} className={styles.headerContainer}>
-                    <Menu tabindex={-1} onClick={toggleSideMenu} interactive className="toggle-sidemenu-button" />
+                    <Menu id="menu-icon-text" tabindex={-1} onClick={toggleSideMenu} interactive className="toggle-sidemenu-button" />
                     {!isMobile ?
                         <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
                         : ""}

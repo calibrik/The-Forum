@@ -16,10 +16,9 @@ export interface IEffect {
 
 export interface IAction {
 	name: string,
-	dest?: string
+	dest?: IDestination
 	storyId?:number
 	id?:string|number
-	isText?:boolean
 	style?:React.CSSProperties
 }
 
@@ -30,7 +29,7 @@ export interface IScriptLine {
 	action?:IAction,
 	isActionAwait?: boolean,
 	offset: string,
-	where?: string,
+	dest?: IDestination,
 	hintActionPos?:number
 }
 
@@ -43,12 +42,17 @@ export interface IUser {
 	imageName?:string
 }
 
+export interface IDestination{
+	where:string
+	level:number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
+}
+
 const db = new Dexie("TheForumDB") as Dexie & {
 	story: EntityTable<IScriptLine, "id">
 	users: EntityTable<IUser, "id">
 }
 
-db.version(45).stores({
+db.version(50).stores({
 	story: "++id",
 	users: "++id, nickname,storyId",
 }).upgrade(async (tx) => {

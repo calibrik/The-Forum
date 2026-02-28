@@ -67,11 +67,10 @@ export const Login: FC<ILoginProps> = (_) => {
             await anim;
             userState.setUserLoggedIn(data.nickname.trim());
             userState.isRealLoggedIn.current=true;
-            story.recoverStory(user[0].storyId ?? 0,scriptLine);
+            story.recoverCheckpoint(user[0].storyId ?? 0,scriptLine);
             await story.getAnim("FADE_IN");
             return;
         }
-        story.coldStartStory.current=false;
         userState.setUserLoggedIn(data.nickname.trim());
         navigate("/user")
     });

@@ -5,23 +5,24 @@ import { getImageUrl } from "../utils";
 import { Menu } from "../components/Menu";
 import { Dot } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
-import { useStory } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IUser } from "../backend/db";
 import { Spinner } from "../components/Spinner";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
 interface IUserPageProps { };
+export interface IUserOutlet {
+    user?: IUser
+}
 
 export const User: FC<IUserPageProps> = (_) => {
     const story = useStory();
     const userState = useUserState();
     let navigate = useNavigate();
     const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
-    const typingTextBox = useRef<ITypingTextBoxHandle>(null);
-    const loopTicket=useRef<number>(0);
+    const storyInit = useStoryInit();
+    const typingBoxRef = useRef<ITypingTextBoxHandle>(null);
 
     async function init() {
-        loopTicket.current++;
-        const ticket=loopTicket.current;
         if (!userState.isRealLoggedIn.current) {
             navigate("/")
             return;
@@ -33,66 +34,50 @@ export const User: FC<IUserPageProps> = (_) => {
             return;
         }
         setUser(users[0]);
-        story.setTypingBoxes([typingTextBox]);
-        if (ticket!=loopTicket.current)
-            return;
-        story.initReady();
-        if (story.coldStartStory.current) {
-            story.showStory(story.storyId.current+1);
-            return;
-        }
     }
 
     useEffect(() => {
-        init();
+        storyInit(1, [typingBoxRef], init);
     }, [])
-
-    if (!user)
-        return (
-            <div className={styles.container}>
-                <img src={getImageUrl("placeholder.png")} className={styles.pfpBg} />
-                <div className={styles.subProfileContainer}>
-                    <Spinner />
-                </div>
-                <div className={styles.contentContainer}>
-                    <Spinner />
-                </div>
-            </div>
-        )
 
     return (
         <>
-            <TypingTextBox ref={typingTextBox} type={"terminal"} />
+            <TypingTextBox ref={typingBoxRef} type="terminal" />
             <div className={styles.container}>
-                <img src={getImageUrl(user.imageName ?? "placeholder.png")} className={styles.pfpBg} />
+                <img src={getImageUrl(user?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>
-                    <div className={styles.headerContainer}>
-                        <div className={styles.titleHeaderContainer}>
-                            <h1 className={styles.title}>u/{user.nickname}</h1>
-                            <div className={styles.onlineContainer}>
-                                <Dot className={styles.onlineIcon} />
-                                <span className={styles.followerCount}>Online</span>
+                    {user ?
+                        <>
+                            <div className={styles.headerContainer}>
+                                <div className={styles.titleHeaderContainer}>
+                                    <h1 className={styles.title}>u/{user.nickname}</h1>
+                                    <div className={styles.onlineContainer}>
+                                        <Dot className={styles.onlineIcon} />
+                                        <span className={styles.followerCount}>Online</span>
+                                    </div>
+                                </div>
+                                <p className={styles.description}>{user.description}</p>
+                                {user.storyId ? <span onClick={story.resumeStory} id="cs-profile-text" className={styles.accLink}>My SC2 profile</span> : ""}
                             </div>
-                        </div>
-                        <p className={styles.description}>{user.description}</p>
-                        {user.storyId ? <span onClick={story.resumeStory} id="cs-profile" className={styles.accLink}>My SC2 profile</span> : ""}
-                    </div>
-                    <Menu options={{
-                        posts: {
-                            name: "Posts",
-                            destination: ""
-                        },
-                        comments: {
-                            name: "Comments",
-                            destination: "comments"
-                        },
-                        settings: {
-                            name: "Settings",
-                        },
-                    }} />
+                            <Menu options={{
+                                posts: {
+                                    name: "Posts",
+                                    destination: ""
+                                },
+                                comments: {
+                                    name: "Comments",
+                                    destination: "comments"
+                                },
+                                settings: {
+                                    name: "Settings",
+                                },
+                            }} />
+                        </>
+                        : <Spinner />}
                 </div>
+
                 <div className={styles.contentContainer}>
-                    <Outlet />
+                    <Outlet context={{ user }} />
                 </div>
             </div>
         </>
