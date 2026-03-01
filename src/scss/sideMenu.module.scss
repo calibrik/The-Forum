@@ -41,6 +41,7 @@
         cursor: pointer;
     }
 
+    .quit-div:hover,
     .leave-div:hover {
         background-color: #c2000034;
     }
@@ -50,6 +51,7 @@
     background-color: #232323;
 }
 
+.quit-div:active,
 .leave-div:active {
     background-color: #c2000034;
 }
@@ -61,5 +63,9 @@
 
 .leave-div {
     margin-top: auto;
+    color: colors.$error-color;
+}
+
+.quit-div{
     color: colors.$error-color;
 }

@@ -6,8 +6,8 @@
     gap: clamp(7px,1.15cqw,10px);
     align-items: center;
     transition: globals.$transition;
-    container-type: inline-size;
-    width: 100%;
+    // container-type: inline-size;
+    width: fit-content;
 }
 
 .pfp {

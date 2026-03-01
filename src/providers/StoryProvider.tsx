@@ -223,10 +223,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     async function customizeStory(nickname: string) {
         let story = await db.story.toArray();
+        let users=await db.users.where("storyId").aboveOrEqual(0).toArray();
+        const regex=new RegExp(users[0].nickname, 'g');
         for (let scl of story) {
             if (!scl.storyline)
                 continue;
-            const content = scl.storyline.content.replace(/main_hero/g, nickname);
+            const content = scl.storyline.content.replace(regex, nickname);
             if (content == scl.storyline.content)
                 continue;
             scl.storyline.content = content;

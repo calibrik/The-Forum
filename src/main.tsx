@@ -11,19 +11,14 @@ createRoot(document.getElementById('root')!).render(
 
 
 //TODO: issue with browser suggesting to save password even tho user just presses the link (not that serious tho)
-//TODO: modals
 //TODO: add some delays on some actions to make it believable
 //TODO: consider throwing out the px for padding/gaps and move to cqw and clamps (and replace all px in clamps with rem) 
 // (maybe i need to clamp every gap/padding but it's batshit insane, there's should be a better way) (it might be the best way lol)
 // (also some of them look good without scalable units, which is good but at the same time frustrating, cuz there is no rule)
 //TODO: consider merging chatmenu into chat on desktop only, cuz it looks like hot garbage rn
-//TODO: move from custom events to custom event bus
 //TODO: the whole fake backend:
 //we read what step we r at rn-> we read and execute items(either effects or lines) until we hit the isAwaitingAction flag-> we react to the action by loading more items
 //TODO: ditch scss colors for vars to be able to use them in anims
 //TODO: tables for users, posts, comments
-//TODO: pause and continue functionality
 //TODO: proper db update
-//TODO: protect against user starting story from wrong page
-//TODO: we need proper way to determine if we need to run story on page visit
-//TODO: separate logged in layout and logged off
+//TODO: start learning ph lil bro, we need to fill the pages with actual data and images

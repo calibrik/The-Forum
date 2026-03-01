@@ -126,3 +126,78 @@
     background-color: colors.$secondary-card-bg;
     flex-grow:1;
 }
+
+.acc-div{
+    position:relative;
+    width: fit-content;
+}
+
+.acc-tool-tip-container{
+    position: absolute;
+    background-color: colors.$secondary-card-bg;
+    width:clamp(120px,23.8cqw,300px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+    border-radius: 6px;
+    container-type: inline-size;
+    border:1px solid colors.$tertiary-color;
+    gap:10px;
+    box-sizing: border-box;
+    transition: globals.$transition;
+}
+
+.acc-tool-tip-container:focus{
+    outline: none;
+}
+
+.acc-tool-tip-container.open{
+    transform: scale(1);
+    top:120%;
+    left:0%;
+}
+
+.acc-tool-tip-container.close{
+    transform: scale(0);
+    top:-500%;
+    left:-50%;
+}
+
+.last-games{
+    font-size: clamp(0.85rem,11.3cqw,1.1rem);
+}
+
+.player-name{
+    font-size: clamp(1rem,13.3cqw,1.3rem);
+    font-weight: bold;
+}
+
+.acc-section{
+    display: flex;
+    flex-direction: column;
+    gap:3px;
+}
+
+.rank{
+    font-size: clamp(0.7rem,9.3cqw,1rem);
+    color:colors.$tertiary-color
+}
+
+.last-games-list{
+    margin:0;
+    padding:0 0 0 20px;
+}
+
+.win-game,
+.lose-game{
+    font-size: clamp(0.75rem,10cqw,1.05rem);
+}
+
+.win-game{
+    color:#00960a
+}
+
+.lose-game{
+    color:#de0004
+}

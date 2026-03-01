@@ -3,6 +3,8 @@ import { Home, Chat, Gear, Leave } from "./Icons";
 import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
 import { useUserState } from "../providers/UserAuth";
+import { useStory } from "../providers/StoryProvider";
+import { useGSAP } from "@gsap/react";
 
 interface ISideMenuProps {};
 
@@ -11,6 +13,8 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const userState=useUserState();
+    const story=useStory();
+    const { contextSafe } = useGSAP();
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
         e.preventDefault();
@@ -27,6 +31,17 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/login");
     }
+
+    const onRealLogout=contextSafe(async (e: React.MouseEvent)=>{
+        e.preventDefault();
+        await story.getAnim("FADE_OUT");
+        setIsOpen(false);
+        userState.userLoggedIn.current="";
+        userState.isRealLoggedIn.current=false;
+        window.dispatchEvent(new Event("loggedOut"));
+        navigate("/");
+        await story.getAnim("FADE_IN");
+    })
 
     const toggleOpen=useCallback(()=>{
         setIsOpen((p)=>!p);
@@ -68,6 +83,10 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
             <div onClick={onLogout} className={`${styles.itemDiv} ${styles.leaveDiv}`}>
                 <Leave className={styles.icon} />
                 <span className={styles.itemName}>Log Out</span>
+            </div>
+            <div onClick={onRealLogout} className={`${styles.itemDiv} ${styles.quitDiv}`}>
+                <Leave className={styles.icon} />
+                <span className={styles.itemName}>Quit game</span>
             </div>
         </div>
     );
