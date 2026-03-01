@@ -23,7 +23,8 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     function onLogout(e: React.MouseEvent<HTMLDivElement>){
         e.preventDefault();
         setIsOpen(false);
-        userState.setUserLoggedIn("");
+        userState.userLoggedIn.current="";
+        window.dispatchEvent(new Event("loggedOut"));
         navigate("/login");
     }
 

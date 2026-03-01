@@ -7,6 +7,7 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
 import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
+import { useUserState } from "./UserAuth";
 interface IStoryProviderProps {
 };
 interface IStoryProvider {
@@ -15,7 +16,7 @@ interface IStoryProvider {
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     getChildLevel: () => number;
     // resetAnims: () => void
-    initReady: () => void
+    initReady: (level:number) => void
     resumeStory: (e: React.MouseEvent) => boolean
     storyId: RefObject<number>
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
@@ -103,12 +104,15 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const storyId = useRef<number>(1);
     const destRef = useRef<IDestination>(undefined);
     const location = useLocation();
+    const userState = useUserState();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
     }
 
-    function initReady() {
+    function initReady(level:number) {
+        if (level!=destRef.current?.level)
+            return;
         if (pageInitResolveRef.current)
             pageInitResolveRef.current();
     }
@@ -146,6 +150,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 if (action.dest?.where != "SAME") {
                     let p = waitForInit();
                     navigate(action.dest?.where ?? "");
+                    if (action.dest?.level == 0)
+                        window.dispatchEvent(new Event("signalLevel0"))
                     await p;
                 }
                 isStoryNavRef.current = false;
@@ -191,11 +197,13 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             let hintScl = await db.story.get(id + scl.hintActionPos);
             currHintId.current = hintScl?.action?.id as string;
         }
+        if (scl.dest?.level == 0)
+            window.dispatchEvent(new Event("signalLevel0"))
         navigate(scl.dest?.where ?? "");
     }
 
     function recoverStoryOnPage() {
-        if (isStoryNavRef.current)
+        if (isStoryNavRef.current || !userState.isRealLoggedIn.current)
             return;
         if (destRef.current && destRef.current.level > 0) {
             const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
@@ -340,7 +348,7 @@ export function useStoryInit() {
         story.setTypingBoxes(typingBoxes);
         if (ticket != loopTicket.current)
             return;
-        story.initReady();
+        story.initReady(childLevel);
         if (childLevel == story.getChildLevel())
             story.recoverStoryOnPage();
     }

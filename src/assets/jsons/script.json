@@ -21,7 +21,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "storyline": {
@@ -30,7 +30,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "storyline": {
@@ -215,7 +215,8 @@
             "content": "Lemme show it to you.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": 0,
+            "clearAfter":"+=1"
         },
         "offset": "+=0.3"
     },

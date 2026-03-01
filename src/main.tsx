@@ -26,3 +26,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: proper db update
 //TODO: protect against user starting story from wrong page
 //TODO: we need proper way to determine if we need to run story on page visit
+//TODO: separate logged in layout and logged off

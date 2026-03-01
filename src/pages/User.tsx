@@ -27,7 +27,7 @@ export const User: FC<IUserPageProps> = (_) => {
             navigate("/")
             return;
         }
-        const users = await db.users.where("nickname").equals(userState.userLoggedIn).toArray();
+        const users = await db.users.where("nickname").equals(userState.userLoggedIn.current).toArray();
         if (users.length != 1) {
             console.error(`No ${userState.userLoggedIn} found (or found too many) ${users.length}.`)
             navigate("/")

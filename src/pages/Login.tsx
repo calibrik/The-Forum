@@ -61,17 +61,18 @@ export const Login: FC<ILoginProps> = (_) => {
             onSubmitRunning.current = false;
             return;
         }
+        userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
             const scriptLine = await db.story.get(user[0].storyId ?? 0);
             const anim = story.getAnim("FADE_OUT");
             await anim;
-            userState.setUserLoggedIn(data.nickname.trim());
+            window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;
             story.recoverCheckpoint(user[0].storyId ?? 0,scriptLine);
             await story.getAnim("FADE_IN");
             return;
         }
-        userState.setUserLoggedIn(data.nickname.trim());
+        window.dispatchEvent(new Event("loggedIn")); 
         navigate("/user")
     });
 

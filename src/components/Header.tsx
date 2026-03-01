@@ -3,9 +3,10 @@ import styles from '../scss/header.module.scss';
 import { Menu, Person } from "./Icons";
 import { InputField } from "./InputField";
 import { useNavigate } from "react-router";
-import { useUserState } from "../providers/UserAuth";
 import { useStory } from "../providers/StoryProvider";
-interface IHeaderProps {};
+interface IHeaderProps { 
+    isLoggedIn:boolean
+};
 
 interface IHeaderLoggedInProps { };
 interface IHeaderLoggedOffProps { };
@@ -14,7 +15,7 @@ interface IHeaderLoggedOffProps { };
 const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
-    const story=useStory();
+    const story = useStory();
 
     let navigate = useNavigate();
 
@@ -30,7 +31,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
         }
     }, [])
 
-    function toggleSideMenu(e?: React.MouseEvent<HTMLDivElement>){
+    function toggleSideMenu(e?: React.MouseEvent<HTMLDivElement>) {
         if (!e)
             return;
         story.resumeStory(e);
@@ -76,9 +77,9 @@ const HeaderLoggedOff: FC<IHeaderLoggedOffProps> = (_) => {
 }
 
 
-export const Header: FC<IHeaderProps> = (_) => {
-    const userState=useUserState();
+export const Header: FC<IHeaderProps> = (props) => {
+    
     return (
-        <>{userState.userLoggedIn!="" ? <HeaderLoggedIn /> : <HeaderLoggedOff />}</>
+        <>{props.isLoggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOff />}</>
     );
 }

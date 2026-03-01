@@ -1,21 +1,20 @@
-import { createContext, useContext, useRef, useState, type FC, type ReactNode, type RefObject } from "react";
+import { createContext, useContext, useRef, type FC, type ReactNode, type RefObject } from "react";
 interface IUserProviderProps {
     children: ReactNode,
 };
 interface IUser {
     isRealLoggedIn: RefObject<boolean> //means story is on
-    userLoggedIn: string
-    setUserLoggedIn: (user: string) => void,
+    userLoggedIn: RefObject<string>
 }
 
 const UserContext = createContext<IUser | null>(null);
 
 export const UserProvider: FC<IUserProviderProps> = (props) => {
     const isRealLoggedIn = useRef<boolean>(false);
-    const [userLoggedIn, setUserLoggedIn] = useState<string>("");
+    const userLoggedIn = useRef<string>("");
 
     return (
-        <UserContext.Provider value={{ isRealLoggedIn, userLoggedIn, setUserLoggedIn }}>
+        <UserContext.Provider value={{ isRealLoggedIn, userLoggedIn }}>
             {props.children}
         </UserContext.Provider>
     );
