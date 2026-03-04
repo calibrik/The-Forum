@@ -22,3 +22,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: tables for users, posts, comments
 //TODO: proper db update
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
+//TODO: chain hints

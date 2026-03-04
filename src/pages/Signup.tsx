@@ -54,12 +54,12 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (!isGood)
             return;
         const existingUser = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (existingUser.length > 0&&!(existingUser.length==1&&existingUser[0].storyId)) {
+        if (existingUser.length > 0&&!(existingUser.length==1&&existingUser[0].savedStoryId)) {
             nicknameInputRef.current?.setError("Nickname already exists");
             return;
         }
         await story.customizeStory(data.nickname.trim());
-        await db.users.where("storyId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(),storyId:1 });
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(),savedStoryId:1 });
         navigate("/login")
     }
 

@@ -100,7 +100,7 @@ const Message: FC<IMessageProps> = (props) => {
                     <Reply className={styles.replyArrow} />
                     <div className={styles.replyMessageDiv}>
                         <div className={styles.replyAuthorDiv}>
-                            <img src={getImageUrl("placeholder")} className={styles.replyAuthorPfp} />
+                            <img src={getImageUrl("placeholder.png")} className={styles.replyAuthorPfp} />
                             <span className={styles.replyAuthorName}>{props.message.replyTo.author}</span>
                         </div>
                         <p className={styles.replyMessage}>{replyContent}</p>
@@ -149,7 +149,7 @@ export const Chat: FC<IChatProps> = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <BackButton />
-                <img src={getImageUrl("placeholder")} className={styles.pfp} />
+                <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
                 <div className={styles.chatDiv}>
                     <p className={styles.nickname}>Chat Name</p>
                     {typing.length > 0 ? <TypingIndicator names={typing} /> : <span className={styles.membersCount}>200 members</span>}

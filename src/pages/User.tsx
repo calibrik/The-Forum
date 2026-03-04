@@ -117,7 +117,7 @@ export const User: FC<IUserPageProps> = (_) => {
                                     </div>
                                 </div>
                                 <p className={styles.description}>{user.description}</p>
-                                {user.storyId ?
+                                {user.savedStoryId ?
                                     <div className={styles.accDiv}>
                                         <span tabIndex={-1} onClick={onAccLinkClick} id="cs-profile-text" className={styles.accLink}>My SC2 profile</span>
                                         <AccInfo ref={accInfoRef} nickname={user.nickname} />

@@ -51,23 +51,23 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         }
         let user = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (user.length != 1||user[0].storyId==0) {
+        if (user.length != 1||user[0].savedStoryId==0) {
             nicknameInputRef.current?.setError("Nickname is not found.");
             onSubmitRunning.current = false;
             return;
         }
-        if (!user[0].password || user[0].password != data.password.trim()) {
+        if (!user[0].password || user[0].password != data.password.trim()||!userState.isRealLoggedIn.current&&user[0].savedStoryId===undefined) {
             passwordInputRef.current?.setError("Incorrect password.");
             onSubmitRunning.current = false;
             return;
         }
         userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
-            const scriptLine = await db.story.get(user[0].storyId ?? 0);
+            const scriptLine = await db.story.get(user[0].savedStoryId ?? 0);
             await story.getAnim("FADE_OUT");
             window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;
-            story.recoverCheckpoint(user[0].storyId ?? 0,scriptLine);
+            story.recoverCheckpoint(user[0].savedStoryId ?? 0,scriptLine);
             await story.getAnim("FADE_IN");
             return;
         }
@@ -82,7 +82,7 @@ export const Login: FC<ILoginProps> = (_) => {
 
     const onPasswordForgot = contextSafe(async (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        let users = await db.users.where("storyId").aboveOrEqual(1).toArray();
+        let users = await db.users.where("savedStoryId").aboveOrEqual(1).toArray();
         if (passwordTl.current) {
             passwordTl.current.kill();
             passwordForgotBox.current?.reset();

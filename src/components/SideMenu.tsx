@@ -21,6 +21,8 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         if (!dest)
             return;
         setIsOpen(false);
+        if (story.resumeStory(e))
+            return;
         navigate(dest);
     }
 
@@ -72,7 +74,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
                 <Home className={styles.icon} />
                 <span className={styles.itemName}>Home</span>
             </div>
-            <div onClick={(e) => onNavigate(e, "/chat")} className={styles.itemDiv}>
+            <div onClick={(e) => onNavigate(e, "/chat")} id="chat-menu" className={styles.itemDiv}>
                 <Chat className={styles.icon} />
                 <span className={styles.itemName}>Chats</span>
             </div>

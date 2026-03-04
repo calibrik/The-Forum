@@ -235,18 +235,25 @@
             "name": "HINT",
             "id": "menu-icon-text"
         },
+        "isActionAwait": true,
         "offset": ">"
     },
     {
         "action": {
-            "name": "SAVE"
+            "name": "HINT",
+            "id": "chat-menu"
         },
-        "offset": ">",
         "isActionAwait": true,
-        "dest": {
-            "where": "/user",
-            "level": 0
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "NAVIGATE",
+            "dest": {
+                "where": "/chat",
+                "level": 1
+            }
         },
-        "hintActionPos": -1
+        "offset": ">"
     }
 ]

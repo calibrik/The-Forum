@@ -18,7 +18,7 @@ interface IStoryProvider {
     // resetAnims: () => void
     initReady: (level:number) => void
     resumeStory: (e: React.MouseEvent) => boolean
-    storyId: RefObject<number>
+    // savedStoryId: RefObject<number>
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: () => void
     customizeStory: (nickname: string) => Promise<void>
@@ -101,7 +101,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const isStoryNavRef = useRef<boolean>(false);
     const pageInitResolveRef = useRef<() => void>(undefined);
     const currHintId = useRef<string>("NON_EXISTENT_ID");
-    const storyId = useRef<number>(1);
+    const savedStoryId = useRef<number>(1);
     const destRef = useRef<IDestination>(undefined);
     const location = useLocation();
     const userState = useUserState();
@@ -157,8 +157,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 isStoryNavRef.current = false;
                 break;
             case "SAVE":
-                await db.users.where("storyId").aboveOrEqual(1).modify({ storyId: action.storyId ?? 1 });
-                storyId.current = action.storyId ?? 1;
+                await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: action.storyId ?? 1 });
+                savedStoryId.current = action.storyId ?? 1;
                 break;
             case "HINT":
                 let el = document.querySelector(`#${action.id ?? ""}`);
@@ -184,14 +184,14 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             return false;
         e.currentTarget.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
         // currHintId.current = "NON_EXISTENT_ID";
-        showStory(storyId.current + 1);
+        showStory(savedStoryId.current + 1);
         return true;
     }
 
     async function recoverCheckpoint(id: number, scl?: IScriptLine) {
         if (!scl)
             return;
-        storyId.current = id;
+        savedStoryId.current = id;
         destRef.current = scl.dest;
         if (scl.hintActionPos) {
             let hintScl = await db.story.get(id + scl.hintActionPos);
@@ -218,12 +218,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             });
             return;
         }
-        showStory(storyId.current)
+        showStory(savedStoryId.current)
     }
 
     async function customizeStory(nickname: string) {
         let story = await db.story.toArray();
-        let users=await db.users.where("storyId").aboveOrEqual(0).toArray();
+        let users=await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
         const regex=new RegExp(users[0].nickname, 'g');
         for (let scl of story) {
             if (!scl.storyline)
@@ -318,7 +318,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     return (
         <StoryContext.Provider value={{
-            setTypingBoxes, showStory, getAnim, initReady, resumeStory, storyId, recoverCheckpoint, customizeStory, recoverStoryOnPage, getChildLevel() {
+            setTypingBoxes, showStory, getAnim, initReady, resumeStory, recoverCheckpoint, customizeStory, recoverStoryOnPage, getChildLevel() {
                 return destRef.current?.level ?? 0;
             },
         }}>
