@@ -30,11 +30,11 @@ export const TestPage: FC<ITestPageProps> = (_) => {
     const isMounted=useRef<boolean>(false);
     const {test}=useTestHook();
 
-    async function testFun(){
-        console.log("fetching smth")
-        await delay(1);
-        console.log(isMounted.current);
-    }
+    // async function testFun(){
+    //     console.log("fetching smth")
+    //     await delay(1);
+    //     console.log(isMounted.current);
+    // }
 
     useEffect(() => {
         console.log("mount");

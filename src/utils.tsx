@@ -3,7 +3,7 @@ export function getImageUrl(name: string): string {
 };
 
 export function getJsonUrl(name: string): string {
-    return new URL(`./assets/jsons/${name}.json`, import.meta.url).href; 
+    return new URL(`./assets/jsons/${name}`, import.meta.url).href; 
 };
 
 export async function delay(s: number) {

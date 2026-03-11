@@ -1,6 +1,5 @@
 import { Dexie, type EntityTable } from "dexie"
-import script from "../assets/jsons/script.json";
-import users from "../assets/jsons/users.json";
+import { getJsonUrl } from "../utils";
 
 export interface IStoryLine {
 	content: string,
@@ -55,10 +54,15 @@ const db = new Dexie("TheForumDB") as Dexie & {
 db.version(61).stores({
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
-}).upgrade(async (tx) => {
-	await tx.table("story").clear();
-	const newScript: IScriptLine[] = (script as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
-	await tx.table("story").bulkAdd(newScript);
+}).upgrade(async () => {
+	await db.story.clear();
+	let response = await fetch(getJsonUrl("script.json"));
+	if (!response.ok) {
+		console.log("Script could not be fetched");
+		return;
+	}
+	const newScript: IScriptLine[] = (await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.story.bulkAdd(newScript);
 	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
 	// if (users.length != 0) {
 	// 	const lastSave = await tx.table("story")
@@ -68,17 +72,32 @@ db.version(61).stores({
 	// 		.first() as IScriptLine;
 	// 	users[0].savedStoryId=lastSave.id;
 	// }
-	await tx.table("users").clear();
-	const newUserst: IUser[] = (users as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
-	await tx.table("users").bulkAdd(newUserst);
+	await db.users.clear();
+	response = await fetch(getJsonUrl("users.json"));
+	if (!response.ok) {
+		console.log("Users could not be fetched");
+		return;
+	}
+	const newUserst: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.users.bulkAdd(newUserst);
 	// if (users.length != 0) {
 	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
 	// }
 })
 
-db.on("populate", async (tx) => {
-	await tx.table("story").bulkAdd(script as IScriptLine[]);
-	await tx.table("users").bulkAdd(users as IUser[]);
+db.on("populate", async () => {
+	let response = await fetch(getJsonUrl("script.json"));
+	if (!response.ok) {
+		console.log("Script could not be fetched");
+		return;
+	}
+	await db.story.bulkAdd(await response.json() as IScriptLine[]);
+	response = await fetch(getJsonUrl("users.json"));
+	if (!response.ok) {
+		console.log("Users could not be fetched");
+		return;
+	}
+	await db.users.bulkAdd(await response.json() as IUser[]);
 })
 
 export { db }
