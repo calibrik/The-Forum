@@ -101,6 +101,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const isStoryNavRef = useRef<boolean>(false);
     const pageInitResolveRef = useRef<() => void>(undefined);
     const currHintId = useRef<string>("NON_EXISTENT_ID");
+    const currStoryId=useRef<number>(1);
     const savedStoryId = useRef<number>(1);
     const destRef = useRef<IDestination>(undefined);
     const location = useLocation();
@@ -184,7 +185,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             return false;
         e.currentTarget.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
         // currHintId.current = "NON_EXISTENT_ID";
-        showStory(savedStoryId.current + 1);
+        showStory(currStoryId.current + 1);
         return true;
     }
 
@@ -192,6 +193,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (!scl)
             return;
         savedStoryId.current = id;
+        currStoryId.current=id;
         destRef.current = scl.dest;
         if (scl.hintActionPos) {
             let hintScl = await db.story.get(id + scl.hintActionPos);
@@ -290,6 +292,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         console.log("play anim")
         master.play();
         await master;
+        currStoryId.current=id-1;
         masterRef.current = undefined;
     });
 

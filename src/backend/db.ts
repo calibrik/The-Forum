@@ -51,16 +51,12 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(61).stores({
+db.version(62).stores({
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
 }).upgrade(async () => {
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
-	if (!response.ok) {
-		console.log("Script could not be fetched");
-		return;
-	}
 	const newScript: IScriptLine[] = (await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
 	await db.story.bulkAdd(newScript);
 	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
@@ -74,10 +70,6 @@ db.version(61).stores({
 	// }
 	await db.users.clear();
 	response = await fetch(getJsonUrl("users.json"));
-	if (!response.ok) {
-		console.log("Users could not be fetched");
-		return;
-	}
 	const newUserst: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
 	await db.users.bulkAdd(newUserst);
 	// if (users.length != 0) {
@@ -87,16 +79,8 @@ db.version(61).stores({
 
 db.on("populate", async () => {
 	let response = await fetch(getJsonUrl("script.json"));
-	if (!response.ok) {
-		console.log("Script could not be fetched");
-		return;
-	}
 	await db.story.bulkAdd(await response.json() as IScriptLine[]);
 	response = await fetch(getJsonUrl("users.json"));
-	if (!response.ok) {
-		console.log("Users could not be fetched");
-		return;
-	}
 	await db.users.bulkAdd(await response.json() as IUser[]);
 })
 
