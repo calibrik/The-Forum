@@ -16,12 +16,25 @@ interface IStoryProvider {
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     getChildLevel: () => number;
     // resetAnims: () => void
-    initReady: (level:number) => void
+    initReady: (level: number) => void
     resumeStory: (e: React.MouseEvent) => boolean
     // savedStoryId: RefObject<number>
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: () => void
     customizeStory: (nickname: string) => Promise<void>
+    hintNavPath: () => void,
+    goBackHintNavPath: () => void,
+    resetHintNavPath:(level:number)=>void
+}
+
+const NAVIGATE_TO_PAGE: Record<string, Record<number, string[]>> = {
+    "/user": {
+        1: ["user-icon-text"],
+        2: ["user-posts"]
+    },
+    "/chat/test": {
+        1: ["menu-icon-text", "chat-menu"]
+    },
 }
 
 const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
@@ -101,18 +114,19 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const isStoryNavRef = useRef<boolean>(false);
     const pageInitResolveRef = useRef<() => void>(undefined);
     const currHintId = useRef<string>("NON_EXISTENT_ID");
-    const currStoryId=useRef<number>(1);
+    const currStoryId = useRef<number>(1);
     const savedStoryId = useRef<number>(1);
     const destRef = useRef<IDestination>(undefined);
     const location = useLocation();
     const userState = useUserState();
+    const navPathCache = useRef<{ mismatchedLevel: number, index: number }>({ mismatchedLevel: 0, index: -1 });
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
     }
 
-    function initReady(level:number) {
-        if (level!=destRef.current?.level)
+    function initReady(level: number) {
+        if (level != destRef.current?.level)
             return;
         if (pageInitResolveRef.current)
             pageInitResolveRef.current();
@@ -120,6 +134,53 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     function isStoryGoing() {
         return masterRef.current != undefined;
+    }
+
+    function hint(id: string) {
+        let el = document.querySelector(`#${id}`);
+        if (!el) {
+            console.error(`No element with id ${id}`)
+            return;
+        }
+        el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
+    }
+
+    function hintNavPath() {
+        const targetDest = !destRef.current ? { level: 1, where: "/start" } : destRef.current;
+        if (navPathCache.current.index != -1) {
+            hint(NAVIGATE_TO_PAGE[targetDest.where][navPathCache.current.mismatchedLevel][navPathCache.current.index++]);
+            return;
+        }
+        const location = window.location.pathname.split('/').slice(0, targetDest.level + 1);
+        const targetLocation = targetDest.where.split('/');
+        let mismatchedLevel = 0;
+        if (location.length == targetLocation.length) {
+            for (; mismatchedLevel < location.length; mismatchedLevel++) {
+                if (location[mismatchedLevel] != targetLocation[mismatchedLevel])
+                    break;
+            }
+        }
+        else {
+            mismatchedLevel = targetDest.level + 1;
+        }
+        navPathCache.current = { mismatchedLevel, index: 0 };
+        hint(NAVIGATE_TO_PAGE[targetDest.where][navPathCache.current.mismatchedLevel][navPathCache.current.index++]);
+    }
+
+    function goBackHintNavPath() {
+        if (destRef.current && navPathCache.current.index != -1) {
+            const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
+            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+            hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][--navPathCache.current.index]);
+        }
+    }
+
+    function resetHintNavPath(level: number) {
+        if (!destRef.current||destRef.current.level!=level)
+            return; 
+        const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
+        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+        navPathCache.current.index = -1;
     }
 
     const resetAnims = contextSafe(() => {
@@ -162,13 +223,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 savedStoryId.current = action.storyId ?? 1;
                 break;
             case "HINT":
-                let el = document.querySelector(`#${action.id ?? ""}`);
-                if (!el) {
-                    console.error(`No element with id ${action.id}`)
-                    return;
-                }
+                hint(action.id as string);
                 currHintId.current = action.id as string ?? "NON_EXISTENT_ID";
-                el.classList.add(currHintId.current.includes("text") ? styles.hintText : styles.hint);
                 break;
             case "APPLY_STYLE_TO_BOX":
                 typingBoxes.current[action.id as number].current?.applyStyle(action.style ?? {});
@@ -193,7 +249,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (!scl)
             return;
         savedStoryId.current = id;
-        currStoryId.current=id;
+        currStoryId.current = id;
         destRef.current = scl.dest;
         if (scl.hintActionPos) {
             let hintScl = await db.story.get(id + scl.hintActionPos);
@@ -225,8 +281,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     async function customizeStory(nickname: string) {
         let story = await db.story.toArray();
-        let users=await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
-        const regex=new RegExp(users[0].nickname, 'g');
+        let users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
+        const regex = new RegExp(users[0].nickname, 'g');
         for (let scl of story) {
             if (!scl.storyline)
                 continue;
@@ -292,7 +348,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         console.log("play anim")
         master.play();
         await master;
-        currStoryId.current=id-1;
+        currStoryId.current = id - 1;
         masterRef.current = undefined;
     });
 
@@ -321,9 +377,20 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     return (
         <StoryContext.Provider value={{
-            setTypingBoxes, showStory, getAnim, initReady, resumeStory, recoverCheckpoint, customizeStory, recoverStoryOnPage, getChildLevel() {
+            setTypingBoxes,
+            showStory,
+            getAnim,
+            initReady,
+            resumeStory,
+            recoverCheckpoint,
+            customizeStory,
+            recoverStoryOnPage,
+            getChildLevel() {
                 return destRef.current?.level ?? 0;
             },
+            hintNavPath,
+            goBackHintNavPath,
+            resetHintNavPath
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
@@ -354,7 +421,7 @@ export function useStoryInit() {
         if (ticket != loopTicket.current)
             return;
         story.initReady(childLevel);
-        if (childLevel == story.getChildLevel())
+        if (childLevel == story.getChildLevel())//insane shit, pass child level to recovery to build nav path correctly
             story.recoverStoryOnPage();
     }
 

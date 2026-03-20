@@ -49,7 +49,7 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
                 <span className={styles.rank}>Copper III</span>
             </div>
             <div className={styles.accSection}>
-                <span className={styles.lastGames}>Match History:</span>
+                <span className={styles.lastGames}>Recent Matches:</span>
                 <ul className={styles.lastGamesList}>
                     <li className={styles.loseGame}>Defeat 0 - 13</li>
                     <li className={styles.loseGame}>Defeat 5 - 13</li>
@@ -127,7 +127,8 @@ export const User: FC<IUserPageProps> = (_) => {
                             <Menu options={{
                                 posts: {
                                     name: "Posts",
-                                    destination: ""
+                                    destination: "",
+                                    id:"user-posts"
                                 },
                                 comments: {
                                     name: "Comments",

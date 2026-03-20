@@ -13,9 +13,17 @@ export interface IEffect {
 	name: string,
 }
 
+export interface IPost{
+	authorId:number,
+	subforumId:number,
+	content:string,
+	imageName?:string
+}
+
 export interface IAction {
 	name: string,
 	dest?: IDestination
+	navigate?:boolean
 	storyId?: number
 	id?: string | number
 	style?: React.CSSProperties
@@ -51,7 +59,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(62).stores({
+db.version(63).stores({
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
 }).upgrade(async () => {

@@ -6,6 +6,7 @@ interface IOption {
     name: string;
     /**without /*/
     destination?: string;
+    id?:string
 }
 
 interface IMenuProps {
@@ -48,10 +49,7 @@ export const Menu: FC<IMenuProps> = (props) => {
 
     let optionElements: ReactNode[] = [];
     for (const id of ids.current) {
-        if (id == activeOption)
-            optionElements.push(<div onClick={onOptionSelect} key={id} data-optionid={id} className={`${styles.option} ${styles.active}`}>{props.options[id].name}</div>)
-        else
-            optionElements.push(<div onClick={onOptionSelect} key={id} data-optionid={id} className={`${styles.option}`}>{props.options[id].name}</div>)
+        optionElements.push(<div onClick={onOptionSelect} id={props.options[id].id} key={id} data-optionid={id} className={`${styles.option} ${id == activeOption?styles.active:""}`}>{props.options[id].name}</div>)
     }
 
     return (
