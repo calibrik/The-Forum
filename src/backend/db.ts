@@ -59,7 +59,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(63).stores({
+db.version(67).stores({
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
 }).upgrade(async () => {

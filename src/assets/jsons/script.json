@@ -102,9 +102,9 @@
     {
         "action": {
             "name": "NAVIGATE",
+            "navigate":true,
             "dest": {
                 "where": "/user",
-                "navigate":true,
                 "level": 1
             }
         },
@@ -131,8 +131,9 @@
         "isActionAwait": true,
         "dest": {
             "where": "/user",
-            "level": 2
-        }
+            "level": 1
+        },
+        "hintActionPos":-1
     },
     {
         "action": {
@@ -224,36 +225,10 @@
     {
         "action": {
             "name": "NAVIGATE",
+            "navigate":false,
             "dest": {
-                "where": "SAME",
-                "level": 0
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "name": "HINT",
-            "id": "menu-icon-text"
-        },
-        "isActionAwait": true,
-        "offset": ">"
-    },
-    {
-        "action": {
-            "name": "HINT",
-            "id": "chat-menu"
-        },
-        "isActionAwait": true,
-        "offset": ">"
-    },
-    {
-        "action": {
-            "name": "NAVIGATE",
-            "dest": {
-                "where": "/chat",
-                "navigate":false,
-                "level": 1
+                "where": "/chat/test",
+                "level": 2
             }
         },
         "offset": ">"

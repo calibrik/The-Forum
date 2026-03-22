@@ -11,20 +11,17 @@ import { useUserState } from "./UserAuth";
 interface IStoryProviderProps {
 };
 interface IStoryProvider {
-    setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[]) => void,
+    setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) => void,
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
-    getChildLevel: () => number;
-    // resetAnims: () => void
     initReady: (level: number) => void
     resumeStory: (e: React.MouseEvent) => boolean
-    // savedStoryId: RefObject<number>
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
-    recoverStoryOnPage: () => void
+    recoverStoryOnPage: (level: number) => void
     customizeStory: (nickname: string) => Promise<void>
-    hintNavPath: () => void,
     goBackHintNavPath: () => void,
-    resetHintNavPath:(level:number)=>void
+    goForwardHintNavPath: () => void,
+    hintNavPath: () => void
 }
 
 const NAVIGATE_TO_PAGE: Record<string, Record<number, string[]>> = {
@@ -33,7 +30,8 @@ const NAVIGATE_TO_PAGE: Record<string, Record<number, string[]>> = {
         2: ["user-posts"]
     },
     "/chat/test": {
-        1: ["menu-icon-text", "chat-menu"]
+        1: ["menu-icon-text", "chat-menu"],
+        2: ["test-chat"]
     },
 }
 
@@ -145,26 +143,28 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
     }
 
+    function goForwardHintNavPath() {
+        if (destRef.current && navPathCache.current.index != -1) {
+            const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
+            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+            hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][++navPathCache.current.index]);
+        }
+    }
+
     function hintNavPath() {
-        const targetDest = !destRef.current ? { level: 1, where: "/start" } : destRef.current;
-        if (navPathCache.current.index != -1) {
-            hint(NAVIGATE_TO_PAGE[targetDest.where][navPathCache.current.mismatchedLevel][navPathCache.current.index++]);
+        if (!destRef.current || navPathCache.current.index != -1) {
             return;
         }
-        const location = window.location.pathname.split('/').slice(0, targetDest.level + 1);
-        const targetLocation = targetDest.where.split('/');
+        const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1);
+        const targetLocation = destRef.current.where.split('/');
         let mismatchedLevel = 0;
-        if (location.length == targetLocation.length) {
-            for (; mismatchedLevel < location.length; mismatchedLevel++) {
-                if (location[mismatchedLevel] != targetLocation[mismatchedLevel])
-                    break;
-            }
-        }
-        else {
-            mismatchedLevel = targetDest.level + 1;
+        const minLength = Math.min(location.length, targetLocation.length);
+        for (; mismatchedLevel < minLength; mismatchedLevel++) {
+            if (location[mismatchedLevel] != targetLocation[mismatchedLevel])
+                break;
         }
         navPathCache.current = { mismatchedLevel, index: 0 };
-        hint(NAVIGATE_TO_PAGE[targetDest.where][navPathCache.current.mismatchedLevel][navPathCache.current.index++]);
+        hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index]);
     }
 
     function goBackHintNavPath() {
@@ -175,9 +175,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         }
     }
 
-    function resetHintNavPath(level: number) {
-        if (!destRef.current||destRef.current.level!=level)
-            return; 
+    function resetHintNavPath() {
+        if (!destRef.current || navPathCache.current.index == -1)
+            return;
         const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
         document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
         navPathCache.current.index = -1;
@@ -209,12 +209,15 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             case "NAVIGATE":
                 isStoryNavRef.current = true;
                 destRef.current = action.dest;
-                if (action.dest?.where != "SAME") {
+                if (action.navigate) {
                     let p = waitForInit();
                     navigate(action.dest?.where ?? "");
                     if (action.dest?.level == 0)
                         window.dispatchEvent(new Event("signalLevel0"))
                     await p;
+                }
+                else {
+                    hintNavPath();
                 }
                 isStoryNavRef.current = false;
                 break;
@@ -260,20 +263,24 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         navigate(scl.dest?.where ?? "");
     }
 
-    function recoverStoryOnPage() {
-        if (isStoryNavRef.current || !userState.isRealLoggedIn.current)
+    function recoverStoryOnPage(level: number) {
+        if (!destRef.current || isStoryNavRef.current || !userState.isRealLoggedIn.current)
             return;
+        if (level != destRef.current.level) {
+            hintNavPath();
+            return;
+        }
+        resetHintNavPath();
         if (destRef.current && destRef.current.level > 0) {
             const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
             const targetLocation = destRef.current.where.split('/').slice(0, destRef.current.level + 1).join('/');
-            if (location != targetLocation)
+            if (location != targetLocation) {
+                hintNavPath();
                 return;
+            }
         }
         if (currHintId.current !== "NON_EXISTENT_ID") {
-            processAction({
-                name: "HINT",
-                id: currHintId.current
-            });
+            hint(currHintId.current);
             return;
         }
         showStory(savedStoryId.current)
@@ -360,8 +367,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         return EFFECTS_MAP[anim](typingBoxes);
     })
 
-    function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[]) {
-        typingBoxes.current = tbs;
+    function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) {
+        if (level == destRef.current?.level)
+            typingBoxes.current = tbs;
     }
 
     useEffect(() => {
@@ -385,12 +393,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverCheckpoint,
             customizeStory,
             recoverStoryOnPage,
-            getChildLevel() {
-                return destRef.current?.level ?? 0;
-            },
-            hintNavPath,
             goBackHintNavPath,
-            resetHintNavPath
+            goForwardHintNavPath,
+            hintNavPath
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
@@ -413,17 +418,21 @@ export function useStoryInit() {
     const loopTicket = useRef<number>(0);
 
     async function storyInit(childLevel: number, typingBoxes: RefObject<ITypingTextBoxHandle | null>[], pageInit?: () => Promise<void> | void) {
+        console.log(childLevel);
         loopTicket.current++;
         const ticket = loopTicket.current;
         if (pageInit)
             await pageInit();
-        story.setTypingBoxes(typingBoxes);
         if (ticket != loopTicket.current)
             return;
+        story.setTypingBoxes(typingBoxes, childLevel);
         story.initReady(childLevel);
-        if (childLevel == story.getChildLevel())//insane shit, pass child level to recovery to build nav path correctly
-            story.recoverStoryOnPage();
+        // story.hintNavPath();
+        story.recoverStoryOnPage(childLevel);
     }
 
     return storyInit;
 }
+
+//consider killing the orphan structure maybe, or
+//hint on maximum child and reset if level is found

@@ -6,14 +6,14 @@ import { useUserState } from "../providers/UserAuth";
 import { useStory } from "../providers/StoryProvider";
 import { useGSAP } from "@gsap/react";
 
-interface ISideMenuProps {};
+interface ISideMenuProps { };
 
 export const SideMenu: FC<ISideMenuProps> = (_) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
-    const userState=useUserState();
-    const story=useStory();
+    const userState = useUserState();
+    const story = useStory();
     const { contextSafe } = useGSAP();
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
@@ -26,31 +26,31 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         navigate(dest);
     }
 
-    function onLogout(e: React.MouseEvent<HTMLDivElement>){
+    function onLogout(e: React.MouseEvent<HTMLDivElement>) {
         e.preventDefault();
         setIsOpen(false);
-        userState.userLoggedIn.current="";
+        userState.userLoggedIn.current = "";
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/login");
     }
 
-    const onRealLogout=contextSafe(async (e: React.MouseEvent)=>{
+    const onRealLogout = contextSafe(async (e: React.MouseEvent) => {
         e.preventDefault();
         await story.getAnim("FADE_OUT");
         setIsOpen(false);
-        userState.userLoggedIn.current="";
-        userState.isRealLoggedIn.current=false;
+        userState.userLoggedIn.current = "";
+        userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/");
         await story.getAnim("FADE_IN");
     })
 
-    const toggleOpen=useCallback(()=>{
-        setIsOpen((p)=>!p);
-    },[]);
+    const toggleOpen = useCallback(() => {
+        setIsOpen((p) => !p);
+    }, []);
 
     function onBlur(e: React.FocusEvent) {
-        if (!e.currentTarget.contains(e.relatedTarget)&&!e.relatedTarget?.classList.contains("toggle-sidemenu-button")) {
+        if (!e.currentTarget.contains(e.relatedTarget) && !e.relatedTarget?.classList.contains("toggle-sidemenu-button")) {
             setIsOpen(false);
         }
     }
@@ -58,6 +58,10 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     useEffect(() => {
         if (isOpen) {
             sideMenuRef.current?.focus();
+            story.goForwardHintNavPath();
+        }
+        else {
+            story.goBackHintNavPath();
         }
     }, [isOpen])
 
