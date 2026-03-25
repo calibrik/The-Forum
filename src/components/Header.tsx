@@ -61,7 +61,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                             <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                         </div>
                         : ""}
-                    <Person onClick={() => navigate("/user")} interactive className={`${styles.person} ${styles.icon}`} />
+                    <Person onClick={() => navigate("/user")} id="user-icon-text" interactive className={`${styles.person} ${styles.icon}`} />
                 </div>
             </div>
         </>

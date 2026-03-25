@@ -1,10 +1,17 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import styles from "../scss/subforumMembersPage.module.scss";
 import { SMEntry } from "../components/SMEntry";
 import { Spinner } from "../components/Spinner";
+import { useStoryInit } from "../providers/StoryProvider";
 interface ISubforumMembersProps { };
 
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
+    const storyInit = useStoryInit();
+
+    useEffect(() => {
+        storyInit(2, []);
+    }, [])
+
     return (
         <div className={styles.container}>
             <div className={styles.section}>

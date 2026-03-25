@@ -17,22 +17,22 @@ interface IAccInfoProps {
     nickname: string
 };
 interface IAccInfoHandle {
-    toggle:()=>void
- };
+    toggle: () => void
+};
 
 export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const divRef=useRef<HTMLDivElement>(null);
+    const divRef = useRef<HTMLDivElement>(null);
 
     function onBlur(e: React.FocusEvent) {
-        if (!e.currentTarget.contains(e.relatedTarget)&&!e.relatedTarget?.classList.contains(styles.accLink)) {
+        if (!e.currentTarget.contains(e.relatedTarget) && !e.relatedTarget?.classList.contains(styles.accLink)) {
             setIsOpen(false);
         }
     }
 
-    useImperativeHandle(ref,()=>({
+    useImperativeHandle(ref, () => ({
         toggle() {
-            setIsOpen((p)=>!p);
+            setIsOpen((p) => !p);
         }
     }))
 
@@ -75,9 +75,9 @@ export const User: FC<IUserPageProps> = (_) => {
     const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
     const storyInit = useStoryInit();
     const typingBoxRef = useRef<ITypingTextBoxHandle>(null);
-    const accInfoRef=useRef<IAccInfoHandle>(null);
+    const accInfoRef = useRef<IAccInfoHandle>(null);
 
-    function onAccLinkClick(e:React.MouseEvent){
+    function onAccLinkClick(e: React.MouseEvent) {
         story.resumeStory(e);
         accInfoRef.current?.toggle();
     }
@@ -107,41 +107,38 @@ export const User: FC<IUserPageProps> = (_) => {
                 <img src={getImageUrl(user?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>
                     {user ?
-                        <>
-                            <div className={styles.headerContainer}>
-                                <div className={styles.titleHeaderContainer}>
-                                    <h1 className={styles.title}>u/{user.nickname}</h1>
-                                    <div className={styles.onlineContainer}>
-                                        <Dot className={styles.onlineIcon} />
-                                        <span className={styles.followerCount}>Online</span>
-                                    </div>
+                        <div className={styles.headerContainer}>
+                            <div className={styles.titleHeaderContainer}>
+                                <h1 className={styles.title}>u/{user.nickname}</h1>
+                                <div className={styles.onlineContainer}>
+                                    <Dot className={styles.onlineIcon} />
+                                    <span className={styles.followerCount}>Online</span>
                                 </div>
-                                <p className={styles.description}>{user.description}</p>
-                                {user.savedStoryId ?
-                                    <div className={styles.accDiv}>
-                                        <span tabIndex={-1} onClick={onAccLinkClick} id="cs-profile-text" className={styles.accLink}>My SC2 profile</span>
-                                        <AccInfo ref={accInfoRef} nickname={user.nickname} />
-                                    </div>
-                                    : ""}
                             </div>
-                            <Menu options={{
-                                posts: {
-                                    name: "Posts",
-                                    destination: "",
-                                    id:"user-posts"
-                                },
-                                comments: {
-                                    name: "Comments",
-                                    destination: "comments"
-                                },
-                                settings: {
-                                    name: "Settings",
-                                },
-                            }} />
-                        </>
+                            <p className={styles.description}>{user.description}</p>
+                            {user.savedStoryId ?
+                                <div className={styles.accDiv}>
+                                    <span tabIndex={-1} onClick={onAccLinkClick} id="cs-profile-text" className={styles.accLink}>My SC2 profile</span>
+                                    <AccInfo ref={accInfoRef} nickname={user.nickname} />
+                                </div>
+                                : ""}
+                        </div>
                         : <Spinner />}
+                    <Menu options={{
+                        posts: {
+                            name: "Posts",
+                            destination: "",
+                            id: "user-posts"
+                        },
+                        comments: {
+                            name: "Comments",
+                            destination: "comments"
+                        },
+                        settings: {
+                            name: "Settings",
+                        },
+                    }} />
                 </div>
-
                 <div className={styles.contentContainer}>
                     <Outlet context={{ user }} />
                 </div>

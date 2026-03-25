@@ -10,6 +10,7 @@ import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
+import { useStoryInit } from "../providers/StoryProvider";
 
 interface IChatMessage {
     author: string;
@@ -87,7 +88,7 @@ const Message: FC<IMessageProps> = (props) => {
     return (
         <div className={`${styles.messageDiv} ${props.isPinged ? styles.pinged : ""}`}>
             <div className={styles.authorDiv}>
-                <img src={getImageUrl("placeholder")} className={styles.authorPfp} />
+                <img src={getImageUrl("placeholder.png")} className={styles.authorPfp} />
                 <span className={styles.authorName}>{props.message.author}</span>
                 <span className={styles.messageTime}>{new Intl.DateTimeFormat('en-US', {
                     hour: 'numeric',
@@ -132,9 +133,10 @@ export const Chat: FC<IChatProps> = () => {
     ];
     const typing: string[] = ["sdfsd", "asdfsdf"];
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const storyInit = useStoryInit();
 
     useEffect(() => {
-        chatContainerRef.current?.scrollTo({ behavior: "smooth",top: chatContainerRef.current.scrollHeight });
+        chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
     }, [messages]);
 
     function onSendMessage(e: React.FormEvent<HTMLFormElement>) {
@@ -144,6 +146,10 @@ export const Chat: FC<IChatProps> = () => {
         console.log("Sent message: ", message);
         e.currentTarget.reset();
     }
+
+    useEffect(() => {
+        storyInit(2, []);
+    }, [])
 
     return (
         <div className={styles.container}>

@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import styles from "../scss/postPage.module.scss"
 import buttonStyles from "../scss/baseButton.module.scss";
 import { SendIcon } from "../components/Icons";
@@ -10,14 +10,16 @@ import { BackButton } from "../components/BackButton";
 import { getImageUrl } from "../utils";
 import { useNavigate } from "react-router";
 import { Spinner } from "../components/Spinner";
+import { useStoryInit } from "../providers/StoryProvider";
 interface IPostPageProps { };
 interface IComment {
     comment?: string
 }
 
 export const PostPage: FC<IPostPageProps> = (_) => {
-    let navigate=useNavigate();
+    let navigate = useNavigate();
     const commentsAmount: number = 10;
+    const storyInit = useStoryInit();
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -27,15 +29,19 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         e.currentTarget.reset();
     }
 
+    useEffect(() => {
+        storyInit(2, []);
+    }, [])
+
     return (
         <div className={styles.container}>
             <div className={styles.postContainer}>
                 <div className={styles.returnContainer}>
                     <BackButton />
-                    <img onClick={()=>navigate("/subforum")} src={getImageUrl("placeholder.png")} alt="" className={styles.subforumPfp} />
+                    <img onClick={() => navigate("/subforum")} src={getImageUrl("placeholder.png")} alt="" className={styles.subforumPfp} />
                     <div className={styles.authorContainer}>
-                        <span onClick={()=>navigate("/subforum")} className={styles.subforumName}>f/subforum</span>
-                        <span onClick={()=>navigate("/user")} className={styles.username}>u/user</span>
+                        <span onClick={() => navigate("/subforum")} className={styles.subforumName}>f/subforum</span>
+                        <span onClick={() => navigate("/user")} className={styles.username}>u/user</span>
                     </div>
                 </div>
                 <h1 className={styles.postTitle}>Title</h1>
@@ -49,7 +55,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                         <Comment key={i} />
                     ))
                 }
-                <Spinner/>
+                <Spinner />
             </div>
             <form className={styles.inputContainer} onSubmit={onSubmit}>
                 <InputField name="comment" className={styles.input} placeholder="Add comment" type="text" />

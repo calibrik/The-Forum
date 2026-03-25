@@ -21,7 +21,6 @@ interface IStoryProvider {
     customizeStory: (nickname: string) => Promise<void>
     goBackHintNavPath: () => void,
     goForwardHintNavPath: () => void,
-    hintNavPath: () => void
 }
 
 const NAVIGATE_TO_PAGE: Record<string, Record<number, string[]>> = {
@@ -99,40 +98,11 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 }
 
 
-
-const StoryContext = createContext<IStoryProvider | undefined>(undefined);
-
-export const StoryProvider: FC<IStoryProviderProps> = (_) => {
-    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);
-    const isMounted = useRef<boolean>(true);
-    const { contextSafe } = useGSAP();
-    const loopTicket = useRef<number>(0);
-    const navigate = useNavigate();
-    const masterRef = useRef<gsap.core.Timeline>(undefined);
-    const isStoryNavRef = useRef<boolean>(false);
-    const pageInitResolveRef = useRef<() => void>(undefined);
-    const currHintId = useRef<string>("NON_EXISTENT_ID");
-    const currStoryId = useRef<number>(1);
-    const savedStoryId = useRef<number>(1);
-    const destRef = useRef<IDestination>(undefined);
-    const location = useLocation();
-    const userState = useUserState();
-    const navPathCache = useRef<{ mismatchedLevel: number, index: number }>({ mismatchedLevel: 0, index: -1 });
-
-    function waitForInit() {
-        return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
-    }
-
-    function initReady(level: number) {
-        if (level != destRef.current?.level)
-            return;
-        if (pageInitResolveRef.current)
-            pageInitResolveRef.current();
-    }
-
-    function isStoryGoing() {
-        return masterRef.current != undefined;
-    }
+function useHintNavPath() {
+    const locationRef = useRef<IDestination>(undefined);//current location for the story
+    const currIndex=useRef<number>(-1);//if index!=-1 that means nav path is active
+    // const currLevel=useRef<number>(0);//its ass cuz hinting won't react to lower level change
+    const currMismatchedLevel=useRef<number>(0);
 
     function hint(id: string) {
         let el = document.querySelector(`#${id}`);
@@ -144,71 +114,123 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }
 
     function goForwardHintNavPath() {
-        if (destRef.current && navPathCache.current.index != -1) {
-            const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
-            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][++navPathCache.current.index]);
+        if (locationRef.current && currIndex.current != -1 && NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current].length > 1) {
+            const ids = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current];
+            document.querySelector(`#${ids[currIndex.current]}`)?.classList.remove(ids[currIndex.current].includes("text") ? styles.hintText : styles.hint);
+            if (++currIndex.current >= ids.length) {
+                currIndex.current = -1;
+                return;
+            }
+            hint(ids[currIndex.current]);
+
         }
     }
 
-    function hintNavPath() {
-        if (!destRef.current || navPathCache.current.index != -1) {
+    function hintNavPath(target?:IDestination) {
+        if (!target||currIndex.current != -1) {
             return;
         }
-        const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1);
-        const targetLocation = destRef.current.where.split('/');
+        locationRef.current=target;
+        const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1);
+        const targetLocation = locationRef.current.where.split('/');
         let mismatchedLevel = 0;
         const minLength = Math.min(location.length, targetLocation.length);
         for (; mismatchedLevel < minLength; mismatchedLevel++) {
             if (location[mismatchedLevel] != targetLocation[mismatchedLevel])
                 break;
         }
-        navPathCache.current = { mismatchedLevel, index: 0 };
-        hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index]);
+        if (mismatchedLevel > locationRef.current.level)
+            return;
+        currMismatchedLevel.current=mismatchedLevel;
+        currIndex.current=0
+        hint(NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][currIndex.current]);
     }
 
     function goBackHintNavPath() {
-        if (destRef.current && navPathCache.current.index != -1) {
-            const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
-            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            hint(NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][--navPathCache.current.index]);
+        if (locationRef.current && currIndex.current != -1 && NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current].length > 1) {
+            const ids = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current];
+            document.querySelector(`#${ids[currIndex.current]}`)?.classList.remove(ids[currIndex.current].includes("text") ? styles.hintText : styles.hint);
+            hint(NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][--currIndex.current]);
         }
     }
 
     function resetHintNavPath() {
-        if (!destRef.current || navPathCache.current.index == -1)
+        if (!locationRef.current || currIndex.current == -1)
             return;
-        const id = NAVIGATE_TO_PAGE[destRef.current.where][navPathCache.current.mismatchedLevel][navPathCache.current.index];
+        const id = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][currIndex.current];
         document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-        navPathCache.current.index = -1;
+        currIndex.current = -1;
+    }
+
+    return {hint,hintNavPath,goBackHintNavPath,goForwardHintNavPath,resetHintNavPath};
+}
+
+
+
+const StoryContext = createContext<IStoryProvider | undefined>(undefined);
+
+export const StoryProvider: FC<IStoryProviderProps> = (_) => {
+    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
+    const isMounted = useRef<boolean>(true);//is provider mounted
+    const { contextSafe } = useGSAP();
+    const loopTicket = useRef<number>(0);//protection against strict mode
+    const navigate = useNavigate();
+    const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
+    const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
+    const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
+    const currHintId = useRef<string>("NON_EXISTENT_ID");//holds last hinted id
+    const currStoryId = useRef<number>(1);//used for continuing story after user pressed hint
+    const savedStoryId = useRef<number>(1);//used as a checkpoint to recover story from
+    const locationRef = useRef<IDestination>(undefined);//current location for the story
+    const location = useLocation();
+    const userState = useUserState();
+    const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet
+    const {hint,hintNavPath,goBackHintNavPath,goForwardHintNavPath,resetHintNavPath}=useHintNavPath();
+
+    function waitForInit() {
+        return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
+    }
+
+    function initReady(level: number) {
+        if (level != locationRef.current?.level)
+            return;
+        if (pageInitResolveRef.current)
+            pageInitResolveRef.current();
+    }
+
+    function isStoryGoing() {
+        return masterRef.current != undefined;
     }
 
     const resetAnims = contextSafe(() => {
-        if (!masterRef.current || isStoryNavRef.current)
+        if (isStoryNavRef.current)
             return;
-        if (destRef.current) {
-            const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
-            const targetLocation = destRef.current.where.split('/').slice(0, destRef.current.level + 1).join('/');
+        if (locationRef.current) {
+            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
+            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
             if (location == targetLocation)
                 return;
         }
-        masterRef.current.kill();
-        masterRef.current = undefined;
-        for (let tb of typingBoxes.current) {
-            tb.current?.reset();
+        isStoryRecovered.current = false;
+        if (masterRef.current) {
+            masterRef.current.kill();
+            masterRef.current = undefined;
+            gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#dissapear,#appContainer,#contentDiv", {
+                clearProps: "all"
+            })
+            for (let tb of typingBoxes.current) {
+                tb.current?.reset();
+            }
         }
         typingBoxes.current = [];
         document.querySelector(`#${currHintId.current}`)?.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
-        gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#dissapear,#appContainer,#contentDiv", {
-            clearProps: "all"
-        })
     });
 
     async function processAction(action: IAction) {
         switch (action.name) {
             case "NAVIGATE":
                 isStoryNavRef.current = true;
-                destRef.current = action.dest;
+                locationRef.current = action.dest;
                 if (action.navigate) {
                     let p = waitForInit();
                     navigate(action.dest?.where ?? "");
@@ -217,7 +239,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     await p;
                 }
                 else {
-                    hintNavPath();
+                    hintNavPath(action.dest);
                 }
                 isStoryNavRef.current = false;
                 break;
@@ -253,7 +275,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             return;
         savedStoryId.current = id;
         currStoryId.current = id;
-        destRef.current = scl.dest;
+        locationRef.current = scl.dest;
         if (scl.hintActionPos) {
             let hintScl = await db.story.get(id + scl.hintActionPos);
             currHintId.current = hintScl?.action?.id as string;
@@ -264,21 +286,22 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }
 
     function recoverStoryOnPage(level: number) {
-        if (!destRef.current || isStoryNavRef.current || !userState.isRealLoggedIn.current)
+        if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
-        if (level != destRef.current.level) {
-            hintNavPath();
+        if (level != locationRef.current.level) {
+            hintNavPath(locationRef.current);
             return;
         }
         resetHintNavPath();
-        if (destRef.current && destRef.current.level > 0) {
-            const location = window.location.pathname.split('/').slice(0, destRef.current.level + 1).join('/');
-            const targetLocation = destRef.current.where.split('/').slice(0, destRef.current.level + 1).join('/');
+        if (locationRef.current && locationRef.current.level > 0) {
+            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
+            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
             if (location != targetLocation) {
-                hintNavPath();
+                hintNavPath(locationRef.current);
                 return;
             }
         }
+        isStoryRecovered.current = true;
         if (currHintId.current !== "NON_EXISTENT_ID") {
             hint(currHintId.current);
             return;
@@ -368,7 +391,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     })
 
     function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) {
-        if (level == destRef.current?.level)
+        if (level == locationRef.current?.level)
             typingBoxes.current = tbs;
     }
 
@@ -395,7 +418,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverStoryOnPage,
             goBackHintNavPath,
             goForwardHintNavPath,
-            hintNavPath
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
@@ -427,12 +449,10 @@ export function useStoryInit() {
             return;
         story.setTypingBoxes(typingBoxes, childLevel);
         story.initReady(childLevel);
-        // story.hintNavPath();
         story.recoverStoryOnPage(childLevel);
     }
 
     return storyInit;
 }
 
-//consider killing the orphan structure maybe, or
-//hint on maximum child and reset if level is found
+//hinting from the bottom child doesn't work if parent didn't load the element yet, try top child

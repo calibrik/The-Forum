@@ -21,8 +21,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         if (!dest)
             return;
         setIsOpen(false);
-        if (story.resumeStory(e))
-            return;
+        story.goForwardHintNavPath();
         navigate(dest);
     }
 

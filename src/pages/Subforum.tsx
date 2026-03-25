@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { getImageUrl } from "../utils";
 import { Outlet } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
@@ -6,9 +6,16 @@ import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
 import { Plus } from "../components/Icons";
 import { Menu } from "../components/Menu";
+import { useStoryInit } from "../providers/StoryProvider";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
+    const storyInit = useStoryInit();
+
+    useEffect(() => {
+        storyInit(1, []);
+    }, [])
+
     return (
         <div className={styles.container}>
             <img src={getImageUrl("placeholder.png")} className={styles.pfpBg} />

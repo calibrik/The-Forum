@@ -22,4 +22,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: tables for users, posts, comments
 //TODO: proper db update
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
-//TODO: chain hints (maybe just add navigate to hint, which will calculate how to get from one page to target and hint the path)
+//TODO: smarter hint nav path (replace arrays with functions which will determine the path from particular page)
