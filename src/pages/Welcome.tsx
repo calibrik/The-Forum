@@ -13,7 +13,7 @@ interface IWelcomeProps { };
 export const Welcome: FC<IWelcomeProps> = (_) => {
     const container = useRef<HTMLDivElement>(null);
     const isFlash = useRef<boolean>(false);
-    const tl = useRef<gsap.core.Timeline>(null)
+    const tl = useRef<gsap.core.Timeline>(undefined)
     let navigate=useNavigate();
     const storyInit=useStoryInit();
     const userState=useUserState();
@@ -31,7 +31,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
 
         const rebuildTimeline = contextSafe(() => {
             tl.current?.kill();
-            gsap.set("#text, #button,:root, #header-div, #header-text,#header-input,[data-istransition='true']", {
+            gsap.set("#text, #button,:root, #header-div, #header-text,[data-istransition='true']", {
                 clearProps: "all",
             });
             isFlash.current = false;
@@ -49,12 +49,6 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
                     backgroundColor: textColor,
                     fontFamily: "Courier Prime",
                     color: bgColor,
-                })
-                .set("#header-input", {
-                    borderColor: textColor,
-                    color: textColor,
-                    backgroundColor: bgColor,
-                    fontFamily: "Courier Prime",
                 })
                 .set("#text, #header-text", {
                     color: textColor,

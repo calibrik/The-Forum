@@ -231,6 +231,7 @@
                 "level": 2
             }
         },
+        "isActionAwait": true,
         "offset": ">"
     }
 ]

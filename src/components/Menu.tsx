@@ -47,7 +47,6 @@ export const Menu: FC<IMenuProps> = (props) => {
         };
     }, [])
 
-    console.log(ids.current);
     let optionElements: ReactNode[] = [];
     for (const id of ids.current) {
         optionElements.push(<div onClick={onOptionSelect} id={props.options[id].id} key={id} data-optionid={id} className={`${styles.option} ${id == activeOption?styles.active:""}`}>{props.options[id].name}</div>)

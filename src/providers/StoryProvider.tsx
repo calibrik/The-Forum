@@ -100,9 +100,9 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 
 function useHintNavPath() {
     const locationRef = useRef<IDestination>(undefined);//current location for the story
-    const currIndex=useRef<number>(-1);//if index!=-1 that means nav path is active
+    const currIndex = useRef<number>(-1);//if index!=-1 that means nav path is active
     // const currLevel=useRef<number>(0);//its ass cuz hinting won't react to lower level change
-    const currMismatchedLevel=useRef<number>(0);
+    const currMismatchedLevel = useRef<number>(0);
 
     function hint(id: string) {
         let el = document.querySelector(`#${id}`);
@@ -126,11 +126,11 @@ function useHintNavPath() {
         }
     }
 
-    function hintNavPath(target?:IDestination) {
-        if (!target||currIndex.current != -1) {
+    function hintNavPath(target?: IDestination) {
+        if (!target || currIndex.current != -1) {
             return;
         }
-        locationRef.current=target;
+        locationRef.current = target;
         const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1);
         const targetLocation = locationRef.current.where.split('/');
         let mismatchedLevel = 0;
@@ -141,8 +141,8 @@ function useHintNavPath() {
         }
         if (mismatchedLevel > locationRef.current.level)
             return;
-        currMismatchedLevel.current=mismatchedLevel;
-        currIndex.current=0
+        currMismatchedLevel.current = mismatchedLevel;
+        currIndex.current = 0
         hint(NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][currIndex.current]);
     }
 
@@ -162,7 +162,7 @@ function useHintNavPath() {
         currIndex.current = -1;
     }
 
-    return {hint,hintNavPath,goBackHintNavPath,goForwardHintNavPath,resetHintNavPath};
+    return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath };
 }
 
 
@@ -179,13 +179,14 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
     const currHintId = useRef<string>("NON_EXISTENT_ID");//holds last hinted id
-    const currStoryId = useRef<number>(1);//used for continuing story after user pressed hint
-    const savedStoryId = useRef<number>(1);//used as a checkpoint to recover story from
+    const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
+    const savedStoryId = useRef<number>(1);//points at save action to recover story from
+    const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
     const locationRef = useRef<IDestination>(undefined);//current location for the story
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet
-    const {hint,hintNavPath,goBackHintNavPath,goForwardHintNavPath,resetHintNavPath}=useHintNavPath();
+    const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath } = useHintNavPath();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -211,7 +212,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             if (location == targetLocation)
                 return;
         }
-        isStoryRecovered.current = false;
+        if (isStoryRecovered.current) {
+            currStoryId.current = savedStoryId.current + 1;
+            isStoryRecovered.current = false;
+        }
         if (masterRef.current) {
             masterRef.current.kill();
             masterRef.current = undefined;
@@ -230,6 +234,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         switch (action.name) {
             case "NAVIGATE":
                 isStoryNavRef.current = true;
+                pageStoryId.current = (action.storyId ?? 1) + 1;
+                currHintId.current = "NON_EXISTENT_ID";
                 locationRef.current = action.dest;
                 if (action.navigate) {
                     let p = waitForInit();
@@ -239,6 +245,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     await p;
                 }
                 else {
+                    isStoryRecovered.current = false;
                     hintNavPath(action.dest);
                 }
                 isStoryNavRef.current = false;
@@ -246,6 +253,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             case "SAVE":
                 await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: action.storyId ?? 1 });
                 savedStoryId.current = action.storyId ?? 1;
+                pageStoryId.current = action.storyId ?? 1 + 1;
                 break;
             case "HINT":
                 hint(action.id as string);
@@ -266,7 +274,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             return false;
         e.currentTarget.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
         // currHintId.current = "NON_EXISTENT_ID";
-        showStory(currStoryId.current + 1);
+        showStory(currStoryId.current);
         return true;
     }
 
@@ -274,7 +282,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (!scl)
             return;
         savedStoryId.current = id;
-        currStoryId.current = id;
+        currStoryId.current = id + 1;
+        pageStoryId.current = id + 1;
         locationRef.current = scl.dest;
         if (scl.hintActionPos) {
             let hintScl = await db.story.get(id + scl.hintActionPos);
@@ -292,7 +301,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             hintNavPath(locationRef.current);
             return;
         }
-        resetHintNavPath();
         if (locationRef.current && locationRef.current.level > 0) {
             const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
             const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
@@ -301,12 +309,13 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 return;
             }
         }
+        resetHintNavPath();
         isStoryRecovered.current = true;
         if (currHintId.current !== "NON_EXISTENT_ID") {
             hint(currHintId.current);
             return;
         }
-        showStory(savedStoryId.current)
+        showStory(pageStoryId.current)
     }
 
     async function customizeStory(nickname: string) {
@@ -378,7 +387,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         console.log("play anim")
         master.play();
         await master;
-        currStoryId.current = id - 1;
+        currStoryId.current = id;
         masterRef.current = undefined;
     });
 
@@ -440,7 +449,6 @@ export function useStoryInit() {
     const loopTicket = useRef<number>(0);
 
     async function storyInit(childLevel: number, typingBoxes: RefObject<ITypingTextBoxHandle | null>[], pageInit?: () => Promise<void> | void) {
-        console.log(childLevel);
         loopTicket.current++;
         const ticket = loopTicket.current;
         if (pageInit)
@@ -454,5 +462,3 @@ export function useStoryInit() {
 
     return storyInit;
 }
-
-//hinting from the bottom child doesn't work if parent didn't load the element yet, try top child

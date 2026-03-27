@@ -25,7 +25,7 @@ export interface IAction {
 	dest?: IDestination
 	navigate?:boolean
 	storyId?: number
-	id?: string | number
+	id?: string | number//confusing as hell btw (string for hint id, number for index in typingBoxes)
 	style?: React.CSSProperties
 }
 
@@ -59,7 +59,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id">
 }
 
-db.version(67).stores({
+db.version(68).stores({
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
 }).upgrade(async () => {
