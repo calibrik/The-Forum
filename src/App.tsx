@@ -65,7 +65,7 @@ const router = createBrowserRouter([
 						Component: Chat,
 					},
 					{
-						path: "/user",
+						path: "/user/:username",
 						Component: User,
 						children: [
 							{
@@ -79,7 +79,7 @@ const router = createBrowserRouter([
 						]
 					},
 					{
-						path: "/subforum",
+						path: "/subforum/:subforum",
 						Component: Subforum,
 						children: [
 							{

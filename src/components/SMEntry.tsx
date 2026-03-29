@@ -7,7 +7,7 @@ interface ISMEntryProps {
     isSelected?: boolean
     name: string
     type:"subforum"|"user"
-    destination?:string
+    isNav:boolean;
     onClick?: (name:string) => void | Promise<void>
 };
 
@@ -19,8 +19,8 @@ export const SMEntry: FC<ISMEntryProps> = (props) => {
         e.stopPropagation();
         if (props.onClick)
             props.onClick(props.name);
-        if (props.destination)
-            navigate(props.destination);
+        if (props.isNav)
+            navigate(`/${props.type}/${props.name}`);
     }
 
     // const icon = props.isSelected ? <CheckCircleFill className={styles.icon} /> : <CheckCircle className={styles.icon} />

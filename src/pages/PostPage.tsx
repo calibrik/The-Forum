@@ -38,16 +38,16 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             <div className={styles.postContainer}>
                 <div className={styles.returnContainer}>
                     <BackButton />
-                    <img onClick={() => navigate("/subforum")} src={getImageUrl("placeholder.png")} alt="" className={styles.subforumPfp} />
+                    <img onClick={() => navigate("/subforum/subforum")} src={getImageUrl("placeholder.png")} alt="" className={styles.subforumPfp} />
                     <div className={styles.authorContainer}>
-                        <span onClick={() => navigate("/subforum")} className={styles.subforumName}>f/subforum</span>
-                        <span onClick={() => navigate("/user")} className={styles.username}>u/user</span>
+                        <span onClick={() => navigate("/subforum/subforum")} className={styles.subforumName}>f/subforum</span>
+                        <span onClick={() => navigate("/user/user")} className={styles.username}>u/user</span>
                     </div>
                 </div>
                 <h1 className={styles.postTitle}>Title</h1>
                 <p className={styles.content}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>
                 <img src={getImageUrl("placeholder.png")} alt="" className={styles.picture} />
-                <Reactions />
+                <Reactions likes={1000} comments={100} views={100100} />
             </div>
             <div className={styles.commentsListContainer}>
                 {commentsAmount == 0 ? <span className={styles.noComments}>No comments yet.</span> :

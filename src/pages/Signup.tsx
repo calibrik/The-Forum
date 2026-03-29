@@ -1,4 +1,4 @@
-import { useRef, type FC } from "react";
+import { useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
@@ -7,6 +7,7 @@ import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useModals } from "../providers/Modals";
 import { useStory } from "../providers/StoryProvider";
+import { Spinner } from "../components/Icons";
 interface ISignupProps { };
 type SignupData = {
     nickname: string;
@@ -21,12 +22,14 @@ export const Signup: FC<ISignupProps> = (_) => {
     let navigate = useNavigate();
     const modals = useModals();
     const answerRef = useRef<boolean>(false);
-    const story=useStory();
+    const story = useStory();
+    const [loading, setLoading] = useState<boolean>(false);
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        if (nicknameInputRef.current?.getError() !== "" || passwordInputRef.current?.getError() !== "" || confirmPasswordInputRef.current?.getError() !== "")
+        if (loading || nicknameInputRef.current?.getError() !== "" || passwordInputRef.current?.getError() !== "" || confirmPasswordInputRef.current?.getError() !== "")
             return;
+        setLoading(true);
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData.entries()) as SignupData;
         if (answerRef.current)
@@ -51,15 +54,18 @@ export const Signup: FC<ISignupProps> = (_) => {
             confirmPasswordInputRef.current?.setError("Field cannot be empty");
             isGood = false;
         }
-        if (!isGood)
+        if (!isGood) {
+            setLoading(false);
             return;
+        }
         const existingUser = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (existingUser.length > 0&&!(existingUser.length==1&&existingUser[0].savedStoryId)) {
+        if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)) {
             nicknameInputRef.current?.setError("Nickname already exists");
+            setLoading(false);
             return;
         }
         await story.customizeStory(data.nickname.trim());
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(),savedStoryId:1 });
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(), savedStoryId: 1 });
         navigate("/login")
     }
 
@@ -81,7 +87,7 @@ export const Signup: FC<ISignupProps> = (_) => {
                     <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
                     <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
                 </div>
-                <BaseButton type={"submit"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
+                <BaseButton type={"submit"} icon={loading?<Spinner spin/>:undefined} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>{loading?"":"Sign Up"}</BaseButton>
                 <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
             </form>
             <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>

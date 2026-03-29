@@ -23,14 +23,30 @@ interface IStoryProvider {
     goForwardHintNavPath: () => void,
 }
 
-const NAVIGATE_TO_PAGE: Record<string, Record<number, string[]>> = {
-    "/user": {
-        1: ["user-icon-text"],
-        2: ["user-posts"]
+// interface IAdditionalNavParameters{
+//     chatId?:string
+// }
+
+const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number) => string[]> = {
+    "user": (_location, targetLocation, mismatchedLevel) => {
+        if (mismatchedLevel == 3) {
+            return [targetLocation[3]];
+        }
+        return ["user-icon-text"];
     },
-    "/chat/test": {
-        1: ["menu-icon-text", "chat-menu"],
-        2: ["test-chat"]
+    "subforum": (_location, targetLocation, mismatchedLevel) => {
+        if (mismatchedLevel == 3) {
+            return [targetLocation[3]];
+        }
+        return ["user-icon-text"];//placeholder
+    },
+    "chat": (location, targetLocation, mismatchedLevel) => {
+        if (mismatchedLevel == 2) {
+            if (location.length >= 3)
+                return ["back-text"];
+            return [targetLocation[2]];
+        }
+        return ["menu-icon-text", "chat-menu"];
     },
 }
 
@@ -99,10 +115,8 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 
 
 function useHintNavPath() {
-    const locationRef = useRef<IDestination>(undefined);//current location for the story
-    const currIndex = useRef<number>(-1);//if index!=-1 that means nav path is active
-    // const currLevel=useRef<number>(0);//its ass cuz hinting won't react to lower level change
-    const currMismatchedLevel = useRef<number>(0);
+    const currIndex = useRef<number>(-1);//current index in path for chained nav
+    const currNavPath = useRef<string[]>([]);//current calculated nav path, if length==0 means it wasn't calculated
 
     function hint(id: string) {
         let el = document.querySelector(`#${id}`);
@@ -114,52 +128,51 @@ function useHintNavPath() {
     }
 
     function goForwardHintNavPath() {
-        if (locationRef.current && currIndex.current != -1 && NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current].length > 1) {
-            const ids = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current];
-            document.querySelector(`#${ids[currIndex.current]}`)?.classList.remove(ids[currIndex.current].includes("text") ? styles.hintText : styles.hint);
-            if (++currIndex.current >= ids.length) {
-                currIndex.current = -1;
+        if (currNavPath.current.length > 1) {
+            const id = currNavPath.current[currIndex.current];
+            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+            if (++currIndex.current >= currNavPath.current.length) {
+                // currNavPath.current=[];
                 return;
             }
-            hint(ids[currIndex.current]);
+            hint(currNavPath.current[currIndex.current]);
 
         }
     }
 
     function hintNavPath(target?: IDestination) {
-        if (!target || currIndex.current != -1) {
+        if (!target || currNavPath.current.length != 0) {
             return;
         }
-        locationRef.current = target;
-        const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1);
-        const targetLocation = locationRef.current.where.split('/');
+        const location = window.location.pathname.split('/').slice(0, target.level + 1);
+        const targetLocation = target.where.split('/');
         let mismatchedLevel = 0;
         const minLength = Math.min(location.length, targetLocation.length);
         for (; mismatchedLevel < minLength; mismatchedLevel++) {
             if (location[mismatchedLevel] != targetLocation[mismatchedLevel])
                 break;
         }
-        if (mismatchedLevel > locationRef.current.level)
+        if (mismatchedLevel > target.level)
             return;
-        currMismatchedLevel.current = mismatchedLevel;
+        currNavPath.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel);
         currIndex.current = 0
-        hint(NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][currIndex.current]);
+        hint(currNavPath.current[currIndex.current]);
     }
 
     function goBackHintNavPath() {
-        if (locationRef.current && currIndex.current != -1 && NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current].length > 1) {
-            const ids = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current];
-            document.querySelector(`#${ids[currIndex.current]}`)?.classList.remove(ids[currIndex.current].includes("text") ? styles.hintText : styles.hint);
-            hint(NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][--currIndex.current]);
+        if (currNavPath.current.length > 1) {
+            const id = currNavPath.current[currIndex.current];
+            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+            hint(currNavPath.current[--currIndex.current]);
         }
     }
 
     function resetHintNavPath() {
-        if (!locationRef.current || currIndex.current == -1)
+        if (currNavPath.current.length == 0)
             return;
-        const id = NAVIGATE_TO_PAGE[locationRef.current.where][currMismatchedLevel.current][currIndex.current];
+        const id = currNavPath.current[currIndex.current];
         document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-        currIndex.current = -1;
+        currNavPath.current = [];
     }
 
     return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath };
@@ -212,6 +225,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             if (location == targetLocation)
                 return;
         }
+        resetHintNavPath();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
             isStoryRecovered.current = false;
@@ -319,17 +333,40 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }
 
     async function customizeStory(nickname: string) {
-        let story = await db.story.toArray();
-        let users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
-        const regex = new RegExp(users[0].nickname, 'g');
+        const story = await db.story.toArray();
+        const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
+        const regex = new RegExp(users[0].nickname, 'gi');
         for (let scl of story) {
-            if (!scl.storyline)
+            if (!scl.storyline && !scl.action)
                 continue;
-            const content = scl.storyline.content.replace(regex, nickname);
-            if (content == scl.storyline.content)
-                continue;
-            scl.storyline.content = content;
-            await db.story.update(scl.id, { storyline: scl.storyline });
+            if (scl.storyline) {
+                const content = scl.storyline.content.replace(regex, nickname);
+                if (content == scl.storyline.content)
+                    continue;
+                scl.storyline.content = content;
+                await db.story.update(scl.id, { storyline: scl.storyline });
+            }
+
+            if (scl.action && scl.action.dest) {
+                const where = scl.action.dest.where.replace(regex, nickname);
+                if (where == scl.action.dest.where)
+                    continue;
+                scl.action.dest.where = where;
+                await db.story.update(scl.id, { action: scl.action });
+            }
+
+            if (scl.action && scl.dest) {
+                const where = scl.dest.where.replace(regex, nickname);
+                if (where == scl.dest.where)
+                    continue;
+                scl.dest.where = where;
+                await db.story.update(scl.id, { dest: scl.dest });
+            }
+        }
+
+        const posts=await db.posts.where("author").equals(users[0].nickname).toArray();
+        for (let post of posts){
+            await db.posts.update(post.id,{author:nickname});
         }
     }
 

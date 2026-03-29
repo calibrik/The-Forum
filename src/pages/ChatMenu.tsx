@@ -39,7 +39,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                 <h1 className={styles.header}>Chats</h1>
             </div>
             <div className={styles.dialogsContainer}>
-                <Dialog id="test-chat"/>
+                <Dialog id="test"/>
                 <Dialog />
                 <Dialog isRead />
                 <Dialog isRead />

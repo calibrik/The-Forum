@@ -13,7 +13,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const storyInit = useStoryInit();
 
     useEffect(() => {
-        storyInit(1, []);
+        storyInit(2, []);
     }, [])
 
     return (

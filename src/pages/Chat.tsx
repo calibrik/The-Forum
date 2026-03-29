@@ -154,7 +154,7 @@ export const Chat: FC<IChatProps> = () => {
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <BackButton />
+                <BackButton id="back-text"/>
                 <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
                 <div className={styles.chatDiv}>
                     <p className={styles.nickname}>Chat Name</p>

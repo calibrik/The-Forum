@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
-import { Outlet, useNavigate } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 import { getImageUrl } from "../utils";
 import { Menu } from "../components/Menu";
 import { Dot } from "../components/Icons";
@@ -46,21 +46,21 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
         <div ref={divRef} tabIndex={-1} onBlur={onBlur} className={`${styles.accToolTipContainer} ${isOpen ? styles.open : styles.close}`}>
             <div className={styles.accSection}>
                 <span className={styles.playerName}>{props.nickname}</span>
-                <span className={styles.rank}>Copper III</span>
+                <span className={styles.rank}>Level 117</span>
             </div>
             <div className={styles.accSection}>
-                <span className={styles.lastGames}>Recent Matches:</span>
+                <span className={styles.lastGames}>Recent Sprints:</span>
                 <ul className={styles.lastGamesList}>
-                    <li className={styles.loseGame}>Defeat 0 - 13</li>
-                    <li className={styles.loseGame}>Defeat 5 - 13</li>
-                    <li className={styles.loseGame}>Defeat 3 - 13</li>
-                    <li className={styles.loseGame}>Defeat 4 - 13</li>
-                    <li className={styles.loseGame}>Defeat 7 - 13</li>
-                    <li className={styles.loseGame}>Defeat 11 - 13</li>
-                    <li className={styles.loseGame}>Defeat 8 - 13</li>
-                    <li className={styles.loseGame}>Defeat 8 - 13</li>
-                    <li className={styles.winGame}>Victory 13 - 11</li>
-                    <li className={styles.loseGame}>Defeat 1 - 13</li>
+                    <li className={styles.loseGame}>Failed extraction 5:12</li>
+                    <li className={styles.loseGame}>Failed extraction 10:14</li>
+                    <li className={styles.loseGame}>Failed extraction 8:48</li>
+                    <li className={styles.loseGame}>Failed extraction 15:01</li>
+                    <li className={styles.loseGame}>Failed extraction 40:16</li>
+                    <li className={styles.loseGame}>Failed extraction 8:34</li>
+                    <li className={styles.loseGame}>Failed extraction 6:25</li>
+                    <li className={styles.loseGame}>Failed extraction 29:30</li>
+                    <li className={styles.winGame}>Successful extraction 35:04</li>
+                    <li className={styles.loseGame}>Failed extraction 13:16</li>
                 </ul>
             </div>
         </div>
@@ -70,6 +70,7 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
 
 export const User: FC<IUserPageProps> = (_) => {
     const story = useStory();
+    const {username}=useParams<{username:string}>();
     const userState = useUserState();
     let navigate = useNavigate();
     const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
@@ -87,17 +88,17 @@ export const User: FC<IUserPageProps> = (_) => {
             navigate("/")
             return;
         }
-        const users = await db.users.where("nickname").equals(userState.userLoggedIn.current).toArray();
+        const users = await db.users.where("nickname").equals(username??"").toArray();
         if (users.length != 1) {
-            console.error(`No ${userState.userLoggedIn} found (or found too many) ${users.length}.`)
-            navigate("/")
+            console.error(`No ${username} found (or found too many) ${users.length}.`)
+            navigate("/404")
             return;
         }
         setUser(users[0]);
     }
 
     useEffect(() => {
-        storyInit(1, [typingBoxRef], init);
+        storyInit(2, [typingBoxRef], init);
     }, [])
 
     return (
@@ -118,7 +119,7 @@ export const User: FC<IUserPageProps> = (_) => {
                             <p className={styles.description}>{user.description}</p>
                             {user.savedStoryId ?
                                 <div className={styles.accDiv}>
-                                    <span tabIndex={-1} onClick={onAccLinkClick} id="cs-profile-text" className={styles.accLink}>My SC2 profile</span>
+                                    <span tabIndex={-1} onClick={onAccLinkClick} id="cd-profile-text" className={styles.accLink}>My Cyberdivers profile</span>
                                     <AccInfo ref={accInfoRef} nickname={user.nickname} />
                                 </div>
                                 : ""}
@@ -128,11 +129,12 @@ export const User: FC<IUserPageProps> = (_) => {
                         posts: {
                             name: "Posts",
                             destination: "",
-                            id: "user-posts"
+                            id: "posts"
                         },
                         comments: {
                             name: "Comments",
-                            destination: "comments"
+                            destination: "comments",
+                            id: "comments"
                         },
                         settings: {
                             name: "Settings",

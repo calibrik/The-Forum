@@ -72,7 +72,7 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         }
         window.dispatchEvent(new Event("loggedIn")); 
-        navigate("/user")
+        navigate(`/user/${data.nickname}`);
     });
 
     function onChange() {

@@ -4,28 +4,30 @@ import { getImageUrl } from "../utils";
 import { SMEntry } from "./SMEntry";
 import { Reactions } from "./Reactions";
 import { useNavigate } from "react-router";
+import type { IPost } from "../backend/db";
 
 interface IPostProps {
-    img?: string
-    postId?: string;
+    id?:string
+    post:IPost
     showAuthor:"user"|"subforum",
     className?:string
 };
 
 export const Post: FC<IPostProps> = (props) => {
     let navigate=useNavigate();
-
+    
+    const author=props.showAuthor=="subforum"?props.post.subforum:props.post.author;
     return (
-        <div onClick={()=>navigate("/post/test")} data-istransition="true" className={`${styles.cardContainer} ${props.className}`}>
-            <SMEntry destination={`/${props.showAuthor}`} name={props.showAuthor} type={props.showAuthor} />
-            <h1 className={styles.title}>Title</h1>
-            <p className={props.img ? styles.contentWithImg : styles.content}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>
-            {props.img ?
+        <div id={props.id} onClick={()=>navigate("/post/test")} data-istransition="true" className={`${styles.cardContainer} ${props.className}`}>
+            <SMEntry isNav name={author} type={props.showAuthor} />
+            <h1 className={styles.title}>{props.post.title}</h1>
+            <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.content}</p>
+            {props.post.imageName ?
                 <div className={styles.postImgWrapper}>
-                    <img className={styles.postImg} src={getImageUrl(props.img)} />
+                    <img className={styles.postImg} src={getImageUrl(props.post.imageName)} />
                 </div>
                 : ""}
-            <Reactions />
+            <Reactions likes={props.post.likes} comments={props.post.comments} views={props.post.views} />
         </div>
     );
 }

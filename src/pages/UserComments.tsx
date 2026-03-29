@@ -9,7 +9,7 @@ export const UserComments: FC<IUserCommentsProps> = (_) => {
     const storyInit = useStoryInit();
 
     useEffect(() => {
-        storyInit(2, []);
+        storyInit(3, []);
     }, [])
 
     return (

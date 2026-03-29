@@ -13,17 +13,22 @@ export interface IEffect {
 	name: string,
 }
 
-export interface IPost{
-	authorId:number,
-	subforumId:number,
-	content:string,
-	imageName?:string
+export interface IPost {
+	id: number,
+	author: string,
+	subforum: string,
+	title: string,
+	content: string,
+	imageName?: string
+	likes: number
+	comments: number
+	views:number
 }
 
 export interface IAction {
 	name: string,
 	dest?: IDestination
-	navigate?:boolean
+	navigate?: boolean
 	storyId?: number
 	id?: string | number//confusing as hell btw (string for hint id, number for index in typingBoxes)
 	style?: React.CSSProperties
@@ -57,9 +62,11 @@ export interface IDestination {
 const db = new Dexie("TheForumDB") as Dexie & {
 	story: EntityTable<IScriptLine, "id">
 	users: EntityTable<IUser, "id">
+	posts: EntityTable<IPost, "id">
 }
 
-db.version(68).stores({
+db.version(73).stores({
+	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
 }).upgrade(async () => {
@@ -78,11 +85,15 @@ db.version(68).stores({
 	// }
 	await db.users.clear();
 	response = await fetch(getJsonUrl("users.json"));
-	const newUserst: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
-	await db.users.bulkAdd(newUserst);
+	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.users.bulkAdd(newUsers);
 	// if (users.length != 0) {
 	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
 	// }
+	await db.posts.clear()
+	response = await fetch(getJsonUrl("posts.json"));
+	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.posts.bulkAdd(newPosts);
 })
 
 db.on("populate", async () => {
@@ -90,6 +101,10 @@ db.on("populate", async () => {
 	await db.story.bulkAdd(await response.json() as IScriptLine[]);
 	response = await fetch(getJsonUrl("users.json"));
 	await db.users.bulkAdd(await response.json() as IUser[]);
+	response = await fetch(getJsonUrl("posts.json"));
+	await db.posts.bulkAdd(await response.json() as IPost[]);
 })
+
+await db.open()
 
 export { db }

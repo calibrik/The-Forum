@@ -19,7 +19,6 @@ createRoot(document.getElementById('root')!).render(
 //TODO: the whole fake backend:
 //we read what step we r at rn-> we read and execute items(either effects or lines) until we hit the isAwaitingAction flag-> we react to the action by loading more items
 //TODO: ditch scss colors for vars to be able to use them in anims
-//TODO: tables for users, posts, comments
+//TODO: tables for users, posts, comments, subforums
 //TODO: proper db update
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
-//TODO: smarter hint nav path (replace arrays with functions which will determine the path from particular page)

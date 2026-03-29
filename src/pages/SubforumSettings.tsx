@@ -37,7 +37,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     }
 
     useEffect(() => {
-        storyInit(2, []);
+        storyInit(3, []);
     }, [])
 
     return (

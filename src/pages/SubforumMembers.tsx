@@ -9,7 +9,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const storyInit = useStoryInit();
 
     useEffect(() => {
-        storyInit(2, []);
+        storyInit(3, []);
     }, [])
 
     return (

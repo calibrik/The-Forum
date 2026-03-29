@@ -1,0 +1,21 @@
+[
+    {
+        "author": "main_hero",
+        "subforum": "cyberdivers",
+        "title": "Test",
+        "content": "Testing shit",
+        "imageName": "placeholder.png",
+        "likes": 120,
+        "comments": 13,
+        "views": 1234
+    },
+    {
+        "author": "main_hero",
+        "subforum": "cyberdivers",
+        "title": "Test",
+        "content": "Testing shit",
+        "likes": 120,
+        "comments": 13,
+        "views": 1234
+    }
+]

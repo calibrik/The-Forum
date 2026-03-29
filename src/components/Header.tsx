@@ -4,6 +4,7 @@ import { Menu, Person } from "./Icons";
 import { InputField } from "./InputField";
 import { useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
+import { useUserState } from "../providers/UserAuth";
 interface IHeaderProps { 
     isLoggedIn:boolean
 };
@@ -16,6 +17,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
     const story = useStory();
+    const userState=useUserState();
 
     let navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                             <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
                         </div>
                         : ""}
-                    <Person onClick={() => navigate("/user")} id="user-icon-text" interactive className={`${styles.person} ${styles.icon}`} />
+                    <Person onClick={() => navigate(`/user/${userState.userLoggedIn.current}`)} id="user-icon-text" interactive className={`${styles.person} ${styles.icon}`} />
                 </div>
             </div>
         </>

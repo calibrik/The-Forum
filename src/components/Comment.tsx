@@ -7,10 +7,10 @@ interface ICommentProps { };
 export const Comment: FC<ICommentProps> = (_) => {
     return (
         <div className={styles.container}>
-            <SMEntry name={"user"} type={"user"} />
+            <SMEntry name={"user"} type={"user"} isNav={true} />
             <p className={styles.comment}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. </p>
             <div>
-                <LikeButton />
+                <LikeButton likes={10} />
             </div>
         </div>
     );
