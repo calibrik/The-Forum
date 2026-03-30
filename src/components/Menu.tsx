@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
+import { useEffect, useState, type FC } from "react";
 import styles from "../scss/menu.module.scss";
 import { useNavigate } from "react-router";
 
-interface IOption {
+export interface IMenuOption {
     name: string;
     /**without /*/
     destination?: string;
@@ -10,22 +10,20 @@ interface IOption {
 }
 
 interface IMenuProps {
-    options: Record<string, IOption>
+    options: IMenuOption[]
 };
 
 export const Menu: FC<IMenuProps> = (props) => {
-    const ids = useRef<string[]>(Object.keys(props.options));
-    const [activeOption, setActiveOption] = useState<string>("");
+    const [activeOption, setActiveOption] = useState<number>(0);
     let navigate = useNavigate();
 
-    function onOptionSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    function onOptionSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>,id:number) {
         e.preventDefault();
-        const id = e.currentTarget.dataset.optionid ?? ids.current[0];
         if (activeOption == id||props.options[id].destination===undefined) {
             return;
         }
         setActiveOption(id);
-        navigate(props.options[id].destination,);
+        navigate(props.options[id].destination);
     }
 
     function determineActiveOption()
@@ -33,10 +31,8 @@ export const Menu: FC<IMenuProps> = (props) => {
         const url = new URL(document.URL);
         const segments = url.pathname.split('/').filter(segment => segment !== "");
         const lastSegment = segments[segments.length - 1];
-        if (props.options[lastSegment])
-            setActiveOption(lastSegment);
-        else
-            setActiveOption(ids.current[0]);
+        const index=props.options.findIndex((v)=>v.destination==lastSegment)
+        setActiveOption(index!=-1?index:0);
     }
 
     useEffect(() => {
@@ -47,14 +43,11 @@ export const Menu: FC<IMenuProps> = (props) => {
         };
     }, [])
 
-    let optionElements: ReactNode[] = [];
-    for (const id of ids.current) {
-        optionElements.push(<div onClick={onOptionSelect} id={props.options[id].id} key={id} data-optionid={id} className={`${styles.option} ${id == activeOption?styles.active:""}`}>{props.options[id].name}</div>)
-    }
-
     return (
         <div className={styles.menuContainer}>
-            {optionElements}
+            {props.options.map((v,i)=>(
+                <div onClick={(e)=>onOptionSelect(e,i)} id={v.id} key={i} className={`${styles.option} ${i == activeOption?styles.active:""}`}>{props.options[i].name}</div>
+            ))}
         </div>
     );
 }

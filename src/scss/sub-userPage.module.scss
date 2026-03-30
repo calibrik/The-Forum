@@ -84,6 +84,8 @@
 }
 
 .description {
+    white-space: pre-wrap; 
+    word-break: break-word;
     color: colors.$tertiary-color;
     font-size: clamp(0.68rem, 2.6cqw, 1.3rem);
 }

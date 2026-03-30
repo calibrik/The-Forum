@@ -13,6 +13,16 @@ export interface IEffect {
 	name: string,
 }
 
+export interface ISubforum{
+	id:number,
+	name:string,
+	followers:number,
+	description:string,
+	imageName:string,
+	admin:string,
+	mods:string[]
+}
+
 export interface IPost {
 	id: number,
 	author: string,
@@ -60,15 +70,17 @@ export interface IDestination {
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {
+	subforums:EntityTable<ISubforum,"id">
 	story: EntityTable<IScriptLine, "id">
 	users: EntityTable<IUser, "id">
 	posts: EntityTable<IPost, "id">
 }
 
-db.version(73).stores({
+db.version(74).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname,savedStoryId",
+	subforums:"++id,name"
 }).upgrade(async () => {
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
@@ -94,6 +106,11 @@ db.version(73).stores({
 	response = await fetch(getJsonUrl("posts.json"));
 	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 }));
 	await db.posts.bulkAdd(newPosts);
+
+	await db.subforums.clear()
+	response = await fetch(getJsonUrl("subforums.json"));
+	const newSubforums: ISubforum[] = (await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.subforums.bulkAdd(newSubforums);
 })
 
 db.on("populate", async () => {
@@ -103,6 +120,8 @@ db.on("populate", async () => {
 	await db.users.bulkAdd(await response.json() as IUser[]);
 	response = await fetch(getJsonUrl("posts.json"));
 	await db.posts.bulkAdd(await response.json() as IPost[]);
+	response = await fetch(getJsonUrl("subforums.json"));
+	await db.subforums.bulkAdd(await response.json() as ISubforum[]);
 })
 
 await db.open()

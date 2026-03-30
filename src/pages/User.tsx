@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type FC }
 import styles from "../scss/sub-userPage.module.scss";
 import { Outlet, useNavigate, useParams } from "react-router";
 import { getImageUrl } from "../utils";
-import { Menu } from "../components/Menu";
+import { Menu, type IMenuOption } from "../components/Menu";
 import { Dot } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -90,7 +90,7 @@ export const User: FC<IUserPageProps> = (_) => {
         }
         const users = await db.users.where("nickname").equals(username??"").toArray();
         if (users.length != 1) {
-            console.error(`No ${username} found (or found too many) ${users.length}.`)
+            console.error(`No ${username} user found (or found too many) ${users.length}.`)
             navigate("/404")
             return;
         }
@@ -100,6 +100,23 @@ export const User: FC<IUserPageProps> = (_) => {
     useEffect(() => {
         storyInit(2, [typingBoxRef], init);
     }, [])
+
+    let menuOptions: IMenuOption[] = [
+            {
+                name: "Posts",
+                destination: ""
+            },
+            {
+                name: "Comments",
+                destination: "comments"
+            },
+        ]
+        
+        if (user && user.nickname == userState.userLoggedIn.current) {
+            menuOptions.push({
+                name: "Settings"
+            });
+        }
 
     return (
         <>
@@ -125,21 +142,7 @@ export const User: FC<IUserPageProps> = (_) => {
                                 : ""}
                         </div>
                         : <Spinner />}
-                    <Menu options={{
-                        posts: {
-                            name: "Posts",
-                            destination: "",
-                            id: "posts"
-                        },
-                        comments: {
-                            name: "Comments",
-                            destination: "comments",
-                            id: "comments"
-                        },
-                        settings: {
-                            name: "Settings",
-                        },
-                    }} />
+                    <Menu options={menuOptions} />
                 </div>
                 <div className={styles.contentContainer}>
                     <Outlet context={{ user }} />

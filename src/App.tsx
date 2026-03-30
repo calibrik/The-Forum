@@ -79,7 +79,7 @@ const router = createBrowserRouter([
 						]
 					},
 					{
-						path: "/subforum/:subforum",
+						path: "/subforum/:name",
 						Component: Subforum,
 						children: [
 							{

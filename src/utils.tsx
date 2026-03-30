@@ -9,3 +9,11 @@ export function getJsonUrl(name: string): string {
 export async function delay(s: number) {
     return new Promise(resolve => setTimeout(resolve, s*1000));
 }
+
+export function numberToText(n:number){
+    if (n>=1000000)
+        return `${(n/1000000).toFixed(1)}m`;
+    if (n>=1000)
+        return `${(n/1000).toFixed(1)}k`;
+    return n.toString();
+}

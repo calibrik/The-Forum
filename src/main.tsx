@@ -22,3 +22,6 @@ createRoot(document.getElementById('root')!).render(
 //TODO: tables for users, posts, comments, subforums
 //TODO: proper db update
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
+//TODO: Encapsulate menu component, it's lowk confusing
+//TODO: Hint Holder component
+//TODO: on history back hints do not reappear (maybe nvm idk)
