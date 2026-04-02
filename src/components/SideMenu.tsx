@@ -21,7 +21,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         if (!dest)
             return;
         setIsOpen(false);
-        story.goForwardHintNavPath();
+        // story.goForwardHintNavPath("chat-menu");
         navigate(dest);
     }
 
@@ -57,10 +57,10 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     useEffect(() => {
         if (isOpen) {
             sideMenuRef.current?.focus();
-            story.goForwardHintNavPath();
+            story.goForwardHintNavPath("menu-icon-text");
         }
         else {
-            story.goBackHintNavPath();
+            story.goBackHintNavPath("chat-menu");
         }
     }, [isOpen])
 

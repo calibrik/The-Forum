@@ -1,11 +1,11 @@
 import { useEffect, useState, type FC, type ReactNode } from "react";
 import styles from "../scss/subforumSettingsPage.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
-import { InputField } from "../components/InputField";
 import { SMEntry } from "../components/SMEntry";
 import { ArrowRightSquare, ChevronDoubleDown, ChevronDoubleUp, X } from "../components/Icons";
 import { BaseButton } from "../components/BaseButton";
 import { useStoryInit } from "../providers/StoryProvider";
+import { SearchField } from "../components/SearchField";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;
@@ -16,8 +16,6 @@ interface ISubforumSettingsSectionProps {
 const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set<string>());
     const storyInit = useStoryInit();
-
-
 
     function removeUser(name: string) {
         let n = new Set(selectedUsers);
@@ -44,7 +42,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
         <form className={styles.section} onSubmit={onSubmit}>
             <h1 className={styles.title}>{props.title}</h1>
             <div className={styles.inputDiv}>
-                <InputField onSuggestionClick={addUser} isSearch placeholder={`Search`} type={"text"} className={styles.input} />
+                <SearchField onSuggestionClick={addUser} className={styles.input} />
             </div>
             {Array.from(selectedUsers).map((value, i) => (
                 <SMEntry type="user" onClick={removeUser} isSelected key={i} name={value} />

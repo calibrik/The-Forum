@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/header.module.scss';
 import { Menu, Person } from "./Icons";
-import { InputField } from "./InputField";
 import { useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
+import { SearchField } from "./SearchField";
 interface IHeaderProps { 
     isLoggedIn:boolean
 };
@@ -49,7 +49,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
             <div id="header-div" className={styles.container}>
                 {!isMobile ?
                     <div className={styles.inputDiv}>
-                        <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
+                        <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav/>
                     </div>
                     : ""}
                 <div ref={div} className={styles.headerContainer}>
@@ -60,7 +60,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                     {isMobile ?
                         <div className={styles.inputDiv}>
                             <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
-                            <InputField id="header-input" className={styles.input} isSearch placeholder="Search" type={"text"} />
+                            <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav/>
                         </div>
                         : ""}
                     <Person onClick={() => navigate(`/user/${userState.userLoggedIn.current}`)} id="user-icon-text" interactive className={`${styles.person} ${styles.icon}`} />

@@ -8,6 +8,7 @@ import type { FC } from "react";
 import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
+import type { ISearchFieldHandle } from "../components/SearchField";
 interface IStoryProviderProps {
 };
 interface IStoryProvider {
@@ -19,26 +20,28 @@ interface IStoryProvider {
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
     customizeStory: (nickname: string) => Promise<void>
-    goBackHintNavPath: () => void,
-    goForwardHintNavPath: () => void,
+    goBackHintNavPath: (clickedId: string) => void,
+    goForwardHintNavPath: (clickedId: string) => void,
+    setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
 }
 
 // interface IAdditionalNavParameters{
 //     chatId?:string
 // }
 
-const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number) => string[]> = {
+const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
     "user": (_location, targetLocation, mismatchedLevel) => {
         if (mismatchedLevel == 3) {
             return [targetLocation[3]];
         }
         return ["user-icon-text"];
     },
-    "subforum": (_location, targetLocation, mismatchedLevel) => {
+    "subforum": (_location, targetLocation, mismatchedLevel, searchField) => {
         if (mismatchedLevel == 3) {
             return [targetLocation[3]];
         }
-        return ["user-icon-text"];//placeholder
+        searchField?.setSuggestionHint(`f/${targetLocation[2]}`);
+        return ["header-search", ""];
     },
     "chat": (location, targetLocation, mismatchedLevel) => {
         if (mismatchedLevel == 2) {
@@ -117,8 +120,15 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 function useHintNavPath() {
     const currIndex = useRef<number>(-1);//current index in path for chained nav
     const currNavPath = useRef<string[]>([]);//current calculated nav path, if length==0 means it wasn't calculated
+    const headerSearch = useRef<ISearchFieldHandle>(null);
+
+    function setHeaderSearch(ref: ISearchFieldHandle | null) {
+        headerSearch.current = ref;
+    }
 
     function hint(id: string) {
+        if (id == "")
+            return;
         let el = document.querySelector(`#${id}`);
         if (!el) {
             console.error(`No element with id ${id}`)
@@ -127,15 +137,15 @@ function useHintNavPath() {
         el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
     }
 
-    function goForwardHintNavPath() {
-        if (currNavPath.current.length > 1) {
+    function goForwardHintNavPath(clickedId: string) {
+        if (currNavPath.current.length > 1 && clickedId == currNavPath.current[currIndex.current]) {
             const id = currNavPath.current[currIndex.current];
             document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            if (++currIndex.current >= currNavPath.current.length) {
-                // currNavPath.current=[];
-                return;
-            }
-            hint(currNavPath.current[currIndex.current]);
+            // if (++currIndex.current >= currNavPath.current.length) {
+            //     // currNavPath.current=[];
+            //     return;
+            // }
+            hint(currNavPath.current[++currIndex.current]);
 
         }
     }
@@ -154,16 +164,17 @@ function useHintNavPath() {
         }
         if (mismatchedLevel > target.level)
             return;
-        currNavPath.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel);
+        currNavPath.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
         currIndex.current = 0
         hint(currNavPath.current[currIndex.current]);
     }
 
-    function goBackHintNavPath() {
-        if (currNavPath.current.length > 1) {
-            const id = currNavPath.current[currIndex.current];
-            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            hint(currNavPath.current[--currIndex.current]);
+    function goBackHintNavPath(clickedId: string) {
+        if (currNavPath.current.length > 1 && clickedId == currNavPath.current[currIndex.current]) {
+            const id = currNavPath.current[currIndex.current--];
+            if (id != "")
+                document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+            hint(currNavPath.current[currIndex.current]);
         }
     }
 
@@ -171,11 +182,14 @@ function useHintNavPath() {
         if (currNavPath.current.length == 0)
             return;
         const id = currNavPath.current[currIndex.current];
-        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
         currNavPath.current = [];
+        headerSearch.current?.setSuggestionHint(undefined);
+        if (id == "")
+            return;
+        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
     }
 
-    return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath };
+    return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch };
 }
 
 
@@ -198,8 +212,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const locationRef = useRef<IDestination>(undefined);//current location for the story
     const location = useLocation();
     const userState = useUserState();
-    const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet
-    const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath } = useHintNavPath();
+    const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
+    const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -364,9 +378,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             }
         }
 
-        const posts=await db.posts.where("author").equals(users[0].nickname).toArray();
-        for (let post of posts){
-            await db.posts.update(post.id,{author:nickname});
+        const posts = await db.posts.where("author").equals(users[0].nickname).toArray();
+        for (let post of posts) {
+            await db.posts.update(post.id, { author: nickname });
         }
     }
 
@@ -464,6 +478,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverStoryOnPage,
             goBackHintNavPath,
             goForwardHintNavPath,
+            setHeaderSearch
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />

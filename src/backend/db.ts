@@ -76,7 +76,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	posts: EntityTable<IPost, "id">
 }
 
-db.version(74).stores({
+db.version(79).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname,savedStoryId",

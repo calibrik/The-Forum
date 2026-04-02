@@ -25,7 +25,7 @@ export interface ITypingTextBoxHandle {
     getTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => void
-    applyStyle:(style:React.CSSProperties)=>void
+    applyStyle: (style: React.CSSProperties) => void
 };
 
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
@@ -38,12 +38,12 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         let finContent = contentRef.current + (args.delim ?? "") + args.content;
         contentRef.current = finContent;
         const tl = gsap.timeline()
-            .set(`#${props.id??"box"}`, {
+            .set(`#${props.id ?? "box"}`, {
                 display: "block"
             });
-        if (args.style) {
-            tl.set(`#${props.id??"box"}`, args.style);
-        }
+        // if (args.style) {
+        //     tl.set(`#${props.id ?? "box"}`, args.style);
+        // }
         tl.set('#cursor', {
             visibility: 'visible'
         })
@@ -61,8 +61,11 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             tl.set("#typingText", {
                 text: ""
             }, args.clearAfter)
-                .set(`#cursor, #typingText,#${props.id??"box"}`, {
+                .set(`#cursor, #typingText`, {
                     clearProps: "all",
+                })
+                .set(`#${props.id ?? "box"}`, {
+                    display: "none",
                 });
         }
         return tl;
@@ -70,7 +73,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
 
     const reset = contextSafe(() => {
         return gsap.timeline()
-            .set(`#cursor, #typingText,#${props.id??"box"}`, {
+            .set(`#cursor, #typingText,#${props.id ?? "box"}`, {
                 clearProps: "all",
             })
             .set("#typingText", {
@@ -105,6 +108,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         className = props.className ?? styles.default;
 
     return (
-        <div style={props.style} ref={divRef} id={props.id??"box"} className={className}><span id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} /></div>
+        <div style={props.style} ref={divRef} id={props.id ?? "box"} className={className}><span id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} /></div>
     );
 });

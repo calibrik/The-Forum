@@ -9,6 +9,7 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IUser } from "../backend/db";
 import { Spinner } from "../components/Spinner";
 import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface IUserPageProps { };
 export interface IUserOutlet {
     user?: IUser
@@ -77,6 +78,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const storyInit = useStoryInit();
     const typingBoxRef = useRef<ITypingTextBoxHandle>(null);
     const accInfoRef = useRef<IAccInfoHandle>(null);
+    const {hintHolders,setHintHolder}=useHintHolders();
 
     function onAccLinkClick(e: React.MouseEvent) {
         story.resumeStory(e);
@@ -99,7 +101,18 @@ export const User: FC<IUserPageProps> = (_) => {
 
     useEffect(() => {
         storyInit(2, [typingBoxRef], init);
-    }, [])
+    }, [username])
+
+    useEffect(() => {
+        if (!user)
+            return;
+        if (user.savedStoryId) {
+            const hint=hintHolders.current.get("cd-profile-text")?.getHintClass();
+            if (!hint)
+                return;
+            document.getElementById("cd-profile-text")?.classList.add(hint);
+        }
+    },[user]);
 
     let menuOptions: IMenuOption[] = [
             {
@@ -140,6 +153,7 @@ export const User: FC<IUserPageProps> = (_) => {
                                     <AccInfo ref={accInfoRef} nickname={user.nickname} />
                                 </div>
                                 : ""}
+                            <HintHolder ref={setHintHolder("cd-profile-text")} id="cd-profile-text"/>
                         </div>
                         : <Spinner />}
                     <Menu options={menuOptions} />

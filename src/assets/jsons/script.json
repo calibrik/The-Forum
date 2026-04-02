@@ -232,11 +232,20 @@
         "offset": "+=0.3"
     },
     {
+        "storyline": {
+            "content": "Search up the cyberdivers subforum.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
         "action": {
             "name": "NAVIGATE",
             "navigate":false,
             "dest": {
-                "where": "/chat/test",
+                "where": "/subforum/cyberdivers",
                 "level": 2
             }
         },

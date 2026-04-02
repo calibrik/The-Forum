@@ -35,7 +35,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     useEffect(() => {
         storyInit(2, [], init);
-    }, [])
+    }, [name])
 
     let menuOptions: IMenuOption[] = [
         {
@@ -47,7 +47,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
             destination: "members"
         },
     ]
-    
+
     if (subforum && subforum.admin == userState.userLoggedIn.current) {
         menuOptions.push({
             name: "Settings",

@@ -14,10 +14,6 @@
     font-family: Roboto;
 }
 
-.icon{
-    color: colors.$placeholder-text;
-}
-
 .input-wrapper input{
     font-size:inherit;
     font-family: inherit;
@@ -80,22 +76,4 @@
 .password-icon {
     color: colors.$placeholder-text;
     font-size: clamp(1rem, 2.5cqw, 1.2rem);
-}
-
-.dropdown{
-    container-type: inline-size;
-    display: flex;
-    flex-direction: column;
-    gap:5px;
-    background-color: colors.$secondary-card-bg;
-    border-radius: 6px;
-    position: absolute;
-    width:100%;
-    top:100%;
-    padding: 5px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    max-height:200px;
-    z-index: 7;
-    scrollbar-width: thin;
 }
