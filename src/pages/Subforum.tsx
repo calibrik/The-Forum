@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { getImageUrl, numberToText } from "../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
@@ -10,6 +10,7 @@ import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { db, type ISubforum } from "../backend/db";
 import { Spinner } from "../components/Spinner";
+import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
@@ -18,6 +19,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const navigate = useNavigate();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
+    const typingBox=useRef<ITypingTextBoxHandle>(null);
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
@@ -34,7 +36,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     useEffect(() => {
-        storyInit(2, [], init);
+        storyInit(2, [typingBox], init);
     }, [name])
 
     let menuOptions: IMenuOption[] = [
@@ -56,6 +58,8 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     return (
+    <>
+    <TypingTextBox ref={typingBox} type="terminal"/>    
         <div className={styles.container}>
             <img src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
             <div className={styles.subProfileContainer}>
@@ -77,5 +81,6 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                 <Outlet />
             </div>
         </div>
+        </>
     );
 }

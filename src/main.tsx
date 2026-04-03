@@ -23,3 +23,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: proper db update
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
 //TODO: header hints breaks if resize occured
+//TODO: block user in chat

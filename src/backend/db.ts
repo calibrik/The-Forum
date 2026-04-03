@@ -13,14 +13,32 @@ export interface IEffect {
 	name: string,
 }
 
-export interface ISubforum{
-	id:number,
-	name:string,
-	followers:number,
-	description:string,
-	imageName:string,
-	admin:string,
-	mods:string[]
+export interface IMessage {
+	id: number,
+	from: string,
+	content: string,
+	isReply?: number,
+	timeDiff: Date //time diff to initTimeDiff, in mins
+}
+
+export interface IChat {
+	id: number,
+	owner: string,
+	type: "gc" | "dm",
+	chatname: string,
+	pregenMessages: IMessage[],
+	isRead: boolean,
+	initTimeDiff:number,//time diff to sign up time, in mins
+}
+
+export interface ISubforum {
+	id: number,
+	name: string,
+	followers: number,
+	description: string,
+	imageName: string,
+	admin: string,
+	mods: string[]
 }
 
 export interface IPost {
@@ -32,7 +50,7 @@ export interface IPost {
 	imageName?: string
 	likes: number
 	comments: number
-	views:number
+	views: number
 }
 
 export interface IAction {
@@ -61,7 +79,8 @@ export interface IUser {
 	password?: string,
 	savedStoryId?: number
 	description?: string
-	imageName?: string
+	imageName?: string,
+	createdAt: Date
 }
 
 export interface IDestination {
@@ -70,17 +89,21 @@ export interface IDestination {
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {
-	subforums:EntityTable<ISubforum,"id">
+	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
 	users: EntityTable<IUser, "id">
 	posts: EntityTable<IPost, "id">
+	chats: EntityTable<IChat, "id">
+	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(79).stores({
+db.version(82).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
-	users: "++id, nickname,savedStoryId",
-	subforums:"++id,name"
+	users: "++id, nickname, savedStoryId",
+	subforums: "++id, name",
+	chats: "++id, owner",
+	storyMessages: "id"
 }).upgrade(async () => {
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
@@ -102,15 +125,22 @@ db.version(79).stores({
 	// if (users.length != 0) {
 	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
 	// }
-	await db.posts.clear()
+	await db.posts.clear();
 	response = await fetch(getJsonUrl("posts.json"));
 	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 }));
 	await db.posts.bulkAdd(newPosts);
 
-	await db.subforums.clear()
+	await db.subforums.clear();
 	response = await fetch(getJsonUrl("subforums.json"));
 	const newSubforums: ISubforum[] = (await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 }));
 	await db.subforums.bulkAdd(newSubforums);
+
+	await db.chats.clear();
+	response = await fetch(getJsonUrl("chats.json"));
+	const newChats: IChat[] = (await response.json() as IChat[]).map((v, i) => ({ ...v, id: i + 1 }));
+	await db.chats.bulkAdd(newChats);
+
+	await db.storyMessages.clear();
 })
 
 db.on("populate", async () => {
@@ -122,6 +152,8 @@ db.on("populate", async () => {
 	await db.posts.bulkAdd(await response.json() as IPost[]);
 	response = await fetch(getJsonUrl("subforums.json"));
 	await db.subforums.bulkAdd(await response.json() as ISubforum[]);
+	response = await fetch(getJsonUrl("chats.json"));
+	await db.chats.bulkAdd(await response.json() as IChat[]);
 })
 
 await db.open()

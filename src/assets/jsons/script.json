@@ -3,7 +3,7 @@
         "dest": {
             "where": "/start",
             "level": 1,
-            "navigate":true
+            "navigate": true
         },
         "offset": ">"
     },
@@ -102,7 +102,7 @@
     {
         "action": {
             "name": "NAVIGATE",
-            "navigate":true,
+            "navigate": true,
             "dest": {
                 "where": "/user/main_hero",
                 "level": 2
@@ -133,7 +133,7 @@
             "where": "/user/main_hero",
             "level": 2
         },
-        "hintActionPos":-1
+        "hintActionPos": -1
     },
     {
         "action": {
@@ -142,7 +142,7 @@
             "style": {
                 "top": "10%",
                 "left": "5%",
-                "width": "clamp(150px,36cqw,400px)"
+                "width": "clamp(200px,50cqw,400px)"
             }
         },
         "offset": ">"
@@ -197,7 +197,7 @@
             "speed": 50,
             "delim": "\n\n",
             "typingBoxId": 0,
-            "clearAfter": "+=1"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=1"
     },
@@ -227,7 +227,7 @@
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
-            "clearAfter":"+=1"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -243,9 +243,137 @@
     {
         "action": {
             "name": "NAVIGATE",
-            "navigate":false,
+            "navigate": false,
             "dest": {
                 "where": "/subforum/cyberdivers",
+                "level": 2
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "APPLY_STYLE_TO_BOX",
+            "id": 0,
+            "style": {
+                "top": "30%",
+                "right": "10%",
+                "width": "clamp(200px,50cqw,450px)"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So this game is a horde shooter, where squad of 4 devs trying to develop their app in sprints, but it’s represented as them actually fighting one of three factions: AI bots, Bugs or Hackers. ",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "We call hackers squids, cuz in game they look like squids, and their tentacles can penetrate everything.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "And when I say everything, I mean everything.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "name": "APPLY_STYLE_TO_BOX",
+            "id": 0,
+            "style": {
+                "top": "20%",
+                "width": "clamp(200px,50cqw,400px)"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "My friends from here once challenged me to play a game with them, and I absolutely destroyed them.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Even though we were in the same team.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I mean, my contribution to the game was essential.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "We lost anyway, but without me it wouldn’t have been such a close fight.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "But oh well, what can u do with shit teammates, right?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Hold on, lemme hit them up in the chat, my mates will love to see me.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "NAVIGATE",
+            "navigate": false,
+            "dest": {
+                "where": "/chat/test",
                 "level": 2
             }
         },

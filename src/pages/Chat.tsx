@@ -5,12 +5,12 @@ import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
-import { Divider } from "../components/Divider";
 import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
+import { Divider } from "../components/Divider";
 
 interface IChatMessage {
     author: string;

@@ -52,7 +52,6 @@
     flex-direction: column;
     gap: 10px;
     border-bottom: 1px solid colors.$tertiary-color;
-    container-type: inline-size;
 }
 
 .title-header-container {
@@ -87,12 +86,12 @@
     white-space: pre-wrap; 
     word-break: break-word;
     color: colors.$tertiary-color;
-    font-size: clamp(0.68rem, 2.6cqw, 1.3rem);
+    font-size: clamp(0.8rem, 3.1cqw, 1.3rem);
 }
 
 .acc-link {
     color: colors.$link-color;
-    font-size: clamp(0.68rem, 2.6cqw, 1.3rem);
+    font-size: clamp(0.8rem, 3.1cqw, 1.3rem);
     border-bottom: 1px solid;
     width: fit-content;
     padding: 0px 1px;
@@ -137,7 +136,7 @@
 .acc-tool-tip-container{
     position: absolute;
     background-color: colors.$secondary-card-bg;
-    width:clamp(120px,23.8cqw,300px);
+    width:clamp(230px,54.7cqw,300px);
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -167,11 +166,11 @@
 }
 
 .last-games{
-    font-size: clamp(0.85rem,11.3cqw,1.1rem);
+    font-size: clamp(0.85rem,5.4cqw,1.1rem);
 }
 
 .player-name{
-    font-size: clamp(1rem,13.3cqw,1.3rem);
+    font-size: clamp(1rem,6.4cqw,1.3rem);
     font-weight: bold;
 }
 
@@ -182,7 +181,7 @@
 }
 
 .rank{
-    font-size: clamp(0.7rem,9.3cqw,1rem);
+    font-size: clamp(0.7rem,4.9cqw,1rem);
     color:colors.$tertiary-color
 }
 
@@ -193,7 +192,7 @@
 
 .win-game,
 .lose-game{
-    font-size: clamp(0.75rem,10cqw,1.05rem);
+    font-size: clamp(0.75rem,5.2cqw,1.05rem);
 }
 
 .win-game{
