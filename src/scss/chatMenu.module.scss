@@ -63,16 +63,27 @@
     background-color: #2f2f2f;
 }
 
+.last-message-div{
+    display:flex;
+    align-items: center;
+    gap:10px;
+}
+
+.from{
+    color: colors.$tertiary-color;
+}
+
 .last-message{
     font-size:clamp(0.7rem,2.5cqw,1rem);
     color:colors.$secondary-color;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
 }
 
+.time-sent.read,
 .last-message.read{
     color:colors.$tertiary-color;
 }
@@ -82,6 +93,7 @@
 }
 
 .nickname{
+    font-weight: 500;
     font-size: clamp(1rem,3.7cqw,1.5rem);
 }
 
@@ -89,4 +101,10 @@
     display: flex;
     flex-direction: column;
     gap:clamp(5px,1.1cqw,10px);
+}
+
+.time-sent{
+    font-size:clamp(0.7rem,2.5cqw,1rem);
+    color:colors.$secondary-color;
+    margin-left:auto;
 }

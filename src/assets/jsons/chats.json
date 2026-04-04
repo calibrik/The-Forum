@@ -1,8 +1,10 @@
 [
     {
+        "id":"cyberdivers",
         "owner": "main_hero",
         "type": "gc",
-        "chatname": "Cyberdivers | Official Group Chat",
+        "imageName":"placeholder.png",
+        "name": "Cyberdivers | Official Group Chat",
         "initTimeDiff":-5,
         "pregenMessages": [
             {

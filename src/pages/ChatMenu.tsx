@@ -1,26 +1,53 @@
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { getImageUrl } from "../utils";
+import { formatDate, getImageUrl } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStoryInit } from "../providers/StoryProvider";
+import { db, type IChat } from "../backend/db";
+import { useUserState } from "../providers/UserAuth";
 interface IChatMenuProps { };
 interface IDialogProps {
-    isRead?: boolean
-    id?:string
+    chat:IChat
 };
 
 const Dialog: FC<IDialogProps> = (props) => {
     let navigate = useNavigate();
+    const [timeSent,setTimeSent]=useState<string>("");
+    const userState=useUserState();
+
+    async function init(){
+        const user=await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
+        if(!user)
+            return;
+        const lastMessage=props.chat.pregenMessages[props.chat.pregenMessages.length-1];
+        const timeSentDate=new Date(user.createdAt);
+        timeSentDate.setMinutes(timeSentDate.getMinutes()+props.chat.initTimeDiff+lastMessage.timeDiff);
+        setTimeSent(formatDate(timeSentDate));
+    }
+
+    async function onClick(){
+        await db.chats.where("id").equals(props.chat.id).modify({isRead:true});//that's irreversible btw 
+        navigate(`/chat/${props.chat.id}`)
+    }
+
+    useEffect(()=>{
+        init();
+    },[]);
+
+    const lastMessage=props.chat.pregenMessages[props.chat.pregenMessages.length-1];
 
     return (
-        <div onClick={() => navigate("/chat/test")} id={props.id} className={styles.dialog}>
-            <img src={getImageUrl("placeholder.png")} alt="" className={styles.pfp} />
+        <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
+            <img src={getImageUrl(props.chat.imageName)} alt="" className={styles.pfp} />
             <div className={styles.info}>
-                <h3 className={styles.nickname}>u/user</h3>
-                <p className={`${styles.lastMessage} ${props.isRead ? styles.read : ""}`}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. Nam malesuada non diam a aliquet. Quisque ultrices porta diam egestas faucibus. Vivamus ac dapibus sem, eu pulvinar nunc. Maecenas a diam risus. Morbi molestie ac velit quis tristique. Aenean vel augue maximus, laoreet tortor nec, vulputate nulla. In sodales erat sed condimentum finibus.</p>
+                <h3 className={styles.nickname}>{props.chat.name}</h3>
+                <div className={styles.lastMessageDiv}>
+                    {props.chat.isRead ? "" : <Dot className={styles.dot} />}
+                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage.from}: </span>{lastMessage.content}</p>
+                </div>
             </div>
-            {props.isRead ? "" : <Dot className={styles.dot} />}
+            <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{timeSent}</span>
         </div>
     );
 }
@@ -28,9 +55,21 @@ const Dialog: FC<IDialogProps> = (props) => {
 
 export const ChatMenu: FC<IChatMenuProps> = () => {
     const storyInit = useStoryInit();
+    const [chats, setChats] = useState<IChat[]>([]);
+    const userState = useUserState();
+    let navigate = useNavigate();
+
+    async function init() {
+        if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
+            navigate("/")
+            return;
+        }
+        setChats(await db.chats.where("owner").equals(userState.userLoggedIn.current).toArray());
+    }
+
 
     useEffect(() => {
-        storyInit(1, []);
+        storyInit(1, [], init);
     }, [])
 
     return (
@@ -39,10 +78,9 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                 <h1 className={styles.header}>Chats</h1>
             </div>
             <div className={styles.dialogsContainer}>
-                <Dialog id="test"/>
-                <Dialog />
-                <Dialog isRead />
-                <Dialog isRead />
+                {chats.map((chat) => (
+                    <Dialog key={chat.id} chat={chat} />
+                ))}
             </div>
         </div>
     );

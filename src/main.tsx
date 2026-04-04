@@ -24,3 +24,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: start learning ph lil bro, we need to fill the pages with actual data and images
 //TODO: header hints breaks if resize occured
 //TODO: block user in chat
+//current chat saving idea: pregenMessages are always there, all sent messages are stored in the list in storyprovider, until game is saved or story navigates away and we sink the messages into storyMessages table

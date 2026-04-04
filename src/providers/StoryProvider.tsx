@@ -347,41 +347,43 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }
 
     async function customizeStory(nickname: string) {
-        const story = await db.story.toArray();
         const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
         const regex = new RegExp(users[0].nickname, 'gi');
-        for (let scl of story) {
-            if (!scl.storyline && !scl.action)
-                continue;
-            if (scl.storyline) {
-                const content = scl.storyline.content.replace(regex, nickname);
-                if (content == scl.storyline.content)
-                    continue;
-                scl.storyline.content = content;
-                await db.story.update(scl.id, { storyline: scl.storyline });
+        await db.story.toCollection().modify((scl) => {
+            const sclString = JSON.stringify(scl);
+            if (!sclString.includes(users[0].nickname)) {
+                return false;
             }
-
-            if (scl.action && scl.action.dest) {
-                const where = scl.action.dest.where.replace(regex, nickname);
-                if (where == scl.action.dest.where)
-                    continue;
-                scl.action.dest.where = where;
-                await db.story.update(scl.id, { action: scl.action });
+            Object.assign(scl, JSON.parse(sclString.replace(regex, nickname)));
+        });
+        await db.posts.toCollection().modify((post) => {
+            const postString = JSON.stringify(post);
+            if (!postString.includes(users[0].nickname)) {
+                return false;
             }
-
-            if (scl.action && scl.dest) {
-                const where = scl.dest.where.replace(regex, nickname);
-                if (where == scl.dest.where)
-                    continue;
-                scl.dest.where = where;
-                await db.story.update(scl.id, { dest: scl.dest });
+            Object.assign(post, JSON.parse(postString.replace(regex, nickname)));
+        });
+        await db.chats.toCollection().modify((chat) => {
+            const chatString = JSON.stringify(chat);
+            if (!chatString.includes(users[0].nickname)) {
+                return false;
             }
-        }
-
-        const posts = await db.posts.where("author").equals(users[0].nickname).toArray();
-        for (let post of posts) {
-            await db.posts.update(post.id, { author: nickname });
-        }
+            Object.assign(chat, JSON.parse(chatString.replace(regex, nickname)));
+        });
+        await db.subforums.toCollection().modify((subforum) => {
+            const subforumString = JSON.stringify(subforum);
+            if (!subforumString.includes(users[0].nickname)) {
+                return false;
+            }
+            Object.assign(subforum, JSON.parse(subforumString.replace(regex, nickname)));
+        });
+        await db.storyMessages.toCollection().modify((message) => {
+            const messageString = JSON.stringify(message);
+            if (!messageString.includes(users[0].nickname)) {
+                return false;
+            }
+            Object.assign(message, JSON.parse(messageString.replace(regex, nickname)));
+        });
     }
 
     const showStory = contextSafe(async (fromId: number) => {

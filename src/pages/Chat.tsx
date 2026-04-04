@@ -1,6 +1,6 @@
 import { useEffect, useRef, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { getImageUrl } from "../utils";
+import { formatDate, getImageUrl } from "../utils";
 import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -90,11 +90,7 @@ const Message: FC<IMessageProps> = (props) => {
             <div className={styles.authorDiv}>
                 <img src={getImageUrl("placeholder.png")} className={styles.authorPfp} />
                 <span className={styles.authorName}>{props.message.author}</span>
-                <span className={styles.messageTime}>{new Intl.DateTimeFormat('en-US', {
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    hour12: true
-                }).format(props.message.time).toLowerCase()}</span>
+                <span className={styles.messageTime}>{formatDate(props.message.time)}</span>
             </div>
             {props.message.replyTo ?
                 <div className={styles.replyDiv}>

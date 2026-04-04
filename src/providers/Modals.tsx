@@ -6,26 +6,31 @@ import { X } from "../components/Icons";
 
 interface IInvincibleModalProps { };
 interface IInvincibleModalHandle {
-    showQuestion: (title: string, desc: string, onConfirm:()=>void) => void
+    showQuestion: (title: string, desc: string, onConfirm:()=>void,onCancel:()=>void) => void
 }
 
 const InvincibleModal = forwardRef<IInvincibleModalHandle, IInvincibleModalProps>((_, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const onConfirmRef=useRef<()=>void>(undefined);
+    const onCancelRef=useRef<()=>void>(undefined);
     const [title,setTitle]=useState<string>("");
     const [description,setDescription]=useState<string>("");
 
 
     useImperativeHandle(ref, () => ({
-        showQuestion(title: string, desc: string,onConfirm) {
+        showQuestion(title, desc,onConfirm,onCancel) {
             setIsOpen(true);
             onConfirmRef.current=onConfirm;
+            onCancelRef.current=onCancel;
             setTitle(title);
             setDescription(desc);
         },
     }));
 
     function onClose() {
+        if(onCancelRef.current)
+            onCancelRef.current();
+        onCancelRef.current=undefined;
         setIsOpen(false);
         onConfirmRef.current=undefined;
     }

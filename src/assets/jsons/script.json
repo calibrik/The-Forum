@@ -142,7 +142,7 @@
             "style": {
                 "top": "10%",
                 "left": "5%",
-                "width": "clamp(200px,50cqw,400px)"
+                "width": "clamp(200px,50cqw,500px)"
             }
         },
         "offset": ">"
@@ -259,7 +259,7 @@
             "style": {
                 "top": "30%",
                 "right": "10%",
-                "width": "clamp(200px,50cqw,450px)"
+                "width": "clamp(200px,50cqw,500px)"
             }
         },
         "offset": ">"
@@ -308,7 +308,7 @@
             "id": 0,
             "style": {
                 "top": "20%",
-                "width": "clamp(200px,50cqw,400px)"
+                "width": "clamp(200px,50cqw,500px)"
             }
         },
         "offset": ">"
@@ -373,7 +373,7 @@
             "name": "NAVIGATE",
             "navigate": false,
             "dest": {
-                "where": "/chat/test",
+                "where": "/chat/cyberdivers",
                 "level": 2
             }
         },

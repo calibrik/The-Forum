@@ -18,14 +18,16 @@ export interface IMessage {
 	from: string,
 	content: string,
 	isReply?: number,
-	timeDiff: Date //time diff to initTimeDiff, in mins
+	timeDiff: number //time diff to initTimeDiff, in mins
+	chatName?:string
 }
 
 export interface IChat {
-	id: number,
+	id: string,
+	imageName:string,
 	owner: string,
 	type: "gc" | "dm",
-	chatname: string,
+	name: string,
 	pregenMessages: IMessage[],
 	isRead: boolean,
 	initTimeDiff:number,//time diff to sign up time, in mins
@@ -97,13 +99,13 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(82).stores({
+db.version(86).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
-	chats: "++id, owner",
-	storyMessages: "id"
+	chats: "id, owner",
+	storyMessages: "id,chatName"
 }).upgrade(async () => {
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
@@ -137,7 +139,7 @@ db.version(82).stores({
 
 	await db.chats.clear();
 	response = await fetch(getJsonUrl("chats.json"));
-	const newChats: IChat[] = (await response.json() as IChat[]).map((v, i) => ({ ...v, id: i + 1 }));
+	const newChats: IChat[] = (await response.json() as IChat[]);
 	await db.chats.bulkAdd(newChats);
 
 	await db.storyMessages.clear();

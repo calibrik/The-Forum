@@ -35,7 +35,7 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (answerRef.current)
             proccessSubmit(data);
         else
-            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data));
+            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data),()=>setLoading(false));
     }
 
     async function proccessSubmit(data: SignupData) {
@@ -65,7 +65,7 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         }
         await story.customizeStory(data.nickname.trim());
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(), savedStoryId: 1 });
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(), savedStoryId: 1,createdAt: new Date() });
         navigate("/login")
     }
 
