@@ -19,7 +19,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
     const userState=useUserState();
     
     useEffect(()=>{
-        if (userState.isRealLoggedIn)
+        if (userState.isRealLoggedIn.current)
             storyInit(1,[]);
     },[])
 

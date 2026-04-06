@@ -2,6 +2,7 @@
     {
         "id":"cyberdivers",
         "owner": "main_hero",
+        "membersAmount": 215,
         "type": "gc",
         "imageName":"placeholder.png",
         "name": "Cyberdivers | Official Group Chat",
@@ -10,7 +11,7 @@
             {
                 "id": 1,
                 "from": "user1",
-                "content": "bro these clankers spawn rate is insane, how tf r u supposed to fight them on d10",
+                "content": "bro these clanker's spawn rate is insane, how tf r u supposed to fight them on d10",
                 "timeDiff": 0
             },
             {

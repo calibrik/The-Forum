@@ -25,3 +25,5 @@ createRoot(document.getElementById('root')!).render(
 //TODO: header hints breaks if resize occured
 //TODO: block user in chat
 //current chat saving idea: pregenMessages are always there, all sent messages are stored in the list in storyprovider, until game is saved or story navigates away and we sink the messages into storyMessages table
+//TODO: fetch images for authors (posts, chats)
+//TODO: we can get rid of hintPos in saving

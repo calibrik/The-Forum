@@ -81,7 +81,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const {hintHolders,setHintHolder}=useHintHolders();
 
     function onAccLinkClick(e: React.MouseEvent) {
-        story.resumeStory(e);
+        story.resumeStoryFromHint(e);
         accInfoRef.current?.toggle();
     }
 

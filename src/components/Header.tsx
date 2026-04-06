@@ -36,7 +36,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     function toggleSideMenu(e?: React.MouseEvent<HTMLDivElement>) {
         if (!e)
             return;
-        story.resumeStory(e);
+        story.resumeStoryFromHint(e);
         window.dispatchEvent(new Event("toggleSideMenu"));
     }
 

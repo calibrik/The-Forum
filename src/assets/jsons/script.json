@@ -379,5 +379,24 @@
         },
         "isActionAwait": true,
         "offset": ">"
+    },
+    {
+        "action": {
+            "name": "HINT",
+            "id": "chat-input"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "name": "SAVE"
+        },
+        "offset": ">",
+        "isActionAwait": true,
+        "dest": {
+            "where": "/chat/cyberdivers",
+            "level": 2
+        },
+        "hintActionPos": -1
     }
 ]

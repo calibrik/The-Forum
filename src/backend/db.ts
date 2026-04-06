@@ -27,6 +27,7 @@ export interface IChat {
 	imageName:string,
 	owner: string,
 	type: "gc" | "dm",
+	membersAmount: number,
 	name: string,
 	pregenMessages: IMessage[],
 	isRead: boolean,
@@ -62,6 +63,8 @@ export interface IAction {
 	storyId?: number
 	id?: string | number//confusing as hell btw (string for hint id, number for index in typingBoxes)
 	style?: React.CSSProperties
+	message?:IMessage
+	timeToType?:number
 }
 
 export interface IScriptLine {
@@ -99,7 +102,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(86).stores({
+db.version(89).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

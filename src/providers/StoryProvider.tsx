@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IScriptLine } from "../backend/db";
+import { db, type IAction, type IDestination, type IMessage, type IScriptLine } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -9,6 +9,7 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
+import { delay } from "../utils";
 interface IStoryProviderProps {
 };
 interface IStoryProvider {
@@ -16,13 +17,15 @@ interface IStoryProvider {
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
-    resumeStory: (e: React.MouseEvent) => boolean
+    resumeStoryFromHint: (e: React.MouseEvent) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
     customizeStory: (nickname: string) => Promise<void>
     goBackHintNavPath: (clickedId: string) => void,
     goForwardHintNavPath: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
+    addMessage(message:IMessage,timeToWait:number):Promise<void>;
+    setChatHandle(ch:IChatHandle):void;
 }
 
 // interface IAdditionalNavParameters{
@@ -192,7 +195,40 @@ function useHintNavPath() {
     return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch };
 }
 
+interface IChatHandle{
+    setStringToType:(string:string)=>void;
+    addTypingUser:(username:string)=>void;
+    removeTypingUser:(username:string)=>void;
+    addMessage:(message:IMessage)=>void;
+}
 
+function useChat() {
+    const messages=useRef<IMessage[]>([]);
+    const chatHandle=useRef<IChatHandle>(undefined);
+    const userState=useUserState();
+
+    async function addMessage(message:IMessage,timeToType:number) {
+        if (message.from==userState.userLoggedIn.current){
+            messages.current.push(message);
+            return;
+        }
+        chatHandle.current?.addTypingUser(message.from);
+        await delay(timeToType);
+        chatHandle.current?.removeTypingUser(message.from);
+        messages.current.push(message);
+        chatHandle.current?.addMessage(message);
+    }
+
+    async function sinkMessages(){
+        await db.storyMessages.bulkAdd(messages.current);
+    }
+
+    function setChatHandle(ch:IChatHandle){
+        chatHandle.current=ch;
+    }
+
+    return {addMessage, sinkMessages, setChatHandle}
+}
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
@@ -214,6 +250,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
+    const {addMessage, sinkMessages, setChatHandle}=useChat();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -265,6 +302,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 pageStoryId.current = (action.storyId ?? 1) + 1;
                 currHintId.current = "NON_EXISTENT_ID";
                 locationRef.current = action.dest;
+                sinkMessages();
                 if (action.navigate) {
                     let p = waitForInit();
                     navigate(action.dest?.where ?? "");
@@ -282,6 +320,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: action.storyId ?? 1 });
                 savedStoryId.current = action.storyId ?? 1;
                 pageStoryId.current = action.storyId ?? 1 + 1;
+                sinkMessages();
                 break;
             case "HINT":
                 hint(action.id as string);
@@ -296,7 +335,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         }
     }
 
-    function resumeStory(e: React.MouseEvent): boolean {
+    function resumeStoryFromHint(e: React.MouseEvent): boolean {
         e.preventDefault();
         if (isStoryGoing() || currHintId.current !== e.currentTarget.id)
             return false;
@@ -474,13 +513,15 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             showStory,
             getAnim,
             initReady,
-            resumeStory,
+            resumeStoryFromHint,
             recoverCheckpoint,
             customizeStory,
             recoverStoryOnPage,
             goBackHintNavPath,
             goForwardHintNavPath,
-            setHeaderSearch
+            setHeaderSearch,
+            addMessage,
+            setChatHandle
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />

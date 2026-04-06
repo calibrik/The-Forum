@@ -1,7 +1,7 @@
-import { useEffect, useRef, type FC, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
 import { formatDate, getImageUrl } from "../utils";
-import { InputField } from "../components/InputField";
+import { InputField, type InputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
@@ -9,22 +9,20 @@ import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { Divider } from "../components/Divider";
+import { db, type IChat, type IMessage } from "../backend/db";
+import { useUserState } from "../providers/UserAuth";
+import { useNavigate, useParams } from "react-router";
 
-interface IChatMessage {
-    author: string;
-    content: string;
-    time: Date;
-    replyTo?: {
-        author: string;
-        content: string;
-    }
-}
 interface IChatProps { };
 interface IMessageProps {
-    isPinged?: boolean;
-    message: IChatMessage;
+    initChatTime: Date
+    message: IMessage;
+    replyTo?: {
+        from: string;
+        content: string;
+    }
 };
 interface ITextingIndicatorProps {
     names: string[];
@@ -78,27 +76,33 @@ const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
 
 
 const Message: FC<IMessageProps> = (props) => {
+    const userState = useUserState();
+
     const content: ReactNode = props.message.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) =>
         part.startsWith("@") ? <span key={index} className={styles.ping}>{part}</span> : part
     );
-    const replyContent: ReactNode = props.message.replyTo?.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) =>
+    const replyContent: ReactNode = props.replyTo?.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) =>
         part.startsWith("@") ? <span key={index} className={styles.ping}>{part}</span> : part
     );
+    const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
+    const initChatTime = new Date(props.initChatTime);
+    initChatTime.setMinutes(initChatTime.getMinutes() + props.message.timeDiff);
+    const timeSent = formatDate(initChatTime);
 
     return (
-        <div className={`${styles.messageDiv} ${props.isPinged ? styles.pinged : ""}`}>
+        <div className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
             <div className={styles.authorDiv}>
                 <img src={getImageUrl("placeholder.png")} className={styles.authorPfp} />
-                <span className={styles.authorName}>{props.message.author}</span>
-                <span className={styles.messageTime}>{formatDate(props.message.time)}</span>
+                <span className={styles.authorName}>{props.message.from}</span>
+                <span className={styles.messageTime}>{timeSent}</span>
             </div>
-            {props.message.replyTo ?
+            {props.replyTo ?
                 <div className={styles.replyDiv}>
                     <Reply className={styles.replyArrow} />
                     <div className={styles.replyMessageDiv}>
                         <div className={styles.replyAuthorDiv}>
                             <img src={getImageUrl("placeholder.png")} className={styles.replyAuthorPfp} />
-                            <span className={styles.replyAuthorName}>{props.message.replyTo.author}</span>
+                            <span className={styles.replyAuthorName}>{props.replyTo.from}</span>
                         </div>
                         <p className={styles.replyMessage}>{replyContent}</p>
                     </div>
@@ -110,26 +114,18 @@ const Message: FC<IMessageProps> = (props) => {
 }
 
 export const Chat: FC<IChatProps> = () => {
-    const messages: IChatMessage[] = [
-        { author: "player1", content: "Just got to Global Elite, CS2 hit different", time: new Date(2026, 1, 3, 14, 23) },
-        { author: "noob_gamer", content: "Congrats @player1! How long did it take you?", time: new Date(2026, 1, 3, 14, 25) },
-        { author: "player1", content: "About 800 hours total, but improved a lot recently", time: new Date(2026, 1, 3, 14, 27), replyTo: { author: "noob_gamer", content: "Congrats @player1! How long did it take you?" } },
-        { author: "noob_gamer", content: "That's insane. Any tips for someone stuck in Silver?", time: new Date(2026, 1, 3, 14, 29), replyTo: { author: "player1", content: "About 800 hours total, but improved a lot recently" } },
-        { author: "player1", content: "Focus on crosshair placement and spray control first", time: new Date(2026, 1, 3, 14, 31), replyTo: { author: "noob_gamer", content: "That's insane. Any tips for someone stuck in Silver?" } },
-        { author: "pro_awper", content: "Don't forget utility usage, that's what separates tiers", time: new Date(2026, 1, 3, 14, 33), replyTo: { author: "player1", content: "Focus on crosshair placement and spray control first" } },
-        { author: "noob_gamer", content: "Utility usage? I just run and gun lol", time: new Date(2026, 1, 3, 14, 35), replyTo: { author: "pro_awper", content: "Don't forget utility usage, that's what separates tiers" } },
-        { author: "pro_awper", content: "Yeah that's why you're stuck haha. Learn smokes and flashes", time: new Date(2026, 1, 3, 14, 37), replyTo: { author: "noob_gamer", content: "Utility usage? I just run and gun lol" } },
-        { author: "player1", content: "The new 128 tick servers in CS2 feel so smooth", time: new Date(2026, 1, 3, 14, 39) },
-        { author: "pro_awper", content: "True, but my PC can barely handle it", time: new Date(2026, 1, 3, 14, 41), replyTo: { author: "player1", content: "The new 128 tick servers in CS2 feel so smooth" } },
-        { author: "noob_gamer", content: "What's your setup?", time: new Date(2026, 1, 3, 14, 43), replyTo: { author: "pro_awper", content: "True, but my PC can barely handle it" } },
-        { author: "pro_awper", content: "RTX 4080, i9-13900K, 360hz monitor", time: new Date(2026, 1, 3, 14, 45), replyTo: { author: "noob_gamer", content: "What's your setup?" } },
-        { author: "player1", content: "Overkill but I respect it", time: new Date(2026, 1, 3, 14, 47), replyTo: { author: "pro_awper", content: "RTX 4080, i9-13900K, 360hz monitor" } },
-        { author: "noob_gamer", content: "Anyone playing the new map tomorrow?", time: new Date(2026, 1, 3, 14, 49) },
-        { author: "pro_awper", content: "I'm down @noob_gamer, let's stack a team", time: new Date(2026, 1, 3, 14, 51) }
-    ];
-    const typing: string[] = ["sdfsd", "asdfsdf"];
+    const [messages, setMessages] = useState<IMessage[]>([]);
+    const [typing, setTyping] = useState<Set<string>>(new Set());
+    const [chat, setChat] = useState<IChat>();
+    const [initChatTime, setInitChatTime] = useState<Date>(new Date());
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const storyInit = useStoryInit();
+    const userState = useUserState();
+    let navigate = useNavigate();
+    const { chatId } = useParams<{ chatId: string }>();
+    const inputRef=useRef<InputFieldHandle>(null);
+    const story=useStory();
+    const stringToType=useRef<string>("");
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -143,29 +139,51 @@ export const Chat: FC<IChatProps> = () => {
         e.currentTarget.reset();
     }
 
+    async function init() {
+        if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
+            navigate("/");
+            return;
+        }
+        const chat = await db.chats.where("id").equals(chatId ?? "").first();
+        if (!chat) {
+            navigate("/404");
+            return;
+        }
+        const user = await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
+        if (!user) {
+            navigate("/");
+            return;
+        }
+        setChat(chat);
+        setMessages(chat.pregenMessages);
+        const chatTime=user.createdAt;
+        chatTime.setMinutes(chatTime.getMinutes()+chat.initTimeDiff);
+        setInitChatTime(chatTime);
+    }
+
     useEffect(() => {
-        storyInit(2, []);
+        storyInit(2, [], init);
     }, [])
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <BackButton id="back-text"/>
+                <BackButton id="back-text" />
                 <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
                 <div className={styles.chatDiv}>
-                    <p className={styles.nickname}>Chat Name</p>
-                    {typing.length > 0 ? <TypingIndicator names={typing} /> : <span className={styles.membersCount}>200 members</span>}
+                    <p className={styles.nickname}>{chat?.name}</p>
+                    {typing.length > 0 ? <TypingIndicator names={typing} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
                 </div>
             </div>
             <div ref={chatContainerRef} className={styles.chatContainer}>
                 <Spinner />
                 {messages.map((msg, index) => (
-                    <Message key={index} message={msg} isPinged={msg.replyTo?.author == "noob_gamer" || msg.content.includes("@noob_gamer")} />
+                    <Message key={index} message={msg} replyTo={msg.isReply?messages.find((v)=>v.id==msg.isReply):undefined} initChatTime={initChatTime} />
                 ))}
                 <Divider>3 February, 2026</Divider>
             </div>
             <form onSubmit={onSendMessage} className={styles.inputContainer}>
-                <InputField name="message" placeholder="Message" className={styles.input} type={"text"} />
+                <InputField ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
                 <BaseButton type="submit" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
             </form>
         </div>
