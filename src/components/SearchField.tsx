@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { InputField, type InputFieldHandle } from "./InputField";
 import { Search } from "./Icons";
 import { SMEntry } from "./SMEntry";
@@ -72,8 +72,15 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
         }
     }));
 
+    useEffect(()=>{
+        if (isFocused)
+            inputRef.current?.focus();
+        else
+            inputRef.current?.blur();
+    },[isFocused])
+
     return (
-        <div className={styles.container} onFocus={onFocus} onBlur={onBlur}>
+        <div className={styles.container} tabIndex={-1} onFocus={onFocus} onBlur={onBlur}>
             <InputField className={props.className} icon={<Search id={props.id} className={styles.icon} />} id={props.id} onChange={onChange} ref={inputRef} placeholder="Search" type={"text"} />
             {isFocused && suggestions.length != 0 ?
                 <div className={styles.dropdown}>

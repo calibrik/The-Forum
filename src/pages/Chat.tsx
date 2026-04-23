@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { formatDate, getImageUrl } from "../utils";
+import { formatDay, formatTime, getImageUrl } from "../utils";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -87,7 +87,7 @@ const Message: FC<IMessageProps> = (props) => {
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
     const initChatTime = new Date(props.initChatTime);
     initChatTime.setMinutes(initChatTime.getMinutes() + props.message.timeDiff);
-    const timeSent = formatDate(initChatTime);
+    const timeSent = formatTime(initChatTime);
 
     return (
         <div className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
@@ -123,9 +123,8 @@ export const Chat: FC<IChatProps> = () => {
     const userState = useUserState();
     let navigate = useNavigate();
     const { chatId } = useParams<{ chatId: string }>();
-    const inputRef=useRef<InputFieldHandle>(null);
-    const story=useStory();
-    const stringToType=useRef<string>("");
+    const inputRef = useRef<InputFieldHandle>(null);
+    const story = useStory();
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -133,9 +132,18 @@ export const Chat: FC<IChatProps> = () => {
 
     function onSendMessage(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        if (!inputRef.current || !inputRef.current.isStringTyped())
+            return;
         const data = new FormData(e.currentTarget);
         const message = data.get("message");
         console.log("Sent message: ", message);
+        story.addMessage({
+            id: 0,
+            from: userState.userLoggedIn.current,
+            content: message as string,
+            timeDiff: 0
+        }, 0);
+        story.resumeStory();
         e.currentTarget.reset();
     }
 
@@ -156,14 +164,40 @@ export const Chat: FC<IChatProps> = () => {
         }
         setChat(chat);
         setMessages(chat.pregenMessages);
-        const chatTime=user.createdAt;
-        chatTime.setMinutes(chatTime.getMinutes()+chat.initTimeDiff);
+        await story.setChatHandle({
+            setStringToType: function (string: string): void {
+                inputRef.current?.setStringToType(string);
+            },
+            addTypingUser: function (username: string): void {
+                setTyping(prev => new Set(prev).add(username));
+            },
+            removeTypingUser: function (username: string): void {
+                setTyping(prev => {
+                    const res = new Set(prev);
+                    res.delete(username);
+                    return res;
+                });
+            },
+            addMessage: function (message: IMessage): void {
+                setMessages(prev => [...prev, message]);
+            },
+            getInitChatTime: function (): Date {
+                return initChatTime;
+            },
+            getMessage(id) {
+                return messages.find(m => m.id == id);
+            },
+        });
+        const chatTime = user.createdAt;
+        chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
         setInitChatTime(chatTime);
     }
 
     useEffect(() => {
         storyInit(2, [], init);
     }, [])
+
+    const typingArray = Array.from(typing);
 
     return (
         <div className={styles.container}>
@@ -172,15 +206,23 @@ export const Chat: FC<IChatProps> = () => {
                 <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
                 <div className={styles.chatDiv}>
                     <p className={styles.nickname}>{chat?.name}</p>
-                    {typing.length > 0 ? <TypingIndicator names={typing} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
+                    {typingArray.length > 0 ? <TypingIndicator names={typingArray} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
                 </div>
             </div>
             <div ref={chatContainerRef} className={styles.chatContainer}>
                 <Spinner />
-                {messages.map((msg, index) => (
-                    <Message key={index} message={msg} replyTo={msg.isReply?messages.find((v)=>v.id==msg.isReply):undefined} initChatTime={initChatTime} />
-                ))}
-                <Divider>3 February, 2026</Divider>
+                {messages.map((msg, index) => {
+                    let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} initChatTime={initChatTime} />;
+                    if (index == 0)
+                        return message;
+                    const currMsgTime = new Date(initChatTime);
+                    currMsgTime.setMinutes(currMsgTime.getMinutes() + msg.timeDiff);
+                    const prevMsgTime = new Date(initChatTime);
+                    prevMsgTime.setMinutes(prevMsgTime.getMinutes() + messages[index - 1].timeDiff);
+                    if (currMsgTime.getDay() != prevMsgTime.getDay())
+                        message = <><Divider key={"divider" + index}>{formatDay(currMsgTime)}</Divider>{message}</>;
+                    return message;
+                })}
             </div>
             <form onSubmit={onSendMessage} className={styles.inputContainer}>
                 <InputField ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />

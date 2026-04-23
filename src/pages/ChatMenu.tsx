@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { formatDate, getImageUrl } from "../utils";
+import { formatTime, getImageUrl } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStoryInit } from "../providers/StoryProvider";
@@ -23,7 +23,7 @@ const Dialog: FC<IDialogProps> = (props) => {
         const lastMessage=props.chat.pregenMessages[props.chat.pregenMessages.length-1];
         const timeSentDate=new Date(user.createdAt);
         timeSentDate.setMinutes(timeSentDate.getMinutes()+props.chat.initTimeDiff+lastMessage.timeDiff);
-        setTimeSent(formatDate(timeSentDate));
+        setTimeSent(formatTime(timeSentDate));
     }
 
     async function onClick(){

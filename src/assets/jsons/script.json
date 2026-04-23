@@ -1,9 +1,12 @@
 [
     {
-        "dest": {
-            "where": "/start",
-            "level": 1,
-            "navigate": true
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/start",
+                    "level": 1
+                }
+            }
         },
         "offset": ">"
     },
@@ -101,11 +104,12 @@
     },
     {
         "action": {
-            "name": "NAVIGATE",
-            "navigate": true,
-            "dest": {
-                "where": "/user/main_hero",
-                "level": 2
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/main_hero",
+                    "level": 2
+                }
             }
         },
         "offset": ">"
@@ -118,31 +122,34 @@
     },
     {
         "action": {
-            "name": "HINT",
-            "id": "cd-profile-text"
+            "hintAction": {
+                "id": "cd-profile-text"
+            }
         },
         "offset": ">"
     },
     {
         "action": {
-            "name": "SAVE"
+            "saveAction": {
+                "dest": {
+                    "where": "/user/main_hero",
+                    "level": 2
+                },
+                "hintActionPos": -1
+            }
         },
         "offset": ">",
-        "isActionAwait": true,
-        "dest": {
-            "where": "/user/main_hero",
-            "level": 2
-        },
-        "hintActionPos": -1
+        "isActionAwait": true
     },
     {
         "action": {
-            "name": "APPLY_STYLE_TO_BOX",
-            "id": 0,
-            "style": {
-                "top": "10%",
-                "left": "5%",
-                "width": "clamp(200px,50cqw,500px)"
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "10%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
             }
         },
         "offset": ">"
@@ -175,7 +182,7 @@
     },
     {
         "storyline": {
-            "content": "Also, I didn’t unlock all the latest guns.",
+            "content": "Also, I didn't unlock all the latest guns.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -193,7 +200,7 @@
     },
     {
         "storyline": {
-            "content": "But usually, I play a lot better than this, it’s just a bad luck is what it is, trust.",
+            "content": "But usually, I play a lot better than this, it's just a bad luck is what it is, trust.",
             "speed": 50,
             "delim": "\n\n",
             "typingBoxId": 0,
@@ -203,19 +210,20 @@
     },
     {
         "action": {
-            "name": "APPLY_STYLE_TO_BOX",
-            "id": 0,
-            "style": {
-                "top": "20%",
-                "left": "5%",
-                "width": "clamp(150px,36cqw,400px)"
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "20%",
+                    "left": "5%",
+                    "width": "clamp(150px,36cqw,400px)"
+                }
             }
         },
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Anyway, I’m well respected in cyberdivers community, people know my name.",
+            "content": "Anyway, I'm well respected in cyberdivers community, people know my name.",
             "speed": 50,
             "typingBoxId": 0
         },
@@ -242,11 +250,12 @@
     },
     {
         "action": {
-            "name": "NAVIGATE",
-            "navigate": false,
-            "dest": {
-                "where": "/subforum/cyberdivers",
-                "level": 2
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/cyberdivers",
+                    "level": 2
+                }
             }
         },
         "isActionAwait": true,
@@ -254,19 +263,20 @@
     },
     {
         "action": {
-            "name": "APPLY_STYLE_TO_BOX",
-            "id": 0,
-            "style": {
-                "top": "30%",
-                "right": "10%",
-                "width": "clamp(200px,50cqw,500px)"
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "30%",
+                    "right": "10%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
             }
         },
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "So this game is a horde shooter, where squad of 4 devs trying to develop their app in sprints, but it’s represented as them actually fighting one of three factions: AI bots, Bugs or Hackers. ",
+            "content": "So this game is a horde shooter, where squad of 4 devs trying to develop their app in sprints, but it's represented as them actually fighting one of three factions: AI bots, Bugs or Hackers. ",
             "speed": 50,
             "delim": "",
             "typingBoxId": 0,
@@ -304,11 +314,12 @@
     },
     {
         "action": {
-            "name": "APPLY_STYLE_TO_BOX",
-            "id": 0,
-            "style": {
-                "top": "20%",
-                "width": "clamp(200px,50cqw,500px)"
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "20%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
             }
         },
         "offset": ">"
@@ -342,7 +353,7 @@
     },
     {
         "storyline": {
-            "content": "We lost anyway, but without me it wouldn’t have been such a close fight.",
+            "content": "We lost anyway, but without me it wouldn't have been such a close fight.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -370,11 +381,12 @@
     },
     {
         "action": {
-            "name": "NAVIGATE",
-            "navigate": false,
-            "dest": {
-                "where": "/chat/cyberdivers",
-                "level": 2
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2
+                }
             }
         },
         "isActionAwait": true,
@@ -382,21 +394,123 @@
     },
     {
         "action": {
-            "name": "HINT",
-            "id": "chat-input"
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2
+                }
+            }
         },
         "offset": ">"
     },
     {
         "action": {
-            "name": "SAVE"
+            "sendMessageAction": {
+                "from": "User 1",
+                "content": "bro it’s this mf again",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
         },
-        "offset": ">",
-        "isActionAwait": true,
-        "dest": {
-            "where": "/chat/cyberdivers",
-            "level": 2
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 2",
+                "content": "u dumb fuck, we lost a sprint cuz of u",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
         },
-        "hintActionPos": -1
+        "offset": "-=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 3",
+                "content": "did u finally learn how to play?",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 4",
+                "content": "go fuck urself, u killed me like 10 times, cunt",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 5",
+                "content": "mf is acting like nothing happened, go fuck urself",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 6",
+                "content": "bro that last sprint was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 7",
+                "content": "bro was speedrunning the sprint failure",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 8",
+                "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 9",
+                "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "User 10",
+                "content": "that’s crazy lmao",
+                "timeDiffToNow": 0,
+                "timeToType": 2
+            }
+        },
+        "offset": "-=0.5"
     }
 ]

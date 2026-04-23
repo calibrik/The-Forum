@@ -13,7 +13,7 @@ interface IInputFieldProps {
     onBlur?: () => void | Promise<void>
     icon?: ReactNode;
     id?: string
-    autocomplete?:boolean
+    autocomplete?: boolean
 };
 export type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -21,7 +21,8 @@ export type InputFieldHandle = {
     getError: () => string;
     focus: () => void;
     blur: () => void;
-    setStringToType:(string:string)=>void;
+    setStringToType: (string: string) => void;
+    isStringTyped: () => boolean;
 }
 
 export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props, ref) => {
@@ -31,17 +32,15 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const isFocused = useRef<boolean>(false);
     const placeholder = useRef<HTMLSpanElement>(null);
     const wordToType = useRef<string>("");
-    const currTyped=useRef<number>(0);
+    const currTyped = useRef<number>(0);
 
     function onChange(event: ChangeEvent<HTMLInputElement>) {
-        if (props.scripted)
-        {
+        if (props.scripted) {
             return;
         }
         let value = event.target.value ?? "";
         setErrMsg("");
-        if (wordToType.current!="")
-        {
+        if (wordToType.current != "") {
             event.preventDefault();
         }
         if (props.onChange) {
@@ -74,10 +73,13 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         blur() {
             inputRef.current?.blur();
         },
-        setStringToType(string){
-            currTyped.current=0;
-            wordToType.current=string;
-        }
+        setStringToType(string) {
+            currTyped.current = 0;
+            wordToType.current = string;
+        },
+        isStringTyped() {
+            return props.scripted ? currTyped.current >= wordToType.current.length : false;
+        },
     }));
 
     function onPasswordEyeClick() {
@@ -112,20 +114,20 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             props.onBlur();
     }
 
-    function onReset(){
+    function onReset() {
         if (!isFocused.current)
             placeholder.current!.style.display = "";
     }
 
-    function onKeyDown(e: React.KeyboardEvent){
-        if (props.scripted)
+    function onKeyDown(e: React.KeyboardEvent) {
+        if (!props.scripted)
             return;
         e.preventDefault();
-        if (e.key=="Backspace")
-            currTyped.current=Math.max(currTyped.current-1,0);
+        if (e.key == "Backspace")
+            currTyped.current = Math.max(currTyped.current - 1, 0);
         else
-            currTyped.current=Math.min(currTyped.current+1,wordToType.current.length);
-        inputRef.current!.value=wordToType.current.substring(0,currTyped.current);
+            currTyped.current = Math.min(currTyped.current + 1, wordToType.current.length);
+        inputRef.current!.value = wordToType.current.substring(0, currTyped.current);
     }
 
     const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />
@@ -136,7 +138,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                 {props.icon}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
-                    <input onKeyDown={onKeyDown} ref={inputRef} autoComplete={props.autocomplete?"on":"off"} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
+                    <input onKeyDown={onKeyDown} ref={inputRef} autoComplete={props.autocomplete ? "on" : "off"} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
                 </div>
                 {props.type == "password" ? passwordEye : ""}
             </div>

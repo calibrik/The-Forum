@@ -18,10 +18,17 @@ export function numberToText(n: number) {
     return n.toString();
 }
 
-export function formatDate(date: Date): string {
+export function formatTime(date: Date): string {
     return new Intl.DateTimeFormat('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
     }).format(date).toLowerCase()
+}
+
+export function formatDay(date: Date): string {
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+    return `${day} ${month}, ${year}`;
 }

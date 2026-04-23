@@ -19,19 +19,19 @@ export interface IMessage {
 	content: string,
 	isReply?: number,
 	timeDiff: number //time diff to initTimeDiff, in mins
-	chatName?:string
+	chatName?: string
 }
 
 export interface IChat {
 	id: string,
-	imageName:string,
+	imageName: string,
 	owner: string,
 	type: "gc" | "dm",
 	membersAmount: number,
 	name: string,
 	pregenMessages: IMessage[],
 	isRead: boolean,
-	initTimeDiff:number,//time diff to sign up time, in mins
+	initTimeDiff: number,//time diff to sign up time, in mins
 }
 
 export interface ISubforum {
@@ -56,15 +56,40 @@ export interface IPost {
 	views: number
 }
 
-export interface IAction {
-	name: string,
-	dest?: IDestination
-	navigate?: boolean
+export interface INavigateAction {
+	dest: IDestination
+	navigate: boolean
+}
+
+export interface ISaveAction {
 	storyId?: number
-	id?: string | number//confusing as hell btw (string for hint id, number for index in typingBoxes)
-	style?: React.CSSProperties
-	message?:IMessage
-	timeToType?:number
+	dest:IDestination
+	hintActionPos?: number
+}
+
+export interface ISetTextBoxStyleAction{
+	id:number,
+style: React.CSSProperties
+}
+
+export interface IHintAction {
+	id: string,
+}
+
+export interface ISendMessageAction{
+	from: string,
+	content: string,
+	isReplyDiff?: number,//relative id of the message
+	timeDiffToNow: number //time diff to now
+	timeToType: number
+}
+
+export interface IAction {
+	navigateAction?: INavigateAction,
+	saveAction?:ISaveAction
+	setTextBoxStyleAction?:ISetTextBoxStyleAction
+	hintAction?: IHintAction
+	sendMessageAction?:ISendMessageAction
 }
 
 export interface IScriptLine {
@@ -74,8 +99,6 @@ export interface IScriptLine {
 	action?: IAction,
 	isActionAwait?: boolean,
 	offset: string,
-	dest?: IDestination,
-	hintActionPos?: number
 }
 
 export interface IUser {
@@ -102,7 +125,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(89).stores({
+db.version(96).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

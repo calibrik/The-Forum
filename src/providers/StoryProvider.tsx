@@ -17,6 +17,7 @@ interface IStoryProvider {
     showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
+    resumeStory(): void
     resumeStoryFromHint: (e: React.MouseEvent) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
@@ -24,8 +25,8 @@ interface IStoryProvider {
     goBackHintNavPath: (clickedId: string) => void,
     goForwardHintNavPath: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
-    addMessage(message:IMessage,timeToWait:number):Promise<void>;
-    setChatHandle(ch:IChatHandle):void;
+    addMessage(message: IMessage, timeDiffToNow?: number, timeToWait?: number): Promise<void>;
+    setChatHandle(ch: IChatHandle): Promise<void>;
 }
 
 // interface IAdditionalNavParameters{
@@ -195,39 +196,56 @@ function useHintNavPath() {
     return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch };
 }
 
-interface IChatHandle{
-    setStringToType:(string:string)=>void;
-    addTypingUser:(username:string)=>void;
-    removeTypingUser:(username:string)=>void;
-    addMessage:(message:IMessage)=>void;
+interface IChatHandle {
+    setStringToType: (string: string) => void;
+    addTypingUser: (username: string) => void;
+    removeTypingUser: (username: string) => void;
+    addMessage: (message: IMessage) => void;
+    getInitChatTime: () => Date;
+    getMessage: (id: number) => IMessage | undefined
 }
 
 function useChat() {
-    const messages=useRef<IMessage[]>([]);
-    const chatHandle=useRef<IChatHandle>(undefined);
-    const userState=useUserState();
+    const messages = useRef<IMessage[]>([]);
+    const chatHandle = useRef<IChatHandle>(undefined);
+    const userState = useUserState();
+    const lastId = useRef<number>(0);
 
-    async function addMessage(message:IMessage,timeToType:number) {
-        if (message.from==userState.userLoggedIn.current){
+    async function addMessage(message: IMessage, timeDiffToNow?: number, timeToType?: number) {
+        if (timeDiffToNow && chatHandle.current)
+            message.timeDiff = Math.floor((new Date().getTime() - chatHandle.current.getInitChatTime().getTime()) / 60000) + timeDiffToNow;
+        if (message.isReply) {
+            message.isReply = chatHandle.current?.getMessage(lastId.current + message.isReply)?.id
+        }
+        message.id = lastId.current++;
+        if (message.from == userState.userLoggedIn.current) {
             messages.current.push(message);
+            chatHandle.current?.addMessage(message);
             return;
         }
         chatHandle.current?.addTypingUser(message.from);
-        await delay(timeToType);
+        if (timeToType)
+            await delay(timeToType);
         chatHandle.current?.removeTypingUser(message.from);
         messages.current.push(message);
         chatHandle.current?.addMessage(message);
     }
 
-    async function sinkMessages(){
+    async function sinkMessages() {
         await db.storyMessages.bulkAdd(messages.current);
+        resetMessages();
     }
 
-    function setChatHandle(ch:IChatHandle){
-        chatHandle.current=ch;
+    async function setChatHandle(ch: IChatHandle) {
+        lastId.current = await db.storyMessages.count() + 1;
+        chatHandle.current = ch;
     }
 
-    return {addMessage, sinkMessages, setChatHandle}
+    function resetMessages() {
+        messages.current = [];
+    }
+
+    return { addMessage, sinkMessages, setChatHandle, resetMessages }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
@@ -250,7 +268,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
-    const {addMessage, sinkMessages, setChatHandle}=useChat();
+    const { addMessage, sinkMessages, setChatHandle, resetMessages } = useChat();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -276,9 +294,11 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             if (location == targetLocation)
                 return;
         }
+        resetMessages();
         resetHintNavPath();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
+            console.log("curr", currStoryId.current);
             isStoryRecovered.current = false;
         }
         if (masterRef.current) {
@@ -295,44 +315,53 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         document.querySelector(`#${currHintId.current}`)?.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
     });
 
-    async function processAction(action: IAction) {
-        switch (action.name) {
-            case "NAVIGATE":
-                isStoryNavRef.current = true;
-                pageStoryId.current = (action.storyId ?? 1) + 1;
-                currHintId.current = "NON_EXISTENT_ID";
-                locationRef.current = action.dest;
-                sinkMessages();
-                if (action.navigate) {
-                    let p = waitForInit();
-                    navigate(action.dest?.where ?? "");
-                    if (action.dest?.level == 0)
-                        window.dispatchEvent(new Event("signalLevel0"))
-                    await p;
-                }
-                else {
-                    isStoryRecovered.current = false;
-                    hintNavPath(action.dest);
-                }
-                isStoryNavRef.current = false;
-                break;
-            case "SAVE":
-                await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: action.storyId ?? 1 });
-                savedStoryId.current = action.storyId ?? 1;
-                pageStoryId.current = action.storyId ?? 1 + 1;
-                sinkMessages();
-                break;
-            case "HINT":
-                hint(action.id as string);
-                currHintId.current = action.id as string ?? "NON_EXISTENT_ID";
-                break;
-            case "APPLY_STYLE_TO_BOX":
-                typingBoxes.current[action.id as number].current?.applyStyle(action.style ?? {});
-                break;
-            default:
-                console.error(`Unknown action ${action.name}`)
-                break;
+    async function processAction(action: IAction, storyId: number) {
+        if (action.navigateAction) {
+            isStoryNavRef.current = true;
+            pageStoryId.current = storyId + 1;
+            currHintId.current = "NON_EXISTENT_ID";
+            locationRef.current = action.navigateAction.dest;
+            sinkMessages();
+            if (action.navigateAction.navigate) {
+                let p = waitForInit();
+                navigate(action.navigateAction.dest?.where ?? "");
+                if (action.navigateAction.dest?.level == 0)
+                    window.dispatchEvent(new Event("signalLevel0"))
+                await p;
+            }
+            else {
+                isStoryRecovered.current = false;
+                hintNavPath(action.navigateAction.dest);
+            }
+            isStoryNavRef.current = false;
         }
+        if (action.saveAction) {
+            await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
+            savedStoryId.current = storyId;
+            pageStoryId.current = storyId + 1;
+            console.log("page", pageStoryId.current);
+            sinkMessages();
+        }
+        if (action.hintAction) {
+            hint(action.hintAction.id);
+            currHintId.current = action.hintAction.id;
+        }
+        if (action.setTextBoxStyleAction) {
+            typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
+        }
+        if (action.sendMessageAction) {
+            addMessage({
+                id: 0,
+                from: action.sendMessageAction.from,
+                content: action.sendMessageAction.content,
+                isReply: action.sendMessageAction.isReplyDiff,
+                timeDiff: 0
+            }, action.sendMessageAction.timeDiffToNow, action.sendMessageAction.timeToType)
+        }
+    }
+
+    function resumeStory() {
+        showStory(currStoryId.current);
     }
 
     function resumeStoryFromHint(e: React.MouseEvent): boolean {
@@ -351,14 +380,14 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         savedStoryId.current = id;
         currStoryId.current = id + 1;
         pageStoryId.current = id + 1;
-        locationRef.current = scl.dest;
-        if (scl.hintActionPos) {
-            let hintScl = await db.story.get(id + scl.hintActionPos);
-            currHintId.current = hintScl?.action?.id as string;
+        locationRef.current = scl.action?.saveAction?.dest;
+        if (scl.action?.saveAction?.hintActionPos) {
+            let hintScl = await db.story.get(id + scl.action.saveAction.hintActionPos);
+            currHintId.current = hintScl?.action?.hintAction?.id ?? "NON_EXISTENT_ID";
         }
-        if (scl.dest?.level == 0)
+        if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
-        navigate(scl.dest?.where ?? "");
+        navigate(locationRef.current?.where ?? "");
     }
 
     function recoverStoryOnPage(level: number) {
@@ -382,6 +411,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             hint(currHintId.current);
             return;
         }
+        console.log("page", pageStoryId.current);
         showStory(pageStoryId.current)
     }
 
@@ -468,13 +498,14 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
             else if (scl.action) {
                 const action = scl.action;
-                action.storyId = id - 1;
                 master.add(() => {
                     master.pause();
-                    processAction(action).then(() => master.resume());
+                    processAction(action, id - 1).then(() => master.resume());
                 }, scl.offset);
             }
         }
+        if (!isMounted.current || ticket != loopTicket.current)
+            return;
         masterRef.current = master;
         console.log("play anim")
         master.play();
@@ -521,7 +552,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             goForwardHintNavPath,
             setHeaderSearch,
             addMessage,
-            setChatHandle
+            setChatHandle,
+            resumeStory
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />

@@ -153,9 +153,9 @@ export const User: FC<IUserPageProps> = (_) => {
                                     <AccInfo ref={accInfoRef} nickname={user.nickname} />
                                 </div>
                                 : ""}
-                            <HintHolder ref={setHintHolder("cd-profile-text")} id="cd-profile-text"/>
                         </div>
                         : <Spinner />}
+                    <HintHolder ref={setHintHolder("cd-profile-text")} id="cd-profile-text"/>
                     <Menu options={menuOptions} />
                 </div>
                 <div className={styles.contentContainer}>
