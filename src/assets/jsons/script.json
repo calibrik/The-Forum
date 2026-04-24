@@ -423,7 +423,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=1"
+        "offset": "+=1"
     },
     {
         "action": {
@@ -434,7 +434,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -445,7 +445,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -456,7 +456,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -467,7 +467,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -478,7 +478,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -489,7 +489,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -500,7 +500,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -511,6 +511,6 @@
                 "timeToType": 2
             }
         },
-        "offset": "-=0.5"
+        "offset": "+=0.5"
     }
 ]

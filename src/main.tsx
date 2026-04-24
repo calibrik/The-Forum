@@ -28,3 +28,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: fetch images for authors (posts, chats)
 //TODO: we can get rid of hintPos in saving (we can replace it with bool, but who gives a shit tbf)
 //TODO: make hinting hint all elements, so hintholders can hold hint even if they are not needed now (idk what it fixes tho, so not important rn)
+//TODO: store all messages in storyMessages table with set date instead of whatever im doing now, cuz it's confusing as hell

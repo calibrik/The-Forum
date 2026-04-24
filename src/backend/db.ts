@@ -18,8 +18,16 @@ export interface IMessage {
 	from: string,
 	content: string,
 	isReply?: number,
-	timeDiff: number //time diff to initTimeDiff, in mins
-	chatName?: string
+	timeSent: Date
+	chatId: string
+}
+
+export interface IPregenMessage {
+	id: number,
+	from: string,
+	content: string,
+	timeDiff:number//time diff to init time diff in mins
+	isReply?: number,//relative pos of the reply to message
 }
 
 export interface IChat {
@@ -29,7 +37,7 @@ export interface IChat {
 	type: "gc" | "dm",
 	membersAmount: number,
 	name: string,
-	pregenMessages: IMessage[],
+	pregenMessages: IPregenMessage[],
 	isRead: boolean,
 	initTimeDiff: number,//time diff to sign up time, in mins
 }
@@ -63,33 +71,32 @@ export interface INavigateAction {
 
 export interface ISaveAction {
 	storyId?: number
-	dest:IDestination
+	dest: IDestination
 	hintActionPos?: number
 }
 
-export interface ISetTextBoxStyleAction{
-	id:number,
-style: React.CSSProperties
+export interface ISetTextBoxStyleAction {
+	id: number,
+	style: React.CSSProperties
 }
 
 export interface IHintAction {
 	id: string,
 }
 
-export interface ISendMessageAction{
+export interface ISendMessageAction {
 	from: string,
 	content: string,
 	isReplyDiff?: number,//relative id of the message
-	timeDiffToNow: number //time diff to now
 	timeToType: number
 }
 
 export interface IAction {
 	navigateAction?: INavigateAction,
-	saveAction?:ISaveAction
-	setTextBoxStyleAction?:ISetTextBoxStyleAction
+	saveAction?: ISaveAction
+	setTextBoxStyleAction?: ISetTextBoxStyleAction
 	hintAction?: IHintAction
-	sendMessageAction?:ISendMessageAction
+	sendMessageAction?: ISendMessageAction
 }
 
 export interface IScriptLine {
@@ -107,8 +114,7 @@ export interface IUser {
 	password?: string,
 	savedStoryId?: number
 	description?: string
-	imageName?: string,
-	createdAt: Date
+	imageName?: string
 }
 
 export interface IDestination {
@@ -125,13 +131,13 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(96).stores({
+db.version(100).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
 	chats: "id, owner",
-	storyMessages: "id,chatName"
+	storyMessages: "id,chatId"
 }).upgrade(async () => {
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));

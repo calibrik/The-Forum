@@ -20,10 +20,8 @@ const Dialog: FC<IDialogProps> = (props) => {
         const user=await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
         if(!user)
             return;
-        const lastMessage=props.chat.pregenMessages[props.chat.pregenMessages.length-1];
-        const timeSentDate=new Date(user.createdAt);
-        timeSentDate.setMinutes(timeSentDate.getMinutes()+props.chat.initTimeDiff+lastMessage.timeDiff);
-        setTimeSent(formatTime(timeSentDate));
+        const lastMessage=await db.storyMessages.where("chatId").equals(props.chat.id).last();
+        setTimeSent(formatTime(lastMessage?.timeSent??new Date()));
     }
 
     async function onClick(){

@@ -17,7 +17,6 @@ import { useNavigate, useParams } from "react-router";
 
 interface IChatProps { };
 interface IMessageProps {
-    initChatTime: Date
     message: IMessage;
     replyTo?: {
         from: string;
@@ -85,9 +84,7 @@ const Message: FC<IMessageProps> = (props) => {
         part.startsWith("@") ? <span key={index} className={styles.ping}>{part}</span> : part
     );
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
-    const initChatTime = new Date(props.initChatTime);
-    initChatTime.setMinutes(initChatTime.getMinutes() + props.message.timeDiff);
-    const timeSent = formatTime(initChatTime);
+    const timeSent = formatTime(props.message.timeSent);
 
     return (
         <div className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
@@ -117,7 +114,6 @@ export const Chat: FC<IChatProps> = () => {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [typing, setTyping] = useState<Set<string>>(new Set());
     const [chat, setChat] = useState<IChat>();
-    const [initChatTime, setInitChatTime] = useState<Date>(new Date());
     const chatContainerRef = useRef<HTMLDivElement>(null);
     const storyInit = useStoryInit();
     const userState = useUserState();
@@ -130,19 +126,14 @@ export const Chat: FC<IChatProps> = () => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
     }, [messages]);
 
-    function onSendMessage(e: React.FormEvent<HTMLFormElement>) {
+    async function onSendMessage(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!inputRef.current || !inputRef.current.isStringTyped())
             return;
         const data = new FormData(e.currentTarget);
         const message = data.get("message");
         console.log("Sent message: ", message);
-        story.addMessage({
-            id: 0,
-            from: userState.userLoggedIn.current,
-            content: message as string,
-            timeDiff: 0
-        }, 0);
+        await story.addMessageFromUser(message as string);
         story.resumeStory();
         e.currentTarget.reset();
     }
@@ -163,7 +154,8 @@ export const Chat: FC<IChatProps> = () => {
             return;
         }
         setChat(chat);
-        setMessages(chat.pregenMessages);
+        const msgs=await db.storyMessages.where("chatId").equals(chat.id).toArray();
+        setMessages(msgs);
         await story.setChatHandle({
             setStringToType: function (string: string): void {
                 inputRef.current?.setStringToType(string);
@@ -181,16 +173,13 @@ export const Chat: FC<IChatProps> = () => {
             addMessage: function (message: IMessage): void {
                 setMessages(prev => [...prev, message]);
             },
-            getInitChatTime: function (): Date {
-                return initChatTime;
-            },
             getMessage(id) {
                 return messages.find(m => m.id == id);
             },
+            getId() {
+                return chatId??"";
+            },
         });
-        const chatTime = user.createdAt;
-        chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
-        setInitChatTime(chatTime);
     }
 
     useEffect(() => {
@@ -212,15 +201,12 @@ export const Chat: FC<IChatProps> = () => {
             <div ref={chatContainerRef} className={styles.chatContainer}>
                 <Spinner />
                 {messages.map((msg, index) => {
-                    let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} initChatTime={initChatTime} />;
+                    let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} />;
                     if (index == 0)
                         return message;
-                    const currMsgTime = new Date(initChatTime);
-                    currMsgTime.setMinutes(currMsgTime.getMinutes() + msg.timeDiff);
-                    const prevMsgTime = new Date(initChatTime);
-                    prevMsgTime.setMinutes(prevMsgTime.getMinutes() + messages[index - 1].timeDiff);
-                    if (currMsgTime.getDay() != prevMsgTime.getDay())
-                        message = <><Divider key={"divider" + index}>{formatDay(currMsgTime)}</Divider>{message}</>;
+                    const prevMsg = messages[index-1];
+                    if (msg.timeSent.getDay() != prevMsg.timeSent.getDay())
+                        message = <><Divider key={"divider" + index}>{formatDay(msg.timeSent)}</Divider>{message}</>;
                     return message;
                 })}
             </div>

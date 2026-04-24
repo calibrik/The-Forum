@@ -64,8 +64,7 @@ export const Signup: FC<ISignupProps> = (_) => {
             setLoading(false);
             return;
         }
-        await story.customizeStory(data.nickname.trim());
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: data.nickname.trim(), password: data.password.trim(), savedStoryId: 1,createdAt: new Date() });
+        await story.createUser(data.nickname.trim(),data.password.trim());
         navigate("/login")
     }
 

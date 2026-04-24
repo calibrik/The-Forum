@@ -21,12 +21,13 @@ interface IStoryProvider {
     resumeStoryFromHint: (e: React.MouseEvent) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
-    customizeStory: (nickname: string) => Promise<void>
+    createUser: (nickname: string,password:string) => Promise<void>
     goBackHintNavPath: (clickedId: string) => void,
     goForwardHintNavPath: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
-    addMessage(message: IMessage, timeDiffToNow?: number, timeToWait?: number): Promise<void>;
+    // addMessageFromNPC(from: string, content: string, timeToType: number, isReplyDiff?: number):Promise<void>
     setChatHandle(ch: IChatHandle): Promise<void>;
+    addMessageFromUser(content: string): Promise<void>
 }
 
 // interface IAdditionalNavParameters{
@@ -201,8 +202,8 @@ interface IChatHandle {
     addTypingUser: (username: string) => void;
     removeTypingUser: (username: string) => void;
     addMessage: (message: IMessage) => void;
-    getInitChatTime: () => Date;
     getMessage: (id: number) => IMessage | undefined
+    getId:()=>string
 }
 
 function useChat() {
@@ -211,17 +212,26 @@ function useChat() {
     const userState = useUserState();
     const lastId = useRef<number>(0);
 
-    async function addMessage(message: IMessage, timeDiffToNow?: number, timeToType?: number) {
-        if (timeDiffToNow && chatHandle.current)
-            message.timeDiff = Math.floor((new Date().getTime() - chatHandle.current.getInitChatTime().getTime()) / 60000) + timeDiffToNow;
-        if (message.isReply) {
-            message.isReply = chatHandle.current?.getMessage(lastId.current + message.isReply)?.id
+    async function addMessageFromUser(content: string) {
+        const message: IMessage = {
+            id: lastId.current++,
+            from: userState.userLoggedIn.current,
+            content: content,
+            timeSent: new Date(),
+            chatId:chatHandle.current?.getId()??""
         }
-        message.id = lastId.current++;
-        if (message.from == userState.userLoggedIn.current) {
-            messages.current.push(message);
-            chatHandle.current?.addMessage(message);
-            return;
+        messages.current.push(message);
+        chatHandle.current?.addMessage(message);
+    }
+
+    async function addMessageFromNPC(from: string, content: string, timeToType: number, isReplyDiff?: number) {
+        const message: IMessage = {
+            id: lastId.current++,
+            from: from,
+            content: content,
+            timeSent: new Date(),
+            isReply: isReplyDiff ? lastId.current - (isReplyDiff + 1) : undefined,
+            chatId:chatHandle.current?.getId()??""
         }
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
@@ -236,6 +246,10 @@ function useChat() {
         resetMessages();
     }
 
+    async function addMessagesToDb(msgs:IMessage[]){
+        await db.storyMessages.bulkAdd(msgs);
+    }
+
     async function setChatHandle(ch: IChatHandle) {
         lastId.current = await db.storyMessages.count() + 1;
         chatHandle.current = ch;
@@ -245,7 +259,7 @@ function useChat() {
         messages.current = [];
     }
 
-    return { addMessage, sinkMessages, setChatHandle, resetMessages }
+    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
@@ -268,7 +282,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
-    const { addMessage, sinkMessages, setChatHandle, resetMessages } = useChat();
+    const { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb } = useChat();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -298,7 +312,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         resetHintNavPath();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
-            console.log("curr", currStoryId.current);
             isStoryRecovered.current = false;
         }
         if (masterRef.current) {
@@ -339,7 +352,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
             savedStoryId.current = storyId;
             pageStoryId.current = storyId + 1;
-            console.log("page", pageStoryId.current);
             sinkMessages();
         }
         if (action.hintAction) {
@@ -350,13 +362,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
         }
         if (action.sendMessageAction) {
-            addMessage({
-                id: 0,
-                from: action.sendMessageAction.from,
-                content: action.sendMessageAction.content,
-                isReply: action.sendMessageAction.isReplyDiff,
-                timeDiff: 0
-            }, action.sendMessageAction.timeDiffToNow, action.sendMessageAction.timeToType)
+            addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
     }
 
@@ -411,7 +417,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             hint(currHintId.current);
             return;
         }
-        console.log("page", pageStoryId.current);
         showStory(pageStoryId.current)
     }
 
@@ -498,9 +503,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
             else if (scl.action) {
                 const action = scl.action;
+                const saveId = id - 1;
                 master.add(() => {
                     master.pause();
-                    processAction(action, id - 1).then(() => master.resume());
+                    processAction(action, saveId).then(() => master.resume());
                 }, scl.offset);
             }
         }
@@ -527,6 +533,31 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             typingBoxes.current = tbs;
     }
 
+    async function createUser(nickname: string, password: string) {
+        await customizeStory(nickname);
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });
+        await db.storyMessages.clear();
+        const createdAt=new Date();
+        const chats=await db.chats.toArray();
+        for (let chat of chats) {
+            const chatTime=new Date(createdAt);
+            chatTime.setMinutes(chatTime.getMinutes()+chat.initTimeDiff);
+            let msgs:IMessage[]=[];
+            for (let i=0;i<chat.pregenMessages.length;i++) {
+                const msg:IMessage={
+                    id: i + 1,
+                    from: chat.pregenMessages[i].from,
+                    content: chat.pregenMessages[i].content,
+                    timeSent: new Date(chatTime),
+                    chatId:chat.id
+                }
+                msg.timeSent.setMinutes(msg.timeSent.getMinutes()+chat.pregenMessages[i].timeDiff);
+                msgs.push(msg);
+            }
+            addMessagesToDb(msgs);
+        }
+    }
+
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -546,14 +577,14 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             initReady,
             resumeStoryFromHint,
             recoverCheckpoint,
-            customizeStory,
+            createUser,
             recoverStoryOnPage,
             goBackHintNavPath,
             goForwardHintNavPath,
             setHeaderSearch,
-            addMessage,
             setChatHandle,
-            resumeStory
+            resumeStory,
+            addMessageFromUser
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
