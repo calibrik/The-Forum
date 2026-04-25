@@ -405,14 +405,23 @@
     },
     {
         "action": {
+            "promptMessageAction": {
+                "content": "yo"
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
             "sendMessageAction": {
                 "from": "User 1",
                 "content": "bro it’s this mf again",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 1.5
             }
         },
-        "offset": "+=2"
+        "offset": "+=1"
     },
     {
         "action": {
@@ -423,7 +432,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "+=1"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -431,10 +440,10 @@
                 "from": "User 3",
                 "content": "did u finally learn how to play?",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 1.7
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -445,7 +454,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -453,10 +462,10 @@
                 "from": "User 5",
                 "content": "mf is acting like nothing happened, go fuck urself",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 1.6
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -464,10 +473,10 @@
                 "from": "User 6",
                 "content": "bro that last sprint was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 2.2
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -475,10 +484,10 @@
                 "from": "User 7",
                 "content": "bro was speedrunning the sprint failure",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 1.5
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -489,7 +498,7 @@
                 "timeToType": 2
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -497,10 +506,10 @@
                 "from": "User 9",
                 "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 2.5
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=0.2"
     },
     {
         "action": {
@@ -508,9 +517,10 @@
                 "from": "User 10",
                 "content": "that’s crazy lmao",
                 "timeDiffToNow": 0,
-                "timeToType": 2
+                "timeToType": 1,
+                "isReplyDiff": -1
             }
         },
-        "offset": "+=0.5"
+        "offset": "+=2.5"
     }
 ]

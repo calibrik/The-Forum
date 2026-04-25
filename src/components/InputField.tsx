@@ -31,7 +31,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const [type, setType] = useState<string>(props.type);
     const isFocused = useRef<boolean>(false);
     const placeholder = useRef<HTMLSpanElement>(null);
-    const wordToType = useRef<string>("");
+    const stringToType = useRef<string>("");
     const currTyped = useRef<number>(0);
 
     function onChange(event: ChangeEvent<HTMLInputElement>) {
@@ -40,7 +40,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         }
         let value = event.target.value ?? "";
         setErrMsg("");
-        if (wordToType.current != "") {
+        if (stringToType.current != "") {
             event.preventDefault();
         }
         if (props.onChange) {
@@ -74,11 +74,14 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             inputRef.current?.blur();
         },
         setStringToType(string) {
+            if (inputRef.current===null)
+                return;
             currTyped.current = 0;
-            wordToType.current = string;
+            stringToType.current = string;
+            inputRef.current.disabled=stringToType.current==="";
         },
         isStringTyped() {
-            return props.scripted ? currTyped.current >= wordToType.current.length : false;
+            return props.scripted ? currTyped.current >= stringToType.current.length : false;
         },
     }));
 
@@ -120,14 +123,14 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     }
 
     function onKeyDown(e: React.KeyboardEvent) {
-        if (!props.scripted)
+        if (!props.scripted||e.key=="Enter"||stringToType.current==="")
             return;
         e.preventDefault();
         if (e.key == "Backspace")
             currTyped.current = Math.max(currTyped.current - 1, 0);
         else
-            currTyped.current = Math.min(currTyped.current + 1, wordToType.current.length);
-        inputRef.current!.value = wordToType.current.substring(0, currTyped.current);
+            currTyped.current = Math.min(currTyped.current + 1, stringToType.current.length);
+        inputRef.current!.value = stringToType.current.substring(0, currTyped.current);
     }
 
     const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />

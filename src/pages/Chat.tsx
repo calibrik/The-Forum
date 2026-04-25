@@ -132,10 +132,10 @@ export const Chat: FC<IChatProps> = () => {
             return;
         const data = new FormData(e.currentTarget);
         const message = data.get("message");
-        console.log("Sent message: ", message);
+        e.currentTarget.reset();
+        inputRef.current.setStringToType("");
         await story.addMessageFromUser(message as string);
         story.resumeStory();
-        e.currentTarget.reset();
     }
 
     async function init() {

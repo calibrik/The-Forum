@@ -84,6 +84,10 @@ export interface IHintAction {
 	id: string,
 }
 
+export interface IPromptMessage{
+	content:string,
+}
+
 export interface ISendMessageAction {
 	from: string,
 	content: string,
@@ -96,7 +100,8 @@ export interface IAction {
 	saveAction?: ISaveAction
 	setTextBoxStyleAction?: ISetTextBoxStyleAction
 	hintAction?: IHintAction
-	sendMessageAction?: ISendMessageAction
+	sendMessageAction?: ISendMessageAction,
+	promptMessageAction?:IPromptMessage
 }
 
 export interface IScriptLine {
@@ -131,7 +136,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(100).stores({
+db.version(102).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

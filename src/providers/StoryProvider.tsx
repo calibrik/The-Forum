@@ -259,7 +259,11 @@ function useChat() {
         messages.current = [];
     }
 
-    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb }
+    function promptMessage(content:string){
+        chatHandle.current?.setStringToType(content);
+    }
+
+    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb,promptMessage }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
@@ -282,7 +286,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
-    const { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb } = useChat();
+    const { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb, promptMessage } = useChat();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -363,6 +367,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         }
         if (action.sendMessageAction) {
             addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
+        }
+        if (action.promptMessageAction){
+            promptMessage(action.promptMessageAction.content);
         }
     }
 
