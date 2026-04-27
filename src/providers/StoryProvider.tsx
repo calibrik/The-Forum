@@ -18,14 +18,13 @@ interface IStoryProvider {
     getAnim: (anim: string) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
     resumeStory(): void
-    resumeStoryFromHint: (e: React.MouseEvent) => boolean
+    resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
-    createUser: (nickname: string,password:string) => Promise<void>
-    goBackHintNavPath: (clickedId: string) => void,
-    goForwardHintNavPath: (clickedId: string) => void,
+    createUser: (nickname: string, password: string) => Promise<void>
+    goBackHint: (clickedId: string) => void,
+    goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
-    // addMessageFromNPC(from: string, content: string, timeToType: number, isReplyDiff?: number):Promise<void>
     setChatHandle(ch: IChatHandle): Promise<void>;
     addMessageFromUser(content: string): Promise<void>
 }
@@ -122,10 +121,13 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
 }
 
 
-function useHintNavPath() {
+function useHints() {
     const currIndex = useRef<number>(-1);//current index in path for chained nav
-    const currNavPath = useRef<string[]>([]);//current calculated nav path, if length==0 means it wasn't calculated
+    const currHint = useRef<string[]>([]);//curr hint, length ==0 means it's not set
+    const currStoryHint = useRef<string[]>([]);//current story hint used for caching the last story hint for recover on page function
     const headerSearch = useRef<ISearchFieldHandle>(null);
+    const isStoryHint = useRef<boolean>(false);//is story hint currently hunting (for nav hint to trigger)
+    const isLegitStoryHint = useRef<boolean>(true)//is story hint supposed produced from hint action or artificially planted
 
     function setHeaderSearch(ref: ISearchFieldHandle | null) {
         headerSearch.current = ref;
@@ -142,23 +144,59 @@ function useHintNavPath() {
         el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
     }
 
-    function goForwardHintNavPath(clickedId: string) {
-        if (currNavPath.current.length > 1 && clickedId == currNavPath.current[currIndex.current]) {
-            const id = currNavPath.current[currIndex.current];
-            document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            // if (++currIndex.current >= currNavPath.current.length) {
-            //     // currNavPath.current=[];
-            //     return;
-            // }
-            hint(currNavPath.current[++currIndex.current]);
-
+    function goForwardHint(clickedId: string) {
+        if (currHint.current.length > 1 && clickedId == currHint.current[currIndex.current]) {
+            removeCurrHint();
+            hint(currHint.current[++currIndex.current]);
         }
     }
 
+    function setStoryHint(hints: string[], dontActivate?: boolean, isLegit?: boolean) {
+        currHint.current = hints;
+        currStoryHint.current = hints;
+        currIndex.current = 0;
+        if (!dontActivate) {
+            isStoryHint.current = true;
+            hint(hints[0]);
+        }
+        isLegitStoryHint.current = isLegit ?? true;
+    }
+
+    function resetStoryHint() {
+        currStoryHint.current = []
+    }
+
+    function reactivateStoryHint() {
+        if (currStoryHint.current.length == 0)
+            return;
+        currIndex.current = 0;
+        currHint.current = currStoryHint.current;
+        isStoryHint.current = true;
+        hint(currHint.current[0]);
+    }
+
+    function removeCurrHint() {
+        const id = currHint.current[currIndex.current];
+        if (id == "")
+            return;
+        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+    }
+
+    function getCurrentStoryHint() {
+        if (currStoryHint.current.length == 0)
+            return "";
+        return currStoryHint.current[currIndex.current];
+    }
+
+    function verifyStoryHint() {
+        return getCurrentStoryHint()!==""&&isLegitStoryHint.current;
+    }
+
     function hintNavPath(target?: IDestination) {
-        if (!target || currNavPath.current.length != 0) {
+        if (!target || !isStoryHint.current && currHint.current.length != 0) {
             return;
         }
+        isStoryHint.current = false;
         const location = window.location.pathname.split('/').slice(0, target.level + 1);
         const targetLocation = target.where.split('/');
         let mismatchedLevel = 0;
@@ -169,32 +207,27 @@ function useHintNavPath() {
         }
         if (mismatchedLevel > target.level)
             return;
-        currNavPath.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
+        currHint.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
         currIndex.current = 0
-        hint(currNavPath.current[currIndex.current]);
+        hint(currHint.current[currIndex.current]);
     }
 
-    function goBackHintNavPath(clickedId: string) {
-        if (currNavPath.current.length > 1 && clickedId == currNavPath.current[currIndex.current]) {
-            const id = currNavPath.current[currIndex.current--];
-            if (id != "")
-                document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
-            hint(currNavPath.current[currIndex.current]);
+    function goBackHint(clickedId: string) {
+        if (currHint.current.length > 1 && clickedId == currHint.current[currIndex.current]) {
+            removeCurrHint();
+            hint(currHint.current[--currIndex.current]);
         }
     }
 
-    function resetHintNavPath() {
-        if (currNavPath.current.length == 0)
+    function resetHint() {
+        if (currHint.current.length == 0)
             return;
-        const id = currNavPath.current[currIndex.current];
-        currNavPath.current = [];
+        removeCurrHint();
+        currHint.current = [];
         headerSearch.current?.setSuggestionHint(undefined);
-        if (id == "")
-            return;
-        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
     }
 
-    return { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch };
+    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint };
 }
 
 interface IChatHandle {
@@ -203,7 +236,7 @@ interface IChatHandle {
     removeTypingUser: (username: string) => void;
     addMessage: (message: IMessage) => void;
     getMessage: (id: number) => IMessage | undefined
-    getId:()=>string
+    getId: () => string
 }
 
 function useChat() {
@@ -218,7 +251,7 @@ function useChat() {
             from: userState.userLoggedIn.current,
             content: content,
             timeSent: new Date(),
-            chatId:chatHandle.current?.getId()??""
+            chatId: chatHandle.current?.getId() ?? ""
         }
         messages.current.push(message);
         chatHandle.current?.addMessage(message);
@@ -231,7 +264,7 @@ function useChat() {
             content: content,
             timeSent: new Date(),
             isReply: isReplyDiff ? lastId.current - (isReplyDiff + 1) : undefined,
-            chatId:chatHandle.current?.getId()??""
+            chatId: chatHandle.current?.getId() ?? ""
         }
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
@@ -246,7 +279,7 @@ function useChat() {
         resetMessages();
     }
 
-    async function addMessagesToDb(msgs:IMessage[]){
+    async function addMessagesToDb(msgs: IMessage[]) {
         await db.storyMessages.bulkAdd(msgs);
     }
 
@@ -259,11 +292,11 @@ function useChat() {
         messages.current = [];
     }
 
-    function promptMessage(content:string){
+    function promptMessage(content: string) {
         chatHandle.current?.setStringToType(content);
     }
 
-    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb,promptMessage }
+    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb, promptMessage }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
@@ -277,7 +310,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
-    const currHintId = useRef<string>("NON_EXISTENT_ID");//holds last hinted id
+    // const currHintId = useRef<string>("NON_EXISTENT_ID");//holds last hinted id
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
@@ -285,7 +318,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
-    const { hint, hintNavPath, goBackHintNavPath, goForwardHintNavPath, resetHintNavPath, setHeaderSearch } = useHintNavPath();
+    const { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint } = useHints();
     const { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb, promptMessage } = useChat();
 
     function waitForInit() {
@@ -313,7 +346,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 return;
         }
         resetMessages();
-        resetHintNavPath();
+        resetHint();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
             isStoryRecovered.current = false;
@@ -329,14 +362,13 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             }
         }
         typingBoxes.current = [];
-        document.querySelector(`#${currHintId.current}`)?.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
     });
 
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
             isStoryNavRef.current = true;
             pageStoryId.current = storyId + 1;
-            currHintId.current = "NON_EXISTENT_ID";
+            resetStoryHint();
             locationRef.current = action.navigateAction.dest;
             sinkMessages();
             if (action.navigateAction.navigate) {
@@ -359,8 +391,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             sinkMessages();
         }
         if (action.hintAction) {
-            hint(action.hintAction.id);
-            currHintId.current = action.hintAction.id;
+            setStoryHint(action.hintAction.ids)
         }
         if (action.setTextBoxStyleAction) {
             typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
@@ -368,7 +399,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (action.sendMessageAction) {
             addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
-        if (action.promptMessageAction){
+        if (action.promptMessageAction) {
+            setStoryHint(["chat-input", "chat-send"],false,false)
             promptMessage(action.promptMessageAction.content);
         }
     }
@@ -377,12 +409,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         showStory(currStoryId.current);
     }
 
-    function resumeStoryFromHint(e: React.MouseEvent): boolean {
-        e.preventDefault();
-        if (isStoryGoing() || currHintId.current !== e.currentTarget.id)
+    function resumeStoryFromHint(clickedId: string): boolean {
+        if (isStoryGoing() || getCurrentStoryHint() !== clickedId)
             return false;
-        e.currentTarget.classList.remove(currHintId.current.includes("text") ? styles.hintText : styles.hint);
-        // currHintId.current = "NON_EXISTENT_ID";
+        removeCurrHint();
         showStory(currStoryId.current);
         return true;
     }
@@ -396,7 +426,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         locationRef.current = scl.action?.saveAction?.dest;
         if (scl.action?.saveAction?.hintActionPos) {
             let hintScl = await db.story.get(id + scl.action.saveAction.hintActionPos);
-            currHintId.current = hintScl?.action?.hintAction?.id ?? "NON_EXISTENT_ID";
+            setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
         }
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
@@ -418,10 +448,10 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 return;
             }
         }
-        resetHintNavPath();
+        resetHint();
         isStoryRecovered.current = true;
-        if (currHintId.current !== "NON_EXISTENT_ID") {
-            hint(currHintId.current);
+        if (verifyStoryHint()) {
+            reactivateStoryHint();
             return;
         }
         showStory(pageStoryId.current)
@@ -544,21 +574,21 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         await customizeStory(nickname);
         await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });
         await db.storyMessages.clear();
-        const createdAt=new Date();
-        const chats=await db.chats.toArray();
+        const createdAt = new Date();
+        const chats = await db.chats.toArray();
         for (let chat of chats) {
-            const chatTime=new Date(createdAt);
-            chatTime.setMinutes(chatTime.getMinutes()+chat.initTimeDiff);
-            let msgs:IMessage[]=[];
-            for (let i=0;i<chat.pregenMessages.length;i++) {
-                const msg:IMessage={
+            const chatTime = new Date(createdAt);
+            chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
+            let msgs: IMessage[] = [];
+            for (let i = 0; i < chat.pregenMessages.length; i++) {
+                const msg: IMessage = {
                     id: i + 1,
                     from: chat.pregenMessages[i].from,
                     content: chat.pregenMessages[i].content,
                     timeSent: new Date(chatTime),
-                    chatId:chat.id
+                    chatId: chat.id
                 }
-                msg.timeSent.setMinutes(msg.timeSent.getMinutes()+chat.pregenMessages[i].timeDiff);
+                msg.timeSent.setMinutes(msg.timeSent.getMinutes() + chat.pregenMessages[i].timeDiff);
                 msgs.push(msg);
             }
             addMessagesToDb(msgs);
@@ -586,8 +616,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverCheckpoint,
             createUser,
             recoverStoryOnPage,
-            goBackHintNavPath,
-            goForwardHintNavPath,
+            goBackHint,
+            goForwardHint,
             setHeaderSearch,
             setChatHandle,
             resumeStory,

@@ -6,6 +6,7 @@
 
     &::after {
         content: "";
+        pointer-events: none;
         border: 1px solid colors.$hint-color;
         border-radius: 6px;
         animation: hintWave 2s linear infinite;

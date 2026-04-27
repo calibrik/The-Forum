@@ -135,7 +135,14 @@ export const Chat: FC<IChatProps> = () => {
         e.currentTarget.reset();
         inputRef.current.setStringToType("");
         await story.addMessageFromUser(message as string);
-        story.resumeStory();
+        story.resumeStoryFromHint("chat-send");
+    }
+
+    function onInputChange(){
+        if (!inputRef.current || !inputRef.current.isStringTyped())
+            story.goBackHint("chat-send");
+        else
+            story.goForwardHint("chat-input")
     }
 
     async function init() {
@@ -211,8 +218,8 @@ export const Chat: FC<IChatProps> = () => {
                 })}
             </div>
             <form onSubmit={onSendMessage} className={styles.inputContainer}>
-                <InputField ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
-                <BaseButton type="submit" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
+                <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
+                <BaseButton type="submit" id="chat-send" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
             </form>
         </div>
     );

@@ -57,10 +57,10 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     useEffect(() => {
         if (isOpen) {
             sideMenuRef.current?.focus();
-            story.goForwardHintNavPath("menu-icon-text");
+            story.goForwardHint("menu-icon-text");
         }
         else {
-            story.goBackHintNavPath("chat-menu");
+            story.goBackHint("chat-menu");
         }
     }, [isOpen])
 

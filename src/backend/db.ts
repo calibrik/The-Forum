@@ -81,7 +81,7 @@ export interface ISetTextBoxStyleAction {
 }
 
 export interface IHintAction {
-	id: string,
+	ids: string[],
 }
 
 export interface IPromptMessage{
@@ -136,7 +136,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(102).stores({
+db.version(103).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

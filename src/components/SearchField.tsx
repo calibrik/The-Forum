@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { InputField, type InputFieldHandle } from "./InputField";
 import { Search } from "./Icons";
 import { SMEntry } from "./SMEntry";
@@ -54,7 +54,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
 
     function onFocus() {
         if (props.id)
-            story.goForwardHintNavPath(props.id);
+            story.goForwardHint(props.id);
         setIsFocused(true);
     }
 
@@ -62,7 +62,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
          if (!e.currentTarget.contains(e.relatedTarget)) {
             setIsFocused(false);
             if (suggestionHint.current)
-                story.goBackHintNavPath("");
+                story.goBackHint("");
         }
     }
 
@@ -71,13 +71,6 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
             suggestionHint.current = name;
         }
     }));
-
-    useEffect(()=>{
-        if (isFocused)
-            inputRef.current?.focus();
-        else
-            inputRef.current?.blur();
-    },[isFocused])
 
     return (
         <div className={styles.container} tabIndex={-1} onFocus={onFocus} onBlur={onBlur}>

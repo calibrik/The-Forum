@@ -83,8 +83,8 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
             </div>
             <p id="text" className={styles.tagline}>A web visual novel, that tells a story of a regular forum dweller.</p>
             <div className={styles.buttons}>
-                <BaseButton onClick={()=>navigate("/login")} animId={"button"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
-                <BaseButton onClick={()=>navigate("/signup")} animId={"button"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
+                <BaseButton onClick={()=>navigate("/login")} id={"button"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
+                <BaseButton onClick={()=>navigate("/signup")} id={"button"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
             </div>
             <BinaryAnimation isFlash={isFlash} className={styles.binaryAnimation} />
         </div>
