@@ -15,7 +15,7 @@ interface IStoryProviderProps {
 interface IStoryProvider {
     setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) => void,
     showStory: (fromId: number) => Promise<void>
-    getAnim: (anim: string) => gsap.core.Timeline | undefined
+    getAnim: (anim: string,options?:IEffectsOptions) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
     resumeStory(): void
     resumeStoryFromHint: (clickedId: string) => boolean
@@ -57,8 +57,14 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
     },
 }
 
-const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => gsap.core.Timeline> = {
-    "NOTEPAD_FLASH": (typingBoxes: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => {
+export interface IEffectsOptions {
+    typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
+    duration?: number,
+    opacity?: number
+}
+
+const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timeline> = {
+    "NOTEPAD_FLASH": (options) => {
         return gsap.timeline()
             .set("[data-istransition='true']", {
                 transition: "none"
@@ -80,7 +86,7 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
             .set("#contentDiv", {
                 overflowY: "visible"
             })
-            .add(() => (typingBoxes.current[0].current?.setCursorType("terminal")))
+            .add(() => (options?.typingBoxes?.current[0].current?.setCursorType("terminal")))
             .set("#container", {
                 clearProps: "all"
             }, "+=0.6")
@@ -91,31 +97,35 @@ const EFFECTS_MAP: Record<string, (typingBoxes: RefObject<RefObject<ITypingTextB
                 clearProps: "transition"
             })
     },
-    "FADE_OUT": (_: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => {
+    "RED_SCREEN": (options) => {
         return gsap.timeline()
-            .set("#effectOverlay1", {
-                visibility: "visible",
-                opacity: 0,
-                backgroundColor: "black"
-            })
-            .to("#effectOverlay1", {
-                duration: 2,
-                opacity: 1
-            })
+            .fromTo("#effectOverlay1",
+                {
+                    opacity: 0,
+                    backgroundColor: "red"
+                },
+                {
+                    duration: options?.duration,
+                    opacity: options?.opacity
+                })
     },
-    "FADE_IN": (_: RefObject<RefObject<ITypingTextBoxHandle | null>[]>) => {
+    "FADE_OUT": (options) => {
         return gsap.timeline()
-            .set("#effectOverlay1", {
-                visibility: "visible",
-                opacity: 1,
-                backgroundColor: "black"
-            })
+            .fromTo("#effectOverlay1",
+                {
+                    opacity: 0,
+                    backgroundColor: "black"
+                },
+                {
+                    duration: options?.duration,
+                    opacity: 1
+                })
+    },
+    "REVERSE_OVERLAY": (options) => {
+        return gsap.timeline()
             .to("#effectOverlay1", {
-                duration: 2,
-                opacity: 0
-            }, "+=0.5")
-            .set("#effectOverlay1", {
-                visibility: "hidden"
+                opacity: 0,
+                duration: options?.duration
             })
     },
 }
@@ -189,7 +199,7 @@ function useHints() {
     }
 
     function verifyStoryHint() {
-        return getCurrentStoryHint()!==""&&isLegitStoryHint.current;
+        return getCurrentStoryHint() !== "" && isLegitStoryHint.current;
     }
 
     function hintNavPath(target?: IDestination) {
@@ -400,7 +410,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
         if (action.promptMessageAction) {
-            setStoryHint(["chat-input", "chat-send"],false,false)
+            setStoryHint(["chat-input", "chat-send"], false, false)
             promptMessage(action.promptMessageAction.content);
         }
     }
@@ -532,7 +542,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             }
 
             else if (scl.effect) {
-                const anim = getAnim(scl.effect.name);
+                const anim = getAnim(scl.effect.name,{...scl.effect.options,typingBoxes:typingBoxes});
                 if (!anim)
                     continue
                 master.add(anim, scl.offset);
@@ -557,12 +567,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         masterRef.current = undefined;
     });
 
-    const getAnim = contextSafe((anim: string) => {
+    const getAnim = contextSafe((anim: string, options?: IEffectsOptions) => {
         if (!EFFECTS_MAP[anim]) {
             console.error(`No anim called ${anim}`);
             return;
         }
-        return EFFECTS_MAP[anim](typingBoxes);
+        return EFFECTS_MAP[anim](options);
     })
 
     function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) {

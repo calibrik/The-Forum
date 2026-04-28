@@ -1,5 +1,6 @@
 import { Dexie, type EntityTable } from "dexie"
 import { getJsonUrl } from "../utils";
+import type { IEffectsOptions } from "../providers/StoryProvider";
 
 export interface IStoryLine {
 	content: string,
@@ -11,6 +12,7 @@ export interface IStoryLine {
 
 export interface IEffect {
 	name: string,
+	options?:IEffectsOptions
 }
 
 export interface IMessage {
@@ -136,7 +138,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(103).stores({
+db.version(107).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

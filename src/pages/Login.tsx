@@ -64,11 +64,11 @@ export const Login: FC<ILoginProps> = (_) => {
         userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
             const scriptLine = await db.story.get(user[0].savedStoryId ?? 0);
-            await story.getAnim("FADE_OUT");
+            await story.getAnim("FADE_OUT",{duration:2});
             window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;
             story.recoverCheckpoint(user[0].savedStoryId ?? 0,scriptLine);
-            await story.getAnim("FADE_IN");
+            await story.getAnim("REVERSE_OVERLAY",{duration:2});
             return;
         }
         window.dispatchEvent(new Event("loggedIn")); 
