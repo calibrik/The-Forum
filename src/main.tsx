@@ -29,4 +29,6 @@ createRoot(document.getElementById('root')!).render(
 //TODO: we can get rid of hintPos in saving (we can replace it with bool, but who gives a shit tbf)
 //TODO: make hinting hint all elements, so hintholders can hold hint even if they are not needed now (idk what it fixes tho, so not important rn)
 //TODO: separate dest on save so you can tp user on non target location on login
-//TODO: need to code branching for timelines
+//TODO: move chat indicator down maybe?
+//TODO: shitass mobile chatting not working
+//TODO: something funny going on with typing box reset

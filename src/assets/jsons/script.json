@@ -70,16 +70,16 @@
             "delim": "\n\n",
             "typingBoxId": 0
         },
-        "offset": "+=1"
+        "offset": "+=2"
     },
     {
         "storyline": {
-            "content": "I am a gamer with 10+ years experience, especially in Cyberdivers.",
+            "content": "I am a gamer with 10+ years experience, especially in the game called Cyberdivers.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "effect": {
@@ -296,8 +296,7 @@
             "content": "I kinda forgot to explain, what kind of game this is.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 0
         },
         "offset": "+=1"
     },
@@ -315,7 +314,7 @@
         "storyline": {
             "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
             "speed": 50,
-            "delim": " ",
+            "delim": "",
             "typingBoxId": 0
         },
         "offset": ">"
@@ -334,10 +333,28 @@
             "content": "And when I say everything, I mean everything.",
             "speed": 50,
             "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Like walls.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I mean walls.",
+            "speed": 50,
+            "delim": " ",
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "action": {
@@ -440,125 +457,220 @@
         "offset": ">"
     },
     {
-        "effect": {
-            "name": "RED_SCREEN",
-            "options": {
-                "duration": 5,
-                "opacity": 0.3
-            }
+        "addParallelExec": {
+            "name": "sync",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "RED_SCREEN",
+                            "options": {
+                                "duration": 5,
+                                "opacity": 0.15
+                            }
+                        },
+                        "offset": "+=3.5"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 1",
+                                "content": "bro it’s this mf again",
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 2",
+                                "content": "u dumb fuck, we lost a sprint cuz of u",
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 3",
+                                "content": "did u finally learn how to play?",
+                                "isReplyDiff":-3,
+                                "timeToType": 1.7
+                            }
+                        },
+                        "offset": "+=0.7"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 4",
+                                "content": "go fuck urself, u killed me like 10 times, cunt",
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 5",
+                                "content": "mf is acting like nothing happened, go fuck urself",
+                                "timeToType": 1.6
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 6",
+                                "content": "bro that last sprint was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
+                                "timeToType": 2.2
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 7",
+                                "content": "bro was speedrunning the sprint failure",
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 8",
+                                "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.2"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 9",
+                                "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
+                                "isReplyDiff":-9,
+                                "timeToType": 2.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 10",
+                                "content": "that’s crazy lmao",
+                                "timeToType": 1,
+                                "isReplyDiff": -1
+                            }
+                        },
+                        "offset": "+=2.5"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%",
+                                    "right": "5%"
+                                }
+                            }
+                        },
+                        "offset": "+=4"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They love me.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I know it looks like they are grilling the fuck out of me and calling me bad at the game or something, but it’s actually fine, you just don’t get it.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "It’s how we show love and respect for each other, just friendly roasting.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter":"+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They know I’m good at the game, they are just fucking with me.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "User 11",
+                                "content": "ain’t no one fucking with this dude, kick his ass out of here",
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                0
+                            ]
+                        },
+                        "offset": "+=6"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "auto",
+                                    "top": "90%",
+                                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "It’s all jokes, trust me.",
+                            "speed": 100,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=3"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
         },
-        "offset": ">3.5"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 1",
-                "content": "bro it’s this mf again",
-                "timeDiffToNow": 0,
-                "timeToType": 1.5
-            }
-        },
-        "offset": "+=1"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 2",
-                "content": "u dumb fuck, we lost a sprint cuz of u",
-                "timeDiffToNow": 0,
-                "timeToType": 2
-            }
-        },
-        "offset": "+=0.5"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 3",
-                "content": "did u finally learn how to play?",
-                "timeDiffToNow": 0,
-                "timeToType": 1.7
-            }
-        },
-        "offset": "+=0.7"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 4",
-                "content": "go fuck urself, u killed me like 10 times, cunt",
-                "timeDiffToNow": 0,
-                "timeToType": 2
-            }
-        },
-        "offset": "+=0.5"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 5",
-                "content": "mf is acting like nothing happened, go fuck urself",
-                "timeDiffToNow": 0,
-                "timeToType": 1.6
-            }
-        },
-        "offset": "+=1"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 6",
-                "content": "bro that last sprint was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
-                "timeDiffToNow": 0,
-                "timeToType": 2.2
-            }
-        },
-        "offset": "+=0.1"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 7",
-                "content": "bro was speedrunning the sprint failure",
-                "timeDiffToNow": 0,
-                "timeToType": 1.5
-            }
-        },
-        "offset": "+=0.5"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 8",
-                "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
-                "timeDiffToNow": 0,
-                "timeToType": 2
-            }
-        },
-        "offset": "+=0.2"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 9",
-                "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
-                "timeDiffToNow": 0,
-                "timeToType": 2.5
-            }
-        },
-        "offset": "+=0.5"
-    },
-    {
-        "action": {
-            "sendMessageAction": {
-                "from": "User 10",
-                "content": "that’s crazy lmao",
-                "timeDiffToNow": 0,
-                "timeToType": 1,
-                "isReplyDiff": -1
-            }
-        },
-        "offset": "+=2.5"
+        "offset": ">"
     },
     {
         "effect": {

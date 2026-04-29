@@ -15,7 +15,7 @@ interface IStoryProviderProps {
 interface IStoryProvider {
     setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) => void,
     showStory: (fromId: number) => Promise<void>
-    getAnim: (anim: string,options?:IEffectsOptions) => gsap.core.Timeline | undefined
+    getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
     resumeStory(): void
     resumeStoryFromHint: (clickedId: string) => boolean
@@ -273,9 +273,9 @@ function useChat() {
             from: from,
             content: content,
             timeSent: new Date(),
-            isReply: isReplyDiff ? lastId.current - (isReplyDiff + 1) : undefined,
             chatId: chatHandle.current?.getId() ?? ""
         }
+        message.isReply=isReplyDiff?message.id+isReplyDiff:undefined;
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
             await delay(timeToType);
@@ -346,7 +346,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         return masterRef.current != undefined;
     }
 
-    const resetAnims = contextSafe(() => {
+    const resetAnims = contextSafe(async () => {
         if (isStoryNavRef.current)
             return;
         if (locationRef.current) {
@@ -368,7 +368,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 clearProps: "all"
             })
             for (let tb of typingBoxes.current) {
-                tb.current?.reset();
+                await tb.current?.reset();
             }
         }
         typingBoxes.current = [];
@@ -507,6 +507,63 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         });
     }
 
+    function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
+        if (scl.storyline) {
+            const stl = scl.storyline;
+            if (stl.typingBoxId >= typingBoxes.current.length) {
+                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
+                return;
+            }
+            const box = typingBoxes.current[stl.typingBoxId].current;
+            if (!box) {
+                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
+                return;
+            }
+            tl.add(box.getTimeline({
+                content: stl.content,
+                speed: stl.speed,
+                delim: stl.delim,
+                clearAfter: stl.clearAfter
+            }), scl.offset);
+        }
+
+        if (scl.effect) {
+            const anim = getAnim(scl.effect.name, { ...scl.effect.options, typingBoxes: typingBoxes });
+            if (!anim)
+                return;
+            tl.add(anim, scl.offset);
+        }
+
+        if (scl.action) {
+            const action = scl.action;
+            const saveId = scl.id;
+            tl.add(() => {
+                tl.pause();
+                processAction(action, saveId).then(() => tl.resume());
+            }, scl.offset);
+        }
+
+        if (scl.addParallelExec) {
+            tl.addLabel(scl.addParallelExec.name);
+            const branches = scl.addParallelExec.branches;
+            for (let i = 0; i < branches.length; i++) {
+                const branch = gsap.timeline();
+                for (let action of branches[i]) {
+                    addScriptlineToTimeline(action, branch);
+                }
+                tl.add(branch, `${scl.addParallelExec.name}${scl.offset}`);
+            }
+        }
+
+        if (scl.clearTypingTextBoxes){
+            for (let id of scl.clearTypingTextBoxes.ids){
+                if (!typingBoxes.current[id].current)
+                    continue;
+                tl.add(typingBoxes.current[id].current.reset(),scl.offset);
+            }
+        }
+    }
+
     const showStory = contextSafe(async (fromId: number) => {
         if (isStoryGoing())
             return;
@@ -522,40 +579,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             id++;
             if (!scl)
                 break;
-            if (scl.storyline) {
-                const stl = scl.storyline;
-                if (stl.typingBoxId >= typingBoxes.current.length) {
-                    console.error(`No ref assigned for index ${stl.typingBoxId}.`)
-                    continue;
-                }
-                const box = typingBoxes.current[stl.typingBoxId].current;
-                if (!box) {
-                    console.error(`No ref assigned for index ${stl.typingBoxId}.`)
-                    continue;
-                }
-                master.add(box.getTimeline({
-                    content: stl.content,
-                    speed: stl.speed,
-                    delim: stl.delim,
-                    clearAfter: stl.clearAfter
-                }), scl.offset);
-            }
-
-            else if (scl.effect) {
-                const anim = getAnim(scl.effect.name,{...scl.effect.options,typingBoxes:typingBoxes});
-                if (!anim)
-                    continue
-                master.add(anim, scl.offset);
-            }
-
-            else if (scl.action) {
-                const action = scl.action;
-                const saveId = id - 1;
-                master.add(() => {
-                    master.pause();
-                    processAction(action, saveId).then(() => master.resume());
-                }, scl.offset);
-            }
+            addScriptlineToTimeline(scl, master);
         }
         if (!isMounted.current || ticket != loopTicket.current)
             return;
@@ -596,7 +620,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     from: chat.pregenMessages[i].from,
                     content: chat.pregenMessages[i].content,
                     timeSent: new Date(chatTime),
-                    chatId: chat.id
+                    chatId: chat.id,
+                    isReply:chat.pregenMessages[i].isReply
                 }
                 msg.timeSent.setMinutes(msg.timeSent.getMinutes() + chat.pregenMessages[i].timeDiff);
                 msgs.push(msg);

@@ -43,6 +43,7 @@
                 "id": 6,
                 "from": "user1",
                 "content": "I need level 75 to unlock ak 4.7.0, im like 42",
+                "isReply":4,
                 "timeDiff": 2
             },
             {

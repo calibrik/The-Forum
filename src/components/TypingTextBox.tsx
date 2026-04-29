@@ -24,7 +24,7 @@ export interface ITypingBoxArgs {
 export interface ITypingTextBoxHandle {
     getTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
-    reset: () => void
+    reset: () => gsap.core.Timeline
     applyStyle: (style: React.CSSProperties) => void
 };
 
@@ -41,9 +41,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             .set(`#${props.id ?? "box"}`, {
                 display: "block"
             });
-        // if (args.style) {
-        //     tl.set(`#${props.id ?? "box"}`, args.style);
-        // }
         tl.set('#cursor', {
             visibility: 'visible'
         })
@@ -57,27 +54,22 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 ease: "none"
             });
         if (args.clearAfter) {
-            contentRef.current = "";
-            tl.set("#typingText", {
-                text: ""
-            }, args.clearAfter)
-                .set(`#cursor, #typingText`, {
-                    clearProps: "all",
-                })
-                .set(`#${props.id ?? "box"}`, {
-                    display: "none",
-                });
+            tl.add(reset(),args.clearAfter);
         }
         return tl;
     });
 
     const reset = contextSafe(() => {
+        contentRef.current = "";
         return gsap.timeline()
-            .set(`#cursor, #typingText,#${props.id ?? "box"}`, {
-                clearProps: "all",
-            })
             .set("#typingText", {
                 text: ""
+            })
+            .set(`#cursor, #typingText`, {
+                clearProps: "all",
+            })
+            .set(`#${props.id ?? "box"}`, {
+                display: "none",
             });
     })
 

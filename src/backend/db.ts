@@ -66,6 +66,11 @@ export interface IPost {
 	views: number
 }
 
+export interface IAddParallelExec{
+	name:string
+	branches:IScriptLine[][]
+}
+
 export interface INavigateAction {
 	dest: IDestination
 	navigate: boolean
@@ -97,13 +102,17 @@ export interface ISendMessageAction {
 	timeToType: number
 }
 
+export interface IClearTypingTextBoxes{
+	ids:number[]
+}
+
 export interface IAction {
 	navigateAction?: INavigateAction,
 	saveAction?: ISaveAction
 	setTextBoxStyleAction?: ISetTextBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
-	promptMessageAction?:IPromptMessage
+	promptMessageAction?:IPromptMessage,
 }
 
 export interface IScriptLine {
@@ -111,6 +120,8 @@ export interface IScriptLine {
 	storyline?: IStoryLine,
 	effect?: IEffect,
 	action?: IAction,
+	addParallelExec?:IAddParallelExec
+	clearTypingTextBoxes?:IClearTypingTextBoxes
 	isActionAwait?: boolean,
 	offset: string,
 }
@@ -138,7 +149,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(107).stores({
+db.version(120).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

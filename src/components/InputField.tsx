@@ -50,8 +50,8 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     }
 
     useEffect(() => {
-        // if (props.scripted)
-        //     inputRef.current!.disabled=true;
+        if (props.scripted)
+            inputRef.current!.disabled=true;
         const form = inputRef.current?.form;
         if (form) {
             form.addEventListener("reset", onReset);
@@ -80,7 +80,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                 return;
             currTyped.current = 0;
             stringToType.current = string;
-            // inputRef.current.disabled=stringToType.current==="";
+            inputRef.current.disabled=stringToType.current==="";
         },
         isStringTyped() {
             return props.scripted&&stringToType.current!=="" ? currTyped.current >= stringToType.current.length : false;
@@ -93,13 +93,6 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         else
             setType("password");
     }
-
-    // function onBlur(e: React.FocusEvent) {
-    //     if (e.relatedTarget && e.currentTarget.contains(e.relatedTarget)) {
-    //         return
-    //     }
-    //     isFocused.current = false;
-    // }
 
     function onInputFocus() {
         if (placeholder.current) {

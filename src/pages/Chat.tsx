@@ -14,6 +14,7 @@ import { Divider } from "../components/Divider";
 import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate, useParams } from "react-router";
+import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
 
 interface IChatProps { };
 interface IMessageProps {
@@ -121,6 +122,7 @@ export const Chat: FC<IChatProps> = () => {
     const { chatId } = useParams<{ chatId: string }>();
     const inputRef = useRef<InputFieldHandle>(null);
     const story = useStory();
+    const textBox = useRef<ITypingTextBoxHandle>(null);
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -138,7 +140,7 @@ export const Chat: FC<IChatProps> = () => {
         story.resumeStoryFromHint("chat-send");
     }
 
-    function onInputChange(){
+    function onInputChange() {
         if (!inputRef.current || !inputRef.current.isStringTyped())
             story.goBackHint("chat-send");
         else
@@ -161,7 +163,7 @@ export const Chat: FC<IChatProps> = () => {
             return;
         }
         setChat(chat);
-        const msgs=await db.storyMessages.where("chatId").equals(chat.id).toArray();
+        const msgs = await db.storyMessages.where("chatId").equals(chat.id).toArray();
         setMessages(msgs);
         await story.setChatHandle({
             setStringToType: function (string: string): void {
@@ -184,43 +186,46 @@ export const Chat: FC<IChatProps> = () => {
                 return messages.find(m => m.id == id);
             },
             getId() {
-                return chatId??"";
+                return chatId ?? "";
             },
         });
     }
 
     useEffect(() => {
-        storyInit(2, [], init);
+        storyInit(2, [textBox], init);
     }, [])
 
     const typingArray = Array.from(typing);
 
     return (
-        <div className={styles.container}>
-            <div className={styles.header}>
-                <BackButton id="back-text" />
-                <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
-                <div className={styles.chatDiv}>
-                    <p className={styles.nickname}>{chat?.name}</p>
-                    {typingArray.length > 0 ? <TypingIndicator names={typingArray} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
+        <>
+            <TypingTextBox ref={textBox} type={"terminal"} />
+            <div className={styles.container}>
+                <div className={styles.header}>
+                    <BackButton id="back-text" />
+                    <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
+                    <div className={styles.chatDiv}>
+                        <p className={styles.nickname}>{chat?.name}</p>
+                        {typingArray.length > 0 ? <TypingIndicator names={typingArray} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
+                    </div>
                 </div>
-            </div>
-            <div ref={chatContainerRef} className={styles.chatContainer}>
-                <Spinner />
-                {messages.map((msg, index) => {
-                    let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} />;
-                    if (index == 0)
+                <div ref={chatContainerRef} className={styles.chatContainer}>
+                    <Spinner />
+                    {messages.map((msg, index) => {
+                        let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} />;
+                        if (index == 0)
+                            return message;
+                        const prevMsg = messages[index - 1];
+                        if (msg.timeSent.getDay() != prevMsg.timeSent.getDay())
+                            message = <><Divider key={"divider" + index}>{formatDay(msg.timeSent)}</Divider>{message}</>;
                         return message;
-                    const prevMsg = messages[index-1];
-                    if (msg.timeSent.getDay() != prevMsg.timeSent.getDay())
-                        message = <><Divider key={"divider" + index}>{formatDay(msg.timeSent)}</Divider>{message}</>;
-                    return message;
-                })}
+                    })}
+                </div>
+                <form onSubmit={onSendMessage} className={styles.inputContainer}>
+                    <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
+                    <BaseButton type="submit" id="chat-send" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
+                </form>
             </div>
-            <form onSubmit={onSendMessage} className={styles.inputContainer}>
-                <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
-                <BaseButton type="submit" id="chat-send" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
-            </form>
-        </div>
+        </>
     );
 }
