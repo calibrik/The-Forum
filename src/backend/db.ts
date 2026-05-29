@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from "dexie"
-import { getJsonUrl } from "../utils";
+import { getJsonUrl, seededRandom } from "../utils";
 import type { IEffectsOptions } from "../providers/StoryProvider";
 
 export interface IStoryLine {
@@ -12,7 +12,7 @@ export interface IStoryLine {
 
 export interface IEffect {
 	name: string,
-	options?:IEffectsOptions
+	options?: IEffectsOptions
 }
 
 export interface IMessage {
@@ -28,7 +28,7 @@ export interface IPregenMessage {
 	id: number,
 	from: string,
 	content: string,
-	timeDiff:number//time diff to init time diff in mins
+	timeDiff: number//time diff to init time diff in mins
 	isReply?: number,//relative pos of the reply to message
 }
 
@@ -51,7 +51,8 @@ export interface ISubforum {
 	description: string,
 	imageName: string,
 	admin: string,
-	mods: string[]
+	mods: string[],
+	members: string[],
 }
 
 export interface IPost {
@@ -66,9 +67,9 @@ export interface IPost {
 	views: number
 }
 
-export interface IAddParallelExec{
-	name:string
-	branches:IScriptLine[][]
+export interface IAddParallelExec {
+	name: string
+	branches: IScriptLine[][]
 }
 
 export interface INavigateAction {
@@ -91,8 +92,8 @@ export interface IHintAction {
 	ids: string[],
 }
 
-export interface IPromptMessage{
-	content:string,
+export interface IPromptMessage {
+	content: string,
 }
 
 export interface ISendMessageAction {
@@ -102,8 +103,8 @@ export interface ISendMessageAction {
 	timeToType: number
 }
 
-export interface IClearTypingTextBoxes{
-	ids:number[]
+export interface IClearTypingTextBoxes {
+	ids: number[]
 }
 
 export interface IAction {
@@ -112,7 +113,7 @@ export interface IAction {
 	setTextBoxStyleAction?: ISetTextBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
-	promptMessageAction?:IPromptMessage,
+	promptMessageAction?: IPromptMessage,
 }
 
 export interface IScriptLine {
@@ -120,8 +121,8 @@ export interface IScriptLine {
 	storyline?: IStoryLine,
 	effect?: IEffect,
 	action?: IAction,
-	addParallelExec?:IAddParallelExec
-	clearTypingTextBoxes?:IClearTypingTextBoxes
+	addParallelExec?: IAddParallelExec
+	clearTypingTextBoxes?: IClearTypingTextBoxes
 	isActionAwait?: boolean,
 	offset: string,
 }
@@ -149,7 +150,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id">
 }
 
-db.version(120).stores({
+db.version(124).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -172,7 +173,8 @@ db.version(120).stores({
 	// }
 	await db.users.clear();
 	response = await fetch(getJsonUrl("users.json"));
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1 }));
+	let seed = 0;
+	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName??`pfp${Math.floor(seededRandom(seed++)*9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	// if (users.length != 0) {
 	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
@@ -199,7 +201,9 @@ db.on("populate", async () => {
 	let response = await fetch(getJsonUrl("script.json"));
 	await db.story.bulkAdd(await response.json() as IScriptLine[]);
 	response = await fetch(getJsonUrl("users.json"));
-	await db.users.bulkAdd(await response.json() as IUser[]);
+	let seed = 0;
+	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName??`pfp${Math.floor(seededRandom(seed++)*9.9)}.png` }));
+	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
 	await db.posts.bulkAdd(await response.json() as IPost[]);
 	response = await fetch(getJsonUrl("subforums.json"));

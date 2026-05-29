@@ -167,6 +167,14 @@
     color: colors.$tertiary-color;
 }
 
+.indicator-div.active{
+    visibility: visible;
+}
+
+.indicator-div.disabled{
+    visibility: hidden;
+}
+
 .indicator {
     display: flex;
     align-items: center;

@@ -63,7 +63,7 @@ const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
         names = `${props.names.length} people typing...`;
 
     return (
-        <div className={styles.indicatorDiv}>
+        <div className={`${styles.indicatorDiv} ${props.names.length > 0 ? styles.active : styles.disabled}`}>
             <div ref={indicatorRef} className={styles.indicator}>
                 <Dot className={styles.indicatorIcon} />
                 <Dot className={styles.indicatorIcon} />
@@ -77,6 +77,8 @@ const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
 
 const Message: FC<IMessageProps> = (props) => {
     const userState = useUserState();
+    const [fromImage, setFromImage] = useState<string | undefined>(undefined)
+    const [replyImage, setReplyImage] = useState<string | undefined>(undefined)
 
     const content: ReactNode = props.message.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) =>
         part.startsWith("@") ? <span key={index} className={styles.ping}>{part}</span> : part
@@ -87,10 +89,23 @@ const Message: FC<IMessageProps> = (props) => {
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
     const timeSent = formatTime(props.message.timeSent);
 
+    async function init() {
+        let user = await db.users.where("nickname").equals(props.message.from).first();
+        setFromImage(user?.imageName);
+        if (props.replyTo) {
+            let user = await db.users.where("nickname").equals(props.replyTo.from).first();
+            setReplyImage(user?.imageName);
+        }
+    }
+
+    useEffect(() => {
+        init();
+    }, [])
+
     return (
         <div className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
             <div className={styles.authorDiv}>
-                <img src={getImageUrl("placeholder.png")} className={styles.authorPfp} />
+                <img src={getImageUrl(fromImage??"placeholder.png")} className={styles.authorPfp} />
                 <span className={styles.authorName}>{props.message.from}</span>
                 <span className={styles.messageTime}>{timeSent}</span>
             </div>
@@ -99,7 +114,7 @@ const Message: FC<IMessageProps> = (props) => {
                     <Reply className={styles.replyArrow} />
                     <div className={styles.replyMessageDiv}>
                         <div className={styles.replyAuthorDiv}>
-                            <img src={getImageUrl("placeholder.png")} className={styles.replyAuthorPfp} />
+                            <img src={getImageUrl(replyImage??"placeholder.png")} className={styles.replyAuthorPfp} />
                             <span className={styles.replyAuthorName}>{props.replyTo.from}</span>
                         </div>
                         <p className={styles.replyMessage}>{replyContent}</p>
@@ -206,7 +221,7 @@ export const Chat: FC<IChatProps> = () => {
                     <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
                     <div className={styles.chatDiv}>
                         <p className={styles.nickname}>{chat?.name}</p>
-                        {typingArray.length > 0 ? <TypingIndicator names={typingArray} /> : <span className={styles.membersCount}>{chat?.membersAmount} members</span>}
+                        <span className={styles.membersCount}>{chat?.membersAmount} members</span>
                     </div>
                 </div>
                 <div ref={chatContainerRef} className={styles.chatContainer}>
@@ -220,6 +235,7 @@ export const Chat: FC<IChatProps> = () => {
                             message = <><Divider key={"divider" + index}>{formatDay(msg.timeSent)}</Divider>{message}</>;
                         return message;
                     })}
+                    <TypingIndicator names={typingArray} />
                 </div>
                 <form onSubmit={onSendMessage} className={styles.inputContainer}>
                     <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />

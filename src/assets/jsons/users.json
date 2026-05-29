@@ -1,11 +1,188 @@
 [
     {
-        "nickname":"penis"
+        "nickname":"penis",
+        "description":"Secret dev account for testing shit"
     },
     {
         "nickname":"main_hero",
         "savedStoryId":0,
-        "description":"I suck dicks",
-        "imageName":"placeholder.png"
+        "description":"Been frying squids longer than you lived",
+        "imageName":"pfp2.png"
+    },
+    {
+        "nickname":"BigPappa420",
+        "description":"Yo"
+    },
+    {
+        "nickname": "BugStomper3000",
+        "description": "Racism to bugs is completely justified"
+    },
+    {
+        "nickname": "GamerGuy88",
+        "description": "hello"
+    },
+    {
+        "nickname": "sam",
+        "description": "Crashing tf out"
+    },
+    {
+        "nickname": "Cyber_Ghost",
+        "description": "Always protecting the SuperApp."
+    },
+    {
+        "nickname": "Corporate_Drone",
+        "description": "You been caught lacking in your job duties. Your execution is scheduled for tomorrow morning."
+    },
+    {
+        "nickname": "Vortex_12",
+        "description": ""
+    },
+    {
+        "nickname": "Three_Squids_In_A_Suit",
+        "description": "I love cyberdiving"
+    },
+    {
+        "nickname": "Shadow_Walker",
+        "description": ""
+    },
+    {
+        "nickname": "pixel_perfect",
+        "description": "Hi:3"
+    },
+    {
+        "nickname": "buggedFeature",
+        "description": "It's not a bug, it's a feature. Unless it's a real bug, then shoot it."
+    },
+    {
+        "nickname": "Lazy_Gamer",
+        "description": "sup"
+    },
+    {
+        "nickname": "RageQuitter99",
+        "description": ""
+    },
+    {
+        "nickname": "beta",
+        "description": "beta is better than alpha"
+    },
+    {
+        "nickname": "DarkLord_X",
+        "description": "Fear me."
+    },
+    {
+        "nickname": "Meme6",
+        "description": "Meme 6, going dark."
+    },
+    {
+        "nickname": "User48291",
+        "description": "hello"
+    },
+    {
+        "nickname": "Hoover_Pro_Max",
+        "description": "Red hot"
+    },
+    {
+        "nickname": "Doom_Bringer",
+        "description": "Get out of my way."
+    },
+    {
+        "nickname": "CEOofBugs",
+        "description": "Business is booming and the bugs are blooming."
+    },
+    {
+        "nickname": "dijkstra",
+        "description": "Yo"
+    },
+    {
+        "nickname": "Hardcore_Henry",
+        "description": ""
+    },
+    {
+        "nickname": "zerocool",
+        "description": ""
+    },
+    {
+        "nickname": "user87236",
+        "description": "Yo"
+    },
+    {
+        "nickname": "user_99214",
+        "description": "hello"
+    },
+    {
+        "nickname": "user48201",
+        "description": ""
+    },
+    {
+        "nickname": "user3301_",
+        "description": "hehe"
+    },
+    {
+        "nickname": "user77421",
+        "description": "sup"
+    },
+    {
+        "nickname": "pixel_pastor",
+        "description": "Commissions are open! I draw mostly fantasy characters and digital landscapes."
+    },
+    {
+        "nickname": "guitarHero92",
+        "description": "we are so unemployed"
+    },
+    {
+        "nickname": "cozy_cat",
+        "description": "Just a girl trying her best."
+    },
+    {
+        "nickname": "hateJS",
+        "description": "fuck JS bro"
+    },
+    {
+        "nickname": "CamWiz",
+        "description": "Proffesional photographer since 2020."
+    },
+    {
+        "nickname": "Reed",
+        "description": ""
+    },
+    {
+        "nickname": "plant_mommy",
+        "description": "~yes, plant ur seeds in your mommy~"
+    },
+    {
+        "nickname": "ClankerSalvageCo",
+        "description": "We will buy the scrap of your hands. Call us."
+    },
+    {
+        "nickname": "Nefarious",
+        "description": "I have no idea what I'm doing but I like the lasers."
+    },
+    {
+        "nickname": "Speedy_Gonzales",
+        "description": "don't turn around"
+    },
+    {
+        "nickname": "armpitsweat",
+        "description": ""
+    },
+    {
+        "nickname": "user55492",
+        "description": "hello everyone"
+    },
+    {
+        "nickname": "user00012",
+        "description": ""
+    },
+    {
+        "nickname": "user567768",
+        "description": ""
+    },
+    {
+        "nickname": "soundWave_",
+        "description": "Sound guy who wants to break into gamedev."
+    },
+    {
+        "nickname": "user28394",
+        "description": "Yo"
     }
 ]

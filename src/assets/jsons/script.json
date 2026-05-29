@@ -574,7 +574,7 @@
                                 "isReplyDiff": -1
                             }
                         },
-                        "offset": "+=2.5"
+                        "offset": "+=3.5"
                     },
                     {
                         "action": {
@@ -587,7 +587,7 @@
                                 }
                             }
                         },
-                        "offset": "+=4"
+                        "offset": ">"
                     },
                     {
                         "storyline": {
@@ -631,10 +631,10 @@
                             "sendMessageAction": {
                                 "from": "User 11",
                                 "content": "ain’t no one fucking with this dude, kick his ass out of here",
-                                "timeToType": 2
+                                "timeToType": 3
                             }
                         },
-                        "offset": ">"
+                        "offset": "+=1"
                     },
                     {
                         "clearTypingTextBoxes": {

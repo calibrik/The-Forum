@@ -26,13 +26,13 @@ export const Subforum: FC<ISubforumProps> = (_) => {
             navigate("/")
             return;
         }
-        const subforums = await db.subforums.where("name").equals(name ?? "").toArray();
-        if (subforums.length != 1) {
-            console.error(`No ${name} subforum found (or found too many) ${subforums.length}.`)
-            navigate("/404")
+        const subforum = await db.subforums.where("name").equals(name ?? "").first();
+        if (!subforum) {
+            console.error(`No ${name} subforum found.`)
+            navigate("/404",{replace:true})
             return;
         }
-        setSubforum(subforums[0]);
+        setSubforum(subforum);
     }
 
     useEffect(() => {
@@ -78,7 +78,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                 </div>
             </div>
             <div className={styles.contentContainer}>
-                <Outlet />
+                <Outlet context={subforum}/>
             </div>
         </div>
         </>

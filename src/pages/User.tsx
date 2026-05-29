@@ -94,7 +94,7 @@ export const User: FC<IUserPageProps> = (_) => {
         const users = await db.users.where("nickname").equals(username??"").toArray();
         if (users.length != 1) {
             console.error(`No ${username} user found (or found too many) ${users.length}.`)
-            navigate("/404")
+            navigate("/404",{replace:true})
             return;
         }
         setUser(users[0]);
@@ -136,7 +136,7 @@ export const User: FC<IUserPageProps> = (_) => {
         <>
             <TypingTextBox ref={typingBoxRef} type="terminal" />
             <div className={styles.container}>
-                <img src={getImageUrl(user?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
+                <img src={getImageUrl(user?.imageName ?? "pfp1.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>
                     {user ?
                         <div className={styles.headerContainer}>
@@ -160,7 +160,7 @@ export const User: FC<IUserPageProps> = (_) => {
                     <Menu options={menuOptions} />
                 </div>
                 <div className={styles.contentContainer}>
-                    <Outlet context={{ user }} />
+                    <Outlet context={user } />
                 </div>
             </div>
         </>
