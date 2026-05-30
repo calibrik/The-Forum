@@ -79,6 +79,7 @@ const Message: FC<IMessageProps> = (props) => {
     const userState = useUserState();
     const [fromImage, setFromImage] = useState<string | undefined>(undefined)
     const [replyImage, setReplyImage] = useState<string | undefined>(undefined)
+    let navigate = useNavigate();
 
     const content: ReactNode = props.message.content.split(/(@[a-zA-Z0-9_]+)/g).map((part, index) =>
         part.startsWith("@") ? <span key={index} className={styles.ping}>{part}</span> : part
@@ -102,19 +103,32 @@ const Message: FC<IMessageProps> = (props) => {
         init();
     }, [])
 
+    function onReplyClick() {
+        if (!props.message.isReply)
+            return;
+        const el = document.getElementById(props.message.isReply?.toString())
+        el?.classList.remove(styles.messagePulse);
+        requestAnimationFrame(() => el?.classList.add(styles.messagePulse))
+        el?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest"
+        })
+    }
+
     return (
-        <div className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
+        <div id={props.message.id.toString()} className={`${styles.messageDiv} ${isPinged ? styles.pinged : ""}`}>
             <div className={styles.authorDiv}>
-                <img src={getImageUrl(fromImage??"placeholder.png")} className={styles.authorPfp} />
-                <span className={styles.authorName}>{props.message.from}</span>
+                <img onClick={() => navigate(`/user/${props.message.from}`)} src={getImageUrl(fromImage ?? "placeholder.png")} className={styles.authorPfp} />
+                <span onClick={() => navigate(`/user/${props.message.from}`)} className={styles.authorName}>{props.message.from}</span>
                 <span className={styles.messageTime}>{timeSent}</span>
             </div>
             {props.replyTo ?
-                <div className={styles.replyDiv}>
+                <div onClick={onReplyClick} className={styles.replyDiv}>
                     <Reply className={styles.replyArrow} />
                     <div className={styles.replyMessageDiv}>
                         <div className={styles.replyAuthorDiv}>
-                            <img src={getImageUrl(replyImage??"placeholder.png")} className={styles.replyAuthorPfp} />
+                            <img src={getImageUrl(replyImage ?? "placeholder.png")} className={styles.replyAuthorPfp} />
                             <span className={styles.replyAuthorName}>{props.replyTo.from}</span>
                         </div>
                         <p className={styles.replyMessage}>{replyContent}</p>
@@ -208,6 +222,9 @@ export const Chat: FC<IChatProps> = () => {
 
     useEffect(() => {
         storyInit(2, [textBox], init);
+        return ()=>{
+            story.setChatHandle(undefined);
+        }
     }, [])
 
     const typingArray = Array.from(typing);

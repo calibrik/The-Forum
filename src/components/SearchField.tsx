@@ -78,8 +78,8 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
             {isFocused && suggestions.length != 0 ?
                 <div className={styles.dropdown}>
                     {
-                        suggestions.map((value, index) => (
-                            <SMEntry className={`${`${value.type=="user"?"u/":"f/"}${value.name}`===suggestionHint.current?hintStyle.hint:""} ${styles.suggestion}`} onClick={onSuggestionClick} key={index} type={value.type} name={value.name} isNav={props.isSuggestionNav}/>
+                        suggestions.map((value) => (
+                            <SMEntry className={`${`${value.type=="user"?"u/":"f/"}${value.name}`===suggestionHint.current?hintStyle.hint:""} ${styles.suggestion}`} onClick={onSuggestionClick} key={value.name} type={value.type} name={value.name} isNav={props.isSuggestionNav}/>
                         ))
                     }
                 </div>

@@ -54,7 +54,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 ease: "none"
             });
         if (args.clearAfter) {
-            tl.add(reset(),args.clearAfter);
+            tl.add(reset(), args.clearAfter);
         }
         return tl;
     });
@@ -63,13 +63,17 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         contentRef.current = "";
         return gsap.timeline()
             .set("#typingText", {
-                text: ""
+                text: "",
+                immediateRender: false
             })
+            .add(()=>{document.getElementById("typingText")!.innerText="";})
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
+                immediateRender: false
             })
             .set(`#${props.id ?? "box"}`, {
                 display: "none",
+                immediateRender: false
             });
     })
 

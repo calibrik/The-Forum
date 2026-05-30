@@ -50,7 +50,7 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
                 <span className={styles.rank}>Level 117</span>
             </div>
             <div className={styles.accSection}>
-                <span className={styles.lastGames}>Recent Sprints:</span>
+                <span className={styles.lastGames}>Recent Contracts:</span>
                 <ul className={styles.lastGamesList}>
                     <li className={styles.loseGame}>Failed extraction 5:12</li>
                     <li className={styles.loseGame}>Failed extraction 10:14</li>

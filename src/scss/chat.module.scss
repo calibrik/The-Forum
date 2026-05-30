@@ -7,10 +7,16 @@
     border-radius: 100px;
 }
 
-.authorPfp {
+.author-pfp {
     width: clamp(20px, 4.7cqw, 30px);
     height: clamp(20px, 4.7cqw, 30px);
     border-radius: 100px;
+}
+
+.author-pfp:hover,
+.author-name:hover,
+.reply-div:hover{
+    cursor: pointer;
 }
 
 .container {
@@ -195,4 +201,17 @@
     display: flex;
     flex-direction: column;
     gap:2px;
+}
+
+@keyframes pulse {
+  from {
+    background-color: #4a4a4a;
+  }
+  to {
+    background-color: #4a4a4a00
+  }
+}
+
+.message-pulse{
+    animation: pulse 1.5s ease-out;
 }

@@ -1,17 +1,17 @@
 [
     {
-        "nickname":"penis",
-        "description":"Secret dev account for testing shit"
+        "nickname": "penis",
+        "description": "Secret dev account for testing shit"
     },
     {
-        "nickname":"main_hero",
-        "savedStoryId":0,
-        "description":"Been frying squids longer than you lived",
-        "imageName":"pfp2.png"
+        "nickname": "main_hero",
+        "savedStoryId": 0,
+        "description": "Been frying squids longer than you lived",
+        "imageName": "pfp2.png"
     },
     {
-        "nickname":"BigPappa420",
-        "description":"Yo"
+        "nickname": "BigPappa420",
+        "description": "Yo"
     },
     {
         "nickname": "BugStomper3000",
@@ -123,7 +123,7 @@
     },
     {
         "nickname": "pixel_pastor",
-        "description": "Commissions are open! I draw mostly fantasy characters and digital landscapes."
+        "description": "Commissions are open! I draw mostly fantasy characters (furry porn for extra price)."
     },
     {
         "nickname": "guitarHero92",
@@ -184,5 +184,77 @@
     {
         "nickname": "user28394",
         "description": "Yo"
+    },
+    {
+        "nickname": "john_cyberdiverO7",
+        "description": "Admin of the cyberdivers subforum. Dms are open."
+    },
+    {
+        "nickname": "buzzzzz09",
+        "description": "let it buzz around"
+    },
+    {
+        "nickname": "SirCalibrik",
+        "description": "what the fuck is a self-insert?"
+    },
+    {
+        "nickname": "brundmartindle",
+        "description": "I haven't been this dissapointed since shrek 2."
+    },
+    {
+        "nickname": "Heapstedt",
+        "description": "Occasional gamer and game designer. Loves giant games. All views, creations and comments are reflect those of our studio values."
+    },
+    {
+        "nickname": "pinchIt",
+        "description": ""
+    },
+    {
+        "nickname": "ink_and_iron",
+        "description": "zero is released, but did it have to"
+    },
+    {
+        "nickname": "Sinius",
+        "description": ""
+    },
+    {
+        "nickname": "SmoothOperator",
+        "description": "smooooooooth operaaaaaaaaaaaaatioooon"
+    },
+    {
+        "nickname": "HighOnSodium",
+        "description": ""
+    },
+    {
+        "nickname": "caffeine_up_the_ass",
+        "description": "boof it"
+    },
+    {
+        "nickname": "Roman_Roy218",
+        "description": "this guy"
+    },
+    {
+        "nickname": "MironYanch",
+        "description": "The city under the sole"
+    },
+    {
+        "nickname": "nemnem",
+        "description": "nemnemnemnemnemnem"
+    },
+    {
+        "nickname": "do_not_the_dog",
+        "description": "nothing happened on 15th January 2022"
+    },
+    {
+        "nickname": "DarkSolace",
+        "description": ""
+    },
+    {
+        "nickname": "clanker_oil_stain",
+        "description": "i'm cyberdiving it crazy style"
+    },
+    {
+        "nickname": "musky_diver",
+        "description": "Hard times create strong men. Strong men create good times. Good times create weak men. Weak men create hard times."
     }
 ]

@@ -25,7 +25,7 @@ interface IStoryProvider {
     goBackHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
-    setChatHandle(ch: IChatHandle): Promise<void>;
+    setChatHandle(ch: IChatHandle|undefined): Promise<void>;
     addMessageFromUser(content: string): Promise<void>
 }
 
@@ -277,10 +277,10 @@ function useChat() {
         }
         message.isReply=isReplyDiff?message.id+isReplyDiff:undefined;
         chatHandle.current?.addTypingUser(message.from);
+        messages.current.push(message);
         if (timeToType)
             await delay(timeToType);
         chatHandle.current?.removeTypingUser(message.from);
-        messages.current.push(message);
         chatHandle.current?.addMessage(message);
     }
 
@@ -293,9 +293,9 @@ function useChat() {
         await db.storyMessages.bulkAdd(msgs);
     }
 
-    async function setChatHandle(ch: IChatHandle) {
-        lastId.current = await db.storyMessages.count() + 1;
+    async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
+        lastId.current = await db.storyMessages.count() + 1;
     }
 
     function resetMessages() {

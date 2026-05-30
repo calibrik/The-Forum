@@ -240,7 +240,7 @@
     },
     {
         "storyline": {
-            "content": "Anyway, I'm well respected in cyberdivers community, people know my name.",
+            "content": "Anyway, I'm well respected in the cyberdivers community, people know my name.",
             "speed": 50,
             "typingBoxId": 0
         },
@@ -302,7 +302,7 @@
     },
     {
         "storyline": {
-            "content": "So it’s a horde shooter, where squad of 4 devs trying to develop their app in sprints, but it's represented as them actually fighting one of three factions: AI bots, Bugs or Hackers.",
+            "content": "So it’s a horde shooter, where there are different apps that needed to be protected from different threats, so companies hire cyberdivers as freelancers to deal with them, but it’s represented as them actually fighting one of three factions: AI bots, Bugs or Hackers.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
@@ -348,7 +348,7 @@
     },
     {
         "storyline": {
-            "content": "I mean walls.",
+            "content": "I meant walls.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
@@ -412,7 +412,7 @@
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
-        "offset": "+=0.5"
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -465,20 +465,20 @@
                         "effect": {
                             "name": "RED_SCREEN",
                             "options": {
-                                "duration": 5,
+                                "duration": 10,
                                 "opacity": 0.15
                             }
                         },
-                        "offset": "+=3.5"
+                        "offset": "+=5.5"
                     }
                 ],
                 [
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 1",
+                                "from": "pinchIt",
                                 "content": "bro it’s this mf again",
-                                "timeToType": 1.5
+                                "timeToType": 3
                             }
                         },
                         "offset": "+=1"
@@ -486,9 +486,9 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 2",
-                                "content": "u dumb fuck, we lost a sprint cuz of u",
-                                "timeToType": 2
+                                "from": "MironYanch",
+                                "content": "u dumb fuck, we lost a contract cuz of u",
+                                "timeToType": 4
                             }
                         },
                         "offset": "+=0.5"
@@ -496,10 +496,10 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 3",
+                                "from": "caffeine_up_the_ass",
                                 "content": "did u finally learn how to play?",
                                 "isReplyDiff":-3,
-                                "timeToType": 1.7
+                                "timeToType": 3.5
                             }
                         },
                         "offset": "+=0.7"
@@ -507,29 +507,9 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 4",
+                                "from": "musky_diver",
                                 "content": "go fuck urself, u killed me like 10 times, cunt",
-                                "timeToType": 2
-                            }
-                        },
-                        "offset": "+=0.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "User 5",
-                                "content": "mf is acting like nothing happened, go fuck urself",
-                                "timeToType": 1.6
-                            }
-                        },
-                        "offset": "+=1"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "User 6",
-                                "content": "bro that last sprint was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
-                                "timeToType": 2.2
+                                "timeToType": 5.5
                             }
                         },
                         "offset": "+=0.1"
@@ -537,9 +517,29 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 7",
-                                "content": "bro was speedrunning the sprint failure",
-                                "timeToType": 1.5
+                                "from": "do_not_the_dog",
+                                "content": "mf is acting like nothing happened, go fuck urself",
+                                "timeToType": 6
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "ink_and_iron",
+                                "content": "bro that last contract was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
+                                "timeToType": 8
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Sinius",
+                                "content": "bro was speedrunning the contract failure",
+                                "timeToType": 4
                             }
                         },
                         "offset": "+=0.5"
@@ -547,34 +547,34 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 8",
+                                "from": "SmoothOperator",
                                 "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
-                                "timeToType": 2
+                                "timeToType": 7
                             }
                         },
-                        "offset": "+=0.2"
+                        "offset": "+=0.1"
                     },
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 9",
+                                "from": "DarkSolace",
                                 "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
                                 "isReplyDiff":-9,
-                                "timeToType": 2.5
+                                "timeToType": 6
                             }
                         },
-                        "offset": "+=0.5"
+                        "offset": "+=0.1"
                     },
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 10",
+                                "from": "clanker_oil_stain",
                                 "content": "that’s crazy lmao",
-                                "timeToType": 1,
+                                "timeToType": 2,
                                 "isReplyDiff": -1
                             }
                         },
-                        "offset": "+=3.5"
+                        "offset": "+=6.5"
                     },
                     {
                         "action": {
@@ -587,7 +587,7 @@
                                 }
                             }
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
                         "storyline": {
@@ -605,7 +605,7 @@
                             "delim": " ",
                             "typingBoxId": 0
                         },
-                        "offset": "+=0.5"
+                        "offset": "+=0.3"
                     },
                     {
                         "storyline": {
@@ -615,7 +615,7 @@
                             "typingBoxId": 0,
                             "clearAfter":"+=1.5"
                         },
-                        "offset": "+=0.5"
+                        "offset": "+=0.3"
                     },
                     {
                         "storyline": {
@@ -629,9 +629,9 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "User 11",
+                                "from": "DarkSolace",
                                 "content": "ain’t no one fucking with this dude, kick his ass out of here",
-                                "timeToType": 3
+                                "timeToType": 5
                             }
                         },
                         "offset": "+=1"
@@ -642,7 +642,7 @@
                                 0
                             ]
                         },
-                        "offset": "+=6"
+                        "offset": "+=10"
                     },
                     {
                         "action": {
