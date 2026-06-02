@@ -3,8 +3,8 @@ import styles from "../scss/chatMenu.module.scss";
 import { formatTime, getImageUrl } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
-import { useStoryInit } from "../providers/StoryProvider";
-import { db, type IChat } from "../backend/db";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
 interface IChatMenuProps { };
 interface IDialogProps {
@@ -13,15 +13,17 @@ interface IDialogProps {
 
 const Dialog: FC<IDialogProps> = (props) => {
     let navigate = useNavigate();
-    const [timeSent,setTimeSent]=useState<string>("");
     const userState=useUserState();
+    const [lastMessage,setLastMessage]=useState<IMessage|undefined>(undefined);
+    const story=useStory();
 
     async function init(){
         const user=await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
         if(!user)
             return;
-        const lastMessage=await db.storyMessages.where("chatId").equals(props.chat.id).last();
-        setTimeSent(formatTime(lastMessage?.timeSent??new Date()));
+        const buffer=story.getMessageBuffer();
+        const lm=buffer.length>0?buffer[buffer.length-1]:await db.storyMessages.where("chatId").equals(props.chat.id).last();
+        setLastMessage(lm);
     }
 
     async function onClick(){
@@ -33,8 +35,6 @@ const Dialog: FC<IDialogProps> = (props) => {
         init();
     },[]);
 
-    const lastMessage=props.chat.pregenMessages[props.chat.pregenMessages.length-1];
-
     return (
         <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
             <img src={getImageUrl(props.chat.imageName)} alt="" className={styles.pfp} />
@@ -42,10 +42,10 @@ const Dialog: FC<IDialogProps> = (props) => {
                 <h3 className={styles.nickname}>{props.chat.name}</h3>
                 <div className={styles.lastMessageDiv}>
                     {props.chat.isRead ? "" : <Dot className={styles.dot} />}
-                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage.from}: </span>{lastMessage.content}</p>
+                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from??""}: </span>{lastMessage?.content??""}</p>
                 </div>
             </div>
-            <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{timeSent}</span>
+            <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{formatTime(lastMessage?.timeSent??new Date())}</span>
         </div>
     );
 }

@@ -25,8 +25,9 @@ interface IStoryProvider {
     goBackHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
-    setChatHandle(ch: IChatHandle|undefined): Promise<void>;
+    setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     addMessageFromUser(content: string): Promise<void>
+    getMessageBuffer(): IMessage[]
 }
 
 // interface IAdditionalNavParameters{
@@ -250,10 +251,11 @@ interface IChatHandle {
 }
 
 function useChat() {
-    const messages = useRef<IMessage[]>([]);
+    const messagesBuffer = useRef<IMessage[]>([]);
     const chatHandle = useRef<IChatHandle>(undefined);
     const userState = useUserState();
     const lastId = useRef<number>(0);
+    const preserveMessagesBuffer = useRef<boolean>(false);
 
     async function addMessageFromUser(content: string) {
         const message: IMessage = {
@@ -263,7 +265,7 @@ function useChat() {
             timeSent: new Date(),
             chatId: chatHandle.current?.getId() ?? ""
         }
-        messages.current.push(message);
+        messagesBuffer.current.push(message);
         chatHandle.current?.addMessage(message);
     }
 
@@ -275,17 +277,17 @@ function useChat() {
             timeSent: new Date(),
             chatId: chatHandle.current?.getId() ?? ""
         }
-        message.isReply=isReplyDiff?message.id+isReplyDiff:undefined;
+        message.isReply = isReplyDiff ? message.id + isReplyDiff : undefined;
         chatHandle.current?.addTypingUser(message.from);
-        messages.current.push(message);
-        if (timeToType)
-            await delay(timeToType);
+        await delay(timeToType);
+        messagesBuffer.current.push(message);
         chatHandle.current?.removeTypingUser(message.from);
         chatHandle.current?.addMessage(message);
     }
 
     async function sinkMessages() {
-        await db.storyMessages.bulkAdd(messages.current);
+        await db.storyMessages.bulkAdd(messagesBuffer.current);
+        preserveMessagesBuffer.current = false;
         resetMessages();
     }
 
@@ -295,18 +297,34 @@ function useChat() {
 
     async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
-        lastId.current = await db.storyMessages.count() + 1;
+        lastId.current = await db.storyMessages.count()+messagesBuffer.current.length + 1;
+    }
+
+    function enablePreserveMessagesBuffer() {
+        if (messagesBuffer.current.length == 0)
+            return;
+        preserveMessagesBuffer.current = true;
     }
 
     function resetMessages() {
-        messages.current = [];
+        messagesBuffer.current = [];
+    }
+
+    function onNavigateAway() {
+        if (preserveMessagesBuffer.current)
+            return;
+        resetMessages();
     }
 
     function promptMessage(content: string) {
         chatHandle.current?.setStringToType(content);
     }
 
-    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb, promptMessage }
+    function getMessageBuffer() {
+        return messagesBuffer.current;
+    }
+
+    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, addMessagesToDb, promptMessage, enablePreserveMessagesBuffer, onNavigateAway, getMessageBuffer }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
@@ -320,7 +338,6 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
-    // const currHintId = useRef<string>("NON_EXISTENT_ID");//holds last hinted id
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
@@ -328,8 +345,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
-    const { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint } = useHints();
-    const { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, resetMessages, addMessagesToDb, promptMessage } = useChat();
+    const hintFunc = useHints();
+    const chatFunc = useChat();
 
     function waitForInit() {
         return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
@@ -355,8 +372,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             if (location == targetLocation)
                 return;
         }
-        resetMessages();
-        resetHint();
+        chatFunc.onNavigateAway();
+        hintFunc.resetHint();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
             isStoryRecovered.current = false;
@@ -378,11 +395,11 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (action.navigateAction) {
             isStoryNavRef.current = true;
             pageStoryId.current = storyId + 1;
-            resetStoryHint();
+            hintFunc.resetStoryHint();
             locationRef.current = action.navigateAction.dest;
-            sinkMessages();
             if (action.navigateAction.navigate) {
                 let p = waitForInit();
+                chatFunc.sinkMessages();
                 navigate(action.navigateAction.dest?.where ?? "");
                 if (action.navigateAction.dest?.level == 0)
                     window.dispatchEvent(new Event("signalLevel0"))
@@ -390,7 +407,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             }
             else {
                 isStoryRecovered.current = false;
-                hintNavPath(action.navigateAction.dest);
+                hintFunc.hintNavPath(action.navigateAction.dest);
+                chatFunc.enablePreserveMessagesBuffer();
             }
             isStoryNavRef.current = false;
         }
@@ -398,20 +416,20 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
             savedStoryId.current = storyId;
             pageStoryId.current = storyId + 1;
-            sinkMessages();
+            chatFunc.sinkMessages();
         }
         if (action.hintAction) {
-            setStoryHint(action.hintAction.ids)
+            hintFunc.setStoryHint(action.hintAction.ids)
         }
         if (action.setTextBoxStyleAction) {
             typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
         }
         if (action.sendMessageAction) {
-            addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
+            chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
         if (action.promptMessageAction) {
-            setStoryHint(["chat-input", "chat-send"], false, false)
-            promptMessage(action.promptMessageAction.content);
+            hintFunc.setStoryHint(["chat-input", "chat-send"], false, false)
+            chatFunc.promptMessage(action.promptMessageAction.content);
         }
     }
 
@@ -420,9 +438,9 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     }
 
     function resumeStoryFromHint(clickedId: string): boolean {
-        if (isStoryGoing() || getCurrentStoryHint() !== clickedId)
+        if (isStoryGoing() || hintFunc.getCurrentStoryHint() !== clickedId)
             return false;
-        removeCurrHint();
+        hintFunc.removeCurrHint();
         showStory(currStoryId.current);
         return true;
     }
@@ -436,7 +454,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         locationRef.current = scl.action?.saveAction?.dest;
         if (scl.action?.saveAction?.hintActionPos) {
             let hintScl = await db.story.get(id + scl.action.saveAction.hintActionPos);
-            setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
+            hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
         }
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
@@ -447,21 +465,21 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
         if (level != locationRef.current.level) {
-            hintNavPath(locationRef.current);
+            hintFunc.hintNavPath(locationRef.current);
             return;
         }
         if (locationRef.current && locationRef.current.level > 0) {
             const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
             const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
             if (location != targetLocation) {
-                hintNavPath(locationRef.current);
+                hintFunc.hintNavPath(locationRef.current);
                 return;
             }
         }
-        resetHint();
+        hintFunc.resetHint();
         isStoryRecovered.current = true;
-        if (verifyStoryHint()) {
-            reactivateStoryHint();
+        if (hintFunc.verifyStoryHint()) {
+            hintFunc.reactivateStoryHint();
             return;
         }
         showStory(pageStoryId.current)
@@ -555,11 +573,11 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             }
         }
 
-        if (scl.clearTypingTextBoxes){
-            for (let id of scl.clearTypingTextBoxes.ids){
+        if (scl.clearTypingTextBoxes) {
+            for (let id of scl.clearTypingTextBoxes.ids) {
                 if (!typingBoxes.current[id].current)
                     continue;
-                tl.add(typingBoxes.current[id].current.reset(),scl.offset);
+                tl.add(typingBoxes.current[id].current.reset(), scl.offset);
             }
         }
     }
@@ -606,7 +624,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     async function createUser(nickname: string, password: string) {
         await customizeStory(nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 46 });
         await db.storyMessages.clear();
         const createdAt = new Date();
         const chats = await db.chats.toArray();
@@ -621,12 +639,12 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                     content: chat.pregenMessages[i].content,
                     timeSent: new Date(chatTime),
                     chatId: chat.id,
-                    isReply:chat.pregenMessages[i].isReply
+                    isReply: chat.pregenMessages[i].isReply
                 }
                 msg.timeSent.setMinutes(msg.timeSent.getMinutes() + chat.pregenMessages[i].timeDiff);
                 msgs.push(msg);
             }
-            addMessagesToDb(msgs);
+            chatFunc.addMessagesToDb(msgs);
         }
     }
 
@@ -651,12 +669,13 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverCheckpoint,
             createUser,
             recoverStoryOnPage,
-            goBackHint,
-            goForwardHint,
-            setHeaderSearch,
-            setChatHandle,
+            goBackHint: hintFunc.goBackHint,
+            goForwardHint: hintFunc.goForwardHint,
+            setHeaderSearch: hintFunc.setHeaderSearch,
+            setChatHandle: chatFunc.setChatHandle,
             resumeStory,
-            addMessageFromUser
+            addMessageFromUser: chatFunc.addMessageFromUser,
+            getMessageBuffer: chatFunc.getMessageBuffer
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />

@@ -192,7 +192,7 @@ export const Chat: FC<IChatProps> = () => {
             return;
         }
         setChat(chat);
-        const msgs = await db.storyMessages.where("chatId").equals(chat.id).toArray();
+        const msgs = [...await db.storyMessages.where("chatId").equals(chat.id).toArray(),...story.getMessageBuffer()]
         setMessages(msgs);
         await story.setChatHandle({
             setStringToType: function (string: string): void {

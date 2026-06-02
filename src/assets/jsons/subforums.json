@@ -1,7 +1,7 @@
 [
     {
         "name": "cyberdivers",
-        "followers": "515254",
+        "followers": 515254,
         "description": "The subforum dedicated to the Cyberdivers game, co-op horde shooter, where team of 4 cyberdivers is trying to defend different apps against three factions: AI, Bugs and Hackers.\n\nDeveloped by Spearhead Studios.",
         "imageName": "placeholder.png",
         "admin": "john_cyberdiverO7",
@@ -70,5 +70,16 @@
             "clanker_oil_stain",
             "musky_diver"
         ]
+    },
+    {
+        "name": "zero",
+        "followers": 236788,
+        "description": "A subforum for the game Zero, a single-player game in the same universe as Cyberdivers.\n\nDeveloped by Spearhead Studios.",
+        "imageName": "placeholder.png",
+        "admin": "Sillygoose228",
+        "mods": [
+            "Heapstedt"
+        ],
+        "members": []
     }
 ]

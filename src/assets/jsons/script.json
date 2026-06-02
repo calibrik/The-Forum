@@ -458,7 +458,7 @@
     },
     {
         "addParallelExec": {
-            "name": "sync",
+            "name": "1",
             "branches": [
                 [
                     {
@@ -469,7 +469,7 @@
                                 "opacity": 0.15
                             }
                         },
-                        "offset": "+=5.5"
+                        "offset": "+=4.5"
                     }
                 ],
                 [
@@ -478,7 +478,7 @@
                             "sendMessageAction": {
                                 "from": "pinchIt",
                                 "content": "bro it’s this mf again",
-                                "timeToType": 3
+                                "timeToType": 2
                             }
                         },
                         "offset": "+=1"
@@ -488,7 +488,7 @@
                             "sendMessageAction": {
                                 "from": "MironYanch",
                                 "content": "u dumb fuck, we lost a contract cuz of u",
-                                "timeToType": 4
+                                "timeToType": 3
                             }
                         },
                         "offset": "+=0.5"
@@ -498,8 +498,8 @@
                             "sendMessageAction": {
                                 "from": "caffeine_up_the_ass",
                                 "content": "did u finally learn how to play?",
-                                "isReplyDiff":-3,
-                                "timeToType": 3.5
+                                "isReplyDiff": -3,
+                                "timeToType": 2.8
                             }
                         },
                         "offset": "+=0.7"
@@ -509,7 +509,7 @@
                             "sendMessageAction": {
                                 "from": "musky_diver",
                                 "content": "go fuck urself, u killed me like 10 times, cunt",
-                                "timeToType": 5.5
+                                "timeToType": 3.2
                             }
                         },
                         "offset": "+=0.1"
@@ -519,7 +519,7 @@
                             "sendMessageAction": {
                                 "from": "do_not_the_dog",
                                 "content": "mf is acting like nothing happened, go fuck urself",
-                                "timeToType": 6
+                                "timeToType": 3.5
                             }
                         },
                         "offset": "+=1"
@@ -529,7 +529,7 @@
                             "sendMessageAction": {
                                 "from": "ink_and_iron",
                                 "content": "bro that last contract was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
-                                "timeToType": 8
+                                "timeToType": 6
                             }
                         },
                         "offset": "+=0.1"
@@ -539,7 +539,7 @@
                             "sendMessageAction": {
                                 "from": "Sinius",
                                 "content": "bro was speedrunning the contract failure",
-                                "timeToType": 4
+                                "timeToType": 3
                             }
                         },
                         "offset": "+=0.5"
@@ -549,7 +549,7 @@
                             "sendMessageAction": {
                                 "from": "SmoothOperator",
                                 "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
-                                "timeToType": 7
+                                "timeToType": 5.5
                             }
                         },
                         "offset": "+=0.1"
@@ -559,8 +559,8 @@
                             "sendMessageAction": {
                                 "from": "DarkSolace",
                                 "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
-                                "isReplyDiff":-9,
-                                "timeToType": 6
+                                "isReplyDiff": -9,
+                                "timeToType": 5
                             }
                         },
                         "offset": "+=0.1"
@@ -574,7 +574,7 @@
                                 "isReplyDiff": -1
                             }
                         },
-                        "offset": "+=6.5"
+                        "offset": "+=5.5"
                     },
                     {
                         "action": {
@@ -613,7 +613,7 @@
                             "speed": 50,
                             "delim": " ",
                             "typingBoxId": 0,
-                            "clearAfter":"+=1.5"
+                            "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
                     },
@@ -631,7 +631,7 @@
                             "sendMessageAction": {
                                 "from": "DarkSolace",
                                 "content": "ain’t no one fucking with this dude, kick his ass out of here",
-                                "timeToType": 5
+                                "timeToType": 4
                             }
                         },
                         "offset": "+=1"
@@ -681,5 +681,267 @@
             }
         },
         "offset": "+=1"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "2",
+            "branches": [
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "clanker_oil_stain",
+                                "content": "yo, y'all seen the news about delayed zero dlc?",
+                                "timeToType": 3.5
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "MironYanch",
+                                "content": "yeah, Spearhead can't make the new content even for zero lol",
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=4"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "caffeine_up_the_ass",
+                                "content": "Zero the game? More like zero dlc",
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=2"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "musky_diver",
+                                "content": "I will pay u not to joke ever again",
+                                "isReplyDiff": -1,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=3.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "do_not_the_dog",
+                                "content": "holy cornball",
+                                "isReplyDiff": -2,
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "ink_and_iron",
+                                "content": "fuck yeah, at least that means that finally spearhead heard us and making smth new for cyberdivers",
+                                "isReplyDiff": -4,
+                                "timeToType": 5.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Sinius",
+                                "content": "this absolutely does not mean that bruh, they just can't do shit",
+                                "isReplyDiff": -1,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=6"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Three_Squids_In_A_Suit",
+                                "content": "zero fans are in shambles rn",
+                                "timeToType": 2.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "SmoothOperator",
+                                "content": "maybe we will finally get an ak 4.7.0 buff",
+                                "isReplyDiff": -3,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "buzzzzz09",
+                                "content": "ak 4.7.0 is already op, u just don't know how to play with it, I can easily clear bugs source solo with it, maybe with vibe strike stratagem.",
+                                "isReplyDiff": -1,
+                                "timeToType": 7.5
+                            }
+                        },
+                        "offset": "+=3.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "DarkSolace",
+                                "content": "vibe strike set's ur teammates on fire, it's the worst stratagem in the game, unless u r retarded ofc",
+                                "timeToType": 5.5
+                            }
+                        },
+                        "offset": "+=8"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "buzzzzz09",
+                                "content": "maybe don’t be a moron and don’t stand right next to it next time, might help idk",
+                                "timeToType": 5
+                            }
+                        },
+                        "offset": "+=6"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "buzzzzz09",
+                                "content": "point is, if u can’t use ak 4.7.0 properly, it’s still a skill issue",
+                                "isReplyDiff": -4,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=5.5"
+                    }
+                ],
+                [
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                0
+                            ]
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%",
+                                    "right": "5%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Ah yes, Zero.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=18.8"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Made by the same developer, Spearhead Studios, as our game.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Instead of making content and patches for Cyberdivers, they decided to make some random ass spin-off in the same universe, and the game wasn't even that good.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And now they are working on the dlc for it, while cyberdivers is dying without new updates, fucking idiots.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "50%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "You know what, I wanna check how do they do in their sub. I bet you they are moaning and bitching over there, because of the delay.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Can’t wait to see it.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
     }
 ]
