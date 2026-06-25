@@ -158,6 +158,8 @@ db.version(134).stores({
 	chats: "id, owner",
 	storyMessages: "id,chatId"
 }).upgrade(async () => {
+	if (process.env.NODE_ENV == 'test')
+		return;
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
 	const newScript: IScriptLine[] = (await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
@@ -174,7 +176,7 @@ db.version(134).stores({
 	await db.users.clear();
 	response = await fetch(getJsonUrl("users.json"));
 	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName??`pfp${Math.floor(seededRandom(seed++)*9.9)}.png` }));
+	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	// if (users.length != 0) {
 	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
@@ -197,12 +199,12 @@ db.version(134).stores({
 	await db.storyMessages.clear();
 })
 
-db.on("populate", async () => {
+export async function seedNew() {
 	let response = await fetch(getJsonUrl("script.json"));
 	await db.story.bulkAdd(await response.json() as IScriptLine[]);
 	response = await fetch(getJsonUrl("users.json"));
 	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName??`pfp${Math.floor(seededRandom(seed++)*9.9)}.png` }));
+	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
 	await db.posts.bulkAdd(await response.json() as IPost[]);
@@ -210,6 +212,12 @@ db.on("populate", async () => {
 	await db.subforums.bulkAdd(await response.json() as ISubforum[]);
 	response = await fetch(getJsonUrl("chats.json"));
 	await db.chats.bulkAdd(await response.json() as IChat[]);
+}
+
+db.on("populate", async () => {
+	if (process.env.NODE_ENV == 'test') 
+		return;
+	await seedNew();
 })
 
 await db.open()

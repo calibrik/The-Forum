@@ -241,7 +241,7 @@ function useHints() {
     return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint };
 }
 
-interface IChatHandle {
+export interface IChatHandle {
     setStringToType: (string: string) => void;
     addTypingUser: (username: string) => void;
     removeTypingUser: (username: string) => void;
@@ -624,7 +624,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
 
     async function createUser(nickname: string, password: string) {
         await customizeStory(nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 46 });
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         const chats = await db.chats.toArray();

@@ -3,6 +3,7 @@ export function getImageUrl(name: string): string {
 };
 
 export function getJsonUrl(name: string): string {
+    console.log("called real getJsonUrl");
     return new URL(`./assets/jsons/${name}`, import.meta.url).href;
 };
 

@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, createMemoryRouter, Outlet, RouterProvider, type RouteObject } from 'react-router';
 import { TestPage } from './pages/TestPage';
 import { Layout } from './pages/Layout';
 import { Welcome } from './pages/Welcome';
@@ -23,10 +23,11 @@ import { Terminal } from './pages/Terminal';
 import { TextPlugin } from 'gsap/all';
 import { UserProvider } from './providers/UserAuth';
 import { StoryProvider } from './providers/StoryProvider';
+import type { FC, ReactNode } from 'react';
 
 gsap.registerPlugin(useGSAP, TextPlugin);
 
-const router = createBrowserRouter([
+export const appRoutes: RouteObject[] = [
 	{
 		path: "/",
 		Component: StoryProvider,
@@ -35,65 +36,29 @@ const router = createBrowserRouter([
 				path: "/",
 				Component: Layout,
 				children: [
-					{
-						index: true,
-						Component: Welcome,
-					},
+					{ index: true, Component: Welcome },
 					{ path: "*", element: <Error /> },
-					{
-						path: "/test",
-						Component: TestPage,
-					},
-					{
-						path: "/login",
-						Component: Login,
-					},
-					{
-						path: "/signup",
-						Component: Signup,
-					},
-					{
-						path: "/post/:id",
-						Component: PostPage,
-					},
-					{
-						path: "/chat",
-						Component: ChatMenu,
-					},
-					{
-						path: "/chat/:chatId",
-						Component: Chat,
-					},
+					{ path: "/test", Component: TestPage },
+					{ path: "/login", Component: Login },
+					{ path: "/signup", Component: Signup },
+					{ path: "/post/:id", Component: PostPage },
+					{ path: "/chat", Component: ChatMenu },
+					{ path: "/chat/:chatId", Component: Chat },
 					{
 						path: "/user/:username",
 						Component: User,
 						children: [
-							{
-								path: "",
-								Component: UserPosts,
-							},
-							{
-								path: "comments",
-								Component: UserComments,
-							},
+							{ path: "", Component: UserPosts },
+							{ path: "comments", Component: UserComments },
 						]
 					},
 					{
 						path: "/subforum/:name",
 						Component: Subforum,
 						children: [
-							{
-								path: "",
-								Component: SubforumPosts,
-							},
-							{
-								path: "members",
-								Component: SubforumMembers,
-							},
-							{
-								path: "settings",
-								Component: SubforumSettings,
-							},
+							{ path: "", Component: SubforumPosts },
+							{ path: "members", Component: SubforumMembers },
+							{ path: "settings", Component: SubforumSettings },
 						]
 					}
 				]
@@ -102,27 +67,55 @@ const router = createBrowserRouter([
 				path: "/",
 				Component: EmptyLayout,
 				children: [
-					{
-						path: "/start",
-						Component: Notepad,
-					},
-					{
-						path: "/console",
-						Component: Terminal,
-					},
+					{ path: "/start", Component: Notepad },
+					{ path: "/console", Component: Terminal },
 				]
 			},
 		]
 	}
-]);
+];
+
+const router = createBrowserRouter(appRoutes);
 
 function App() {
+	return (
+		<UserProvider>
+			<RouterProvider router={router} />
+		</UserProvider>
+	);
+}
+
+interface IAllTheProvidersForMockProps {
+	children: ReactNode;
+};
+
+export const AllTheProvidersForMock: FC<IAllTheProvidersForMockProps> = (props) => {
+	const testRoutes: RouteObject[] = [
+		{
+			path: "/",
+			element: (
+				<StoryProvider>
+					<Outlet />
+				</StoryProvider>
+			),
+			children: [
+				{
+					path: "/",
+					element: props.children
+				}
+			],
+		},
+	];
+
+	const router = createMemoryRouter(testRoutes, {
+		initialEntries: ["/"]
+	});
 
 	return (
 		<UserProvider>
 			<RouterProvider router={router} />
 		</UserProvider>
-	)
+	);
 }
 
 export default App
