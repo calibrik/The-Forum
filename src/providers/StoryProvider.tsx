@@ -132,13 +132,13 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
 }
 
 
-function useHints() {
+export function useHints() {
     const currIndex = useRef<number>(-1);//current index in path for chained nav
     const currHint = useRef<string[]>([]);//curr hint, length ==0 means it's not set
     const currStoryHint = useRef<string[]>([]);//current story hint used for caching the last story hint for recover on page function
     const headerSearch = useRef<ISearchFieldHandle>(null);
-    const isStoryHint = useRef<boolean>(false);//is story hint currently hunting (for nav hint to trigger)
-    const isLegitStoryHint = useRef<boolean>(true)//is story hint supposed produced from hint action or artificially planted
+    const isStoryHint = useRef<boolean>(false);//is story hint currently hinting (for nav hint to trigger)
+    const isLegitStoryHint = useRef<boolean>(true)//is story hint produced from hint action or artificially planted
 
     function setHeaderSearch(ref: ISearchFieldHandle | null) {
         headerSearch.current = ref;
@@ -219,7 +219,7 @@ function useHints() {
         if (mismatchedLevel > target.level)
             return;
         currHint.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
-        currIndex.current = 0
+        currIndex.current = 0;
         hint(currHint.current[currIndex.current]);
     }
 
@@ -238,7 +238,11 @@ function useHints() {
         headerSearch.current?.setSuggestionHint(undefined);
     }
 
-    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint };
+    const _getCurrHint = process.env.NODE_ENV == 'test' ? () => currHint : undefined;
+    const _getCurrIndex = process.env.NODE_ENV == 'test' ? () => currIndex : undefined;
+    const _hint = process.env.NODE_ENV == 'test' ? hint : undefined;
+
+    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint };
 }
 
 export interface IChatHandle {
@@ -250,7 +254,7 @@ export interface IChatHandle {
     getId: () => string
 }
 
-function useChat() {
+export function useChat() {
     const messagesBuffer = useRef<IMessage[]>([]);
     const chatHandle = useRef<IChatHandle>(undefined);
     const userState = useUserState();
@@ -269,7 +273,7 @@ function useChat() {
         chatHandle.current?.addMessage(message);
     }
 
-    async function addMessageFromNPC(from: string, content: string, timeToType: number, isReplyDiff?: number) {
+    async function addMessageFromNPC(from: string, content: string, timeToType?: number, isReplyDiff?: number) {
         const message: IMessage = {
             id: lastId.current++,
             from: from,
@@ -279,7 +283,8 @@ function useChat() {
         }
         message.isReply = isReplyDiff ? message.id + isReplyDiff : undefined;
         chatHandle.current?.addTypingUser(message.from);
-        await delay(timeToType);
+        if (timeToType)
+            await delay(timeToType);
         messagesBuffer.current.push(message);
         chatHandle.current?.removeTypingUser(message.from);
         chatHandle.current?.addMessage(message);
@@ -297,7 +302,7 @@ function useChat() {
 
     async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
-        lastId.current = await db.storyMessages.count()+messagesBuffer.current.length + 1;
+        lastId.current = await db.storyMessages.count() + messagesBuffer.current.length + 1;
     }
 
     function enablePreserveMessagesBuffer() {
@@ -327,9 +332,7 @@ function useChat() {
     return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, addMessagesToDb, promptMessage, enablePreserveMessagesBuffer, onNavigateAway, getMessageBuffer }
 }
 
-const StoryContext = createContext<IStoryProvider | undefined>(undefined);
-
-export const StoryProvider: FC<IStoryProviderProps> = (_) => {
+export function useStoryFuncs() {
     const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
     const { contextSafe } = useGSAP();
@@ -388,6 +391,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
                 await tb.current?.reset();
             }
         }
+        console.log("destroyed boxes")
         typingBoxes.current = [];
     });
 
@@ -468,7 +472,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             hintFunc.hintNavPath(locationRef.current);
             return;
         }
-        if (locationRef.current && locationRef.current.level > 0) {
+        if (locationRef.current.level > 0) {
             const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
             const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
             if (location != targetLocation) {
@@ -659,6 +663,59 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
         resetAnims();
     }, [location.pathname])
 
+    const _resetAnims = process.env.NODE_ENV == 'test' ? resetAnims : undefined;
+    const _processAction = process.env.NODE_ENV == 'test' ? processAction : undefined;
+    const _getIsStoryNavRef = process.env.NODE_ENV == 'test' ? () => isStoryNavRef : undefined;
+    const _getLocationRef = process.env.NODE_ENV == 'test' ? () => locationRef : undefined;
+    const _getTypingBoxes = process.env.NODE_ENV == 'test' ? () => typingBoxes : undefined;
+    const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
+    const _getChatHook = process.env.NODE_ENV == 'test' ? () => chatFunc : undefined;
+    const _getIsStoryRecovered = process.env.NODE_ENV == 'test' ? () => isStoryRecovered : undefined;
+    const _getCurrStoryId = process.env.NODE_ENV == 'test' ? () => currStoryId : undefined;
+    const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
+    const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
+
+    return {
+        setTypingBoxes,
+        showStory,
+        getAnim,
+        initReady,
+        resumeStoryFromHint,
+        recoverCheckpoint,
+        createUser,
+        recoverStoryOnPage,
+        resumeStory,
+        _resetAnims,
+        _processAction,
+        _getIsStoryNavRef,
+        _getLocationRef,
+        _getTypingBoxes,
+        _getChatHook,
+        _getHintHook,
+        _getIsStoryRecovered,
+        _getCurrStoryId,
+        _getSavedStoryId,
+        _getMasterRef
+    }
+}
+
+const StoryContext = createContext<IStoryProvider | undefined>(undefined);
+
+export const StoryProvider: FC<IStoryProviderProps> = (_) => {
+    const {
+        setTypingBoxes,
+        showStory,
+        getAnim,
+        initReady,
+        resumeStoryFromHint,
+        recoverCheckpoint,
+        createUser,
+        recoverStoryOnPage,
+        resumeStory,
+    } = useStoryFuncs();
+    const { getMessageBuffer, addMessageFromUser, setChatHandle } = useChat();
+    const { goBackHint, goForwardHint, setHeaderSearch } = useHints()
+
     return (
         <StoryContext.Provider value={{
             setTypingBoxes,
@@ -669,13 +726,13 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             recoverCheckpoint,
             createUser,
             recoverStoryOnPage,
-            goBackHint: hintFunc.goBackHint,
-            goForwardHint: hintFunc.goForwardHint,
-            setHeaderSearch: hintFunc.setHeaderSearch,
-            setChatHandle: chatFunc.setChatHandle,
+            goBackHint,
+            goForwardHint,
+            setHeaderSearch,
+            setChatHandle,
             resumeStory,
-            addMessageFromUser: chatFunc.addMessageFromUser,
-            getMessageBuffer: chatFunc.getMessageBuffer
+            addMessageFromUser,
+            getMessageBuffer,
         }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />

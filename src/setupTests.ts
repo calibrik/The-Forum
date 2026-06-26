@@ -6,8 +6,7 @@ import mockChats from "./assets/jsons/chats.json";
 import mockPosts from "./assets/jsons/posts.json";
 import mockScript from "./assets/jsons/script.json";
 import mockSubforums from "./assets/jsons/subforums.json";
-import { afterEach, beforeEach, vi } from 'vitest';
-import { seedNew, db } from './backend/db.ts';
+import { afterEach, vi } from 'vitest';
 
 vi.mock('./utils.ts', async (importOriginal) => {
     const original = await importOriginal<typeof import('./utils.ts')>();
@@ -54,15 +53,16 @@ const globalFetchMock = vi.fn(async (url: string) => {
 vi.stubGlobal("fetch", globalFetchMock);
 
 afterEach(() => {
-    vi.mocked(fetch).mockClear();
+    vi.unstubAllGlobals();
+    vi.stubGlobal("fetch", globalFetchMock);
 });
 
-beforeEach(async () => {
-    await seedNew();
-})
+// beforeEach(async () => {
+//     await seedNew();
+// })
 
-afterEach(async () => {
-    await Promise.all(db.tables.map(table => table.clear()));
-})
+// afterEach(async () => {
+//     await Promise.all(db.tables.map(table => table.clear()));
+// })
 
 
