@@ -31,3 +31,5 @@ createRoot(document.getElementById('root')!).render(
 //TODO: separate dest on save so you can tp user on non target location on login
 //TODO: shitass mobile chatting not working
 //TODO: navigation on chat is funny, if u go to /chat/smth with target /chat, it's gonna be valid, but it shouldn't be (i don't have anything happenning on that page rn, so who gives a shit)
+//TODO: navigating to level 0 is wrong, cuz it won't trigger the story recovery (i don't think I'll even be using the navigation to level 0, so might gut it altogether)
+//TODO: layout logged in await is never actually awaited??? the fuck is it for

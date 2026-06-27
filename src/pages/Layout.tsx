@@ -10,24 +10,24 @@ interface ILayoutProps { };
 
 export const Layout: FC<ILayoutProps> = (_) => {
     const storyInit = useStoryInit();
-    const isLoggedInResolveRef=useRef<()=>void>(undefined);
-    const isLoggedInPromiseRef=useRef<Promise<void>>(undefined);
-    const userState=useUserState();
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current!=="");
+    const isLoggedInResolveRef = useRef<() => void>(undefined);
+    const isLoggedInPromiseRef = useRef<Promise<void>>(undefined);
+    const userState = useUserState();
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current !== "");
 
-    function init(){
-        storyInit(0, [],async ()=>{
+    function init() {
+        storyInit(0, [], async () => {
             await isLoggedInPromiseRef.current;
         });
     }
 
     function onLogin() {
-        isLoggedInPromiseRef.current=waitForIsLoggedIn();
+        isLoggedInPromiseRef.current = waitForIsLoggedIn();
         setIsLoggedIn(true);
     }
 
     function onLogout() {
-        isLoggedInPromiseRef.current=waitForIsLoggedIn();
+        isLoggedInPromiseRef.current = waitForIsLoggedIn();
         setIsLoggedIn(false);
     }
 
@@ -44,7 +44,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
         window.addEventListener("loggedIn", onLogin);
         window.addEventListener("loggedOut", onLogout);
         window.addEventListener("signalLevel0",init);
-        return ()=>{
+        return () => {
             window.removeEventListener("loggedIn", onLogin);
             window.removeEventListener("loggedOut", onLogout);
             window.removeEventListener("signalLevel0",init);

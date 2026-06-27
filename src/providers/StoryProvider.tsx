@@ -27,7 +27,9 @@ interface IStoryProvider {
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     addMessageFromUser(content: string): Promise<void>
-    getMessageBuffer(): IMessage[]
+    getMessageBuffer(): IMessage[],
+    _getStoryHook:()=>any|undefined
+
 }
 
 // interface IAdditionalNavParameters{
@@ -391,7 +393,6 @@ export function useStoryFuncs() {
                 await tb.current?.reset();
             }
         }
-        console.log("destroyed boxes")
         typingBoxes.current = [];
     });
 
@@ -403,8 +404,10 @@ export function useStoryFuncs() {
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
                 let p = waitForInit();
-                chatFunc.sinkMessages();
+                chatFunc.enablePreserveMessagesBuffer();
+                console.log("about to navigate to",action.navigateAction.dest?.where ?? "")
                 navigate(action.navigateAction.dest?.where ?? "");
+                console.log(location.pathname)
                 if (action.navigateAction.dest?.level == 0)
                     window.dispatchEvent(new Event("signalLevel0"))
                 await p;
@@ -674,6 +677,8 @@ export function useStoryFuncs() {
     const _getCurrStoryId = process.env.NODE_ENV == 'test' ? () => currStoryId : undefined;
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
+    const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
+    const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
 
     return {
         setTypingBoxes,
@@ -685,6 +690,12 @@ export function useStoryFuncs() {
         createUser,
         recoverStoryOnPage,
         resumeStory,
+        getMessageBuffer: chatFunc.getMessageBuffer,
+        addMessageFromUser: chatFunc.addMessageFromUser,
+        setChatHandle: chatFunc.setChatHandle,
+        goBackHint: hintFunc.goBackHint,
+        goForwardHint: hintFunc.goForwardHint,
+        setHeaderSearch: hintFunc.setHeaderSearch,
         _resetAnims,
         _processAction,
         _getIsStoryNavRef,
@@ -695,45 +706,20 @@ export function useStoryFuncs() {
         _getIsStoryRecovered,
         _getCurrStoryId,
         _getSavedStoryId,
-        _getMasterRef
+        _getMasterRef,
+        _getPageStoryIdRef,
+        _getPageInitResolveRef
     }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
 export const StoryProvider: FC<IStoryProviderProps> = (_) => {
-    const {
-        setTypingBoxes,
-        showStory,
-        getAnim,
-        initReady,
-        resumeStoryFromHint,
-        recoverCheckpoint,
-        createUser,
-        recoverStoryOnPage,
-        resumeStory,
-    } = useStoryFuncs();
-    const { getMessageBuffer, addMessageFromUser, setChatHandle } = useChat();
-    const { goBackHint, goForwardHint, setHeaderSearch } = useHints()
+    const storyFunc = {...useStoryFuncs(),_getStoryHook:process.env.NODE_ENV == 'test' ? () => storyFunc : undefined} as IStoryProvider;
+
 
     return (
-        <StoryContext.Provider value={{
-            setTypingBoxes,
-            showStory,
-            getAnim,
-            initReady,
-            resumeStoryFromHint,
-            recoverCheckpoint,
-            createUser,
-            recoverStoryOnPage,
-            goBackHint,
-            goForwardHint,
-            setHeaderSearch,
-            setChatHandle,
-            resumeStory,
-            addMessageFromUser,
-            getMessageBuffer,
-        }}>
+        <StoryContext.Provider value={storyFunc}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
         </StoryContext.Provider>

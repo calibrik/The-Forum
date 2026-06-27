@@ -7,6 +7,7 @@ import mockPosts from "./assets/jsons/posts.json";
 import mockScript from "./assets/jsons/script.json";
 import mockSubforums from "./assets/jsons/subforums.json";
 import { afterEach, vi } from 'vitest';
+import { db } from './backend/db.ts';
 
 vi.mock('./utils.ts', async (importOriginal) => {
     const original = await importOriginal<typeof import('./utils.ts')>();
@@ -61,8 +62,8 @@ afterEach(() => {
 //     await seedNew();
 // })
 
-// afterEach(async () => {
-//     await Promise.all(db.tables.map(table => table.clear()));
-// })
+afterEach(async () => {
+    await Promise.all(db.tables.map(table => table.clear()));
+})
 
 

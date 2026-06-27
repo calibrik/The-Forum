@@ -89,27 +89,27 @@ interface IAllTheProvidersForMockProps {
 	children: ReactNode;
 };
 
+export let exposedMockRouter: ReturnType<typeof createMemoryRouter> | null = null;
+
 export const AllTheProvidersForMock: FC<IAllTheProvidersForMockProps> = (props) => {
 	const testRoutes: RouteObject[] = [
 		{
 			path: "/",
-			element: (
-				<StoryProvider>
-					<Outlet />
-				</StoryProvider>
-			),
+			Component: StoryProvider,
 			children: [
 				{
-					path: "/",
+					path: "/testing",
 					element: props.children
-				}
-			],
-		},
+				},
+				...(appRoutes[0].children??[])
+			]
+		}
 	];
-
 	const router = createMemoryRouter(testRoutes, {
-		initialEntries: ["/"]
+		initialEntries: ["/testing"]
 	});
+
+	exposedMockRouter=router;
 
 	return (
 		<UserProvider>

@@ -1,11 +1,13 @@
 import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { db, seedNew } from '../backend/db';
-import { useChat, useHints, useStoryFuncs } from '../providers/StoryProvider';
-import { render, renderHook } from '@testing-library/react';
-import { AllTheProvidersForMock } from '../App';
+import { useChat, useHints, useStory, useStoryFuncs } from '../providers/StoryProvider';
+import { act, render, renderHook, waitFor } from '@testing-library/react';
+import { AllTheProvidersForMock, exposedMockRouter } from '../App';
 import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
+import { useUserState } from '../providers/UserAuth';
+import { useLocation } from 'react-router';
 
 describe("test of testing", () => {
     beforeAll(async () => {
@@ -14,10 +16,6 @@ describe("test of testing", () => {
 
     test("test 1", async () => {
         expect(await db.users.where("nickname").equals("penis").first()).toMatchObject({ nickname: "penis", description: "Secret dev account for testing shit" });
-    })
-
-    afterAll(async () => {
-        await Promise.all(db.tables.map(table => table.clear()));
     })
 })
 
@@ -234,59 +232,59 @@ describe("hint testing", () => {
     })
 });
 
-describe("story functionality",()=>{
-    test("no reset anims on story navigation",async ()=>{
+describe("story functionality", () => {
+    test("no reset anims on story navigation", async () => {
         const { result } = renderHook(() => useStoryFuncs(), {
             wrapper: AllTheProvidersForMock
         });
-        result.current._getIsStoryNavRef!().current=true;
-        const locationRef=result.current._getLocationRef?.();
-        locationRef!.current={where:"/user/main_hero",level:2};
-        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>],2);
+        result.current._getIsStoryNavRef!().current = true;
+        const locationRef = result.current._getLocationRef?.();
+        locationRef!.current = { where: "/user/main_hero", level: 2 };
+        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
         await result.current._resetAnims?.();
         expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
     })
 
-    test("no reset anims if on target location on sufficient level",async ()=>{
+    test("no reset anims if on target location on sufficient level", async () => {
         const { result } = renderHook(() => useStoryFuncs(), {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
-        const locationRef=result.current._getLocationRef?.();
-        locationRef!.current={where:"/user/main_hero",level:2};
-        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>],2);
+        const locationRef = result.current._getLocationRef?.();
+        locationRef!.current = { where: "/user/main_hero", level: 2 };
+        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
         result.current._resetAnims?.();
         expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
     })
 
-    test("reset anims (no active anim, no left from target)",async ()=>{
+    test("reset anims (no active anim, no left from target)", async () => {
         const { result } = renderHook(() => useStoryFuncs(), {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
-        const locationRef=result.current._getLocationRef?.();
-        locationRef!.current={where:"/user/main_hero",level:2};
-        const chatResetSpy=vi.spyOn(result.current._getChatHook!(),"onNavigateAway");
-        const hintResetSpy=vi.spyOn(result.current._getHintHook!(),"resetHint");
-        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>],2);
+        const locationRef = result.current._getLocationRef?.();
+        locationRef!.current = { where: "/user/main_hero", level: 2 };
+        const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
+        const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
+        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
         await result.current._resetAnims?.();
         expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
         expect(chatResetSpy).toHaveBeenCalledTimes(1);
         expect(hintResetSpy).toHaveBeenCalledTimes(1);
     })
 
-    test("reset anims (no active anim, left from target)",async ()=>{
+    test("reset anims (no active anim, left from target)", async () => {
         const { result } = renderHook(() => useStoryFuncs(), {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
-        const locationRef=result.current._getLocationRef?.();
-        locationRef!.current={where:"/user/main_hero",level:2};
-        const chatResetSpy=vi.spyOn(result.current._getChatHook!(),"onNavigateAway");
-        const hintResetSpy=vi.spyOn(result.current._getHintHook!(),"resetHint");
-        result.current._getSavedStoryId!().current=10;
-        result.current._getIsStoryRecovered!().current=true;
-        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>],2);
+        const locationRef = result.current._getLocationRef?.();
+        locationRef!.current = { where: "/user/main_hero", level: 2 };
+        const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
+        const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
+        result.current._getSavedStoryId!().current = 10;
+        result.current._getIsStoryRecovered!().current = true;
+        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
         await result.current._resetAnims?.();
         expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
         expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -294,22 +292,45 @@ describe("story functionality",()=>{
         expect(result.current._getCurrStoryId!().current).toEqual(11);
     })
 
-    test("reset anims (active anim, no left from target)",async ()=>{
+    test("reset anims (active anim, no left from target)", async () => {
         const { result } = renderHook(() => useStoryFuncs(), {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
-        const locationRef=result.current._getLocationRef?.();
-        locationRef!.current={where:"/user/main_hero",level:2};
-        const chatResetSpy=vi.spyOn(result.current._getChatHook!(),"onNavigateAway");
-        const hintResetSpy=vi.spyOn(result.current._getHintHook!(),"resetHint");
-        const masterRef=result.current._getMasterRef!();
-        masterRef.current=gsap.timeline({ paused: true });
-        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>],2);
+        const locationRef = result.current._getLocationRef?.();
+        locationRef!.current = { where: "/user/main_hero", level: 2 };
+        const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
+        const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
+        const masterRef = result.current._getMasterRef!();
+        masterRef.current = gsap.timeline({ paused: true });
+        result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
         await result.current._resetAnims?.();
         expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
         expect(chatResetSpy).toHaveBeenCalledTimes(1);
         expect(hintResetSpy).toHaveBeenCalledTimes(1);
         expect(masterRef.current).toBe(undefined);
+    })
+
+    test("navigate action (navigate true)", async () => {
+        const { result } = renderHook(() => {
+            const storyFuncs=useStory()._getStoryHook!();
+            const userState=useUserState();
+            return {storyFuncs,userState}
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        await db.users.add({ nickname: "penis" });
+        result.current.userState.isRealLoggedIn.current=true;
+        const chatPreserveSpy = vi.spyOn(result.current.storyFuncs._getChatHook!(), "enablePreserveMessagesBuffer");
+        const storyHintResetSpy = vi.spyOn(result.current.storyFuncs._getHintHook!(), "resetStoryHint");
+        await result.current.storyFuncs._processAction!({ navigateAction: { dest: { where: "/user/penis", level: 2 }, navigate: true } }, 10);
+        const locationRef = result.current.storyFuncs._getLocationRef!();
+        await waitFor(async () => {
+            expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis");
+        });
+        expect(locationRef.current).toEqual({ where: "/user/penis", level: 2 });
+        expect(result.current.storyFuncs._getPageStoryIdRef!().current).toEqual(11);
+        expect(chatPreserveSpy).toHaveBeenCalled();
+        expect(storyHintResetSpy).toHaveBeenCalled();
     })
 })
