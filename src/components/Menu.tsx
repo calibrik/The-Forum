@@ -6,6 +6,7 @@ export interface IMenuOption {
     name: string;
     /**without /*/
     destination?: string;
+    id?:string;
 }
 
 interface IMenuProps {
@@ -45,7 +46,7 @@ export const Menu: FC<IMenuProps> = (props) => {
     return (
         <div className={styles.menuContainer}>
             {props.options.map((v,i)=>(
-                <div onClick={(e)=>onOptionSelect(e,i)} id={v.destination} key={i} className={`${styles.option} ${i == activeOption?styles.active:""}`}>{props.options[i].name}</div>
+                <div onClick={(e)=>onOptionSelect(e,i)} id={v.id} key={i} className={`${styles.option} ${i == activeOption?styles.active:""}`}>{props.options[i].name}</div>
             ))}
         </div>
     );

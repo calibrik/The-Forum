@@ -1,4 +1,4 @@
-import { createBrowserRouter, createMemoryRouter, Outlet, RouterProvider, type RouteObject } from 'react-router';
+import { createBrowserRouter, createMemoryRouter, RouterProvider, type RouteObject } from 'react-router';
 import { TestPage } from './pages/TestPage';
 import { Layout } from './pages/Layout';
 import { Welcome } from './pages/Welcome';

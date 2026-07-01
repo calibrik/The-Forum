@@ -118,17 +118,20 @@ export const User: FC<IUserPageProps> = (_) => {
     let menuOptions: IMenuOption[] = [
             {
                 name: "Posts",
-                destination: ""
+                destination: "",
+                id:"posts"
             },
             {
                 name: "Comments",
-                destination: "comments"
+                destination: "comments",
+                id:"comments"
             },
         ]
         
         if (user && user.nickname == userState.userLoggedIn.current) {
             menuOptions.push({
-                name: "Settings"
+                name: "Settings",
+                id:"settings"
             });
         }
 

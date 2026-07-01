@@ -42,18 +42,22 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     let menuOptions: IMenuOption[] = [
         {
             name: "Posts",
-            destination: ""
+            destination: "",
+            id: "posts"
+
         },
         {
             name: "Members",
-            destination: "members"
+            destination: "members",
+            id: "members"
         },
     ]
 
     if (subforum && subforum.admin == userState.userLoggedIn.current) {
         menuOptions.push({
             name: "Settings",
-            destination: "settings"
+            destination: "settings",
+            id: "settings"
         });
     }
 

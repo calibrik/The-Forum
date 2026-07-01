@@ -9,15 +9,14 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { delay } from "../utils";
+import { bridge, delay } from "../utils";
 interface IStoryProviderProps {
 };
-interface IStoryProvider {
+
+interface IStoryHook {
     setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) => void,
-    showStory: (fromId: number) => Promise<void>
     getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
-    resumeStory(): void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number) => void
@@ -28,8 +27,10 @@ interface IStoryProvider {
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     addMessageFromUser(content: string): Promise<void>
     getMessageBuffer(): IMessage[],
-    _getStoryHook:()=>any|undefined
-
+}
+type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
+interface IStoryProvider extends IStoryHook {
+    _getStoryHook: () => StoryFuncsType | undefined
 }
 
 // interface IAdditionalNavParameters{
@@ -39,13 +40,13 @@ interface IStoryProvider {
 const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
     "user": (_location, targetLocation, mismatchedLevel) => {
         if (mismatchedLevel == 3) {
-            return [targetLocation[3]];
+            return [targetLocation[3]??"posts"];
         }
         return ["user-icon-text"];
     },
     "subforum": (_location, targetLocation, mismatchedLevel, searchField) => {
         if (mismatchedLevel == 3) {
-            return [targetLocation[3]];
+            return [targetLocation[3]??"posts"];
         }
         searchField?.setSuggestionHint(`f/${targetLocation[2]}`);
         return ["header-search", ""];
@@ -222,7 +223,7 @@ export function useHints() {
             return;
         currHint.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
         currIndex.current = 0;
-        hint(currHint.current[currIndex.current]);
+        bridge.exec(hint,currHint.current[currIndex.current]);
     }
 
     function goBackHint(clickedId: string) {
@@ -242,9 +243,11 @@ export function useHints() {
 
     const _getCurrHint = process.env.NODE_ENV == 'test' ? () => currHint : undefined;
     const _getCurrIndex = process.env.NODE_ENV == 'test' ? () => currIndex : undefined;
+    const _getIsStoryHint = process.env.NODE_ENV == 'test' ? () => isStoryHint : undefined;
+    const _getisLegitStoryHint = process.env.NODE_ENV == 'test' ? () => isLegitStoryHint : undefined;
     const _hint = process.env.NODE_ENV == 'test' ? hint : undefined;
 
-    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint };
+    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
 }
 
 export interface IChatHandle {
@@ -401,13 +404,11 @@ export function useStoryFuncs() {
             isStoryNavRef.current = true;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
+            chatFunc.enablePreserveMessagesBuffer();
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
                 let p = waitForInit();
-                chatFunc.enablePreserveMessagesBuffer();
-                console.log("about to navigate to",action.navigateAction.dest?.where ?? "")
                 navigate(action.navigateAction.dest?.where ?? "");
-                console.log(location.pathname)
                 if (action.navigateAction.dest?.level == 0)
                     window.dispatchEvent(new Event("signalLevel0"))
                 await p;
@@ -415,7 +416,6 @@ export function useStoryFuncs() {
             else {
                 isStoryRecovered.current = false;
                 hintFunc.hintNavPath(action.navigateAction.dest);
-                chatFunc.enablePreserveMessagesBuffer();
             }
             isStoryNavRef.current = false;
         }
@@ -440,15 +440,12 @@ export function useStoryFuncs() {
         }
     }
 
-    function resumeStory() {
-        showStory(currStoryId.current);
-    }
-
     function resumeStoryFromHint(clickedId: string): boolean {
+        console.log(clickedId, hintFunc.getCurrentStoryHint(), isStoryGoing());
         if (isStoryGoing() || hintFunc.getCurrentStoryHint() !== clickedId)
             return false;
         hintFunc.removeCurrHint();
-        showStory(currStoryId.current);
+        bridge.exec(showStory,currStoryId.current);
         return true;
     }
 
@@ -489,7 +486,7 @@ export function useStoryFuncs() {
             hintFunc.reactivateStoryHint();
             return;
         }
-        showStory(pageStoryId.current)
+        bridge.exec(showStory,pageStoryId.current);
     }
 
     async function customizeStory(nickname: string) {
@@ -679,17 +676,17 @@ export function useStoryFuncs() {
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
     const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
+    const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
+    const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
 
     return {
         setTypingBoxes,
-        showStory,
         getAnim,
         initReady,
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
         recoverStoryOnPage,
-        resumeStory,
         getMessageBuffer: chatFunc.getMessageBuffer,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
@@ -708,18 +705,23 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
-        _getPageInitResolveRef
+        _getPageInitResolveRef,
+        _showStory,
+        _customizeStory
     }
 }
 
 const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
 export const StoryProvider: FC<IStoryProviderProps> = (_) => {
-    const storyFunc = {...useStoryFuncs(),_getStoryHook:process.env.NODE_ENV == 'test' ? () => storyFunc : undefined} as IStoryProvider;
-
+    const storyFunc = useStoryFuncs();
 
     return (
-        <StoryContext.Provider value={storyFunc}>
+        <StoryContext.Provider value={{
+            ...storyFunc, _getStoryHook() {
+                return storyFunc;
+            },
+        }}>
             <EffectOverlay id="effectOverlay1" />
             <Outlet />
         </StoryContext.Provider>

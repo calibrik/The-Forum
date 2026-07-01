@@ -78,7 +78,6 @@ export interface INavigateAction {
 }
 
 export interface ISaveAction {
-	storyId?: number
 	dest: IDestination
 	hintActionPos?: number
 }
@@ -201,15 +200,15 @@ db.version(134).stores({
 
 export async function seedNew() {
 	let response = await fetch(getJsonUrl("script.json"));
-	await db.story.bulkAdd(await response.json() as IScriptLine[]);
+	await db.story.bulkAdd((await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("users.json"));
 	let seed = 0;
 	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd(await response.json() as IPost[]);
+	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("subforums.json"));
-	await db.subforums.bulkAdd(await response.json() as ISubforum[]);
+	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("chats.json"));
 	await db.chats.bulkAdd(await response.json() as IChat[]);
 }

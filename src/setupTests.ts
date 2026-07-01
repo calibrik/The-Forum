@@ -55,6 +55,7 @@ vi.stubGlobal("fetch", globalFetchMock);
 
 afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
     vi.stubGlobal("fetch", globalFetchMock);
 });
 

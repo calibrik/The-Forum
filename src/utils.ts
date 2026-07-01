@@ -41,3 +41,13 @@ export function seededRandom(seed: number) {
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
+
+// utils.ts
+export const bridge = {
+    exec: async <T extends (...args: any[]) => any>(
+        fn: T, 
+        ...args: Parameters<T>
+    ): Promise<ReturnType<T>> => {
+        return await fn(...args);
+    }
+}
