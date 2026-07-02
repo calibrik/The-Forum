@@ -53,18 +53,15 @@ const globalFetchMock = vi.fn(async (url: string) => {
 
 vi.stubGlobal("fetch", globalFetchMock);
 
-afterEach(() => {
+afterEach(async () => {
+    vi.useRealTimers();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
     vi.stubGlobal("fetch", globalFetchMock);
+    await Promise.all(db.tables.map(table => table.clear()));
 });
 
 // beforeEach(async () => {
 //     await seedNew();
 // })
-
-afterEach(async () => {
-    await Promise.all(db.tables.map(table => table.clear()));
-})
-
 

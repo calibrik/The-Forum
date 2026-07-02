@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import { db, seedNew, type IMessage } from '../backend/db';
+import { db, seedNew } from '../backend/db';
 import { useChat, useHints, useStory, useStoryFuncs } from '../providers/StoryProvider';
 import { render, renderHook, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
@@ -57,7 +57,6 @@ describe("chat testing", () => {
         messagesBuffer = result.current.getMessageBuffer();
         expect(messagesBuffer.length).toBe(1);
         expect(messagesBuffer[0].content).toBe(content);
-        vi.useRealTimers();
     });
 
     test('addMessageFromNPC (multiple)', async () => {
@@ -77,7 +76,6 @@ describe("chat testing", () => {
         expect(messagesBuffer[0].from).toBe("user3");
         expect(messagesBuffer[1].from).toBe("user2");
         expect(messagesBuffer[2].from).toBe("user1");
-        vi.useRealTimers();
     });
 
     test('addMessageFromNPC (multiple, with replies)', async () => {
@@ -97,7 +95,6 @@ describe("chat testing", () => {
         expect(messagesBuffer.length).toBe(4);
         expect(messagesBuffer.find(m => m.from == "user4")?.isReply).toEqual(messagesBuffer.find(m => m.from == "user1")?.id);
         expect(messagesBuffer.find(m => m.from == "user3")?.isReply).toEqual(messagesBuffer.find(m => m.from == "user1")?.id);
-        vi.useRealTimers();
     });
 });
 
@@ -661,9 +658,11 @@ describe("story functionality", () => {
         const dbUsersModifySpy = vi.spyOn(collectionProto, "modify");
         const dbStoryMessagesClearSpy=vi.spyOn(db.storyMessages,"clear");
         const chatAddMessagesToDbSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), 'addMessagesToDb');
-
+        
+        vi.useFakeTimers({ toFake: ['Date'] });
         const createdAt = new Date();
-        await result.current.storyFuncs!.createUser(newNickname, newPassword);
+        const p=result.current.storyFuncs!.createUser(newNickname, newPassword);
+        await p;
 
         expect(customizeStorySpy).toHaveBeenCalledWith(result.current.storyFuncs!._customizeStory, newNickname);
         expect(dbUsersModifySpy).toHaveBeenCalledWith({ nickname: newNickname, password: newPassword, savedStoryId: 1 });
@@ -673,6 +672,15 @@ describe("story functionality", () => {
 
         const message=await db.storyMessages.where("chatId").equals("cyberdivers").first();
         const chat=await db.chats.where("id").equals("cyberdivers").first();
-        expect(message!.timeSent.getMinutes()).toBe(createdAt.getMinutes()+chat!.initTimeDiff+chat!.pregenMessages[0].timeDiff);
+        console.log(createdAt.getMinutes(),chat!.initTimeDiff,chat!.pregenMessages[0].timeDiff)
+        const expectedDate=new Date(createdAt)
+        expectedDate.setMinutes(createdAt.getMinutes()+chat!.initTimeDiff+chat!.pregenMessages[0].timeDiff);
+        expect(message!.timeSent).toEqual(expectedDate);
     });
 });
+
+
+
+
+
+

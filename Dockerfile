@@ -1,7 +1,7 @@
 FROM node:24-alpine AS frontend
 WORKDIR /src
 COPY ./package*.json ./
-RUN npm install
+RUN npm ci
 COPY ./ ./
 RUN npm run build
 
