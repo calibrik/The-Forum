@@ -441,7 +441,6 @@ export function useStoryFuncs() {
     }
 
     function resumeStoryFromHint(clickedId: string): boolean {
-        console.log(clickedId, hintFunc.getCurrentStoryHint(), isStoryGoing());
         if (isStoryGoing() || hintFunc.getCurrentStoryHint() !== clickedId)
             return false;
         hintFunc.removeCurrHint();
@@ -627,7 +626,7 @@ export function useStoryFuncs() {
     }
 
     async function createUser(nickname: string, password: string) {
-        await customizeStory(nickname);
+        await bridge.exec(customizeStory,nickname);
         await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();

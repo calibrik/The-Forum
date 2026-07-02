@@ -34,3 +34,4 @@ createRoot(document.getElementById('root')!).render(
 //TODO: navigating to level 0 is wrong, cuz it won't trigger the story recovery (i don't think I'll even be using the navigation to level 0, so might gut it altogether)
 //TODO: layout logged in await is never actually awaited??? the fuck is it for
 //TODO: story customize can replace some words of a story or even varibale names
+//TODO: sanitize user's nickname to only a-Z 0-9 and _

@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import { db, seedNew } from '../backend/db';
+import { db, seedNew, type IMessage } from '../backend/db';
 import { useChat, useHints, useStory, useStoryFuncs } from '../providers/StoryProvider';
 import { render, renderHook, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
@@ -577,7 +577,6 @@ describe("story functionality", () => {
         result.current.userState.isRealLoggedIn.current = true;
         result.current.storyHook!._getIsStoryRecovered!().current = false;
         result.current.storyHook!._getLocationRef!().current = { where: "/chat", level: 1 };
-
         const hintHook = result.current.storyHook!._getHintHook!();
         vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(true);
         const reactivateHintSpy = vi.spyOn(hintHook, "reactivateStoryHint");
@@ -643,6 +642,37 @@ describe("story functionality", () => {
 
         let subforumsAfter = await db.subforums.toArray();
         expect(subforumsAfter.find(s => s.id === 1)?.admin).toBe("john_cyberdiverO7");
-        expect(subforumsAfter.find(s => s.id === 1)?.members.find((m)=>m==="main_hero")).toBeUndefined();
+        expect(subforumsAfter.find(s => s.id === 1)?.members.find((m) => m === "main_hero")).toBeUndefined();
+    });
+
+    test("createUser should update user, clear story messages, and populate chat messages", async () => {
+        const { result } = renderHook(() => ({
+            storyFuncs: useStory()._getStoryHook!(),
+        }), {
+            wrapper: AllTheProvidersForMock
+        });
+
+        await seedNew();
+        const newNickname = "TestHero";
+        const newPassword = "testpassword123";
+
+        const customizeStorySpy = vi.spyOn(bridge, 'exec');
+        const collectionProto = Object.getPrototypeOf(db.users.where("savedStoryId").aboveOrEqual(0));
+        const dbUsersModifySpy = vi.spyOn(collectionProto, "modify");
+        const dbStoryMessagesClearSpy=vi.spyOn(db.storyMessages,"clear");
+        const chatAddMessagesToDbSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), 'addMessagesToDb');
+
+        const createdAt = new Date();
+        await result.current.storyFuncs!.createUser(newNickname, newPassword);
+
+        expect(customizeStorySpy).toHaveBeenCalledWith(result.current.storyFuncs!._customizeStory, newNickname);
+        expect(dbUsersModifySpy).toHaveBeenCalledWith({ nickname: newNickname, password: newPassword, savedStoryId: 1 });
+        expect(dbStoryMessagesClearSpy).toHaveBeenCalled();
+        const chatsAmount=await db.chats.count();
+        expect(chatAddMessagesToDbSpy).toHaveBeenCalledTimes(chatsAmount);
+
+        const message=await db.storyMessages.where("chatId").equals("cyberdivers").first();
+        const chat=await db.chats.where("id").equals("cyberdivers").first();
+        expect(message!.timeSent.getMinutes()).toBe(createdAt.getMinutes()+chat!.initTimeDiff+chat!.pregenMessages[0].timeDiff);
     });
 });

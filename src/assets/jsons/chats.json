@@ -9,75 +9,63 @@
         "initTimeDiff":-5,
         "pregenMessages": [
             {
-                "id": 1,
                 "from": "pinchIt",
                 "content": "bro these clanker's spawn rate is insane, how tf r u supposed to fight them on d10",
                 "timeDiff": 0
             },
             {
-                "id": 2,
                 "from": "MironYanch",
                 "content": "skill issue bruh",
                 "timeDiff": 0
             },
             {
-                "id": 3,
                 "from": "pinchIt",
                 "content": "blow me",
                 "timeDiff": 1
             },
             {
-                "id": 4,
                 "from": "caffeine_up_the_ass",
                 "content": "just bring ak 4.7.0 with reactive boost, it’s not that hard",
                 "isReply":1,
                 "timeDiff": 1
             },
             {
-                "id": 5,
                 "from": "pinchIt",
                 "content": "damn bro, u so smart, why didn’t I think of that",
                 "timeDiff": 1
             },
             {
-                "id": 6,
                 "from": "pinchIt",
                 "content": "I need level 75 to unlock ak 4.7.0, im like 42",
                 "isReply":4,
                 "timeDiff": 2
             },
             {
-                "id": 7,
                 "from": "caffeine_up_the_ass",
                 "content": "don’t play ai faction then, or lower the diff if u can’t take the heat",
                 "timeDiff": 2
             },
             {
-                "id": 8,
                 "from": "pinchIt",
                 "content": "spearhead needs to nerf this fucking spawn rate, fucking ruining this game",
                 "timeDiff": 3
             },
             {
-                "id": 9,
                 "from": "musky_diver",
                 "content": "nah u r kidding, ai d10 is way too easy, if anything, they need to make it harder",
                 "timeDiff": 4
             },
             {
-                "id": 10,
                 "from": "musky_diver",
                 "content": "go train on d1 bruh, left mouse button to shoot btw",
                 "timeDiff": 4
             },
             {
-                "id": 11,
                 "from": "pinchIt",
                 "content": "go touch some grass bruh, ur father won’t come back home if u put another 100 hours in the game",
                 "timeDiff": 5
             },
             {
-                "id": 12,
                 "from": "musky_diver",
                 "content": "cry about it, it's not my fault u suck balls",
                 "timeDiff": 5
