@@ -20,7 +20,7 @@
     },
     {
         "storyline": {
-            "content": "I am main_hero.",
+            "content": "I am #main_hero.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -119,7 +119,7 @@
             "navigateAction": {
                 "navigate": true,
                 "dest": {
-                    "where": "/user/main_hero",
+                    "where": "/user/#main_hero",
                     "level": 2
                 }
             }
@@ -149,7 +149,7 @@
         "action": {
             "saveAction": {
                 "dest": {
-                    "where": "/user/main_hero",
+                    "where": "/user/#main_hero",
                     "level": 2
                 },
                 "hintActionPos": -1

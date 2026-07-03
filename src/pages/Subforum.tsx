@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FC } from "react";
-import { getImageUrl, numberToText } from "../utils";
+import { addHashToUserNickname, getImageUrl, numberToText, sanitizeDbFetch } from "../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
@@ -19,17 +19,17 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const navigate = useNavigate();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
-    const typingBox=useRef<ITypingTextBoxHandle>(null);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
             navigate("/")
             return;
         }
-        const subforum = await db.subforums.where("name").equals(name ?? "").first();
+        const subforum = await sanitizeDbFetch(await db.subforums.where("name").equals(await addHashToUserNickname(name??"")).first());
         if (!subforum) {
             console.error(`No ${name} subforum found.`)
-            navigate("/404",{replace:true})
+            navigate("/404", { replace: true })
             return;
         }
         setSubforum(subforum);
@@ -62,29 +62,29 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     return (
-    <>
-    <TypingTextBox ref={typingBox} type="terminal"/>    
-        <div className={styles.container}>
-            <img src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
-            <div className={styles.subProfileContainer}>
-                {subforum ?
-                    <div className={styles.headerContainer}>
-                        <div className={styles.titleHeaderContainer}>
-                            <h1 className={styles.title}>f/{subforum.name}</h1>
-                            <span className={styles.followerCount}>{numberToText(subforum.followers)} followers</span>
+        <>
+            <TypingTextBox ref={typingBox} type="terminal" />
+            <div className={styles.container}>
+                <img src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
+                <div className={styles.subProfileContainer}>
+                    {subforum ?
+                        <div className={styles.headerContainer}>
+                            <div className={styles.titleHeaderContainer}>
+                                <h1 className={styles.title}>f/{subforum.name}</h1>
+                                <span className={styles.followerCount}>{numberToText(subforum.followers)} followers</span>
+                            </div>
+                            <p className={styles.description}>{subforum.description}</p>
                         </div>
-                        <p className={styles.description}>{subforum.description}</p>
+                        : <Spinner />}
+                    <Menu options={menuOptions} />
+                    <div className={styles.createPostContainer}>
+                        <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>Create Post</BaseButton>
                     </div>
-                    : <Spinner />}
-                <Menu options={menuOptions} />
-                <div className={styles.createPostContainer}>
-                    <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>Create Post</BaseButton>
+                </div>
+                <div className={styles.contentContainer}>
+                    <Outlet context={subforum} />
                 </div>
             </div>
-            <div className={styles.contentContainer}>
-                <Outlet context={subforum}/>
-            </div>
-        </div>
         </>
     );
 }

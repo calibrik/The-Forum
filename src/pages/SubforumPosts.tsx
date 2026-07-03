@@ -5,6 +5,7 @@ import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost } from "../backend/db";
 import { useParams } from "react-router";
+import { addHashToUserNickname, sanitizeDbFetch } from "../utils";
 interface ISubforumPostsProps { };
 
 export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
@@ -13,7 +14,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     const [posts, setPosts] = useState<IPost[]>([]);
 
     async function init() {
-        setPosts(await db.posts.where("subforum").equals(name ?? "").toArray());
+        setPosts(await sanitizeDbFetch(await db.posts.where("subforum").equals(await addHashToUserNickname(name??"")).toArray()));
     }
 
     useEffect(() => {

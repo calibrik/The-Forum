@@ -5,6 +5,7 @@ import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useParams } from "react-router";
 import { db, type IPost } from "../backend/db";
+import { addHashToUserNickname, sanitizeDbFetch } from "../utils";
 interface IUserPostsProps { };
 
 export const UserPosts: FC<IUserPostsProps> = (_) => {
@@ -13,7 +14,7 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
     const [posts,setPosts]=useState<IPost[]>([]);
 
     async function init(){
-        setPosts(await db.posts.where("author").equals(username??"").toArray());
+        setPosts(await sanitizeDbFetch(await db.posts.where("author").equals(await addHashToUserNickname(username??"")).toArray()));
     }
 
     useEffect(()=>{

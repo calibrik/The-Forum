@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { formatTime, getImageUrl } from "../utils";
+import { addHashToUserNickname, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -62,7 +62,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
             navigate("/")
             return;
         }
-        setChats(await db.chats.where("owner").equals(userState.userLoggedIn.current).toArray());
+        setChats(await sanitizeDbFetch(await db.chats.where("owner").equals(await addHashToUserNickname(userState.userLoggedIn.current??"")).toArray()));
     }
 
 

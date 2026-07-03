@@ -9,7 +9,7 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { bridge, delay } from "../utils";
+import { bridge, delay, sanitizeDbFetch } from "../utils";
 interface IStoryProviderProps {
 };
 
@@ -32,10 +32,6 @@ type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
 interface IStoryProvider extends IStoryHook {
     _getStoryHook: () => StoryFuncsType | undefined
 }
-
-// interface IAdditionalNavParameters{
-//     chatId?:string
-// }
 
 const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
     "user": (_location, targetLocation, mismatchedLevel) => {
@@ -456,7 +452,7 @@ export function useStoryFuncs() {
         pageStoryId.current = id + 1;
         locationRef.current = scl.action?.saveAction?.dest;
         if (scl.action?.saveAction?.hintActionPos) {
-            let hintScl = await db.story.get(id + scl.action.saveAction.hintActionPos);
+            let hintScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.hintActionPos));
             hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
         }
         if (locationRef.current && locationRef.current.level == 0)
@@ -490,45 +486,40 @@ export function useStoryFuncs() {
 
     async function customizeStory(nickname: string) {
         const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
-        const regex = new RegExp(users[0].nickname, 'gi');
+        const regex = new RegExp(`#${users[0].nickname}`, 'g');
+        nickname=`#${nickname}`
         await db.story.toCollection().modify((scl) => {
             const sclString = JSON.stringify(scl);
-            if (!sclString.includes(users[0].nickname)) {
+            if (!regex.test(sclString)) {
                 return false;
             }
             Object.assign(scl, JSON.parse(sclString.replace(regex, nickname)));
         });
         await db.posts.toCollection().modify((post) => {
             const postString = JSON.stringify(post);
-            if (!postString.includes(users[0].nickname)) {
+            if (!regex.test(postString)) {
                 return false;
             }
             Object.assign(post, JSON.parse(postString.replace(regex, nickname)));
         });
         await db.chats.toCollection().modify((chat) => {
             const chatString = JSON.stringify(chat);
-            if (!chatString.includes(users[0].nickname)) {
+            if (!regex.test(chatString)) {
                 return false;
             }
             Object.assign(chat, JSON.parse(chatString.replace(regex, nickname)));
         });
         await db.subforums.toCollection().modify((subforum) => {
             const subforumString = JSON.stringify(subforum);
-            if (!subforumString.includes(users[0].nickname)) {
+            if (!regex.test(subforumString)) {
                 return false;
             }
             Object.assign(subforum, JSON.parse(subforumString.replace(regex, nickname)));
         });
-        await db.storyMessages.toCollection().modify((message) => {
-            const messageString = JSON.stringify(message);
-            if (!messageString.includes(users[0].nickname)) {
-                return false;
-            }
-            Object.assign(message, JSON.parse(messageString.replace(regex, nickname)));
-        });
     }
 
-    function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
+    async function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
+        scl=await sanitizeDbFetch(scl);
         if (scl.storyline) {
             const stl = scl.storyline;
             if (stl.typingBoxId >= typingBoxes.current.length) {
@@ -600,7 +591,7 @@ export function useStoryFuncs() {
             id++;
             if (!scl)
                 break;
-            addScriptlineToTimeline(scl, master);
+            await addScriptlineToTimeline(scl, master);
         }
         if (!isMounted.current || ticket != loopTicket.current)
             return;
@@ -630,7 +621,7 @@ export function useStoryFuncs() {
         await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
-        const chats = await db.chats.toArray();
+        let chats = await sanitizeDbFetch(await db.chats.toArray());
         for (let chat of chats) {
             const chatTime = new Date(createdAt);
             chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
@@ -706,7 +697,7 @@ export function useStoryFuncs() {
         _getPageStoryIdRef,
         _getPageInitResolveRef,
         _showStory,
-        _customizeStory
+        _customizeStory,
     }
 }
 

@@ -7,7 +7,7 @@ import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
 import { useUserState } from '../providers/UserAuth';
-import { bridge } from '../utils';
+import { addHashToUserNickname, bridge, sanitizeDbFetch } from '../utils';
 
 
 describe("test of testing", () => {
@@ -622,7 +622,7 @@ describe("useStoryFuncs", () => {
     });
 
     describe("customizeStory", () => {
-        test("should replace old nickname with new nickname across relevant tables", async () => {
+        test("should replace old nickname with new nickname across relevant tables, while keeping #", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
@@ -630,24 +630,48 @@ describe("useStoryFuncs", () => {
             const newNick = "ShinyNewHero";
             await result.current!._customizeStory!(newNick);
 
-            let storiesAfter = await db.story.toArray();
-            expect(storiesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
-            expect(storiesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(storiesAfter.find(s => s.id === 17)?.action?.saveAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(storiesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
+            let scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am #${newNick}.`);
+            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/#${newNick}`);
+            expect(scriptlinesAfter.find(s => s.id === 17)?.action?.saveAction?.dest?.where).toBe(`/user/#${newNick}`);
+            expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
             let postsAfter = await db.posts.toArray();
-            expect(postsAfter.find(p => p.id === 1)?.author).toBe(newNick);
-            expect(postsAfter.find(p => p.id === 3)?.content).toBe(`Testing ${newNick} shit`);
+            expect(postsAfter.find(p => p.id === 1)?.author).toBe(`#${newNick}`);
+            expect(postsAfter.find(p => p.id === 3)?.content).toBe(`Testing #${newNick} shit`);
             expect(postsAfter.find(p => p.id === 3)?.author).toBe("penis");
 
             let chatsAfter = await db.chats.toArray();
-            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toBe(newNick);
+            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toBe(`#${newNick}`);
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0].from).toBe(`pinchIt`);
 
             let subforumsAfter = await db.subforums.toArray();
             expect(subforumsAfter.find(s => s.id === 1)?.admin).toBe("john_cyberdiverO7");
             expect(subforumsAfter.find(s => s.id === 1)?.members.find((m) => m === "main_hero")).toBeUndefined();
+        });
+        test("shouldn't replace the words in story", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await seedNew();
+            await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: "am" });
+            const newNick = "ShinyNewHero";
+            await result.current!._customizeStory!(newNick);
+
+            let scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 9)?.storyline?.content).toBe("I am a gamer with 10+ years experience, especially in the game called Cyberdivers.");
+        });
+        test("shouldn't replace the keys", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await seedNew();
+            await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: "dest" });
+            const newNick = "main_hero";
+            await result.current!._customizeStory!(newNick);
+
+            let scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/#${newNick}`);
         });
     });
     describe("createUser", () => {
@@ -685,5 +709,27 @@ describe("useStoryFuncs", () => {
         });
     });
 });
+
+describe("utils", () => {
+    describe("sanitizedDbFetch", () => {
+        test("should fetch without # before users nickname", async () => {
+            await seedNew();
+            const scriptline = await sanitizeDbFetch(await db.story.where("id").equals(17).first());
+            expect(scriptline?.action?.saveAction?.dest.where).toBe(`/user/main_hero`);
+            let post = await sanitizeDbFetch(await db.posts.where("id").equals(1).first());
+            expect(post?.author).toBe(`main_hero`);
+            post = await sanitizeDbFetch(await db.posts.where("id").equals(3).first());
+            expect(post?.author).toBe(`penis`);
+            expect(post?.content).toBe("Testing main_hero shit");
+        })
+    });
+    describe("addHashToUserNickname", () => {
+        test("should add # to user nickname", async () => {
+            await seedNew();
+            expect(await addHashToUserNickname("main_hero")).toBe("#main_hero");
+            expect(await addHashToUserNickname("test")).toBe("test");
+        });
+    });
+})
 
 
