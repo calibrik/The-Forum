@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ci":"vitest run"
+    "test:ci": "vitest run"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
