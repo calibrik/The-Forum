@@ -35,7 +35,7 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (answerRef.current)
             proccessSubmit(data);
         else
-            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data),()=>setLoading(false));
+            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data), () => setLoading(false));
     }
 
     async function proccessSubmit(data: SignupData) {
@@ -58,13 +58,20 @@ export const Signup: FC<ISignupProps> = (_) => {
             setLoading(false);
             return;
         }
-        const existingUser = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
+        const nickname = data.nickname.trim();
+        const nicknameRegex = /^[a-zA-Z0-9_]+$/
+        if (!nicknameRegex.test(nickname)) {
+            nicknameInputRef.current?.setError("Nickname should contain only letters, numbers and underscores");
+            setLoading(false);
+            return;
+        }
+        const existingUser = await db.users.where("nickname").equals(nickname).toArray();
         if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)) {
             nicknameInputRef.current?.setError("Nickname already exists");
             setLoading(false);
             return;
         }
-        await story.createUser(data.nickname.trim(),data.password.trim());
+        await story.createUser(data.nickname.trim(), data.password.trim());
         navigate("/login")
     }
 
@@ -86,7 +93,7 @@ export const Signup: FC<ISignupProps> = (_) => {
                     <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
                     <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
                 </div>
-                <BaseButton type={"submit"} icon={loading?<Spinner spin/>:undefined} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>{loading?"":"Sign Up"}</BaseButton>
+                <BaseButton type={"submit"} icon={loading ? <Spinner spin /> : undefined} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>{loading ? "" : "Sign Up"}</BaseButton>
                 <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
             </form>
             <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>
