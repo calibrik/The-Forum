@@ -1,3 +1,5 @@
+import { db } from "./backend/db";
+
 export function getImageUrl(name: string): string {
     return new URL(`./assets/images/${name}`, import.meta.url).href;
 };
@@ -42,12 +44,30 @@ export function seededRandom(seed: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
 }
 
-// utils.ts
 export const bridge = {
     exec: async <T extends (...args: any[]) => any>(
-        fn: T, 
+        fn: T,
         ...args: Parameters<T>
     ): Promise<ReturnType<T>> => {
         return await fn(...args);
     }
+}
+
+async function clearStringFromUserNicknameHash(s: string) {
+    const user = await db.users.where("savedStoryId").aboveOrEqual(0).first()
+    if (!user)
+        return s;
+    const regex = new RegExp(`#${user.nickname}`, 'g');
+    return s.replace(regex, user.nickname);
+}
+
+export async function addHashToUserNickname(nickname: string) {
+    const user = await db.users.where("savedStoryId").aboveOrEqual(0).first()
+    if (!user)
+        return nickname;
+    return user.nickname == nickname ? `#${nickname}` : nickname;
+}
+
+export async function sanitizeDbFetch<T>(obj: T) {
+    return JSON.parse(await clearStringFromUserNicknameHash(JSON.stringify(obj))) as T;
 }

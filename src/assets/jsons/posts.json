@@ -1,6 +1,6 @@
 [
     {
-        "author": "main_hero",
+        "author": "#main_hero",
         "subforum": "cyberdivers",
         "title": "Test",
         "content": "Testing shit",
@@ -10,7 +10,7 @@
         "views": 1234
     },
     {
-        "author": "main_hero",
+        "author": "#main_hero",
         "subforum": "cyberdivers",
         "title": "Test",
         "content": "Testing shit",
@@ -22,7 +22,7 @@
         "author": "penis",
         "subforum": "cyberdivers",
         "title": "Test",
-        "content": "Testing main_hero shit",
+        "content": "Testing #main_hero shit",
         "likes": 120,
         "comments": 13,
         "views": 1234

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { formatDay, formatTime, getImageUrl } from "../utils";
+import { formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -181,7 +181,7 @@ export const Chat: FC<IChatProps> = () => {
             navigate("/");
             return;
         }
-        const chat = await db.chats.where("id").equals(chatId ?? "").first();
+        const chat = await sanitizeDbFetch(await db.chats.where("id").equals(chatId ?? "").first());
         if (!chat) {
             navigate("/404");
             return;

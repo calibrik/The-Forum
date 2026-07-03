@@ -1,7 +1,7 @@
 [
     {
         "id":"cyberdivers",
-        "owner": "main_hero",
+        "owner": "#main_hero",
         "membersAmount": 215,
         "type": "gc",
         "imageName":"placeholder.png",

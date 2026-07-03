@@ -9,6 +9,7 @@ import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
 import { useStory } from "../providers/StoryProvider";
+import { sanitizeDbFetch } from "../utils";
 
 interface ILoginProps { };
 
@@ -63,7 +64,7 @@ export const Login: FC<ILoginProps> = (_) => {
         }
         userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
-            const scriptLine = await db.story.get(user[0].savedStoryId ?? 0);
+            const scriptLine = await sanitizeDbFetch(await db.story.get(user[0].savedStoryId ?? 0));
             await story.getAnim("FADE_OUT",{duration:2});
             window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;

@@ -143,13 +143,13 @@ export interface IDestination {
 const db = new Dexie("TheForumDB") as Dexie & {
 	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
-	users: EntityTable<IUser, "id">
+	users: EntityTable<IUser, "id"> //doesn't store user nickname with #
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
-	storyMessages: EntityTable<IMessage, "id">
+	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(135).stores({
+db.version(136).stores({
 	posts: "++id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
