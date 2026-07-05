@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { db, seedNew } from '../backend/db';
-import { useChat, useHints, useStory, useStoryFuncs } from '../providers/StoryProvider';
+import { useChat, useHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
 import { render, renderHook, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
 import hintStyles from "../scss/storyProvider.module.scss";
@@ -494,7 +494,7 @@ describe("useStoryFuncs", () => {
     });
 
     describe("recoverStoryOnPage", () => {
-        test("recoverStoryOnPage (early returns)", async () => {
+        test("early returns for no locationRef, no real logged in and recovered story", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
                 const userState = useUserState();
@@ -529,7 +529,7 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy).not.toHaveBeenCalled();
         });
 
-        test("recoverStoryOnPage (mismatched level)", async () => {
+        test("mismatched level", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
                 const userState = useUserState();
@@ -549,7 +549,7 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
 
-        test("recoverStoryOnPage (mismatched path)", async () => {
+        test("mismatched path", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
                 const userState = useUserState();
@@ -569,7 +569,7 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
 
-        test("recoverStoryOnPage (success - reactivate story hint)", async () => {
+        test("success - reactivate story hint", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
                 const userState = useUserState();
@@ -592,7 +592,7 @@ describe("useStoryFuncs", () => {
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
         });
 
-        test("recoverStoryOnPage (success - show story)", async () => {
+        test("success - show story", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
                 const userState = useUserState();
@@ -732,4 +732,45 @@ describe("utils", () => {
     });
 })
 
-
+describe("storyInit", () => {
+    test("regular flow", async () => {
+        const { result } = renderHook(() => {
+            const story = useStory();
+            const userState = useUserState();
+            return { story, userState }
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        const callsSpy = vi.spyOn(bridge, "exec");
+        result.current!.userState!.isRealLoggedIn.current=true;
+        result.current!.userState!.userLoggedIn.current="main_hero";
+        exposedMockRouter?.navigate("/chat");
+        await waitFor(() => {
+            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
+            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
+            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
+        })
+    });
+    test("check order", async () => {
+        const { result } = renderHook(() => {
+            const storyInit = useStoryInit();
+            const userState = useUserState();
+            return { storyInit, userState }
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        const callsSpy = vi.spyOn(bridge, "exec");
+        await seedNew();
+        result.current!.userState!.isRealLoggedIn.current=true;
+        result.current!.userState!.userLoggedIn.current="main_hero";
+        exposedMockRouter?.navigate("/user/main_hero/comments");
+        await waitFor(() => {
+            console.log(callsSpy.mock.calls)
+            const level3=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==3);
+            const level2=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==2);
+            expect(level3).not.toBe(-1);
+            expect(level2).not.toBe(-1);
+            expect(level3).toBeLessThan(level2);
+        })
+    });
+});

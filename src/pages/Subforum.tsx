@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FC } from "react";
-import { addHashToUserNickname, getImageUrl, numberToText, sanitizeDbFetch } from "../utils";
+import { addHashToUserNickname, bridge, getImageUrl, numberToText, sanitizeDbFetch } from "../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
@@ -36,7 +36,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     useEffect(() => {
-        storyInit(2, [typingBox], init);
+        bridge.exec(storyInit,2, [typingBox], init);
     }, [name])
 
     let menuOptions: IMenuOption[] = [

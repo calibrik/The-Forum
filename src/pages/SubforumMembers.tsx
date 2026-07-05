@@ -5,6 +5,7 @@ import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useOutletContext } from "react-router";
 import type { ISubforum } from "../backend/db";
+import { bridge } from "../utils";
 interface ISubforumMembersProps { };
 
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
@@ -12,7 +13,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const subforum = useOutletContext<ISubforum | undefined>();
 
     useEffect(() => {
-        storyInit(3, []);
+        bridge.exec(storyInit,3, []);
     }, [])
 
     return (

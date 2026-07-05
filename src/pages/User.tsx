@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
 import { Outlet, useNavigate, useParams } from "react-router";
-import { getImageUrl } from "../utils";
+import { bridge, getImageUrl } from "../utils";
 import { Menu, type IMenuOption } from "../components/Menu";
 import { Dot } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
@@ -76,7 +76,7 @@ export const User: FC<IUserPageProps> = (_) => {
     let navigate = useNavigate();
     const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
     const storyInit = useStoryInit();
-    const typingBoxRef = useRef<ITypingTextBoxHandle>(null);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
     const accInfoRef = useRef<IAccInfoHandle>(null);
     const {hintHolders,setHintHolder}=useHintHolders();
 
@@ -101,7 +101,7 @@ export const User: FC<IUserPageProps> = (_) => {
     }
 
     useEffect(() => {
-        storyInit(2, [typingBoxRef], init);
+        bridge.exec(storyInit,2, [typingBox], init);
     }, [username])
 
     useEffect(() => {
@@ -137,7 +137,7 @@ export const User: FC<IUserPageProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={typingBoxRef} type="terminal" />
+            <TypingTextBox ref={typingBox} type="terminal" />
             <div className={styles.container}>
                 <img src={getImageUrl(user?.imageName ?? "pfp1.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>

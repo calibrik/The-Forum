@@ -36,13 +36,13 @@ interface IStoryProvider extends IStoryHook {
 const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
     "user": (_location, targetLocation, mismatchedLevel) => {
         if (mismatchedLevel == 3) {
-            return [targetLocation[3]??"posts"];
+            return [targetLocation[3] ?? "posts"];
         }
         return ["user-icon-text"];
     },
     "subforum": (_location, targetLocation, mismatchedLevel, searchField) => {
         if (mismatchedLevel == 3) {
-            return [targetLocation[3]??"posts"];
+            return [targetLocation[3] ?? "posts"];
         }
         searchField?.setSuggestionHint(`f/${targetLocation[2]}`);
         return ["header-search", ""];
@@ -219,7 +219,7 @@ export function useHints() {
             return;
         currHint.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
         currIndex.current = 0;
-        bridge.exec(hint,currHint.current[currIndex.current]);
+        bridge.exec(hint, currHint.current[currIndex.current]);
     }
 
     function goBackHint(clickedId: string) {
@@ -440,7 +440,7 @@ export function useStoryFuncs() {
         if (isStoryGoing() || hintFunc.getCurrentStoryHint() !== clickedId)
             return false;
         hintFunc.removeCurrHint();
-        bridge.exec(showStory,currStoryId.current);
+        bridge.exec(showStory, currStoryId.current);
         return true;
     }
 
@@ -481,13 +481,13 @@ export function useStoryFuncs() {
             hintFunc.reactivateStoryHint();
             return;
         }
-        bridge.exec(showStory,pageStoryId.current);
+        bridge.exec(showStory, pageStoryId.current);
     }
 
     async function customizeStory(nickname: string) {
         const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
         const regex = new RegExp(`#${users[0].nickname}`, 'g');
-        nickname=`#${nickname}`
+        nickname = `#${nickname}`
         await db.story.toCollection().modify((scl) => {
             const sclString = JSON.stringify(scl);
             if (!regex.test(sclString)) {
@@ -519,7 +519,7 @@ export function useStoryFuncs() {
     }
 
     async function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
-        scl=await sanitizeDbFetch(scl);
+        scl = await sanitizeDbFetch(scl);
         if (scl.storyline) {
             const stl = scl.storyline;
             if (stl.typingBoxId >= typingBoxes.current.length) {
@@ -617,7 +617,7 @@ export function useStoryFuncs() {
     }
 
     async function createUser(nickname: string, password: string) {
-        await bridge.exec(customizeStory,nickname);
+        await bridge.exec(customizeStory, nickname);
         await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
@@ -739,9 +739,10 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        story.setTypingBoxes(typingBoxes, childLevel);
-        story.initReady(childLevel);
-        story.recoverStoryOnPage(childLevel);
+        console.log("calling shit",childLevel)
+        bridge.exec(story.setTypingBoxes, typingBoxes, childLevel);
+        bridge.exec(story.initReady, childLevel);
+        bridge.exec(story.recoverStoryOnPage, childLevel);
     }
 
     return storyInit;

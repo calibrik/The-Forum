@@ -3,13 +3,14 @@ import styles from "../scss/userCommentsPage.module.scss";
 import { Comment } from "../components/Comment";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
+import { bridge } from "../utils";
 interface IUserCommentsProps { };
 
 export const UserComments: FC<IUserCommentsProps> = (_) => {
     const storyInit = useStoryInit();
 
     useEffect(() => {
-        storyInit(3, []);
+        bridge.exec(storyInit,3, []);
     }, [])
 
     return (

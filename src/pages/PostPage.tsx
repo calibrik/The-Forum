@@ -7,7 +7,7 @@ import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
-import { getImageUrl } from "../utils";
+import { bridge, getImageUrl } from "../utils";
 import { useNavigate } from "react-router";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
@@ -30,7 +30,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
     }
 
     useEffect(() => {
-        storyInit(2, []);
+        bridge.exec(storyInit,2, []);
     }, [])
 
     return (
