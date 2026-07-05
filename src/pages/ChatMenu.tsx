@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { addHashToUserNickname, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { addHashToUserNickname, bridge, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -67,7 +67,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
 
 
     useEffect(() => {
-        storyInit(1, [], init);
+        bridge.exec(storyInit,1, [], init);
     }, [])
 
     return (

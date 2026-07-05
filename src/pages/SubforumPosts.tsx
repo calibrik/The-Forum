@@ -5,7 +5,7 @@ import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost } from "../backend/db";
 import { useParams } from "react-router";
-import { addHashToUserNickname, sanitizeDbFetch } from "../utils";
+import { addHashToUserNickname, bridge, sanitizeDbFetch } from "../utils";
 interface ISubforumPostsProps { };
 
 export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
@@ -18,7 +18,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     }
 
     useEffect(() => {
-        storyInit(3, [],init);
+        bridge.exec(storyInit,3, [], init);
     }, [])
 
     return (

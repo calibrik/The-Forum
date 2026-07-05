@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { bridge, formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -151,7 +151,7 @@ export const Chat: FC<IChatProps> = () => {
     const { chatId } = useParams<{ chatId: string }>();
     const inputRef = useRef<InputFieldHandle>(null);
     const story = useStory();
-    const textBox = useRef<ITypingTextBoxHandle>(null);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -221,7 +221,7 @@ export const Chat: FC<IChatProps> = () => {
     }
 
     useEffect(() => {
-        storyInit(2, [textBox], init);
+        bridge.exec(storyInit,2, [typingBox], init);
         return ()=>{
             story.setChatHandle(undefined);
         }
@@ -231,7 +231,7 @@ export const Chat: FC<IChatProps> = () => {
 
     return (
         <>
-            <TypingTextBox ref={textBox} type={"terminal"} />
+            <TypingTextBox ref={typingBox} type={"terminal"} />
             <div className={styles.container}>
                 <div className={styles.header}>
                     <BackButton id="back-text" />

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type FC } from "react";
+import { useRef, type FC } from "react";
 import styles from "../scss/welcomePage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BinaryAnimation } from "../components/BinaryAnimation";
@@ -6,8 +6,6 @@ import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BaseButton } from "../components/BaseButton";
 import { useNavigate } from "react-router";
-import { useStoryInit } from "../providers/StoryProvider";
-import { useUserState } from "../providers/UserAuth";
 interface IWelcomeProps { };
 
 export const Welcome: FC<IWelcomeProps> = (_) => {
@@ -15,13 +13,6 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
     const isFlash = useRef<boolean>(false);
     const tl = useRef<gsap.core.Timeline>(undefined)
     let navigate=useNavigate();
-    const storyInit=useStoryInit();
-    const userState=useUserState();
-    
-    useEffect(()=>{
-        if (userState.isRealLoggedIn.current)
-            storyInit(1,[]);
-    },[])
 
     useGSAP((_, contextSafe) => {
         if (!contextSafe)

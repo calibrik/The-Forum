@@ -6,6 +6,7 @@ import { ArrowRightSquare, ChevronDoubleDown, ChevronDoubleUp, X } from "../comp
 import { BaseButton } from "../components/BaseButton";
 import { useStoryInit } from "../providers/StoryProvider";
 import { SearchField } from "../components/SearchField";
+import { bridge } from "../utils";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;
@@ -35,7 +36,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     }
 
     useEffect(() => {
-        storyInit(3, []);
+        bridge.exec(storyInit,3, []);
     }, [])
 
     return (

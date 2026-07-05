@@ -51,7 +51,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
 
     useEffect(() => {
         if (props.scripted)
-            inputRef.current!.disabled=true;
+            inputRef.current!.disabled = true;
         const form = inputRef.current?.form;
         if (form) {
             form.addEventListener("reset", onReset);
@@ -76,14 +76,14 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             inputRef.current?.blur();
         },
         setStringToType(string) {
-            if (!props.scripted||inputRef.current===null)
+            if (!props.scripted || inputRef.current === null)
                 return;
             currTyped.current = 0;
             stringToType.current = string;
-            inputRef.current.disabled=stringToType.current==="";
+            inputRef.current.disabled = stringToType.current === "";
         },
         isStringTyped() {
-            return props.scripted&&stringToType.current!=="" ? currTyped.current >= stringToType.current.length : false;
+            return props.scripted && stringToType.current !== "" ? currTyped.current >= stringToType.current.length : false;
         },
     }));
 
@@ -118,18 +118,20 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     }
 
     function onKeyDown(e: React.KeyboardEvent) {
-        if (!props.scripted||e.key=="Enter")
+        if (!props.scripted || e.key == "Enter")
             return;
         e.preventDefault();
-        if (stringToType.current==="")
+        if (stringToType.current === "")
             return;
         if (e.key == "Backspace")
             currTyped.current = Math.max(currTyped.current - 1, 0);
         else
             currTyped.current = Math.min(currTyped.current + 1, stringToType.current.length);
-        inputRef.current!.value = stringToType.current.substring(0, currTyped.current);
+        setTimeout(() => {
+            inputRef.current!.value = stringToType.current.substring(0, currTyped.current);
+        }, 0);
         if (props.onChange) {
-            props.onChange(inputRef.current?.value??"");
+            props.onChange(inputRef.current?.value ?? "");
             return;
         }
     }
@@ -142,7 +144,17 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                 {props.icon}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
-                    <input onKeyDown={onKeyDown} ref={inputRef} autoComplete={props.autocomplete ? "on" : "off"} onChange={onChange} onFocus={onInputFocus} onBlur={onInputBlur} type={type} name={props.name} className={styles.inputField} />
+                    <input
+                        onKeyDown={onKeyDown}
+                        ref={inputRef}
+                        autoComplete={props.autocomplete ? "on" : "off"}
+                        onChange={onChange}
+                        onFocus={onInputFocus}
+                        onBlur={onInputBlur}
+                        type={type}
+                        name={props.name}
+                        className={styles.inputField}
+                    />
                 </div>
                 {props.type == "password" ? passwordEye : ""}
             </div>

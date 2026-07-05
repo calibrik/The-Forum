@@ -6,6 +6,7 @@ import { SideMenu } from "../components/SideMenu";
 import { ModalsProvider } from "../providers/Modals";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
+import { bridge } from "../utils";
 interface ILayoutProps { };
 
 export const Layout: FC<ILayoutProps> = (_) => {
@@ -16,7 +17,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current !== "");
 
     function init() {
-        storyInit(0, [], async () => {
+        bridge.exec(storyInit,0, [], async () => {
             await isLoggedInPromiseRef.current;
         });
     }
