@@ -43,13 +43,13 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
         } else {
             ctx.fillStyle = 'rgba(255, 255, 255, 1)';
         }
+        ctx.font = `${binaryAnimFontSize.current}px Courier Prime`;
         let startX = 0;
         // const totalSize=(binaryAnimFontSize + offsetX) * drops.length-offsetX;
         // startX=(canvasRef.current.width - totalSize)/2;
         for (let i = 0; i < drops.length; i++) {
             for (let j = 0; j < drops[i].length; j++) {
                 const char = drops[i][j];
-                ctx.font = `${binaryAnimFontSize.current}px Courier Prime`;
                 const x = startX + (binaryAnimFontSize.current + offsetX) * i;
 
                 const y1 = (j * binaryAnimFontSize.current) + ((speed[i]*window.innerHeight / BASE_HEIGHT * newFrameTime) % (drops[i].length * binaryAnimFontSize.current));

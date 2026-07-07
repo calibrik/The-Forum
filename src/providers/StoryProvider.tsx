@@ -101,7 +101,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
         return gsap.timeline()
             .fromTo("#effectOverlay1",
                 {
-                    opacity: 0,
+                    // opacity: 0,
                     backgroundColor: "red"
                 },
                 {

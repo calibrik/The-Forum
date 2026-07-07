@@ -936,6 +936,336 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
+                    "where": "/post/4",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 2
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/post/4",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 2
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "50%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Bruh what?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "\"Let devs take as much time as they want\", bro wtf, they are so",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 200,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 200,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so fucking lame.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "cd-profile-text"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "50%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Look at these posts bruh.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=3"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So spineless, like \"our dlc got delayed? It's ok, let them take their time\" tf is this.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "You absolutely should demand new content from the devs, they are working for you, not the other way around, you fucking paid them for the product, where is your rage?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/5",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 2
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "RED_SCREEN",
+                            "options": {
+                                "duration": 10,
+                                "opacity": 0.2
+                            }
+                        },
+                        "offset": "+=4.5"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%",
+                                    "right": "5%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like don't u see the vent in there?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Have you tried looking or do you just run to this subforum for help at any minor inconvenience?",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think by themselves.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "But they all are allowing them to remain stupid.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/6",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 2
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "RED_SCREEN",
+                            "options": {
+                                "duration": 7,
+                                "opacity": 0.4
+                            }
+                        },
+                        "offset": "+=4.5"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%",
+                                    "right": "5%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Oh boy, look how nice everyone here is bruh. Look how everyone being respectful to each other, like isn't it fucking pathetic?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "There is either right opinion or wrong opinion, nothing in between.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "If y'all being so polite and agree with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
                     "where": "/subforum/zero",
                     "level": 2
                 }

@@ -7,8 +7,7 @@
 	color: colors.$secondary-color;
 
 	color-scheme: light dark;
-	background-image: colors.$bg;
-	background-attachment: fixed;
+	background-color: black;
 	will-change: transform;
 
 	font-synthesis: none;
@@ -29,6 +28,7 @@
 
 body {
 	margin: 0;
+	overflow: hidden;
 }
 
 .highlight {
