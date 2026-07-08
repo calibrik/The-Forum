@@ -107,9 +107,14 @@
     },
     {
         "effect": {
-            "name": "FADE_OUT",
+            "name": "COLOR_OVERLAY",
             "options": {
-                "duration": 2
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    1
+                ]
             }
         },
         "offset": "+=2"
@@ -130,7 +135,10 @@
         "effect": {
             "name": "REVERSE_OVERLAY",
             "options": {
-                "duration": 2
+                "duration": 2,
+                "overlayNumber": [
+                    1
+                ]
             }
         },
         "offset": ">"
@@ -463,10 +471,14 @@
                 [
                     {
                         "effect": {
-                            "name": "RED_SCREEN",
+                            "name": "COLOR_OVERLAY",
                             "options": {
                                 "duration": 10,
-                                "opacity": 0.15
+                                "opacity": 0.15,
+                                "overlayNumber": [
+                                    1
+                                ],
+                                "backgroundColor": "red"
                             }
                         },
                         "offset": "+=4.5"
@@ -659,7 +671,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "It’s all jokes, trust me.",
+                            "content": "It’s all just jokes, trust me.",
                             "speed": 100,
                             "delim": "",
                             "typingBoxId": 0,
@@ -677,7 +689,9 @@
             "name": "REVERSE_OVERLAY",
             "options": {
                 "duration": 1,
-                "opacity": 0.3
+                "overlayNumber": [
+                    1
+                ]
             }
         },
         "offset": "+=1"
@@ -1118,13 +1132,17 @@
                 [
                     {
                         "effect": {
-                            "name": "RED_SCREEN",
+                            "name": "COLOR_OVERLAY",
                             "options": {
                                 "duration": 10,
-                                "opacity": 0.2
+                                "opacity": 0.2,
+                                "overlayNumber": [
+                                    1
+                                ],
+                                "backgroundColor": "red"
                             }
                         },
-                        "offset": "+=4.5"
+                        "offset": ">"
                     }
                 ],
                 [
@@ -1206,13 +1224,17 @@
                 [
                     {
                         "effect": {
-                            "name": "RED_SCREEN",
+                            "name": "COLOR_OVERLAY",
                             "options": {
-                                "duration": 7,
-                                "opacity": 0.4
+                                "duration": 2,
+                                "opacity": 0.4,
+                                "overlayNumber": [
+                                    1
+                                ],
+                                "backgroundColor": "red"
                             }
                         },
-                        "offset": "+=4.5"
+                        "offset": ">"
                     }
                 ],
                 [
@@ -1272,6 +1294,203 @@
             }
         },
         "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "opacity": 0.4,
+                                "overlayNumber": [
+                                    1
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Nah, this sub is phony as fuck.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Everyone is being so nice like we are gonna believe it.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "addParallelExec": {
+                            "name": "2",
+                            "branches": [
+                                [
+                                    {
+                                        "effect": {
+                                            "name": "BLUR",
+                                            "options": {
+                                                "duration": 2,
+                                                "overlayNumber": [
+                                                    2
+                                                ]
+                                            }
+                                        },
+                                        "offset": ">"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "effect": {
+                                            "name": "COLOR_OVERLAY",
+                                            "options": {
+                                                "duration": 2,
+                                                "overlayNumber": [
+                                                    3
+                                                ],
+                                                "backgroundColor": "black",
+                                                "opacity": 1
+                                            }
+                                        },
+                                        "offset": ">"
+                                    }
+                                ]
+                            ]
+                        },
+                        "offset": "-=2"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 1,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "50%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Some time later",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1,
+                            "clearAfter": "+=3"
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "effect": {
+                            "name": "REVERSE_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "overlayNumber": [
+                                    2,
+                                    3
+                                ]
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": "-=2"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Brutal, but honest.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Yes, we won't mince our words and roast your ass to the crust, but you will learn from it and be better.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And these guys thinking they are helping anyone with this fake ass niceness.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They are just delusional, aren't they?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter":"+=1.5"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    1
+                ]
+            }
+        },
         "offset": ">"
     }
 ]

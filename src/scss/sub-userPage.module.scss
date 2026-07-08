@@ -25,7 +25,7 @@
 
 .pfp-bg {
     position: absolute;
-    z-index: -1;
+    z-index: 0;
     object-fit: cover;
     object-position: center;
     height: 12vh;
@@ -43,6 +43,7 @@
     border-radius: 6px 6px 0 0;
     margin-top: 10.7vh;
     container-type: inline-size;
+    z-index: 1;
     // flex-grow: 1;
 }
 

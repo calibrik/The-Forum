@@ -61,6 +61,9 @@ export interface IEffectsOptions {
     typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
     duration?: number,
     opacity?: number
+    backgroundColor?: string
+    overlayNumber?: number[]
+    fromOpacity?: number
 }
 
 const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timeline> = {
@@ -97,33 +100,33 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                 clearProps: "transition"
             })
     },
-    "RED_SCREEN": (options) => {
+    "COLOR_OVERLAY": (options) => {
         return gsap.timeline()
-            .fromTo("#effectOverlay1",
+            .fromTo(`#effectOverlay${options?.overlayNumber?.[0]??1}`,
                 {
-                    // opacity: 0,
-                    backgroundColor: "red"
+                    opacity: options?.fromOpacity ?? 0,
+                    backgroundColor: options?.backgroundColor
                 },
                 {
                     duration: options?.duration,
                     opacity: options?.opacity
                 })
     },
-    "FADE_OUT": (options) => {
-        return gsap.timeline()
-            .fromTo("#effectOverlay1",
-                {
-                    opacity: 0,
-                    backgroundColor: "black"
-                },
-                {
-                    duration: options?.duration,
-                    opacity: 1
-                })
-    },
+    // "FADE_OUT": (options) => {
+    //     return gsap.timeline()
+    //         .fromTo("#effectOverlay1",
+    //             {
+    //                 opacity: 0,
+    //                 backgroundColor: "black"
+    //             },
+    //             {
+    //                 duration: options?.duration,
+    //                 opacity: 1
+    //             })
+    // },
     "REVERSE_OVERLAY": (options) => {
         return gsap.timeline()
-            .to("#effectOverlay1", {
+            .to(options?.overlayNumber?.map((v)=>`#effectOverlay${v}`).join(", ")??"", {
                 opacity: 0,
                 duration: options?.duration
             })
@@ -385,7 +388,7 @@ export function useStoryFuncs() {
         if (masterRef.current) {
             masterRef.current.kill();
             masterRef.current = undefined;
-            gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#dissapear,#appContainer,#contentDiv", {
+            gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#effectOverlay2,#effectOverlay3,#dissapear,#appContainer,#contentDiv", {
                 clearProps: "all"
             })
             for (let tb of typingBoxes.current) {
@@ -618,7 +621,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 50 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -739,7 +742,6 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        console.log("calling shit",childLevel)
         bridge.exec(story.setTypingBoxes, typingBoxes, childLevel);
         bridge.exec(story.initReady, childLevel);
         bridge.exec(story.recoverStoryOnPage, childLevel);
