@@ -138,6 +138,7 @@ export interface IUser {
 export interface IDestination {
 	where: string
 	level: number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
+	from?:IDestination
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {

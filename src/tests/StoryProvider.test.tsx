@@ -742,8 +742,8 @@ describe("storyInit", () => {
             wrapper: AllTheProvidersForMock
         });
         const callsSpy = vi.spyOn(bridge, "exec");
-        result.current!.userState!.isRealLoggedIn.current=true;
-        result.current!.userState!.userLoggedIn.current="main_hero";
+        result.current!.userState!.isRealLoggedIn.current = true;
+        result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/chat");
         await waitFor(() => {
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
@@ -761,16 +761,70 @@ describe("storyInit", () => {
         });
         const callsSpy = vi.spyOn(bridge, "exec");
         await seedNew();
-        result.current!.userState!.isRealLoggedIn.current=true;
-        result.current!.userState!.userLoggedIn.current="main_hero";
+        result.current!.userState!.isRealLoggedIn.current = true;
+        result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/user/main_hero/comments");
         await waitFor(() => {
             console.log(callsSpy.mock.calls)
-            const level3=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==3);
-            const level2=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==2);
+            const level3 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 3);
+            const level2 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 2);
             expect(level3).not.toBe(-1);
             expect(level2).not.toBe(-1);
             expect(level3).toBeLessThan(level2);
         })
+    });
+});
+describe("isOnLocation", () => {
+    test("returns true for level 0", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        const target = { where: "/any/path", level: 0 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns true when current path matches target path at same level", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
+        const target = { where: "/user/main_hero", level: 2 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns false when current path differs at same level", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/other/comments"));
+        const target = { where: "/user/main_hero", level: 2 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns true for exact full path match", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/comments"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns false for full mismatch path match", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/settings"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns false for levels mismatch", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
     });
 });

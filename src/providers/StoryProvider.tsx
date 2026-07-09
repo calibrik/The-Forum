@@ -55,6 +55,14 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         }
         return ["menu-icon-text", "chat-menu"];
     },
+    "posts": (location, targetLocation, mismatchedLevel) => {
+        if (mismatchedLevel == 2) {
+            if (location.length >= 3)
+                return ["back-text"];
+            return [targetLocation[2] ?? "posts"];
+        }
+        return ["menu-icon-text", "posts-menu"];
+    },
 }
 
 export interface IEffectsOptions {
@@ -102,7 +110,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
     },
     "COLOR_OVERLAY": (options) => {
         return gsap.timeline()
-            .fromTo(`#effectOverlay${options?.overlayNumber?.[0]??1}`,
+            .fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? 1}`,
                 {
                     opacity: options?.fromOpacity ?? 0,
                     backgroundColor: options?.backgroundColor
@@ -126,7 +134,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
     // },
     "REVERSE_OVERLAY": (options) => {
         return gsap.timeline()
-            .to(options?.overlayNumber?.map((v)=>`#effectOverlay${v}`).join(", ")??"", {
+            .to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
                 opacity: 0,
                 duration: options?.duration
             })
@@ -373,11 +381,8 @@ export function useStoryFuncs() {
     const resetAnims = contextSafe(async () => {
         if (isStoryNavRef.current)
             return;
-        if (locationRef.current) {
-            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
-            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
-            if (location == targetLocation)
-                return;
+        if (locationRef.current && isOnLocation(locationRef.current)) {
+            return;
         }
         chatFunc.onNavigateAway();
         hintFunc.resetHint();
@@ -463,6 +468,15 @@ export function useStoryFuncs() {
         navigate(locationRef.current?.where ?? "");
     }
 
+    function isOnLocation(target: IDestination) {
+        if (target.level > 0) {
+            const location = window.location.pathname.split('/').slice(0, target.level + 1).join('/');
+            const targetLocation = target.where.split('/').slice(0, target.level + 1).join('/');
+            return location === targetLocation;
+        }
+        return true;
+    }
+
     function recoverStoryOnPage(level: number) {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
@@ -470,13 +484,9 @@ export function useStoryFuncs() {
             hintFunc.hintNavPath(locationRef.current);
             return;
         }
-        if (locationRef.current.level > 0) {
-            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
-            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
-            if (location != targetLocation) {
-                hintFunc.hintNavPath(locationRef.current);
-                return;
-            }
+        if (!isOnLocation(locationRef.current)) {
+            hintFunc.hintNavPath(locationRef.current);
+            return;
         }
         hintFunc.resetHint();
         isStoryRecovered.current = true;
@@ -621,7 +631,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 50 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -671,6 +681,7 @@ export function useStoryFuncs() {
     const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
+    const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
 
     return {
         setTypingBoxes,
@@ -701,6 +712,7 @@ export function useStoryFuncs() {
         _getPageInitResolveRef,
         _showStory,
         _customizeStory,
+        _isOnLocation
     }
 }
 
