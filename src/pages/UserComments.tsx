@@ -15,13 +15,13 @@ export const UserComments: FC<IUserCommentsProps> = (_) => {
 
     return (
         <div className={styles.container}>
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
+            <Comment author={""} content={""} likes={0} />
             <Spinner />
         </div>
     );

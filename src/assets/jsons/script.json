@@ -1009,11 +1009,11 @@
             "delim": "",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=3"
     },
     {
         "storyline": {
-            "content": "\"Let devs take as much time as they want\", bro wtf, they are so",
+            "content": "\"Let devs take as much time as they need\", bro wtf, they are so",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -1023,7 +1023,7 @@
     {
         "storyline": {
             "content": "...",
-            "speed": 200,
+            "speed": 800,
             "delim": "",
             "typingBoxId": 0
         },
@@ -1041,7 +1041,7 @@
     {
         "storyline": {
             "content": "...",
-            "speed": 200,
+            "speed": 800,
             "delim": "",
             "typingBoxId": 0
         },
@@ -1053,16 +1053,6 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": 0
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "hintAction": {
-                "ids": [
-                    "cd-profile-text"
-                ]
-            }
         },
         "offset": ">"
     },
@@ -1098,7 +1088,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": 0,
-            "clearAfter": "+=3"
+            "clearAfter": "+=1"
         },
         "offset": ">"
     },

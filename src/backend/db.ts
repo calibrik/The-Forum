@@ -55,6 +55,12 @@ export interface ISubforum {
 	members: string[],
 }
 
+export interface IComment{
+	author: string,
+	content: string,
+	likes:number
+}
+
 export interface IPost {
 	id: string,
 	author: string,
@@ -64,7 +70,8 @@ export interface IPost {
 	imageName?: string
 	likes: number
 	comments: number
-	views: number
+	views: number,
+	commentsDetailed:IComment[]
 }
 
 export interface IAddParallelExec {
@@ -150,7 +157,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(139).stores({
+db.version(142).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
