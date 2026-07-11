@@ -34,13 +34,17 @@ interface IStoryProvider extends IStoryHook {
 }
 
 const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
-    "user": (_location, targetLocation, mismatchedLevel) => {
+    "user": (location, targetLocation, mismatchedLevel) => {
+        if (location[1]=="post")
+            return ["back-text"];
         if (mismatchedLevel == 3) {
             return [targetLocation[3] ?? "posts"];
         }
         return ["user-icon-text"];
     },
-    "subforum": (_location, targetLocation, mismatchedLevel, searchField) => {
+    "subforum": (location, targetLocation, mismatchedLevel, searchField) => {
+        if (location[1]=="post")
+            return ["back-text"];
         if (mismatchedLevel == 3) {
             return [targetLocation[3] ?? "posts"];
         }
@@ -48,6 +52,8 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         return ["header-search", ""];
     },
     "chat": (location, targetLocation, mismatchedLevel) => {
+        if (location[1]=="post")
+            return ["back-text"];
         if (mismatchedLevel == 2) {
             if (location.length >= 3)
                 return ["back-text"];
@@ -55,13 +61,10 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         }
         return ["menu-icon-text", "chat-menu"];
     },
-    "posts": (location, targetLocation, mismatchedLevel) => {
-        if (mismatchedLevel == 2) {
-            if (location.length >= 3)
-                return ["back-text"];
-            return [targetLocation[2] ?? "posts"];
-        }
-        return ["menu-icon-text", "posts-menu"];
+    "post": (location, targetLocation, _mismatchedLevel) => {
+        if (location[1]=="post")
+            return ["back-text"];
+        return [targetLocation[2]];
     },
 }
 
@@ -419,6 +422,8 @@ export function useStoryFuncs() {
             }
             else {
                 isStoryRecovered.current = false;
+                if (action.navigateAction.dest.from&&!isOnLocation(action.navigateAction.dest.from))
+                    hintFunc.hintNavPath(action.navigateAction.dest.from);
                 hintFunc.hintNavPath(action.navigateAction.dest);
             }
             isStoryNavRef.current = false;
@@ -452,7 +457,8 @@ export function useStoryFuncs() {
         return true;
     }
 
-    async function recoverCheckpoint(id: number, scl?: IScriptLine) {
+    async function recoverCheckpoint(id: number) {
+        const scl = await sanitizeDbFetch(await db.story.get(id));
         if (!scl)
             return;
         savedStoryId.current = id;
@@ -465,7 +471,12 @@ export function useStoryFuncs() {
         }
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
-        navigate(locationRef.current?.where ?? "");
+        if (!locationRef.current) {
+            console.error("No dest on checkpoint recovery.");
+            navigate("/");
+            return;
+        }
+        navigate(locationRef.current.from?.where ?? locationRef.current.where);
     }
 
     function isOnLocation(target: IDestination) {
@@ -480,11 +491,10 @@ export function useStoryFuncs() {
     function recoverStoryOnPage(level: number) {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
-        if (level != locationRef.current.level) {
-            hintFunc.hintNavPath(locationRef.current);
-            return;
-        }
-        if (!isOnLocation(locationRef.current)) {
+        if (level != locationRef.current.level || !isOnLocation(locationRef.current)) {
+            if (locationRef.current.from && !isOnLocation(locationRef.current.from)) {
+                hintFunc.hintNavPath(locationRef.current.from);
+            }
             hintFunc.hintNavPath(locationRef.current);
             return;
         }
@@ -631,7 +641,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 50 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());

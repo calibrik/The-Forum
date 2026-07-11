@@ -6,34 +6,35 @@ import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface IChatMenuProps { };
 interface IDialogProps {
-    chat:IChat
+    chat: IChat
 };
 
 const Dialog: FC<IDialogProps> = (props) => {
     let navigate = useNavigate();
-    const userState=useUserState();
-    const [lastMessage,setLastMessage]=useState<IMessage|undefined>(undefined);
-    const story=useStory();
+    const userState = useUserState();
+    const [lastMessage, setLastMessage] = useState<IMessage | undefined>(undefined);
+    const story = useStory();
 
-    async function init(){
-        const user=await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
-        if(!user)
+    async function init() {
+        const user = await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
+        if (!user)
             return;
-        const buffer=story.getMessageBuffer();
-        const lm=buffer.length>0?buffer[buffer.length-1]:await db.storyMessages.where("chatId").equals(props.chat.id).last();
+        const buffer = story.getMessageBuffer();
+        const lm = buffer.length > 0 ? buffer[buffer.length - 1] : await db.storyMessages.where("chatId").equals(props.chat.id).last();
         setLastMessage(lm);
     }
 
-    async function onClick(){
-        await db.chats.where("id").equals(props.chat.id).modify({isRead:true});//that's irreversible btw 
+    async function onClick() {
+        await db.chats.where("id").equals(props.chat.id).modify({ isRead: true });//that's irreversible btw 
         navigate(`/chat/${props.chat.id}`)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         init();
-    },[]);
+    }, []);
 
     return (
         <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
@@ -42,10 +43,10 @@ const Dialog: FC<IDialogProps> = (props) => {
                 <h3 className={styles.nickname}>{props.chat.name}</h3>
                 <div className={styles.lastMessageDiv}>
                     {props.chat.isRead ? "" : <Dot className={styles.dot} />}
-                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from??""}: </span>{lastMessage?.content??""}</p>
+                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from ?? ""}: </span>{lastMessage?.content ?? ""}</p>
                 </div>
             </div>
-            <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{formatTime(lastMessage?.timeSent??new Date())}</span>
+            <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{formatTime(lastMessage?.timeSent ?? new Date())}</span>
         </div>
     );
 }
@@ -56,19 +57,28 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     const [chats, setChats] = useState<IChat[]>([]);
     const userState = useUserState();
     let navigate = useNavigate();
+    const { hintHolders, setHintHolder } = useHintHolders();
 
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
             navigate("/")
             return;
         }
-        setChats(await sanitizeDbFetch(await db.chats.where("owner").equals(await addHashToUserNickname(userState.userLoggedIn.current??"")).toArray()));
+        setChats(await sanitizeDbFetch(await db.chats.where("owner").equals(await addHashToUserNickname(userState.userLoggedIn.current ?? "")).toArray()));
     }
 
+    useEffect(() => {
+        bridge.exec(storyInit, 1, [], init);
+    }, [])
 
     useEffect(() => {
-        bridge.exec(storyInit,1, [], init);
-    }, [])
+        if (chats.length==0)
+            return;
+        const hint = hintHolders.current.get("cyberdivers")?.getHintClass();
+        if (hint)
+            document.getElementById("cyberdivers")?.classList.add(hint);
+    }, [chats])
+
 
     return (
         <div className={styles.container}>
@@ -79,6 +89,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                 {chats.map((chat) => (
                     <Dialog key={chat.id} chat={chat} />
                 ))}
+                <HintHolder id="cyberdivers" ref={setHintHolder("cyberdivers")}/>
             </div>
         </div>
     );

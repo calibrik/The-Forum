@@ -69,5 +69,7 @@ export async function addHashToUserNickname(nickname: string) {
 }
 
 export async function sanitizeDbFetch<T>(obj: T) {
+    if (!obj)
+        return obj;
     return JSON.parse(await clearStringFromUserNicknameHash(JSON.stringify(obj))) as T;
 }

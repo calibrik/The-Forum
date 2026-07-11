@@ -437,7 +437,11 @@
                 "navigate": false,
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -449,7 +453,11 @@
             "saveAction": {
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -701,7 +709,11 @@
             "saveAction": {
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -950,7 +962,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/4",
+                    "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 2
@@ -966,7 +978,7 @@
         "action": {
             "saveAction": {
                 "dest": {
-                    "where": "/post/4",
+                    "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 2
@@ -1113,7 +1125,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/5",
+                    "where": "/post/p5",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 2
@@ -1205,7 +1217,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/6",
+                    "where": "/post/p6",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 2
@@ -1472,7 +1484,7 @@
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 0,
-                            "clearAfter":"+=1.5"
+                            "clearAfter": "+=1.5"
                         },
                         "offset": ">"
                     }
