@@ -113,7 +113,7 @@
                 "backgroundColor": "black",
                 "opacity": 1,
                 "overlayNumber": [
-                    1
+                    "1"
                 ]
             }
         },
@@ -137,7 +137,7 @@
             "options": {
                 "duration": 2,
                 "overlayNumber": [
-                    1
+                    "1"
                 ]
             }
         },
@@ -484,7 +484,7 @@
                                 "duration": 10,
                                 "opacity": 0.15,
                                 "overlayNumber": [
-                                    1
+                                    "1"
                                 ],
                                 "backgroundColor": "red"
                             }
@@ -698,7 +698,7 @@
             "options": {
                 "duration": 1,
                 "overlayNumber": [
-                    1
+                    "1"
                 ]
             }
         },
@@ -965,7 +965,7 @@
                     "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 2
+                        "level": 3
                     },
                     "level": 2
                 }
@@ -981,7 +981,7 @@
                     "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 2
+                        "level": 3
                     },
                     "level": 2
                 }
@@ -1052,7 +1052,8 @@
             "content": "so fucking lame.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -1062,7 +1063,7 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/zero",
-                    "level": 2
+                    "level": 3
                 }
             }
         },
@@ -1088,7 +1089,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": 0,
-            "clearAfter": "+=1"
+            "clearAfter": "+=3"
         },
         "offset": ">"
     },
@@ -1106,7 +1107,8 @@
             "content": "You absolutely should demand new content from the devs, they are working for you, not the other way around, you fucking paid them for the product, where is your rage?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": 0,
+            "clearAfter": "+=3"
         },
         "offset": "+=0.3"
     },
@@ -1118,7 +1120,7 @@
                     "where": "/post/p5",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 2
+                        "level": 3
                     },
                     "level": 2
                 }
@@ -1139,7 +1141,7 @@
                                 "duration": 10,
                                 "opacity": 0.2,
                                 "overlayNumber": [
-                                    1
+                                    "1"
                                 ],
                                 "backgroundColor": "red"
                             }
@@ -1177,7 +1179,7 @@
                             "delim": " ",
                             "typingBoxId": 0
                         },
-                        "offset": "+0.3"
+                        "offset": "+=0.3"
                     },
                     {
                         "storyline": {
@@ -1193,7 +1195,8 @@
                             "content": "But they all are allowing them to remain stupid.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
                     }
@@ -1210,7 +1213,7 @@
                     "where": "/post/p6",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 2
+                        "level": 3
                     },
                     "level": 2
                 }
@@ -1228,10 +1231,11 @@
                         "effect": {
                             "name": "COLOR_OVERLAY",
                             "options": {
+                                "fromOpacity": 0.2,
                                 "duration": 2,
                                 "opacity": 0.4,
                                 "overlayNumber": [
-                                    1
+                                    "1"
                                 ],
                                 "backgroundColor": "red"
                             }
@@ -1276,7 +1280,8 @@
                             "content": "If y'all being so polite and agree with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
                     }
@@ -1291,7 +1296,7 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/zero",
-                    "level": 2
+                    "level": 3
                 }
             }
         },
@@ -1307,10 +1312,11 @@
                         "effect": {
                             "name": "COLOR_OVERLAY",
                             "options": {
+                                "fromOpacity": 0.4,
                                 "duration": 2,
-                                "opacity": 0.4,
+                                "opacity": 0.6,
                                 "overlayNumber": [
-                                    1
+                                    "1"
                                 ],
                                 "backgroundColor": "red"
                             }
@@ -1350,73 +1356,81 @@
                         "offset": "+=0.3"
                     },
                     {
-                        "storyline": {
-                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
-                            "speed": 50,
-                            "delim": " ",
-                            "typingBoxId": 0
-                        },
-                        "offset": "+=0.3"
-                    },
-                    {
                         "addParallelExec": {
                             "name": "2",
                             "branches": [
                                 [
                                     {
-                                        "effect": {
-                                            "name": "BLUR",
-                                            "options": {
-                                                "duration": 2,
-                                                "overlayNumber": [
-                                                    2
-                                                ]
-                                            }
+                                        "storyline": {
+                                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
+                                            "speed": 50,
+                                            "delim": " ",
+                                            "typingBoxId": 0
                                         },
-                                        "offset": ">"
+                                        "offset": "+=0.3"
                                     }
                                 ],
                                 [
+                                    {
+                                        "effect": {
+                                            "name": "BLUR",
+                                            "options": {
+                                                "duration": 5,
+                                                "blurPx": 6,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "+=3"
+                                    },
                                     {
                                         "effect": {
                                             "name": "COLOR_OVERLAY",
                                             "options": {
                                                 "duration": 2,
                                                 "overlayNumber": [
-                                                    3
+                                                    "2"
                                                 ],
                                                 "backgroundColor": "black",
-                                                "opacity": 1
+                                                "opacity": 1,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "-=2"
+                                    },
+                                    {
+                                        "action": {
+                                            "setTextBoxStyleAction": {
+                                                "id": 1,
+                                                "style": {
+                                                    "width": "clamp(200px,50cqw,500px)",
+                                                    "top": "50%",
+                                                    "z-index":22
+                                                }
                                             }
                                         },
                                         "offset": ">"
+                                    },
+                                    {
+                                        "storyline": {
+                                            "content": "Some time later",
+                                            "speed": 50,
+                                            "delim": "",
+                                            "typingBoxId": 1
+                                        },
+                                        "offset": "+=1"
                                     }
                                 ]
                             ]
                         },
-                        "offset": "-=2"
-                    },
-                    {
-                        "action": {
-                            "setTextBoxStyleAction": {
-                                "id": 1,
-                                "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%"
-                                }
-                            }
-                        },
                         "offset": ">"
                     },
                     {
-                        "storyline": {
-                            "content": "Some time later",
-                            "speed": 50,
-                            "delim": "",
-                            "typingBoxId": 1,
-                            "clearAfter": "+=3"
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                1
+                            ]
                         },
-                        "offset": "+=0.3"
+                        "offset": "+=2"
                     },
                     {
                         "effect": {
@@ -1424,12 +1438,12 @@
                             "options": {
                                 "duration": 2,
                                 "overlayNumber": [
-                                    2,
-                                    3
+                                    "2",
+                                    "Blur"
                                 ]
                             }
                         },
-                        "offset": "+=1"
+                        "offset": ">"
                     },
                     {
                         "storyline": {
@@ -1438,7 +1452,7 @@
                             "delim": "",
                             "typingBoxId": 0
                         },
-                        "offset": "-=2"
+                        "offset": "-=1"
                     },
                     {
                         "storyline": {
@@ -1489,7 +1503,7 @@
             "options": {
                 "duration": 2,
                 "overlayNumber": [
-                    1
+                    "1"
                 ]
             }
         },

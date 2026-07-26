@@ -7,7 +7,6 @@ interface IEffectOverlayProps {
 export const EffectOverlay: FC<IEffectOverlayProps> = (props) => {
     return (
         <div id={props.id} className={styles.overlay}>
-            
         </div>
     );
 }

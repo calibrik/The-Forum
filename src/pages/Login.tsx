@@ -63,11 +63,11 @@ export const Login: FC<ILoginProps> = (_) => {
         }
         userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
-            await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:[1]});
+            await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
             window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;
             story.recoverCheckpoint(user[0].savedStoryId ?? 0);
-            await story.getAnim("REVERSE_OVERLAY",{duration:2,overlayNumber:[1]});
+            await story.getAnim("REVERSE_OVERLAY",{duration:2,backgroundColor:"black",overlayNumber:["1"]});
             return;
         }
         window.dispatchEvent(new Event("loggedIn")); 

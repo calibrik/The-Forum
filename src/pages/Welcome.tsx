@@ -12,7 +12,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
     const container = useRef<HTMLDivElement>(null);
     const isFlash = useRef<boolean>(false);
     const tl = useRef<gsap.core.Timeline>(undefined)
-    let navigate=useNavigate();
+    let navigate = useNavigate();
 
     useGSAP((_, contextSafe) => {
         if (!contextSafe)
@@ -22,7 +22,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
 
         const rebuildTimeline = contextSafe(() => {
             tl.current?.kill();
-            gsap.set("#text, #button,:root, #header-div, #header-text,[data-istransition='true']", {
+            gsap.set("#text, #button, #containerGlobal, #header-div, #header-text,[data-istransition='true']", {
                 clearProps: "all",
             });
             isFlash.current = false;
@@ -45,11 +45,11 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
                     color: textColor,
                     fontFamily: "Courier Prime",
                 })
-                .set(":root, #header-div", {
+                .set("#containerGlobal, #header-div", {
                     backgroundColor: bgColor,
                     backgroundImage: "none"
                 })
-                .set("#text, #button,:root, #header-div, #header-text,#header-input", {
+                .set("#text, #button, #containerGlobal, #header-div, #header-text,#header-input", {
                     clearProps: "color,backgroundColor,fontFamily,backgroundImage,borderColor",
                 }, "+=2")
                 .add(() => { isFlash.current = false; })
@@ -64,7 +64,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
         return () => {
             window.removeEventListener("DOMRebuild", rebuildTimeline);
         }
-    },[])
+    }, [])
 
     return (
         <div ref={container} className={styles.container}>
@@ -74,8 +74,8 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
             </div>
             <p id="text" className={styles.tagline}>A web visual novel, that tells a story of a regular forum dweller.</p>
             <div className={styles.buttons}>
-                <BaseButton onClick={()=>navigate("/login")} id={"button"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
-                <BaseButton onClick={()=>navigate("/signup")} id={"button"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
+                <BaseButton onClick={() => navigate("/login")} id={"button"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
+                <BaseButton onClick={() => navigate("/signup")} id={"button"} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>Sign Up</BaseButton>
             </div>
             <BinaryAnimation isFlash={isFlash} className={styles.binaryAnimation} />
         </div>

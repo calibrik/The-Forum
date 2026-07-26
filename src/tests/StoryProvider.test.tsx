@@ -292,7 +292,8 @@ describe("useStoryFuncs", () => {
             result.current._getIsStoryNavRef!().current = true;
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
@@ -303,7 +304,8 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
@@ -316,7 +318,8 @@ describe("useStoryFuncs", () => {
             locationRef!.current = { where: "/user/main_hero", level: 2 };
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -333,7 +336,8 @@ describe("useStoryFuncs", () => {
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             result.current._getSavedStoryId!().current = 10;
             result.current._getIsStoryRecovered!().current = true;
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -351,7 +355,8 @@ describe("useStoryFuncs", () => {
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             const masterRef = result.current._getMasterRef!();
             masterRef.current = gsap.timeline({ paused: true });
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -656,7 +661,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = undefined;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             result.current.userState.isRealLoggedIn.current = true;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
 
@@ -664,7 +669,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
             result.current.userState.isRealLoggedIn.current = false;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
 
@@ -672,7 +677,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = true;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
         });
@@ -690,9 +695,10 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/test/comments"));
             const target = { where: "/user/penis", level: 2 };
             result.current.storyHook!._getLocationRef!().current = target;
-
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(3);
+            result.current.storyHook!.recoverStoryOnPage!(3,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(0);
             expect(hintNavSpy).toHaveBeenCalledWith(target);
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
@@ -710,9 +716,10 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             const target = { where: "/subforum/test", level: 2 };
             result.current.storyHook!._getLocationRef!().current = target;
-
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(0);
             expect(hintNavSpy).toHaveBeenCalledWith(target);
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
@@ -733,8 +740,9 @@ describe("useStoryFuncs", () => {
             const reactivateHintSpy = vi.spyOn(hintHook, "reactivateStoryHint");
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
 
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
 
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
             expect(resetHintSpy).toHaveBeenCalled();
             expect(reactivateHintSpy).toHaveBeenCalled();
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
@@ -758,8 +766,9 @@ describe("useStoryFuncs", () => {
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
             vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
 
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
 
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
             expect(resetHintSpy).toHaveBeenCalled();
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
             expect(showStorySpy).toHaveBeenCalled();
@@ -786,7 +795,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             const showStorySpy = vi.spyOn(bridge, "exec");
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).toHaveBeenCalledWith(
                 expect.objectContaining({ level: 2, where: "/subforum/test" })
             );
@@ -811,7 +820,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             const showStorySpy = vi.spyOn(bridge, "exec");
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).toHaveBeenCalledWith(
                 expect.objectContaining({ level: 2, where: "/post/p5" })
             );
@@ -841,8 +850,9 @@ describe("useStoryFuncs", () => {
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
             vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
 
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
 
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
             expect(resetHintSpy).toHaveBeenCalled();
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
             expect(showStorySpy).toHaveBeenCalled();
@@ -978,7 +988,7 @@ describe("storyInit", () => {
         result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/chat");
         await waitFor(() => {
-            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
+            // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
         })

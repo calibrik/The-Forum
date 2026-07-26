@@ -157,7 +157,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(142).stores({
+db.version(155).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -165,6 +165,7 @@ db.version(142).stores({
 	chats: "id, owner",
 	storyMessages: "id,chatId"
 }).upgrade(async () => {
+	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')
 		return;
 	await db.story.clear();

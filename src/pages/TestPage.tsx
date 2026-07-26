@@ -1,14 +1,16 @@
 import { useGSAP } from "@gsap/react";
-import { type FC, type ReactNode } from "react";
+import { useEffect, type FC, type ReactNode } from "react";
 import gsap from 'gsap';
+import { useStory } from "../providers/StoryProvider";
 
 interface ITestPageProps {
     children?: ReactNode;
 }
 
 export const TestPage: FC<ITestPageProps> = (_) => {
+    const story=useStory();
     useGSAP(() => {
-        const container = document.querySelector('#container') as HTMLDivElement
+        const container = document.querySelector('#containerGlobal') as HTMLDivElement
         const clone = container.cloneNode(true) as HTMLDivElement;
         clone.style.position="absolute";
         clone.style.left = "0";
@@ -31,6 +33,15 @@ export const TestPage: FC<ITestPageProps> = (_) => {
             clone.remove();
         }
     }, [])
+
+    async function test(){
+        await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
+        await story.getAnim("REVERSE_OVERLAY",{duration:2,overlayNumber:["1"]});
+    }
+
+    useEffect(()=>{
+        test();
+    },[])
     return (
         <div>
             <h1>Test</h1>

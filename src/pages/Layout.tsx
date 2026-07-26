@@ -53,7 +53,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
     }, [])
 
     return (
-        <div id="container" className={styles.container}>
+        <div id="containerGlobal" className={styles.container}>
             <Header isLoggedIn={isLoggedIn} />
             <div className={styles.containerFullWindow}>
                 <SideMenu />

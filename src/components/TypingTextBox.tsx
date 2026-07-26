@@ -30,15 +30,16 @@ export interface ITypingTextBoxHandle {
 
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
     const divRef = useRef<HTMLDivElement>(null);
-    const { contextSafe } = useGSAP(() => { }, [divRef]);
+    const { contextSafe } = useGSAP({ scope: divRef });
     const contentRef = useRef<string>("");
     const cursorRef = useRef<ICursorHandle>(null);
+    const typingTextRef = useRef<HTMLSpanElement>(null);
 
     const getTimeline = contextSafe((args: ITypingBoxArgs) => {
         let finContent = contentRef.current + (args.delim ?? "") + args.content;
         contentRef.current = finContent;
         const tl = gsap.timeline()
-            .set(`#${props.id ?? "box"}`, {
+            .set(divRef.current, {
                 display: "block"
             });
         tl.set('#cursor', {
@@ -64,16 +65,13 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         return gsap.timeline()
             .set("#typingText", {
                 text: "",
-                immediateRender: false
             })
-            .add(()=>{document.getElementById("typingText")!.innerText="";})
+            .add(() => { typingTextRef.current!.innerText = ""; })
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
-                immediateRender: false
             })
-            .set(`#${props.id ?? "box"}`, {
+            .set(divRef.current, {
                 display: "none",
-                immediateRender: false
             });
     })
 
@@ -104,6 +102,8 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         className = props.className ?? styles.default;
 
     return (
-        <div style={props.style} ref={divRef} id={props.id ?? "box"} className={className}><span id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} /></div>
+        <div id={props.id} style={props.style} ref={divRef} className={className}>
+            <span ref={typingTextRef} id="typingText">{props.content}</span><Cursor ref={cursorRef} type={props.type} />
+        </div>
     );
 });
