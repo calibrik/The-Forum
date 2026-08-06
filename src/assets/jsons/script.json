@@ -877,7 +877,7 @@
                                 "id": 0,
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%",
+                                    "top": "10%",
                                     "right": "5%"
                                 }
                             }
@@ -932,8 +932,8 @@
                 "id": 0,
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
-                    "top": "50%",
-                    "right": "5%"
+                    "top": "15%",
+                    "left": "5%"
                 }
             }
         },
@@ -995,7 +995,7 @@
                 "id": 0,
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
-                    "top": "50%",
+                    "top": "42%",
                     "right": "5%"
                 }
             }
@@ -1076,7 +1076,7 @@
                 "id": 0,
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
-                    "top": "50%",
+                    "top": "55%",
                     "right": "5%"
                 }
             }
@@ -1156,8 +1156,8 @@
                                 "id": 0,
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%",
-                                    "right": "5%"
+                                    "top": "28%",
+                                    "left": "5%"
                                 }
                             }
                         },
@@ -1250,8 +1250,8 @@
                                 "id": 0,
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%",
-                                    "right": "5%"
+                                    "top": "18%",
+                                    "right": "15%"
                                 }
                             }
                         },
@@ -1326,12 +1326,20 @@
                 ],
                 [
                     {
+                        "effect": {
+                            "name": "POSTS_FALL"
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
                         "action": {
                             "setTextBoxStyleAction": {
                                 "id": 0,
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%"
+                                    "top": "20%"
                                 }
                             }
                         },
@@ -1402,9 +1410,10 @@
                                             "setTextBoxStyleAction": {
                                                 "id": 1,
                                                 "style": {
-                                                    "width": "clamp(200px,50cqw,500px)",
+                                                    "width": "auto",
                                                     "top": "50%",
-                                                    "z-index":22
+                                                    "z-index": 22,
+                                                    "text-align": "center"
                                                 }
                                             }
                                         },
@@ -1412,7 +1421,7 @@
                                     },
                                     {
                                         "storyline": {
-                                            "content": "Some time later",
+                                            "content": "Some time later...",
                                             "speed": 50,
                                             "delim": "",
                                             "typingBoxId": 1
@@ -1449,10 +1458,10 @@
                         "storyline": {
                             "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
                             "speed": 50,
-                            "delim": "",
+                            "delim": ", ",
                             "typingBoxId": 0
                         },
-                        "offset": "-=1"
+                        "offset": "-=2"
                     },
                     {
                         "storyline": {
@@ -1498,14 +1507,35 @@
         "offset": ">"
     },
     {
-        "effect": {
-            "name": "REVERSE_OVERLAY",
-            "options": {
-                "duration": 2,
-                "overlayNumber": [
-                    "1"
+        "addParallelExec": {
+            "name": "3",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "REVERSE_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "overlayNumber": [
+                                    "1"
+                                ]
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "effect": {
+                            "name": "POSTS_RISE",
+                            "options": {
+                                "duration": 2
+                            }
+                        },
+                        "offset": ">"
+                    }
                 ]
-            }
+            ]
         },
         "offset": ">"
     }

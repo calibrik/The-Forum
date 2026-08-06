@@ -70,6 +70,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
             })
+            // .add(() => { console.log("resetting", divRef.current) })
             .set(divRef.current, {
                 display: "none",
             });

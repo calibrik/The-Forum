@@ -19,7 +19,8 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const navigate = useNavigate();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const typingBox1 = useRef<ITypingTextBoxHandle>(null);
+    const typingBox2 = useRef<ITypingTextBoxHandle>(null);
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
@@ -36,7 +37,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox], init);
+        bridge.exec(storyInit,2, [typingBox1], init);
     }, [name])
 
     let menuOptions: IMenuOption[] = [
@@ -63,12 +64,13 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type="terminal" />
-            <div className={styles.container}>
-                <img src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
-                <div className={styles.subProfileContainer}>
+            <TypingTextBox ref={typingBox1} type="terminal" />
+            <TypingTextBox ref={typingBox2} type="terminal" />
+            <div id="subforumContainer" className={styles.container}>
+                <img data-fall="true" src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
+                <div data-fall="true" className={styles.subProfileContainer}>
                     {subforum ?
-                        <div className={styles.headerContainer}>
+                        <div data-fall="true" className={styles.headerContainer}>
                             <div className={styles.titleHeaderContainer}>
                                 <h1 className={styles.title}>f/{subforum.name}</h1>
                                 <span className={styles.followerCount}>{numberToText(subforum.followers)} followers</span>
@@ -76,13 +78,15 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                             <p className={styles.description}>{subforum.description}</p>
                         </div>
                         : <Spinner />}
-                    <Menu options={menuOptions} />
-                    <div className={styles.createPostContainer}>
+                    <div data-fall="true">
+                        <Menu options={menuOptions} />
+                    </div>
+                    <div data-fall="true" className={styles.createPostContainer}>
                         <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>Create Post</BaseButton>
                     </div>
                 </div>
-                <div className={styles.contentContainer}>
-                    <Outlet context={subforum} />
+                <div data-fall="true" className={styles.contentContainer}>
+                    <Outlet context={[subforum, [typingBox1, typingBox2]]} />
                 </div>
             </div>
         </>

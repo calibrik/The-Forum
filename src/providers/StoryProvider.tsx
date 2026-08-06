@@ -146,6 +146,41 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                 duration: options?.duration
             })
     },
+    "POSTS_FALL": () => {
+        const elements = gsap.utils.toArray("#subforumContainer [data-fall]").reverse() as Element[];
+        const tl = gsap.timeline();
+        const duration = 1.5;
+        const stagger = 1.5;
+        elements.forEach((el, i) => {
+            const start = i * stagger;
+            tl.to(el, {
+                y: window.innerHeight,
+                rotateZ: gsap.utils.random(-25, 25),
+                ease: "power2.in",
+                duration,
+                position: start,
+            }, start);
+            tl.set(el, { opacity: 0, visibility: "hidden" }, start + duration);
+        });
+        return tl;
+    },
+    "POSTS_RISE": (options) => {
+        const elements = gsap.utils.toArray("#subforumContainer [data-fall]") as Element[];
+        return gsap.timeline()
+            .set(elements, {
+                opacity: 1,
+                visibility: "visible",
+            })
+            .to(elements, {
+                y: 0,
+                rotateZ: 0,
+                ease: "power2.out",
+                duration: options?.duration ?? 2,
+            })
+            .set(elements, {
+                clearProps: "transform,opacity,visibility",
+            });
+    },
 }
 
 
@@ -641,7 +676,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 56 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
