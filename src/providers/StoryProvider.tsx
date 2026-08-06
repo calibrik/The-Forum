@@ -14,12 +14,11 @@ interface IStoryProviderProps {
 };
 
 interface IStoryHook {
-    setTypingBoxes: (tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) => void,
     getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
     initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
-    recoverStoryOnPage: (level: number) => void
+    recoverStoryOnPage: (level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) => void
     createUser: (nickname: string, password: string) => Promise<void>
     goBackHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
@@ -34,13 +33,17 @@ interface IStoryProvider extends IStoryHook {
 }
 
 const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
-    "user": (_location, targetLocation, mismatchedLevel) => {
+    "user": (location, targetLocation, mismatchedLevel) => {
+        if (location[1] == "post")
+            return ["back-text"];
         if (mismatchedLevel == 3) {
             return [targetLocation[3] ?? "posts"];
         }
         return ["user-icon-text"];
     },
-    "subforum": (_location, targetLocation, mismatchedLevel, searchField) => {
+    "subforum": (location, targetLocation, mismatchedLevel, searchField) => {
+        if (location[1] == "post")
+            return ["back-text"];
         if (mismatchedLevel == 3) {
             return [targetLocation[3] ?? "posts"];
         }
@@ -48,6 +51,8 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         return ["header-search", ""];
     },
     "chat": (location, targetLocation, mismatchedLevel) => {
+        if (location[1] == "post")
+            return ["back-text"];
         if (mismatchedLevel == 2) {
             if (location.length >= 3)
                 return ["back-text"];
@@ -55,12 +60,22 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         }
         return ["menu-icon-text", "chat-menu"];
     },
+    "post": (location, targetLocation, _mismatchedLevel) => {
+        if (location[1] == "post")
+            return ["back-text"];
+        return [targetLocation[2]];
+    },
 }
 
 export interface IEffectsOptions {
     typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
     duration?: number,
     opacity?: number
+    backgroundColor?: string
+    overlayNumber?: string[]
+    fromOpacity?: number,
+    blurPx?: number
+    zIndex?: number
 }
 
 const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timeline> = {
@@ -97,36 +112,74 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                 clearProps: "transition"
             })
     },
-    "RED_SCREEN": (options) => {
+    "COLOR_OVERLAY": (options) => {
         return gsap.timeline()
-            .fromTo("#effectOverlay1",
+            .fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
                 {
-                    opacity: 0,
-                    backgroundColor: "red"
+                    zIndex: options?.zIndex,
+                    opacity: options?.fromOpacity ?? 0,
+                    backgroundColor: options?.backgroundColor
                 },
                 {
                     duration: options?.duration,
-                    opacity: options?.opacity
+                    opacity: options?.opacity,
                 })
     },
-    "FADE_OUT": (options) => {
+    "BLUR": (options) => {
         return gsap.timeline()
-            .fromTo("#effectOverlay1",
+            .set(`#effectOverlayBlur`, {
+                zIndex: options?.zIndex,
+                backdropFilter: `blur(${options?.blurPx}px)`,
+                opacity: 0,
+            })
+            .to(`#effectOverlayBlur`,
                 {
-                    opacity: 0,
-                    backgroundColor: "black"
-                },
-                {
+                    opacity: 1,
                     duration: options?.duration,
-                    opacity: 1
                 })
     },
     "REVERSE_OVERLAY": (options) => {
         return gsap.timeline()
-            .to("#effectOverlay1", {
+            .to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
+                backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
                 opacity: 0,
                 duration: options?.duration
             })
+    },
+    "POSTS_FALL": () => {
+        const elements = gsap.utils.toArray("#subforumContainer [data-fall]").reverse() as Element[];
+        const tl = gsap.timeline();
+        const duration = 1.5;
+        const stagger = 1.5;
+        elements.forEach((el, i) => {
+            const start = i * stagger;
+            tl.to(el, {
+                y: window.innerHeight,
+                rotateZ: gsap.utils.random(-25, 25),
+                ease: "power2.in",
+                duration,
+                position: start,
+            }, start);
+            tl.set(el, { opacity: 0, visibility: "hidden" }, start + duration);
+        });
+        return tl;
+    },
+    "POSTS_RISE": (options) => {
+        const elements = gsap.utils.toArray("#subforumContainer [data-fall]") as Element[];
+        return gsap.timeline()
+            .set(elements, {
+                opacity: 1,
+                visibility: "visible",
+            })
+            .to(elements, {
+                y: 0,
+                rotateZ: 0,
+                ease: "power2.out",
+                duration: options?.duration ?? 2,
+            })
+            .set(elements, {
+                clearProps: "transform,opacity,visibility",
+            });
     },
 }
 
@@ -370,11 +423,8 @@ export function useStoryFuncs() {
     const resetAnims = contextSafe(async () => {
         if (isStoryNavRef.current)
             return;
-        if (locationRef.current) {
-            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
-            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
-            if (location == targetLocation)
-                return;
+        if (locationRef.current && isOnLocation(locationRef.current)) {
+            return;
         }
         chatFunc.onNavigateAway();
         hintFunc.resetHint();
@@ -385,13 +435,13 @@ export function useStoryFuncs() {
         if (masterRef.current) {
             masterRef.current.kill();
             masterRef.current = undefined;
-            gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#dissapear,#appContainer,#contentDiv", {
-                clearProps: "all"
-            })
             for (let tb of typingBoxes.current) {
                 await tb.current?.reset();
             }
         }
+        gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#effectOverlay2,#effectOverlay3,#dissapear,#appContainer,#contentDiv", {
+            clearProps: "all"
+        })
         typingBoxes.current = [];
     });
 
@@ -411,6 +461,8 @@ export function useStoryFuncs() {
             }
             else {
                 isStoryRecovered.current = false;
+                if (action.navigateAction.dest.from && !isOnLocation(action.navigateAction.dest.from))
+                    hintFunc.hintNavPath(action.navigateAction.dest.from);
                 hintFunc.hintNavPath(action.navigateAction.dest);
             }
             isStoryNavRef.current = false;
@@ -444,7 +496,8 @@ export function useStoryFuncs() {
         return true;
     }
 
-    async function recoverCheckpoint(id: number, scl?: IScriptLine) {
+    async function recoverCheckpoint(id: number) {
+        const scl = await sanitizeDbFetch(await db.story.get(id));
         if (!scl)
             return;
         savedStoryId.current = id;
@@ -457,26 +510,36 @@ export function useStoryFuncs() {
         }
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
-        navigate(locationRef.current?.where ?? "");
+        if (!locationRef.current) {
+            console.error("No dest on checkpoint recovery.");
+            navigate("/");
+            return;
+        }
+        navigate(locationRef.current.from?.where ?? locationRef.current.where);
     }
 
-    function recoverStoryOnPage(level: number) {
+    function isOnLocation(target: IDestination) {
+        if (target.level > 0) {
+            const location = window.location.pathname.split('/').slice(0, target.level + 1).join('/');
+            const targetLocation = target.where.split('/').slice(0, target.level + 1).join('/');
+            return location === targetLocation;
+        }
+        return true;
+    }
+
+    function recoverStoryOnPage(level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
-        if (level != locationRef.current.level) {
+        if (level != locationRef.current.level || !isOnLocation(locationRef.current)) {
+            if (locationRef.current.from && !isOnLocation(locationRef.current.from)) {
+                hintFunc.hintNavPath(locationRef.current.from);
+            }
             hintFunc.hintNavPath(locationRef.current);
             return;
         }
-        if (locationRef.current.level > 0) {
-            const location = window.location.pathname.split('/').slice(0, locationRef.current.level + 1).join('/');
-            const targetLocation = locationRef.current.where.split('/').slice(0, locationRef.current.level + 1).join('/');
-            if (location != targetLocation) {
-                hintFunc.hintNavPath(locationRef.current);
-                return;
-            }
-        }
         hintFunc.resetHint();
         isStoryRecovered.current = true;
+        typingBoxes.current = tbs;
         if (hintFunc.verifyStoryHint()) {
             hintFunc.reactivateStoryHint();
             return;
@@ -561,7 +624,7 @@ export function useStoryFuncs() {
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
                 for (let action of branches[i]) {
-                    addScriptlineToTimeline(action, branch);
+                    await addScriptlineToTimeline(action, branch);
                 }
                 tl.add(branch, `${scl.addParallelExec.name}${scl.offset}`);
             }
@@ -610,11 +673,6 @@ export function useStoryFuncs() {
         }
         return EFFECTS_MAP[anim](options);
     })
-
-    function setTypingBoxes(tbs: RefObject<ITypingTextBoxHandle | null>[], level: number) {
-        if (level == locationRef.current?.level)
-            typingBoxes.current = tbs;
-    }
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
@@ -668,9 +726,10 @@ export function useStoryFuncs() {
     const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
+    const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
 
     return {
-        setTypingBoxes,
+        // setTypingBoxes,
         getAnim,
         initReady,
         resumeStoryFromHint,
@@ -698,6 +757,7 @@ export function useStoryFuncs() {
         _getPageInitResolveRef,
         _showStory,
         _customizeStory,
+        _isOnLocation
     }
 }
 
@@ -713,6 +773,8 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             },
         }}>
             <EffectOverlay id="effectOverlay1" />
+            <EffectOverlay id="effectOverlayBlur" />
+            <EffectOverlay id="effectOverlay2" />
             <Outlet />
         </StoryContext.Provider>
     );
@@ -739,10 +801,9 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        console.log("calling shit",childLevel)
-        bridge.exec(story.setTypingBoxes, typingBoxes, childLevel);
+        // bridge.exec(story.setTypingBoxes, typingBoxes, childLevel);
         bridge.exec(story.initReady, childLevel);
-        bridge.exec(story.recoverStoryOnPage, childLevel);
+        bridge.exec(story.recoverStoryOnPage, childLevel, typingBoxes);
     }
 
     return storyInit;

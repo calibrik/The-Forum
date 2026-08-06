@@ -24,7 +24,7 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
     return (
             <div className={styles.container}>
                 {posts.map((v,i)=>(
-                    <Post showAuthor={"subforum"} key={i} post={v} />
+                    <Post showAuthor={"subforum"} id={v.id} key={i} post={v} />
                 ))}
                 <Spinner />
             </div>

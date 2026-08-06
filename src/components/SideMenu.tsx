@@ -35,13 +35,13 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
 
     const onRealLogout = contextSafe(async (e: React.MouseEvent) => {
         e.preventDefault();
-        await story.getAnim("FADE_OUT",{duration:2});
         setIsOpen(false);
+        await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/");
-        await story.getAnim("REVERSE_OVERLAY",{duration:2});
+        await story.getAnim("REVERSE_OVERLAY",{duration:2,backgroundColor:"black",overlayNumber:["1"]});
     })
 
     const toggleOpen = useCallback(() => {

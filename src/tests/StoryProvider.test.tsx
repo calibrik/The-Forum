@@ -121,6 +121,15 @@ describe("useHints", () => {
             expect(result.current._getCurrHint?.().current).toEqual(["comments"]);
         });
 
+        test("hintNavPath (/user/main_hero level 3 from /user/main_hero/comments)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
+            result.current.hintNavPath({ level: 3, where: "/user/main_hero" });
+            expect(result.current._getCurrHint?.().current).toEqual(["posts"]);
+        });
+
         test("hintNavPath (/subforum/test/comments level 3 from /subforum/test)", async () => {
             const { result } = renderHook(() => useHints(), {
                 wrapper: AllTheProvidersForMock
@@ -173,6 +182,51 @@ describe("useHints", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
             result.current.hintNavPath({ level: 2, where: "/user/main_hero" });
             expect(result.current._getCurrHint?.().current).toEqual([]);
+        });
+
+        test("hintNavPath (/post/p5 level 2 from /user/main_hero)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
+            result.current.hintNavPath({ level: 2, where: "/post/p5" });
+            expect(result.current._getCurrHint?.().current).toEqual(["p5"]);
+        });
+
+        test("hintNavPath (/user/main_hero level 2 from /post/p5)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
+            result.current.hintNavPath({ level: 2, where: "/user/main_hero" });
+            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
+        });
+
+        test("hintNavPath (/subforum/test level 2 from /post/p5)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
+            result.current.hintNavPath({ level: 2, where: "/subforum/test" });
+            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
+        });
+
+        test("hintNavPath (/chat level 1 from /post/p5)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
+            result.current.hintNavPath({ level: 1, where: "/chat" });
+            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
+        });
+
+        test("hintNavPath (/post/p4 level 2 from /post/p5)", async () => {
+            const { result } = renderHook(() => useHints(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
+            result.current.hintNavPath({ level: 2, where: "/post/p4" });
+            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
         });
 
         test("no nav path overrides from higher levels", async () => {
@@ -238,7 +292,8 @@ describe("useStoryFuncs", () => {
             result.current._getIsStoryNavRef!().current = true;
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
@@ -249,7 +304,8 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
@@ -262,7 +318,8 @@ describe("useStoryFuncs", () => {
             locationRef!.current = { where: "/user/main_hero", level: 2 };
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -279,7 +336,8 @@ describe("useStoryFuncs", () => {
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             result.current._getSavedStoryId!().current = 10;
             result.current._getIsStoryRecovered!().current = true;
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -297,7 +355,8 @@ describe("useStoryFuncs", () => {
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             const masterRef = result.current._getMasterRef!();
             masterRef.current = gsap.timeline({ paused: true });
-            result.current.setTypingBoxes([{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>], 2);
+            const tbs=result.current._getTypingBoxes!();
+            tbs.current=[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
@@ -329,6 +388,7 @@ describe("useStoryFuncs", () => {
             expect(chatPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
         });
+
         test("navigate action (navigate false)", async () => {
             const { result } = renderHook(() => {
                 const storyFuncs = useStory()._getStoryHook!();
@@ -354,6 +414,61 @@ describe("useStoryFuncs", () => {
             expect(storyHintNavSpy).toHaveBeenCalled();
             expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
         });
+
+        test("navigate action (navigate false with from, on different page)", async () => {
+            const { result } = renderHook(() => {
+                const storyFuncs = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyFuncs, userState }
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.users.add({ nickname: "penis" });
+            vi.stubGlobal("location", new URL("http://localhost:3000/chat/test"))
+            result.current.userState.isRealLoggedIn.current = true;
+            const chatPreserveSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), "enablePreserveMessagesBuffer");
+            const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
+            const hintNavSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "hintNavPath");
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } }, navigate: false } }, 10);
+            const locationRef = result.current.storyFuncs!._getLocationRef!();
+            await waitFor(async () => {
+                expect(exposedMockRouter?.state.location.pathname).not.toEqual("/user/penis");
+            });
+            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } });
+            expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
+            expect(chatPreserveSpy).toHaveBeenCalled();
+            expect(storyHintResetSpy).toHaveBeenCalled();
+            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, where: "/subforum/test" }));
+            expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
+        });
+
+        test("navigate action (navigate false with from, on from page)", async () => {
+            const { result } = renderHook(() => {
+                const storyFuncs = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyFuncs, userState }
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.users.add({ nickname: "penis" });
+            result.current.userState.isRealLoggedIn.current = true;
+            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"))
+            const chatPreserveSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), "enablePreserveMessagesBuffer");
+            const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
+            const hintNavSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "hintNavPath");
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } }, navigate: false } }, 10);
+            const locationRef = result.current.storyFuncs!._getLocationRef!();
+            await waitFor(async () => {
+                expect(exposedMockRouter?.state.location.pathname).not.toEqual("/user/penis");
+            });
+            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } });
+            expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
+            expect(chatPreserveSpy).toHaveBeenCalled();
+            expect(storyHintResetSpy).toHaveBeenCalled();
+            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, where: "/post/p4" }));
+            expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
+        });
+
         test("save action", async () => {
             const { result } = renderHook(() => {
                 const storyFuncs = useStory()._getStoryHook!();
@@ -444,19 +559,21 @@ describe("useStoryFuncs", () => {
     });
 
     describe("recoverCheckpoint", () => {
-        test("recoverCheckpoint (basic)", async () => {
+        test("basic recovery", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
-            const scl = {
+            await db.story.put({
                 action: {
                     saveAction: {
                         dest: { where: "/user/penis", level: 2 }
                     }
-                }
-            };
+                },
+                offset: '',
+                id: 10
+            });
             await db.users.add({ nickname: "penis" });
-            await result.current!.recoverCheckpoint!(10, scl as any);
+            await result.current!.recoverCheckpoint!(10);
             expect(result.current!._getSavedStoryId!().current).toEqual(10);
             expect(result.current!._getCurrStoryId!().current).toEqual(11);
             expect(result.current!._getPageStoryIdRef!().current).toEqual(11);
@@ -466,22 +583,58 @@ describe("useStoryFuncs", () => {
             });
         });
 
-        test("recoverCheckpoint (with hintActionPos)", async () => {
+        test("basic recovery with from", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.story.put({
+                action: {
+                    saveAction: {
+                        dest: {
+                            where: "/chat/test", level: 2, from: {
+                                where: "/chat",
+                                level: 1
+                            }
+                        }
+                    }
+                },
+                offset: '',
+                id: 10
+            });
+            await db.users.add({ nickname: "penis" });
+            await result.current!.recoverCheckpoint!(10);
+            expect(result.current!._getSavedStoryId!().current).toEqual(10);
+            expect(result.current!._getCurrStoryId!().current).toEqual(11);
+            expect(result.current!._getPageStoryIdRef!().current).toEqual(11);
+            expect(result.current!._getLocationRef!().current).toEqual({
+                where: "/chat/test", level: 2, from: {
+                    where: "/chat",
+                    level: 1
+                }
+            });
+            await waitFor(() => {
+                expect(exposedMockRouter?.state.location.pathname).toEqual("/chat");
+            });
+        });
+
+        test("recovery with hintActionPos", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
             await db.story.put({ id: 9, action: { hintAction: { ids: ["recovered-hint"] } }, offset: ">" });
             const setStoryHintSpy = vi.spyOn(result.current!._getHintHook!(), "setStoryHint");
 
-            const scl = {
+            await db.story.put({
                 action: {
                     saveAction: {
                         dest: { where: "/chat", level: 1 },
                         hintActionPos: -1
                     }
-                }
-            };
-            await result.current!.recoverCheckpoint!(10, scl as any);
+                },
+                offset: '',
+                id: 10
+            });
+            await result.current!.recoverCheckpoint!(10);
             expect(setStoryHintSpy).toHaveBeenCalledWith(["recovered-hint"], true);
             expect(result.current!._getSavedStoryId!().current).toEqual(10);
             expect(result.current!._getCurrStoryId!().current).toEqual(11);
@@ -508,7 +661,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = undefined;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             result.current.userState.isRealLoggedIn.current = true;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
 
@@ -516,7 +669,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
             result.current.userState.isRealLoggedIn.current = false;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
 
@@ -524,7 +677,7 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = true;
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
             expect(hintNavSpy).not.toHaveBeenCalled();
             expect(showStorySpy).not.toHaveBeenCalled();
         });
@@ -542,9 +695,10 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/test/comments"));
             const target = { where: "/user/penis", level: 2 };
             result.current.storyHook!._getLocationRef!().current = target;
-
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(3);
+            result.current.storyHook!.recoverStoryOnPage!(3,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(0);
             expect(hintNavSpy).toHaveBeenCalledWith(target);
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
@@ -562,9 +716,10 @@ describe("useStoryFuncs", () => {
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             const target = { where: "/subforum/test", level: 2 };
             result.current.storyHook!._getLocationRef!().current = target;
-
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(0);
             expect(hintNavSpy).toHaveBeenCalledWith(target);
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
@@ -585,8 +740,9 @@ describe("useStoryFuncs", () => {
             const reactivateHintSpy = vi.spyOn(hintHook, "reactivateStoryHint");
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
 
-            result.current.storyHook!.recoverStoryOnPage!(1);
+            result.current.storyHook!.recoverStoryOnPage!(1,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
 
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
             expect(resetHintSpy).toHaveBeenCalled();
             expect(reactivateHintSpy).toHaveBeenCalled();
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
@@ -610,8 +766,93 @@ describe("useStoryFuncs", () => {
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
             vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
 
-            result.current.storyHook!.recoverStoryOnPage!(2);
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
 
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
+            expect(resetHintSpy).toHaveBeenCalled();
+            expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
+            expect(showStorySpy).toHaveBeenCalled();
+            const args = showStorySpy.mock.calls[0];
+            expect(args[0]).toBe(result.current.storyHook?._showStory);
+            expect(args[1]).toBe(50);
+        });
+
+        test("should hintNav at from page, when it specified, if not on from page", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/penis"));
+            result.current!.storyHook!._getLocationRef!().current = {
+                where: "/post/p5", level: 2, from: {
+                    level: 2,
+                    where: "/subforum/test"
+                }
+            };
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.storyHook!._getIsStoryRecovered!().current = false;
+            const showStorySpy = vi.spyOn(bridge, "exec");
+            const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+            expect(hintNavSpy).toHaveBeenCalledWith(
+                expect.objectContaining({ level: 2, where: "/subforum/test" })
+            );
+            expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
+        })
+
+        test("should hintNav at where page, when it specified, if on from page", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+
+            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+            result.current!.storyHook!._getLocationRef!().current = {
+                where: "/post/p5", level: 2, from: {
+                    level: 2,
+                    where: "/subforum/test"
+                }
+            };
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.storyHook!._getIsStoryRecovered!().current = false;
+            const showStorySpy = vi.spyOn(bridge, "exec");
+            const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+            expect(hintNavSpy).toHaveBeenCalledWith(
+                expect.objectContaining({ level: 2, where: "/post/p5" })
+            );
+            expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
+        });
+
+        test("success - with from", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+
+            const showStorySpy = vi.spyOn(bridge, "exec");
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"));
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.storyHook!._getIsStoryRecovered!().current = false;
+            result.current!.storyHook!._getLocationRef!().current = {
+                where: "/post/p5", level: 2, from: {
+                    level: 2,
+                    where: "/subforum/test"
+                }
+            };
+            result.current.storyHook!._getPageStoryIdRef!().current = 50;
+
+            const hintHook = result.current.storyHook!._getHintHook!();
+            const resetHintSpy = vi.spyOn(hintHook, "resetHint");
+            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
+
+            result.current.storyHook!.recoverStoryOnPage!(2,[{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
             expect(resetHintSpy).toHaveBeenCalled();
             expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
             expect(showStorySpy).toHaveBeenCalled();
@@ -637,9 +878,9 @@ describe("useStoryFuncs", () => {
             expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
             let postsAfter = await db.posts.toArray();
-            expect(postsAfter.find(p => p.id === 1)?.author).toBe(`#${newNick}`);
-            expect(postsAfter.find(p => p.id === 3)?.content).toBe(`Testing #${newNick} shit`);
-            expect(postsAfter.find(p => p.id === 3)?.author).toBe("penis");
+            expect(postsAfter.find(p => p.id === "p2")?.author).toBe(`#${newNick}`);
+            expect(postsAfter.find(p => p.id === "p3")?.content).toBe(`Testing #${newNick} shit`);
+            expect(postsAfter.find(p => p.id === "p3")?.author).toBe("penis");
 
             let chatsAfter = await db.chats.toArray();
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toBe(`#${newNick}`);
@@ -714,11 +955,12 @@ describe("utils", () => {
     describe("sanitizedDbFetch", () => {
         test("should fetch without # before users nickname", async () => {
             await seedNew();
+            console.log(await db.posts.toArray());
             const scriptline = await sanitizeDbFetch(await db.story.where("id").equals(17).first());
             expect(scriptline?.action?.saveAction?.dest.where).toBe(`/user/main_hero`);
-            let post = await sanitizeDbFetch(await db.posts.where("id").equals(1).first());
+            let post = await sanitizeDbFetch(await db.posts.where("id").equals("p1").first());
             expect(post?.author).toBe(`main_hero`);
-            post = await sanitizeDbFetch(await db.posts.where("id").equals(3).first());
+            post = await sanitizeDbFetch(await db.posts.where("id").equals("p3").first());
             expect(post?.author).toBe(`penis`);
             expect(post?.content).toBe("Testing main_hero shit");
         })
@@ -742,11 +984,11 @@ describe("storyInit", () => {
             wrapper: AllTheProvidersForMock
         });
         const callsSpy = vi.spyOn(bridge, "exec");
-        result.current!.userState!.isRealLoggedIn.current=true;
-        result.current!.userState!.userLoggedIn.current="main_hero";
+        result.current!.userState!.isRealLoggedIn.current = true;
+        result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/chat");
         await waitFor(() => {
-            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
+            // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
         })
@@ -761,16 +1003,69 @@ describe("storyInit", () => {
         });
         const callsSpy = vi.spyOn(bridge, "exec");
         await seedNew();
-        result.current!.userState!.isRealLoggedIn.current=true;
-        result.current!.userState!.userLoggedIn.current="main_hero";
+        result.current!.userState!.isRealLoggedIn.current = true;
+        result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/user/main_hero/comments");
         await waitFor(() => {
-            console.log(callsSpy.mock.calls)
-            const level3=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==3);
-            const level2=callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name&&v[1]==2);
+            const level3 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 3);
+            const level2 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 2);
             expect(level3).not.toBe(-1);
             expect(level2).not.toBe(-1);
             expect(level3).toBeLessThan(level2);
         })
+    });
+});
+describe("isOnLocation", () => {
+    test("returns true for level 0", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        const target = { where: "/any/path", level: 0 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns true when current path matches target path at same level", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
+        const target = { where: "/user/main_hero", level: 2 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns false when current path differs at same level", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/other/comments"));
+        const target = { where: "/user/main_hero", level: 2 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns true for exact full path match", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/comments"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(true);
+    });
+
+    test("returns false for full mismatch path match", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/settings"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns false for levels mismatch", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+        const target = { where: "/subforum/test/comments", level: 3 };
+        expect(result.current!._isOnLocation!(target)).toBe(false);
     });
 });

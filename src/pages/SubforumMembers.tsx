@@ -10,7 +10,7 @@ interface ISubforumMembersProps { };
 
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const storyInit = useStoryInit();
-    const subforum = useOutletContext<ISubforum | undefined>();
+    const [subforum] = useOutletContext<[ISubforum | undefined, unknown]>();
 
     useEffect(() => {
         bridge.exec(storyInit,3, []);

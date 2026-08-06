@@ -2,15 +2,19 @@ import type { FC } from "react";
 import styles from "../scss/comment.module.scss";
 import { SMEntry } from "./SMEntry";
 import { LikeButton } from "./Reactions";
-interface ICommentProps { };
+interface ICommentProps { 
+    author:string,
+    content:string,
+    likes:number
+};
 
-export const Comment: FC<ICommentProps> = (_) => {
+export const Comment: FC<ICommentProps> = (props) => {
     return (
         <div className={styles.container}>
-            <SMEntry name={"user"} type={"user"} isNav={true} />
-            <p className={styles.comment}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sodales quam ut pretium dignissim. </p>
+            <SMEntry name={props.author} type={"user"} isNav={true} />
+            <p className={styles.comment}>{props.content}</p>
             <div>
-                <LikeButton likes={10} />
+                <LikeButton likes={props.likes} />
             </div>
         </div>
     );

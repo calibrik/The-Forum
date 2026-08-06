@@ -18,7 +18,7 @@ export const Post: FC<IPostProps> = (props) => {
     
     const author=props.showAuthor=="subforum"?props.post.subforum:props.post.author;
     return (
-        <div id={props.id} onClick={()=>navigate("/post/test")} data-istransition="true" className={`${styles.cardContainer} ${props.className}`}>
+        <div id={props.id} onClick={()=>navigate(`/post/${props.id}`)} data-istransition="true" className={`${styles.cardContainer} ${props.className}`}>
             <SMEntry isNav name={author} type={props.showAuthor} />
             <h1 className={styles.title}>{props.post.title}</h1>
             <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.content}</p>

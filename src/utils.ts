@@ -5,7 +5,6 @@ export function getImageUrl(name: string): string {
 };
 
 export function getJsonUrl(name: string): string {
-    console.log("called real getJsonUrl");
     return new URL(`./assets/jsons/${name}`, import.meta.url).href;
 };
 
@@ -69,5 +68,7 @@ export async function addHashToUserNickname(nickname: string) {
 }
 
 export async function sanitizeDbFetch<T>(obj: T) {
+    if (!obj)
+        return obj;
     return JSON.parse(await clearStringFromUserNicknameHash(JSON.stringify(obj))) as T;
 }

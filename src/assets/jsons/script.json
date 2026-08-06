@@ -107,9 +107,14 @@
     },
     {
         "effect": {
-            "name": "FADE_OUT",
+            "name": "COLOR_OVERLAY",
             "options": {
-                "duration": 2
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
             }
         },
         "offset": "+=2"
@@ -130,7 +135,10 @@
         "effect": {
             "name": "REVERSE_OVERLAY",
             "options": {
-                "duration": 2
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
             }
         },
         "offset": ">"
@@ -429,7 +437,11 @@
                 "navigate": false,
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -441,7 +453,11 @@
             "saveAction": {
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -463,10 +479,14 @@
                 [
                     {
                         "effect": {
-                            "name": "RED_SCREEN",
+                            "name": "COLOR_OVERLAY",
                             "options": {
                                 "duration": 10,
-                                "opacity": 0.15
+                                "opacity": 0.15,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
                             }
                         },
                         "offset": "+=4.5"
@@ -659,7 +679,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "It’s all jokes, trust me.",
+                            "content": "It’s all just jokes, trust me.",
                             "speed": 100,
                             "delim": "",
                             "typingBoxId": 0,
@@ -677,7 +697,9 @@
             "name": "REVERSE_OVERLAY",
             "options": {
                 "duration": 1,
-                "opacity": 0.3
+                "overlayNumber": [
+                    "1"
+                ]
             }
         },
         "offset": "+=1"
@@ -687,7 +709,11 @@
             "saveAction": {
                 "dest": {
                     "where": "/chat/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
                 }
             }
         },
@@ -851,7 +877,7 @@
                                 "id": 0,
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
-                                    "top": "50%",
+                                    "top": "10%",
                                     "right": "5%"
                                 }
                             }
@@ -906,8 +932,8 @@
                 "id": 0,
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
-                    "top": "50%",
-                    "right": "5%"
+                    "top": "15%",
+                    "left": "5%"
                 }
             }
         },
@@ -936,12 +962,581 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/subforum/zero",
+                    "where": "/post/p4",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3
+                    },
                     "level": 2
                 }
             }
         },
         "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/post/p4",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "42%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Bruh what?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "\"Let devs take as much time as they need\", bro wtf, they are so",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so fucking lame.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "55%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Look at these posts bruh.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=3"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So spineless, like \"our dlc got delayed? It's ok, let them take their time\" tf is this.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "You absolutely should demand new content from the devs, they are working for you, not the other way around, you fucking paid them for the product, where is your rage?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=3"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/p5",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 10,
+                                "opacity": 0.2,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "28%",
+                                    "left": "5%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like don't u see the vent in there?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Have you tried looking or do you just run to this subforum for help at any minor inconvenience?",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think by themselves.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "But they all are allowing them to remain stupid.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/p6",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3
+                    },
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "fromOpacity": 0.2,
+                                "duration": 2,
+                                "opacity": 0.4,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "18%",
+                                    "right": "15%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Oh boy, look how nice everyone here is bruh. Look how everyone being respectful to each other, like isn't it fucking pathetic?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "There is either right opinion or wrong opinion, nothing in between.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "If y'all being so polite and agree with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "1",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "fromOpacity": 0.4,
+                                "duration": 2,
+                                "opacity": 0.6,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "effect": {
+                            "name": "POSTS_FALL"
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 0,
+                                "style": {
+                                    "width": "clamp(200px,50cqw,500px)",
+                                    "top": "20%"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Nah, this sub is phony as fuck.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Everyone is being so nice like we are gonna believe it.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "addParallelExec": {
+                            "name": "2",
+                            "branches": [
+                                [
+                                    {
+                                        "storyline": {
+                                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
+                                            "speed": 50,
+                                            "delim": " ",
+                                            "typingBoxId": 0
+                                        },
+                                        "offset": "+=0.3"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "effect": {
+                                            "name": "BLUR",
+                                            "options": {
+                                                "duration": 5,
+                                                "blurPx": 6,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "+=3"
+                                    },
+                                    {
+                                        "effect": {
+                                            "name": "COLOR_OVERLAY",
+                                            "options": {
+                                                "duration": 2,
+                                                "overlayNumber": [
+                                                    "2"
+                                                ],
+                                                "backgroundColor": "black",
+                                                "opacity": 1,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "-=2"
+                                    },
+                                    {
+                                        "action": {
+                                            "setTextBoxStyleAction": {
+                                                "id": 1,
+                                                "style": {
+                                                    "width": "auto",
+                                                    "top": "50%",
+                                                    "z-index": 22,
+                                                    "text-align": "center"
+                                                }
+                                            }
+                                        },
+                                        "offset": ">"
+                                    },
+                                    {
+                                        "storyline": {
+                                            "content": "Some time later...",
+                                            "speed": 50,
+                                            "delim": "",
+                                            "typingBoxId": 1
+                                        },
+                                        "offset": "+=1"
+                                    }
+                                ]
+                            ]
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                1
+                            ]
+                        },
+                        "offset": "+=2"
+                    },
+                    {
+                        "effect": {
+                            "name": "REVERSE_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "overlayNumber": [
+                                    "2",
+                                    "Blur"
+                                ]
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
+                            "speed": 50,
+                            "delim": ", ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "-=2"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Brutal, but honest.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Yes, we won't mince our words and roast your ass to the crust, but you will learn from it and be better.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And these guys thinking they are helping anyone with this fake ass niceness.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They are just delusional, aren't they?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "3",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "REVERSE_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "overlayNumber": [
+                                    "1"
+                                ]
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "effect": {
+                            "name": "POSTS_RISE",
+                            "options": {
+                                "duration": 2
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
         "offset": ">"
     }
 ]

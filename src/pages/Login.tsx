@@ -9,7 +9,6 @@ import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
 import { useStory } from "../providers/StoryProvider";
-import { sanitizeDbFetch } from "../utils";
 
 interface ILoginProps { };
 
@@ -64,12 +63,11 @@ export const Login: FC<ILoginProps> = (_) => {
         }
         userState.userLoggedIn.current=data.nickname.trim();   
         if (!userState.isRealLoggedIn.current) {
-            const scriptLine = await sanitizeDbFetch(await db.story.get(user[0].savedStoryId ?? 0));
-            await story.getAnim("FADE_OUT",{duration:2});
+            await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
             window.dispatchEvent(new Event("loggedIn")); 
             userState.isRealLoggedIn.current=true;
-            story.recoverCheckpoint(user[0].savedStoryId ?? 0,scriptLine);
-            await story.getAnim("REVERSE_OVERLAY",{duration:2});
+            story.recoverCheckpoint(user[0].savedStoryId ?? 0);
+            await story.getAnim("REVERSE_OVERLAY",{duration:2,backgroundColor:"black",overlayNumber:["1"]});
             return;
         }
         window.dispatchEvent(new Event("loggedIn")); 

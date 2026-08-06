@@ -55,8 +55,14 @@ export interface ISubforum {
 	members: string[],
 }
 
+export interface IComment{
+	author: string,
+	content: string,
+	likes:number
+}
+
 export interface IPost {
-	id: number,
+	id: string,
 	author: string,
 	subforum: string,
 	title: string,
@@ -64,7 +70,8 @@ export interface IPost {
 	imageName?: string
 	likes: number
 	comments: number
-	views: number
+	views: number,
+	commentsDetailed:IComment[]
 }
 
 export interface IAddParallelExec {
@@ -138,6 +145,7 @@ export interface IUser {
 export interface IDestination {
 	where: string
 	level: number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
+	from?:IDestination
 }
 
 const db = new Dexie("TheForumDB") as Dexie & {
@@ -149,14 +157,15 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(136).stores({
-	posts: "++id, author, subforum",
+db.version(161).stores({
+	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
 	chats: "id, owner",
 	storyMessages: "id,chatId"
 }).upgrade(async () => {
+	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')
 		return;
 	await db.story.clear();
@@ -182,7 +191,7 @@ db.version(136).stores({
 	// }
 	await db.posts.clear();
 	response = await fetch(getJsonUrl("posts.json"));
-	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 }));
+	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` }));
 	await db.posts.bulkAdd(newPosts);
 
 	await db.subforums.clear();
@@ -206,7 +215,7 @@ export async function seedNew() {
 	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` })));
 	response = await fetch(getJsonUrl("subforums.json"));
 	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("chats.json"));

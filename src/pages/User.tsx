@@ -91,13 +91,12 @@ export const User: FC<IUserPageProps> = (_) => {
             navigate("/")
             return;
         }
-        const users = await db.users.where("nickname").equals(username??"").toArray();
-        if (users.length != 1) {
-            console.error(`No ${username} user found (or found too many) ${users.length}.`)
+        const user = await db.users.where("nickname").equals(username??"").first();
+        if (!user) {
             navigate("/404",{replace:true})
             return;
         }
-        setUser(users[0]);
+        setUser(user);
     }
 
     useEffect(() => {
