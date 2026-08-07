@@ -508,6 +508,7 @@ export function useStoryFuncs() {
             let hintScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.hintActionPos));
             hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
         }
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl.hint ?? "" }));
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
         if (!locationRef.current) {
@@ -647,6 +648,7 @@ export function useStoryFuncs() {
         const ticket = loopTicket.current;
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: "" }));
         while (!scl || !scl.isActionAwait) {
             scl = await db.story.get(id);
             if (!isMounted.current || ticket != loopTicket.current)
@@ -664,6 +666,7 @@ export function useStoryFuncs() {
         await master;
         currStoryId.current = id;
         masterRef.current = undefined;
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl?.hint ?? "" }));
     });
 
     const getAnim = contextSafe((anim: string, options?: IEffectsOptions) => {

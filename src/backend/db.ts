@@ -129,6 +129,7 @@ export interface IScriptLine {
 	action?: IAction,
 	addParallelExec?: IAddParallelExec
 	clearTypingTextBoxes?: IClearTypingTextBoxes
+	hint?: string,//what the player is expected to do while the story waits on this scriptline (isActionAwait)
 	isActionAwait?: boolean,
 	offset: string,
 }
@@ -157,7 +158,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(161).stores({
+db.version(163).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

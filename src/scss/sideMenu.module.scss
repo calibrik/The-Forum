@@ -70,3 +70,45 @@
 .quit-div{
     color: colors.$error-color;
 }
+
+.hint-div {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(10px, 5cqw, 15px);
+    margin-top: auto;
+    color: colors.$hint-color;
+    font-family: "Courier Prime";
+    box-sizing: border-box;
+}
+
+.hint-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.hint-texts {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 1cqw, 6px);
+    min-width: 0;
+}
+
+.hint-icon {
+    font-size: clamp(1rem, 8cqw, 1.4rem);
+    flex-shrink: 0;
+}
+
+.hint-label {
+    color: colors.$hint-color;
+    font-size: clamp(0.85rem, 6cqw, 1.05rem);
+    letter-spacing: 0.05em;
+    font-weight: bold;
+}
+
+.hint-text {
+    font-style: italic;
+    font-size: clamp(0.85rem, 6cqw, 1.05rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}

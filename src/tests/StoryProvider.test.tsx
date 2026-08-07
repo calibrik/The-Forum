@@ -644,6 +644,98 @@ describe("useStoryFuncs", () => {
                 expect(exposedMockRouter?.state.location.pathname).toEqual("/chat");
             });
         });
+
+        test("fetches the hint from the recovered scriptline", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.story.put({
+                action: {
+                    saveAction: {
+                        dest: { where: "/chat", level: 1 }
+                    }
+                },
+                hint: "Say hi to your mates in the chat",
+                isActionAwait: true,
+                offset: ">",
+                id: 10
+            });
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
+
+            await result.current!.recoverCheckpoint!(10);
+            await waitFor(() => {
+                expect(hintDetails).toContain("Say hi to your mates in the chat");
+            });
+
+            window.removeEventListener("storyHintText", onHintText);
+        });
+
+        test("fetches hint text together with hintAction ids on recovery", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.story.put({ id: 9, action: { hintAction: { ids: ["recovered-hint"] } }, offset: ">" });
+            const setStoryHintSpy = vi.spyOn(result.current!._getHintHook!(), "setStoryHint");
+
+            await db.story.put({
+                action: {
+                    saveAction: {
+                        dest: { where: "/chat", level: 1 },
+                        hintActionPos: -1
+                    }
+                },
+                hint: "Go say hi to your mates",
+                offset: "",
+                id: 10
+            });
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
+
+            await result.current!.recoverCheckpoint!(10);
+            expect(setStoryHintSpy).toHaveBeenCalledWith(["recovered-hint"], true);
+            await waitFor(() => {
+                expect(hintDetails).toContain("Go say hi to your mates");
+            });
+
+            window.removeEventListener("storyHintText", onHintText);
+        });
+
+        test("resets hint text to empty when the recovered scriptline has no hint", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.story.put({
+                action: {
+                    saveAction: {
+                        dest: { where: "/chat", level: 1 }
+                    }
+                },
+                offset: "",
+                id: 10
+            });
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
+
+            await result.current!.recoverCheckpoint!(10);
+            await waitFor(() => {
+                expect(hintDetails).toContain("");
+            });
+
+            window.removeEventListener("storyHintText", onHintText);
+        });
+
+        test("every isActionAwait scriptline in the script should have a hint", async () => {
+            await seedNew();
+            const scriptlines = await db.story.toArray();
+            const awaits = scriptlines.filter(s => s.isActionAwait);
+            expect(awaits.length).toBe(9);
+            for (const scl of awaits)
+                expect(scl.hint?.trim() ?? "").not.toBe("");
+        });
     });
 
     describe("recoverStoryOnPage", () => {

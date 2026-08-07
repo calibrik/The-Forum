@@ -1,5 +1,5 @@
 import { type FC, useCallback, useEffect, useRef, useState } from "react";
-import { Home, Chat, Gear, Leave } from "./Icons";
+import { Home, Chat, Gear, Leave, QuestionHint } from "./Icons";
 import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
 import { useUserState } from "../providers/UserAuth";
@@ -10,6 +10,7 @@ interface ISideMenuProps { };
 
 export const SideMenu: FC<ISideMenuProps> = (_) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [hintText, setHintText] = useState<string>("");
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const userState = useUserState();
@@ -71,6 +72,16 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         }
     }, [])
 
+    useEffect(() => {
+        function onStoryHintText(e: Event) {
+            setHintText((e as CustomEvent<string>).detail);
+        }
+        window.addEventListener("storyHintText", onStoryHintText);
+        return () => {
+            window.removeEventListener("storyHintText", onStoryHintText);
+        }
+    }, [])
+
     return (
         <div tabIndex={-1} onBlur={onBlur} ref={sideMenuRef} className={`${styles.container} ${isOpen ? styles.open : styles.close}`}>
             <div onClick={(e) => onNavigate(e)} className={styles.itemDiv}>
@@ -85,6 +96,17 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
                 <Gear className={styles.icon} />
                 <span className={styles.itemName}>Settings</span>
             </div>
+            {hintText ?
+                <div className={styles.hintDiv}>
+                    <div className={styles.hintHeader}>
+                        <QuestionHint className={styles.hintIcon} />
+                        <div className={styles.hintTexts}>
+                            <span className={styles.hintLabel}>Current objective:</span>
+                            <span className={styles.hintText}>{hintText}</span>
+                        </div>
+                    </div>
+                </div>
+                : ""}
             <div onClick={onLogout} className={`${styles.itemDiv} ${styles.leaveDiv}`}>
                 <Leave className={styles.icon} />
                 <span className={styles.itemName}>Log Out</span>
