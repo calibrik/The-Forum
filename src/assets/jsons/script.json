@@ -164,7 +164,8 @@
             }
         },
         "offset": ">",
-        "isActionAwait": true
+        "isActionAwait": true,
+        "hint": "Click 'My Cyberdivers profile' on your profile page"
     },
     {
         "action": {
@@ -284,6 +285,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Search for 'cyberdivers' in the header and open the subforum",
         "offset": ">"
     },
     {
@@ -446,6 +448,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Go to the 'cyberdivers' chat",
         "offset": ">"
     },
     {
@@ -470,6 +473,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
         "offset": ">"
     },
     {
@@ -972,6 +976,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Open the 'DLC is delayed' post in the f/zero subforum",
         "offset": ">"
     },
     {
@@ -1068,6 +1073,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Go back to the f/zero subforum",
         "offset": ">"
     },
     {
@@ -1127,6 +1133,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Open next post in the f/zero subforum",
         "offset": ">"
     },
     {
@@ -1220,6 +1227,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Open the next post in the f/zero subforum",
         "offset": ">"
     },
     {
@@ -1301,6 +1309,7 @@
             }
         },
         "isActionAwait": true,
+        "hint": "Go back to the f/zero subforum posts",
         "offset": ">"
     },
     {
