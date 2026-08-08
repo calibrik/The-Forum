@@ -76,9 +76,10 @@ export interface IEffectsOptions {
     fromOpacity?: number,
     blurPx?: number
     zIndex?: number
+    persistOverNavigation?: boolean
 }
 
-const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timeline> = {
+const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?: Set<string>) => gsap.core.Timeline> = {
     "NOTEPAD_FLASH": (options) => {
         return gsap.timeline()
             .set("[data-istransition='true']", {
@@ -112,7 +113,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                 clearProps: "transition"
             })
     },
-    "COLOR_OVERLAY": (options) => {
+    "COLOR_OVERLAY": (options, persistOverlayIds) => {
         return gsap.timeline()
             .fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
                 {
@@ -124,8 +125,12 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                     duration: options?.duration,
                     opacity: options?.opacity,
                 })
+            .add(() => {
+                if (options?.persistOverNavigation)
+                    persistOverlayIds?.add(`effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
+            })
     },
-    "BLUR": (options) => {
+    "BLUR": (options, persistOverlayIds) => {
         return gsap.timeline()
             .set(`#effectOverlayBlur`, {
                 zIndex: options?.zIndex,
@@ -137,9 +142,17 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions) => gsap.core.Timel
                     opacity: 1,
                     duration: options?.duration,
                 })
+            .add(() => {
+                if (options?.persistOverNavigation)
+                    persistOverlayIds?.add("effectOverlayBlur");
+            })
     },
-    "REVERSE_OVERLAY": (options) => {
+    "REVERSE_OVERLAY": (options, persistOverlayIds) => {
         return gsap.timeline()
+            .add(() => {
+                for (let v of options?.overlayNumber ?? [])
+                    persistOverlayIds?.delete(`effectOverlay${v}`);
+            }, 0)
             .to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
                 backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
                 opacity: 0,
@@ -402,6 +415,7 @@ export function useStoryFuncs() {
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
+    const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
     const hintFunc = useHints();
     const chatFunc = useChat();
 
@@ -439,7 +453,9 @@ export function useStoryFuncs() {
                 await tb.current?.reset();
             }
         }
-        gsap.set("#container,#textBox,[data-istransition='true'],#effectOverlay1,#effectOverlay2,#effectOverlay3,#dissapear,#appContainer,#contentDiv", {
+        const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
+            .filter((sel) => !(sel.startsWith("#effectOverlay") && persistedOverlayIds.current.has(sel.slice(1))));
+        gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
         typingBoxes.current = [];
@@ -674,7 +690,7 @@ export function useStoryFuncs() {
             console.error(`No anim called ${anim}`);
             return;
         }
-        return EFFECTS_MAP[anim](options);
+        return EFFECTS_MAP[anim](options, persistedOverlayIds.current);
     })
 
     async function createUser(nickname: string, password: string) {
@@ -730,6 +746,7 @@ export function useStoryFuncs() {
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
+    const _getPersistedOverlayIds = process.env.NODE_ENV == 'test' ? () => persistedOverlayIds : undefined;
 
     return {
         // setTypingBoxes,
@@ -760,7 +777,8 @@ export function useStoryFuncs() {
         _getPageInitResolveRef,
         _showStory,
         _customizeStory,
-        _isOnLocation
+        _isOnLocation,
+        _getPersistedOverlayIds
     }
 }
 

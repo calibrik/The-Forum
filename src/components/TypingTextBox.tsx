@@ -71,7 +71,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 clearProps: "all",
             })
             .add(() => {
-                console.log("resetting", divRef.current);
+                // console.log("resetting", divRef.current);
                 if (divRef.current) {
                     divRef.current.style.display = "none";
                 }
