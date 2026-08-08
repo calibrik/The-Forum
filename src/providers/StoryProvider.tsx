@@ -695,7 +695,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 56 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());

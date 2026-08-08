@@ -1338,14 +1338,6 @@
                 ],
                 [
                     {
-                        "effect": {
-                            "name": "POSTS_FALL"
-                        },
-                        "offset": ">"
-                    }
-                ],
-                [
-                    {
                         "action": {
                             "setTextBoxStyleAction": {
                                 "id": 0,
@@ -1519,23 +1511,94 @@
         "offset": ">"
     },
     {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
         "addParallelExec": {
             "name": "3",
             "branches": [
                 [
                     {
                         "effect": {
-                            "name": "REVERSE_OVERLAY",
-                            "options": {
-                                "duration": 2,
-                                "overlayNumber": [
-                                    "1"
-                                ]
-                            }
+                            "name": "POSTS_FALL"
                         },
                         "offset": ">"
                     }
                 ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Nah, this sub should go down.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And I think I just thought of something genius.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I remember back when I was a kid, my mom sent me to do some programming courses and I learned smth about webdev and some cybersecurity stuff, like phishing.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Shit, it was ages ago.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Met some cool guys there, but we didn't really click. They thought I was kinda weird.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Well, whatever, who gives a shit right?",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "4",
+            "branches": [
                 [
                     {
                         "effect": {
@@ -1546,9 +1609,314 @@
                         },
                         "offset": ">"
                     }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Anyway, what if I could create a fake website to steal zero sub admin's account and take over the sub?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I could show them what real life is.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0
+                        },
+                        "offset": "+=0.3"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I should let my friends in cyberdivers chat know, I'm sure they will be as excited as I am right now to get back at these dumbasses.",
+                            "speed": 50,
+                            "delim": " ",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.3"
+                    }
                 ]
             ]
         },
         "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Go to the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "I'm gonna hack zero sub"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "lmao what",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "musky_diver",
+                "content": "AHAHAHAH",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buggedFeature",
+                "content": "AHAHAHAHAHAHA",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buzzzzz09",
+                "content": "ahahahah",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "calm down, Mr. Robot",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "ink_and_iron",
+                "content": "u can't even use a keyboard son fym hack",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sinius",
+                "content": "r u 13?",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "SmoothOperator",
+                "content": "are we deadass lmao",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "DarkSolace",
+                "content": "AHAHAH",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "nah y'all will see, I actually can do it"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "musky_diver",
+                "content": "brochacho stfu",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "ink_and_iron",
+                "content": "im crying wtf are u talking about lmaooo",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "u r like in the top 10 worst cyberdivers oat and u r saying u can hack anything? Bruh wtf",
+                "timeToType": 4.5,
+                "isReplyDiff":-3
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Roman_Roy218",
+                "content": "instant cyberdivers classic",
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buzzzzz09",
+                "content": "son",
+                "timeToType": 1.5,
+                "isReplyDiff":-5
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "bro is a poser lmao, proly don't even know what is sqli is lol",
+                "timeToType": 5,
+                "isReplyDiff":-6
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "clamp(200px,50cqw,500px)",
+                    "top": "50%",
+                    "right": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "No no, I know what it is, it's a language",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=6"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "for hacking databases",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    }, 
+    {
+        "storyline": {
+            "content": "or something.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "It doesn't matter, they'll see, I absolutely can do it.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
     }
 ]

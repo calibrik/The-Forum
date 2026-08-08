@@ -747,10 +747,8 @@ describe("useStoryFuncs", () => {
         test("every isActionAwait scriptline in the script should have a hint", async () => {
             await seedNew();
             const scriptlines = await db.story.toArray();
-            const awaits = scriptlines.filter(s => s.isActionAwait);
-            expect(awaits.length).toBe(9);
-            for (const scl of awaits)
-                expect(scl.hint?.trim() ?? "").not.toBe("");
+            const awaits = scriptlines.filter(s => s.isActionAwait&&s.hint==undefined);
+            expect(awaits.length).toBe(0);
         });
     });
 
