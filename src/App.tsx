@@ -68,7 +68,7 @@ export const appRoutes: RouteObject[] = [
 				Component: EmptyLayout,
 				children: [
 					{ path: "/start", Component: Notepad },
-					{ path: "/console", Component: Terminal },
+					{ path: "/terminal", Component: Terminal },
 				]
 			},
 		]

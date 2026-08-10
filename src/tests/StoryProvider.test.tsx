@@ -743,13 +743,6 @@ describe("useStoryFuncs", () => {
 
             window.removeEventListener("storyHintText", onHintText);
         });
-
-        test("every isActionAwait scriptline in the script should have a hint", async () => {
-            await seedNew();
-            const scriptlines = await db.story.toArray();
-            const awaits = scriptlines.filter(s => s.isActionAwait&&s.hint==undefined);
-            expect(awaits.length).toBe(0);
-        });
     });
 
     describe("recoverStoryOnPage", () => {
@@ -1173,5 +1166,14 @@ describe("isOnLocation", () => {
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
         const target = { where: "/subforum/test/comments", level: 3 };
         expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+});
+
+describe("script checks", () => {
+    test("every isActionAwait scriptline in the script should have a hint", async () => {
+        await seedNew();
+        const scriptlines = await db.story.toArray();
+        const awaits = scriptlines.filter(s => s.isActionAwait && s.hint == undefined);
+        expect(awaits.length).toBe(0);
     });
 });
