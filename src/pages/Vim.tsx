@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { useStoryInit } from "../providers/StoryProvider";
@@ -16,6 +16,7 @@ const tildeRows = Array.from(Array(TILDE_FILL).keys());
 
 export const Vim: FC = () => {
     const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<InputFieldHandle>(null);
     const storyInit = useStoryInit();
     const navigate = useNavigate();
@@ -41,18 +42,20 @@ export const Vim: FC = () => {
     }
 
     function init() {
-        // if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
-        //     navigate("/");
-        // }
+        if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
+            navigate("/");
+        }
     }
 
     useEffect(() => {
-        storyInit(2, [typingBox], init);
+        storyInit(2, [typingBox, narrationBox], init);
         setTextToType(TEST_TEXT);
     }, []);
 
     return (
-        <div className={systemStyles.container}>
+        <>
+            <TypingTextBox ref={narrationBox} type="terminal" />
+            <div className={systemStyles.container}>
             <div className={systemStyles.appContainer}>
                 <div className={systemStyles.headerDiv}>
                     <TerminalIcon className={systemStyles.icon} />
@@ -78,6 +81,7 @@ export const Vim: FC = () => {
                     <TypingTextBox ref={typingBox} className={styles.commandLineBox} type={"terminal"} />
                 </div>
             </div>
-        </div>
+            </div>
+        </>
     );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { InputField, type InputFieldHandle } from "../components/InputField";
+import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
@@ -14,6 +15,7 @@ type HistoryEntry =
 export const Terminal: FC = () => {
     const inputRef = useRef<InputFieldHandle>(null);
     const outputRef = useRef<HTMLDivElement>(null);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
     const userState = useUserState();
     const navigate = useNavigate();
@@ -28,13 +30,13 @@ export const Terminal: FC = () => {
     const dollarPart = "$";
 
     function init() {
-        // if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
-        //     navigate("/");
-        // }
+        if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
+            navigate("/");
+        }
     }
 
     useEffect(() => {
-        storyInit(1, [], init);
+        storyInit(1, [typingBox], init);
     }, []);
 
     useEffect(() => {
@@ -80,38 +82,41 @@ export const Terminal: FC = () => {
     }
 
     return (
-        <div className={systemStyles.container}>
-            <div className={systemStyles.appContainer}>
-                <div className={systemStyles.headerDiv}>
-                    <TerminalIcon className={systemStyles.icon} />
-                    <span className={systemStyles.appLabel}>Terminal</span>
-                </div>
-                <div className={styles.body}>
-                    <div ref={outputRef} className={styles.output}>
-                        <div className={styles.outputLine}>Type "help" to find out the current objective.</div>
-                        {history.map((entry, index) => (
-                            entry.type === "cmd" ? (
-                                <div key={index} className={styles.outputLine}>
+        <>
+            <TypingTextBox ref={typingBox} type="terminal" />
+            <div className={systemStyles.container}>
+                <div className={systemStyles.appContainer}>
+                    <div className={systemStyles.headerDiv}>
+                        <TerminalIcon className={systemStyles.icon} />
+                        <span className={systemStyles.appLabel}>Terminal</span>
+                    </div>
+                    <div className={styles.body}>
+                        <div ref={outputRef} className={styles.output}>
+                            <div className={styles.outputLine}>Type "help" to find out the current objective.</div>
+                            {history.map((entry, index) => (
+                                entry.type === "cmd" ? (
+                                    <div key={index} className={styles.outputLine}>
+                                        <span className={styles.promptUser}>{userPart}</span>
+                                        <span className={styles.promptPath}>{pathPart}</span>
+                                        <span className={styles.promptDollar}>{dollarPart}</span>
+                                        <span>{" "}{entry.command}</span>
+                                    </div>
+                                ) : (
+                                    <div key={index} className={styles.outputLine}>{entry.text}</div>
+                                )
+                            ))}
+                            <form className={styles.promptRow} onSubmit={onSubmit}>
+                                <span className={styles.promptPrefix}>
                                     <span className={styles.promptUser}>{userPart}</span>
                                     <span className={styles.promptPath}>{pathPart}</span>
                                     <span className={styles.promptDollar}>{dollarPart}</span>
-                                    <span>{" "}{entry.command}</span>
-                                </div>
-                            ) : (
-                                <div key={index} className={styles.outputLine}>{entry.text}</div>
-                            )
-                        ))}
-                        <form className={styles.promptRow} onSubmit={onSubmit}>
-                            <span className={styles.promptPrefix}>
-                                <span className={styles.promptUser}>{userPart}</span>
-                                <span className={styles.promptPath}>{pathPart}</span>
-                                <span className={styles.promptDollar}>{dollarPart}</span>
-                            </span>
-                            <InputField ref={inputRef} name="command" type="text" cursorType="terminal" className={styles.promptInput} />
-                        </form>
+                                </span>
+                                <InputField ref={inputRef} name="command" type="text" cursorType="terminal" className={styles.promptInput} />
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };

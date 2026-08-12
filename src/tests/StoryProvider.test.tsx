@@ -391,6 +391,8 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             await db.users.add({ nickname: "penis" });
+            const isStoryRecovered=result.current.storyFuncs!._getIsStoryRecovered!();
+            isStoryRecovered.current=true;
             result.current.userState.isRealLoggedIn.current = true;
             const chatPreserveSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), "enablePreserveMessagesBuffer");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
@@ -403,6 +405,57 @@ describe("useStoryFuncs", () => {
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
             expect(chatPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
+            expect(isStoryRecovered.current).toEqual(false);
+        });
+
+        test("navigate true: old master is cleared before the real page's recoverStoryOnPage fires", async () => {
+            const { result } = renderHook(() => {
+                const storyFuncs = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyFuncs, userState }
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.users.add({ nickname: "penis" });
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.userState.userLoggedIn.current = "main_hero";
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/penis"));
+
+            const mockBox = { current: { getTimeline: () => gsap.timeline().to({}, { duration: 1 }), reset: () => gsap.timeline() } } as unknown as React.RefObject<ITypingTextBoxHandle | null>;
+            result.current.storyFuncs!._getTypingBoxes!().current = [mockBox];
+
+            await db.story.bulkAdd([
+                { id: 1, storyline: { content: "you conclude your business on this page", speed: 50, typingBoxId: 0 }, offset: ">" },
+                { id: 2, action: { navigateAction: { dest: { where: "/chat", level: 1 }, navigate: true } }, offset: ">" },
+                { id: 3, storyline: { content: "pick a chat to continue", speed: 50, typingBoxId: 0 }, isActionAwait: true, hint: "open a chat", offset: ">" },
+            ]);
+
+            const masterRef = result.current.storyFuncs!._getMasterRef!();
+            const p = result.current.storyFuncs!._showStory!(1);
+            await waitFor(() => expect(masterRef.current).toBeDefined());
+
+            // drive the playhead exactly onto the navigate action
+            const navigateAt = masterRef.current?.getChildren()[0]?.endTime() ?? 0;
+            masterRef.current?.totalTime(navigateAt);
+            // the memory router doesn't touch window.location — simulate the browser's location change
+            vi.stubGlobal("location",exposedMockRouter?.state.location);
+
+            // page A's showStory resolves only after its continuation ran (tl.progress(1) → `await master`),
+            // which happens in microtasks — before React mounts the new page (a macrotask), so recovery
+            // cannot have fired yet.
+            await p;
+            expect(masterRef.current).toBeUndefined(); // old master cleared
+            expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toBe(false); // recovery not fired yet
+
+            await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toEqual("/chat"));
+
+            // the real /chat page mounts → storyInit → recoverStoryOnPage → showStory(3).
+            await waitFor(() => {
+                const master = masterRef.current;
+                if (master)
+                    master.totalTime(master.totalDuration());
+                expect(result.current.storyFuncs!._getCurrStoryId!().current).toEqual(4);
+            });
         });
 
         test("navigate action (navigate false)", async () => {
@@ -414,6 +467,8 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             await db.users.add({ nickname: "penis" });
+            const isStoryRecovered=result.current.storyFuncs!._getIsStoryRecovered!();
+            isStoryRecovered.current=true;
             result.current.userState.isRealLoggedIn.current = true;
             const chatPreserveSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), "enablePreserveMessagesBuffer");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
@@ -428,7 +483,7 @@ describe("useStoryFuncs", () => {
             expect(chatPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
             expect(storyHintNavSpy).toHaveBeenCalled();
-            expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
+            expect(isStoryRecovered.current).toEqual(false);
         });
 
         test("navigate action (navigate false with from, on different page)", async () => {
@@ -823,6 +878,27 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
 
+        test("mismatched search query", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+
+            const showStorySpy = vi.spyOn(bridge, "exec");
+            vi.stubGlobal("location", new URL("http://localhost:3000/terminal/vim?file=Other.tsx"));
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.storyHook!._getIsStoryRecovered!().current = false;
+            const target = { where: "/terminal/vim?file=Post.tsx", level: 2 };
+            result.current.storyHook!._getLocationRef!().current = target;
+            const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
+            result.current.storyHook!.recoverStoryOnPage!(2, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(0);
+            expect(hintNavSpy).toHaveBeenCalledWith(target);
+            expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
+        });
+
         test("success - reactivate story hint", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
@@ -859,6 +935,35 @@ describe("useStoryFuncs", () => {
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             result.current.storyHook!._getLocationRef!().current = { where: "/user/penis", level: 2 };
+            result.current.storyHook!._getPageStoryIdRef!().current = 50;
+
+            const hintHook = result.current.storyHook!._getHintHook!();
+            const resetHintSpy = vi.spyOn(hintHook, "resetHint");
+            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
+
+            result.current.storyHook!.recoverStoryOnPage!(2, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
+
+            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
+            expect(resetHintSpy).toHaveBeenCalled();
+            expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
+            expect(showStorySpy).toHaveBeenCalled();
+            const args = showStorySpy.mock.calls[0];
+            expect(args[0]).toBe(result.current.storyHook?._showStory);
+            expect(args[1]).toBe(50);
+        });
+
+        test("success - with search query in destination", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+
+            const showStorySpy = vi.spyOn(bridge, "exec");
+            vi.stubGlobal("location", new URL("http://localhost:3000/terminal/vim?file=Post.tsx"));
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.storyHook!._getIsStoryRecovered!().current = false;
+            result.current.storyHook!._getLocationRef!().current = { where: "/terminal/vim?file=Post.tsx", level: 2 };
             result.current.storyHook!._getPageStoryIdRef!().current = 50;
 
             const hintHook = result.current.storyHook!._getHintHook!();
@@ -1088,7 +1193,7 @@ describe("storyInit", () => {
         exposedMockRouter?.navigate("/chat");
         await waitFor(() => {
             // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
-            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
+            // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
         })
     });

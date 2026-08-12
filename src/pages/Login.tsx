@@ -1,4 +1,4 @@
-import { useRef, type FC } from "react";
+import { useEffect, useRef, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
@@ -8,7 +8,7 @@ import { db } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
-import { useStory } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 
 interface ILoginProps { };
 
@@ -23,10 +23,16 @@ export const Login: FC<ILoginProps> = (_) => {
     let navigate = useNavigate();
     const userState = useUserState();
     const passwordForgotBox = useRef<ITypingTextBoxHandle>(null);
+    const storyTextBox = useRef<ITypingTextBoxHandle>(null);
+    const storyInit = useStoryInit();
     const passwordTl = useRef<gsap.core.Timeline>(undefined);
     const { contextSafe } = useGSAP();
     const story = useStory();
     const onSubmitRunning = useRef<boolean>(false);
+
+    useEffect(() => {
+        storyInit(1, [storyTextBox]);
+    }, []);
 
     const onSubmit=contextSafe(async (event: React.FormEvent<HTMLFormElement>) =>{
         if (onSubmitRunning.current)
@@ -99,6 +105,7 @@ export const Login: FC<ILoginProps> = (_) => {
 
     return (
         <>
+            <TypingTextBox ref={storyTextBox} type={"terminal"} />
             <TypingTextBox className={styles.passwordForgetBox} addDefaultClass ref={passwordForgotBox} type={"terminal"} />
             <div className={styles.loginSignupContainer}>
                 <form className={styles.card} onSubmit={onSubmit}>

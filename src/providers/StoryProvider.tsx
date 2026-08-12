@@ -15,7 +15,7 @@ interface IStoryProviderProps {
 
 interface IStoryHook {
     getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
-    initReady: (level: number) => void
+    // initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) => void
@@ -283,7 +283,12 @@ export function useHints() {
         }
         if (mismatchedLevel > target.level)
             return;
-        currHint.current = NAVIGATE_TO_PAGE[targetLocation[1]](location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
+        const navFunc = NAVIGATE_TO_PAGE[targetLocation[1]];
+        if (!navFunc) {
+            currHint.current = [];
+            return;
+        }
+        currHint.current = navFunc(location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
         currIndex.current = 0;
         bridge.exec(hint, currHint.current[currIndex.current]);
     }
@@ -407,7 +412,7 @@ export function useStoryFuncs() {
     const navigate = useNavigate();
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
-    const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
+    // const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
@@ -419,16 +424,12 @@ export function useStoryFuncs() {
     const hintFunc = useHints();
     const chatFunc = useChat();
 
-    function waitForInit() {
-        return new Promise<void>((resolve) => pageInitResolveRef.current = resolve);
-    }
-
-    function initReady(level: number) {
-        if (level != locationRef.current?.level)
-            return;
-        if (pageInitResolveRef.current)
-            pageInitResolveRef.current();
-    }
+    // function initReady(level: number) {
+    //     if (level != locationRef.current?.level)
+    //         return;
+    //     if (pageInitResolveRef.current)
+    //         pageInitResolveRef.current();
+    // }
 
     function isStoryGoing() {
         return masterRef.current != undefined;
@@ -464,19 +465,17 @@ export function useStoryFuncs() {
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
             isStoryNavRef.current = true;
+            isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
             chatFunc.enablePreserveMessagesBuffer();
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
-                let p = waitForInit();
                 navigate(action.navigateAction.dest?.where ?? "");
                 if (action.navigateAction.dest?.level == 0)
                     window.dispatchEvent(new Event("signalLevel0"))
-                await p;
             }
             else {
-                isStoryRecovered.current = false;
                 if (action.navigateAction.dest.from && !isOnLocation(action.navigateAction.dest.from))
                     hintFunc.hintNavPath(action.navigateAction.dest.from);
                 hintFunc.hintNavPath(action.navigateAction.dest);
@@ -537,7 +536,7 @@ export function useStoryFuncs() {
 
     function isOnLocation(target: IDestination) {
         if (target.level > 0) {
-            const location = window.location.pathname.split('/').slice(0, target.level + 1).join('/');
+            const location = (window.location.pathname + window.location.search).split('/').slice(0, target.level + 1).join('/');
             const targetLocation = target.where.split('/').slice(0, target.level + 1).join('/');
             return location === targetLocation;
         }
@@ -631,7 +630,12 @@ export function useStoryFuncs() {
             const saveId = scl.id;
             tl.add(() => {
                 tl.pause();
-                processAction(action, saveId).then(() => tl.resume());
+                processAction(action, saveId).then(() => {
+                    if (action.navigateAction?.navigate)
+                        tl.progress(1);
+                    else
+                        tl.resume();
+                });
             }, scl.offset);
         }
 
@@ -665,7 +669,7 @@ export function useStoryFuncs() {
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
         window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: "" }));
-        while (!scl || !scl.isActionAwait) {
+        while ((!scl || !scl.isActionAwait) && !scl?.action?.navigateAction?.navigate) {
             scl = await db.story.get(id);
             if (!isMounted.current || ticket != loopTicket.current)
                 return;
@@ -695,7 +699,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 79 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -742,7 +746,7 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
-    const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
+    // const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
@@ -751,7 +755,7 @@ export function useStoryFuncs() {
     return {
         // setTypingBoxes,
         getAnim,
-        initReady,
+        // initReady,
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
@@ -774,7 +778,7 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
-        _getPageInitResolveRef,
+        // _getPageInitResolveRef,
         _showStory,
         _customizeStory,
         _isOnLocation,
@@ -822,8 +826,7 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        // bridge.exec(story.setTypingBoxes, typingBoxes, childLevel);
-        bridge.exec(story.initReady, childLevel);
+        // bridge.exec(story.initReady, childLevel);
         bridge.exec(story.recoverStoryOnPage, childLevel, typingBoxes);
     }
 

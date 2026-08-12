@@ -1813,7 +1813,7 @@
                 "from": "do_not_the_dog",
                 "content": "u r like in the top 10 worst cyberdivers oat and u r saying u can hack anything? Bruh wtf",
                 "timeToType": 4.5,
-                "isReplyDiff":-3
+                "isReplyDiff": -3
             }
         },
         "offset": "+=0.3"
@@ -1834,7 +1834,7 @@
                 "from": "buzzzzz09",
                 "content": "son",
                 "timeToType": 1.5,
-                "isReplyDiff":-5
+                "isReplyDiff": -5
             }
         },
         "offset": "+=0.1"
@@ -1845,7 +1845,7 @@
                 "from": "clanker_oil_stain",
                 "content": "bro is a poser lmao, proly don't even know what is sqli is lol",
                 "timeToType": 5,
-                "isReplyDiff":-6
+                "isReplyDiff": -6
             }
         },
         "offset": "+=0.3"
@@ -1898,7 +1898,7 @@
             "typingBoxId": 0
         },
         "offset": ">"
-    }, 
+    },
     {
         "storyline": {
             "content": "or something.",
@@ -1918,5 +1918,692 @@
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "10%",
+                    "width": "clamp(300px,87cqw,1000px)",
+                    "background-color": "transparent",
+                    "padding": "0",
+                    "z-index":20
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Alright, I need a plan. How am I gonna do that?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Brief search on phishing shows that hackers send fake login screens and people fall for them.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Why don't I do the same? Admin will click on the link and...well yeah, he'll probably suspect something.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Well, ummm...maybee ...uhhh.. I need to bait him!",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Like, I'll tell him that he won $300 in the giveaway and all he needs to do to collect it is to click on that link.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, that is fucking retarded, this is never gonna work, this is like the stupidest thing ever I could suggest.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Or what if",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I'll report to him some post which needs to be deleted, but it won't be an actual post, it will be a fake post! Admin will click on that to check it out",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/post/fake",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "25%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Admin clicks on the delete button",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/login",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "25%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "and suddenly it takes him to fake login screen with message like ur session is expired, sign in again",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/post/deleted",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "25%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Admin will login again, to finally delete this post and boom, his creds are mine.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Admin will see that the post was deleted, and he won't even know that his creds were stolen!",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "10%",
+                    "width": "clamp(300px,87cqw,1000px)",
+                    "backgroundColor": "transparent",
+                    "padding": "0",
+                    "z-index":20
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I'm a genius!",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Now I just need to figure out how to code all that.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Alright, first I gotta open vim. Fuck IDEs they are for pussies.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTerminalCommandAction": {
+                "command": "vim Post.tsx"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type 'vim Post.tsx' to open vim",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal/vim?file=Post.tsx",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 1,
+                "style": {
+                    "top": "18%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So uhhhhh, how do I create a page? I think I still remember something.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "vimTypeAction": {
+                "content": "import { type FC } from \"react\";\nimport styles from \"../scss/post.module.scss\";\nimport { getImageUrl } from \"../utils\";\nimport { SMEntry } from \"./SMEntry\";\nimport { Reactions } from \"./Reactions\";\nimport { useNavigate } from \"react-router\";\nimport type { IPost } from \"../backend/db\";\n\ninterface IPostProps {\n    id?:string\n    post:IPost\n    showAuthor:\"user\"|\"subforum\",\n    className?:string\n};\n\nexport const Post: FC<IPostProps> = (props) => {\n    let navagate = useNavigate();\n\n    const autor = props.showAuthor == \"subforum\" ? props.post.subforum : props.post.author;\n    return (\n        <div id={props.id} onclick={() => navagate(`/post/${props.id}`)} data-istransition=\"true\" className={`${styles.cardContainr} ${props.className}`}>\n            <SMEntry isNav name={autor} type={props.showAuthor} />\n            <h1 className={styles.titel}>{props.post.title}</h1>\n            <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.contant}</p>\n            {props.post.imageName ?\n                <div className={styles.postImgWrapper}>\n                    <img className={styles.postImg} src={getImageUrl(props.post.imageName)} />\n                </div>\n                : \"\"}\n            <Reactions likes={props.post.likes} comments={props.post.comments} views={props.post.views} />\n        </div>\n    );\n}"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type the code for Post.tsx in vim",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Ok, I actually forgot everything. I don't think this even works.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Anyway, I think I'll just ask AI.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "No, not for vibe coding, I'll just ask it for... you know ... general directions. Some boilerplate code to start with, you know.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "setVimContentAction": {
+                "content": "// ok here's a proper Post component for you, hope it works this time\n// — i added TypeScript types and fixed your event handler\nimport { type FC } from \"react\";\nimport styles from \"../scss/post.module.scss\";\nimport { SMEntry } from \"./SMEntry\";\nimport { Reactions } from \"./Reactions\";\nimport type { IPost } from \"../backend/db\";\n\ninterface IPostProps {\n    id?: string\n    post: IPost\n    showAuthor: \"user\" | \"subforum\",\n    className?: string\n};\n\nexport const Post: FC<IPostProps> = (props) => {\n    return (\n        <div id={props.id} onClick={() => navigate(`/post/${props.id}`)} data-istransition=\"true\" className={`${styles.cardContainer} ${props.className}`}>\n            <SMEntry isNav name={props.showAuthor == \"subforum\" ? props.post.subforum : props.post.author} type={props.showAuthor} />\n            <h1 className={styles.title}>{props.post.title}</h1>\n            <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.content}</p>\n            <Reactions likes={props.post.likes} comments={props.post.comments} views={props.post.views} />\n        </div>\n    );\n}"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Aight...this goes here...",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And first page done!",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "addParallelExec": {
+            "name": "exit-attempts",
+            "branches": [
+                [
+                    {
+                        "storyline": {
+                            "content": ":q",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "E37: No write since last change (add ! to override)",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "exit",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Not an editor command: exit",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": ":quit",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "E37: No write since last change (add ! to override)",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=0.8"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": ":wq",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 0,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Ok, how do I?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": 800,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fuck..uhhh...I forgot again...",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": 800,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fucking dumbass...",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": 800,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "uhhhh...here it is.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1,
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Not too hard huh? Now for the rest of them...",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "BLUR",
+            "options": {
+                "duration": 5,
+                "blurPx": 6,
+                "zIndex": 21
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Alright time to run this.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "setTerminalCommandAction": {
+                "command": "docker compose up --build",
+                "output": "[+] Building 1.9s (16/16) FINISHED\n => [internal] load local bake definitions                                                                         0.0s\n => => reading from stdin 1.20kB                                                                                   0.0s\n => [webapp internal] load build definition from Dockerfile                                                        0.0s\n => => transferring dockerfile: 777B                                                                               0.0s\n => [webapp internal] load metadata for docker.io/library/node:24-alpine                                           1.0s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0                                           0.3s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0-alpine                                 0.3s\n => [webapp internal] load .dockerignore                                                                           0.0s\n => => transferring context: 246B                                                                                  0.0s\n => [webapp final 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => => resolve mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => [webapp frontend 1/6] FROM docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => => resolve docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => [webapp internal] load build context                                                                           0.0s\n => => transferring context: 18.75kB                                                                               0.0s\n => [webapp backend 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => => resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => CACHED [webapp final 2/3] WORKDIR /app                                                                         0.0s\n => CACHED [webapp backend 2/7] WORKDIR /src/backend                                                               0.0s\n => CACHED [webapp backend 3/7] COPY ./fake_forum.Backend/fake_forum.Backend/fake_forum.Backend.csproj .          0.0s\n => CACHED [webapp backend 4/7] RUN dotnet restore \"fake_forum.Backend.csproj\"                                    0.0s\n => CACHED [webapp backend 5/7] COPY ./fake_forum.Backend .                                                       0.0s\n => CACHED [webapp backend 6/7] RUN dotnet publish \"/src/backend/fake_forum.Backend/fake_forum.Backend.csproj\"   0.0s\n => CACHED [webapp frontend 2/6] WORKDIR /src/frontend                                                             0.0s\n => CACHED [webapp frontend 3/6] COPY ./fake_forum-frontend/package*.json ./                                      0.0s\n => CACHED [webapp frontend 4/6] RUN npm install                                                                   0.0s\n => CACHED [webapp frontend 5/6] COPY ./fake_forum-frontend ./                                                    0.0s\n => CACHED [webapp frontend 6/6] RUN npm run build                                                                 0.0s\n => CACHED [webapp backend 7/7] COPY --from=frontend ./src/frontend/dist /app/wwwroot                              0.0s\n => CACHED [webapp final 3/3] COPY --from=backend ./app .                                                          0.0s\n => [webapp] exporting to image                                                                                    0.2s\n => => exporting layers                                                                                            0.0s\n => => exporting manifest sha256:6ef00b015f6a964a859fd8fdb36fca3e6d5d1ce0a64b43f7f168a7436686e268                  0.0s\n => => exporting config sha256:0587d35c29a73590b1b55b7c46925cd4503ab90c01be3ef0da9250e5cc0ab0db                    0.0s\n => => exporting attestation manifest sha256:8596439a208f4725bfdd96872bfcc977506fa8d9b552e09d5b3ca8ad1ca9ee72      0.0s\n => => exporting manifest list sha256:80d6a7b62bb91fc12a6afd76752d9efa2ef17b7673f54e31dec772ccc6606be2             0.0s\n => => naming to docker.io/library/fake_forum-webapp:latest                                                       0.0s\n => => unpacking to docker.io/library/fake_forum-webapp:latest                                                    0.0s\n => [webapp] resolving provenance for metadata file                                                                0.0s\n[+] Running 2/2\n ✔ fake_forum-webapp                 Built                                                                        0.0s\n ✔ Network fake_forum_app-network    Created                                                                      0.0s\n ✔ Container fake_forum-webapp-1     Started                                                                      0.8s"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type 'docker compose up --build' to run the server",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Aaaand im done! Now I just need to trick sillygoose228",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
     }
 ]

@@ -158,7 +158,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(174).stores({
+db.version(178).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -192,7 +192,7 @@ db.version(174).stores({
 	// }
 	await db.posts.clear();
 	response = await fetch(getJsonUrl("posts.json"));
-	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` }));
+	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` }));
 	await db.posts.bulkAdd(newPosts);
 
 	await db.subforums.clear();
@@ -216,7 +216,7 @@ export async function seedNew() {
 	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` })));
+	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
 	response = await fetch(getJsonUrl("subforums.json"));
 	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("chats.json"));
