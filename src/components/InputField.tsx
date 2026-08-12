@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import styles from "../scss/inputField.module.scss";
 import { Eye, EyeSlash } from "./Icons";
 interface IInputFieldProps {
@@ -14,6 +14,10 @@ interface IInputFieldProps {
     icon?: ReactNode;
     id?: string
     autocomplete?: boolean
+    cursorType?: "normal" | "terminal"
+    textarea?: boolean
+    rows?: number
+    resizable?: boolean
 };
 export type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -27,19 +31,44 @@ export type InputFieldHandle = {
 
 export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props, ref) => {
     const [errMsg, setErrMsg] = useState<string>("");
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
     const [type, setType] = useState<string>(props.type);
     const isFocused = useRef<boolean>(false);
     const placeholder = useRef<HTMLSpanElement>(null);
     const stringToType = useRef<string>("");
     const currTyped = useRef<number>(0);
+    const [caretText, setCaretText] = useState<string>("");
+    const [hasSelection, setHasSelection] = useState<boolean>(false);
+    const isMouseDown = useRef<boolean>(false);
+    const isTerminal = (props.cursorType ?? "normal") === "terminal";
+    const isTextarea = props.textarea ?? false;
+    const isResizable = props.resizable ?? false;
 
-    function onChange(event: ChangeEvent<HTMLInputElement>) {
+    const autoResize = useCallback(() => {
+        const el = inputRef.current;
+        if (!isTextarea || isResizable || !el)
+            return;
+        el.style.height = "auto";
+        el.style.height = `${el.scrollHeight}px`;
+    }, [isTextarea, isResizable]);
+
+    const updateCaretPosition = useCallback(() => {
+        const input = inputRef.current;
+        if (!input || !isTerminal || input.disabled)
+            return;
+        setHasSelection(input.selectionStart !== input.selectionEnd);
+        const caret = input.selectionStart ?? input.value.length;
+        setCaretText(input.value.substring(0, caret));
+    }, [isTerminal]);
+
+    function onChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         if (props.scripted) {
             return;
         }
         let value = event.target.value ?? "";
         setErrMsg("");
+        updateCaretPosition();
+        autoResize();
         if (stringToType.current != "") {
             event.preventDefault();
         }
@@ -56,8 +85,29 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         if (form) {
             form.addEventListener("reset", onReset);
         }
+        autoResize();
         return () => form?.removeEventListener("reset", onReset);
     }, []);
+
+    useEffect(() => {
+        const ready = document.fonts?.ready;
+        if (ready)
+            ready.then(() => {
+                updateCaretPosition();
+                autoResize();
+            }).catch(() => { });
+    }, [updateCaretPosition]);
+
+    useEffect(() => {
+        if (!isTextarea)
+            return;
+        const onWindowResize = () => {
+            updateCaretPosition();
+            autoResize();
+        };
+        window.addEventListener("resize", onWindowResize);
+        return () => window.removeEventListener("resize", onWindowResize);
+    }, [isTextarea, updateCaretPosition, autoResize]);
 
     useImperativeHandle(ref, () => ({
         setError(msg: string) {
@@ -99,6 +149,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             placeholder.current.style.display = "none";
         }
         isFocused.current = true;
+        updateCaretPosition();
         if (props.onFocus)
             props.onFocus();
     }
@@ -115,9 +166,37 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     function onReset() {
         if (!isFocused.current)
             placeholder.current!.style.display = "";
+        autoResize();
     }
 
+    function onSelect() {
+        updateCaretPosition();
+    }
+
+    function onKeyUp() {
+        updateCaretPosition();
+    }
+
+    function onClick() {
+        updateCaretPosition();
+    }
+
+    function onMouseDown() {
+        isMouseDown.current = true;
+    }
+    function onMouseUp() {
+        isMouseDown.current = false;
+    }
+
+    function onMouseMove() {
+        if (isMouseDown.current) {
+            updateCaretPosition();
+        }
+    }
+
+
     function onKeyDown(e: React.KeyboardEvent) {
+        updateCaretPosition();
         if (!props.scripted || e.key == "Enter")
             return;
         e.preventDefault();
@@ -127,9 +206,12 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             currTyped.current = Math.max(currTyped.current - 1, 0);
         else
             currTyped.current = Math.min(currTyped.current + 1, stringToType.current.length);
+        const expectedString=stringToType.current.substring(0, currTyped.current)
         setTimeout(() => {
-            inputRef.current!.value = stringToType.current.substring(0, currTyped.current);
-        }, 0);
+            inputRef.current!.value = expectedString;
+            updateCaretPosition();
+            autoResize();
+        }, 0);//trick for mobile, so last typed letter doesn't appear in input, only scripted string
         if (props.onChange) {
             props.onChange(inputRef.current?.value ?? "");
             return;
@@ -137,26 +219,58 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     }
 
     const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />
-    const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""}`;
+    const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""} ${isTerminal ? styles.terminal : ""} ${isTextarea ? styles.textarea : ""} ${isResizable ? styles.resizable : ""}`;
     return (
         <div className={styles.container} >
             <div className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
-                    <input
-                        onKeyDown={onKeyDown}
-                        ref={inputRef}
-                        autoComplete={props.autocomplete ? "on" : "off"}
-                        onChange={onChange}
-                        onFocus={onInputFocus}
-                        onBlur={onInputBlur}
-                        type={type}
-                        name={props.name}
-                        className={styles.inputField}
-                    />
+                    {isTextarea ?
+                        <textarea
+                            onKeyDown={onKeyDown}
+                            onKeyUp={onKeyUp}
+                            onClick={onClick}
+                            onSelect={onSelect}
+                            onMouseMove={onMouseMove}
+                            onMouseDown={onMouseDown}
+                            onMouseUp={onMouseUp}
+                            ref={inputRef as React.RefObject<HTMLTextAreaElement | null>}
+                            autoComplete={props.autocomplete ? "on" : "off"}
+                            onChange={onChange}
+                            onFocus={onInputFocus}
+                            onBlur={onInputBlur}
+                            name={props.name}
+                            className={styles.inputField}
+                            spellCheck={false}
+                            rows={props.rows}
+                        />
+                        :
+                        <input
+                            onKeyDown={onKeyDown}
+                            onKeyUp={onKeyUp}
+                            onClick={onClick}
+                            onSelect={onSelect}
+                            onMouseMove={onMouseMove}
+                            onMouseDown={onMouseDown}
+                            onMouseUp={onMouseUp}
+                            ref={inputRef as React.RefObject<HTMLInputElement | null>}
+                            autoComplete={props.autocomplete ? "on" : "off"}
+                            onChange={onChange}
+                            onFocus={onInputFocus}
+                            onBlur={onInputBlur}
+                            type={type}
+                            name={props.name}
+                            className={styles.inputField}
+                            spellCheck={false}
+                        />
+                    }
+                    {isTerminal ? <div className={styles.caretOverlay} aria-hidden>
+                        <span className={styles.mirror}>{caretText}</span>
+                        {hasSelection ? "" : <span className={styles.blockCursor} />}
+                    </div> : ""}
                 </div>
-                {props.type == "password" ? passwordEye : ""}
+                {props.type == "password" && !isTextarea ? passwordEye : ""}
             </div>
             {errMsg != "" ?
                 <span className={styles.errorMsg}>{errMsg}</span>

@@ -1,0 +1,113 @@
+@use "./colors.scss" as colors;
+
+.editorArea {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: black;
+    padding: 6px 0;
+    scrollbar-width: thin;
+    scrollbar-color: colors.$tertiary-color black;
+    box-sizing: border-box;
+}
+
+.buffer {
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
+    line-height: 1.5;
+    padding:10px;
+}
+
+.lineText {
+    color: colors.$secondary-color;
+}
+
+.cursorCell {
+    background-color: colors.$secondary-color;
+    color: black;
+    animation: blink 1s step-end infinite;
+    display: inline-block;
+}
+
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.bufferInputRow {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.bufferInput {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: colors.$secondary-color;
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
+    white-space: pre-wrap; 
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.bufferInput:hover {
+    background-color: transparent;
+}
+
+.bufferInput:focus-within {
+    border: none;
+    box-shadow: none;
+}
+
+.bufferInput input {
+    caret-color: transparent;
+}
+
+.line {
+    display: flex;
+    white-space: pre;
+    // padding: 0 10px;
+}
+
+.tilde {
+    color: colors.$tertiary-color;
+}
+
+.tildeFill {
+    padding-bottom: 10px;
+}
+
+.statusBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 8px;
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(0.75rem, 2.8cqw, 0.9rem);
+    background-color: colors.$system-app-actions-bg;
+    color: colors.$tertiary-color;
+    border-top: 1px solid colors.$system-app-border;
+}
+
+.insertMode {
+    color: colors.$secondary-color;
+    font-weight: bold;
+}
+
+.commandLineRow {
+    background-color: black;
+    border-top: 1px solid colors.$system-app-border;
+}
+
+.commandLineBox {
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
+    line-height: 1.3;
+    color: colors.$secondary-color;
+    padding: 4px 8px;
+}

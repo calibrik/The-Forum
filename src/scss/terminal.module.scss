@@ -1,0 +1,73 @@
+@use "./colors.scss" as colors;
+
+.body {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.output {
+    flex: 1 1 0;
+    overflow-y: auto;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: colors.$tertiary-color black;
+    box-sizing: border-box;
+}
+
+.outputLine {
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+    line-height: 1.4;
+    color: colors.$secondary-color;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.promptRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.promptPrefix {
+    display: flex;
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+    white-space: nowrap;
+}
+
+.promptUser {
+    color: #00d26a;
+}
+
+.promptPath {
+    color: #4b8bff;
+}
+
+.promptDollar {
+    color: colors.$secondary-color;
+}
+
+.promptRow .promptInput {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: colors.$secondary-color;
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+}
+
+.promptRow .promptInput:hover {
+    background-color: transparent;
+}
+
+.promptRow .promptInput:focus-within {
+    border: none;
+    box-shadow: none;
+}
+
+

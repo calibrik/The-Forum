@@ -20,6 +20,7 @@ import gsap from 'gsap';
 import { Notepad } from './pages/Notepad';
 import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
+import { Vim } from './pages/Vim';
 import { TextPlugin } from 'gsap/all';
 import { UserProvider } from './providers/UserAuth';
 import { StoryProvider } from './providers/StoryProvider';
@@ -69,6 +70,7 @@ export const appRoutes: RouteObject[] = [
 				children: [
 					{ path: "/start", Component: Notepad },
 					{ path: "/terminal", Component: Terminal },
+					{ path: "/terminal/vim", Component: Vim },
 				]
 			},
 		]
