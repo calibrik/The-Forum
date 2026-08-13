@@ -20,7 +20,7 @@ interface IStoryHook {
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) => void
     createUser: (nickname: string, password: string) => Promise<void>
-    goBackHint: (clickedId: string) => void,
+    goBackwardHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
@@ -51,8 +51,6 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
         return ["header-search", ""];
     },
     "chat": (location, targetLocation, mismatchedLevel) => {
-        if (location[1] == "post")
-            return ["back-text"];
         if (mismatchedLevel == 2) {
             if (location.length >= 3)
                 return ["back-text"];
@@ -293,7 +291,7 @@ export function useHints() {
         bridge.exec(hint, currHint.current[currIndex.current]);
     }
 
-    function goBackHint(clickedId: string) {
+    function goBackwardHint(clickedId: string) {
         if (currHint.current.length > 1 && clickedId == currHint.current[currIndex.current]) {
             removeCurrHint();
             hint(currHint.current[--currIndex.current]);
@@ -314,7 +312,7 @@ export function useHints() {
     const _getisLegitStoryHint = process.env.NODE_ENV == 'test' ? () => isLegitStoryHint : undefined;
     const _hint = process.env.NODE_ENV == 'test' ? hint : undefined;
 
-    return { hintNavPath, goBackHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
+    return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
 }
 
 export interface IChatHandle {
@@ -763,7 +761,7 @@ export function useStoryFuncs() {
         getMessageBuffer: chatFunc.getMessageBuffer,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
-        goBackHint: hintFunc.goBackHint,
+        goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
         _resetAnims,

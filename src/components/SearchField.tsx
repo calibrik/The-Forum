@@ -62,7 +62,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
          if (!e.currentTarget.contains(e.relatedTarget)) {
             setIsFocused(false);
             if (suggestionHint.current)
-                story.goBackHint("");
+                story.goBackwardHint("");
         }
     }
 

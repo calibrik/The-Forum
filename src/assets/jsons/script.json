@@ -1962,12 +1962,21 @@
     },
     {
         "storyline": {
-            "content": "Alright, I need a plan. How am I gonna do that?",
+            "content": "Alright, I need a plan.",
             "speed": 50,
             "delim": "",
             "typingBoxId": 0
         },
         "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "How am I gonna do that?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -1980,7 +1989,7 @@
     },
     {
         "storyline": {
-            "content": "Why don't I do the same? Admin will click on the link and...well yeah, he'll probably suspect something.",
+            "content": "Why don't I do the same?",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -1989,12 +1998,94 @@
     },
     {
         "storyline": {
-            "content": "Well, ummm...maybee ...uhhh.. I need to bait him!",
+            "content": "Admin will click on the link and",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
         "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "well yeah, he'll probably suspect something.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    
+    {
+        "storyline": {
+            "content": "Well, ummm",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "maybee",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "uhhh",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I need to bait him!",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
     },
     {
         "storyline": {
@@ -2007,7 +2098,7 @@
     },
     {
         "storyline": {
-            "content": "Yeah, that is fucking retarded, this is never gonna work, this is like the stupidest thing ever I could suggest.",
+            "content": "Yeah, this is fucking retarded, this is never gonna work, this is like the stupidest thing ever I could suggest.",
             "speed": 50,
             "delim": "\n\n",
             "typingBoxId": 0
@@ -2034,13 +2125,21 @@
     },
     {
         "storyline": {
-            "content": "I'll report to him some post which needs to be deleted, but it won't be an actual post, it will be a fake post! Admin will click on that to check it out",
+            "content": "I'll report to him some post which needs to be deleted, but it won't be an actual post, it will be a fake post!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 0
         },
         "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Admin will click on that to check it out.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
     },
     {
         "action": {
@@ -2052,7 +2151,7 @@
                 }
             }
         },
-        "offset": ">"
+        "offset": "+=1.5"
     },
     {
         "effect": {
@@ -2081,12 +2180,28 @@
     },
     {
         "storyline": {
-            "content": "Admin clicks on the delete button",
+            "content": "Then he'll click on the delete button.",
             "speed": 50,
             "delim": "",
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "post-menu-dots-text",
+                    "delete-post-button-text"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "isActionAwait": true,
+        "hint": "Click the three dots on the fake post and press 'Delete'",
         "offset": ">"
     },
     {
@@ -2154,14 +2269,13 @@
             "content": "Admin will login again, to finally delete this post and boom, his creds are mine.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 0
         },
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Admin will see that the post was deleted, and he won't even know that his creds were stolen!",
+            "content": "He will see that the post was deleted, so he won't suspect anything, at least for the time being.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
@@ -2202,7 +2316,7 @@
                 "style": {
                     "top": "10%",
                     "width": "clamp(300px,87cqw,1000px)",
-                    "backgroundColor": "transparent",
+                    "background-color": "transparent",
                     "padding": "0",
                     "z-index":20
                 }
@@ -2215,28 +2329,35 @@
             "content": "I'm a genius!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 0
         },
-        "offset": "+=0.5"
+        "offset": ">"
     },
     {
         "storyline": {
             "content": "Now I just need to figure out how to code all that.",
             "speed": 50,
-            "delim": " ",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "delim": "\n\n",
+            "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=1.5"
     },
     {
         "storyline": {
-            "content": "Alright, first I gotta open vim. Fuck IDEs they are for pussies.",
+            "content": "Alright, first I gotta open vim.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Fuck IDEs, they are for pussies.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.3"
     },

@@ -217,7 +217,7 @@ describe("useHints", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
             result.current.hintNavPath({ level: 1, where: "/chat" });
-            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
+            expect(result.current._getCurrHint?.().current).toEqual(["menu-icon-text", "chat-menu"]);
         });
 
         test("hintNavPath (/post/p4 level 2 from /post/p5)", async () => {
@@ -277,7 +277,7 @@ describe("useHints", () => {
             expect(result.current._getCurrIndex?.().current).toEqual(0);
             result.current.goForwardHint("menu-icon-text");
             expect(result.current._getCurrIndex?.().current).toEqual(1);
-            result.current.goBackHint("chat-menu");
+            result.current.goBackwardHint("chat-menu");
             expect(result.current._getCurrIndex?.().current).toEqual(0);
         });
     });

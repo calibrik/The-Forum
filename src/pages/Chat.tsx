@@ -171,7 +171,7 @@ export const Chat: FC<IChatProps> = () => {
 
     function onInputChange() {
         if (!inputRef.current || !inputRef.current.isStringTyped())
-            story.goBackHint("chat-send");
+            story.goBackwardHint("chat-send");
         else
             story.goForwardHint("chat-input")
     }
