@@ -88,6 +88,7 @@ export interface INavigateAction {
 export interface ISaveAction {
 	dest: IDestination
 	hintActionPos?: number
+	lastNavPos?: number
 }
 
 export interface ISetTextBoxStyleAction {
@@ -150,6 +151,19 @@ export interface IDestination {
 	from?:IDestination
 }
 
+function withLastNavPos(script: IScriptLine[]): IScriptLine[] {
+	let lastNavActionId: number | undefined = undefined;
+	return script.map((v, i) => {
+		const id = i + 1;
+		const scl = { ...v, id };
+		if (scl.action?.navigateAction)
+			lastNavActionId = id;
+		if (scl.action?.saveAction && lastNavActionId != undefined)
+			return { ...scl, action: { ...scl.action, saveAction: { ...scl.action.saveAction, lastNavPos: lastNavActionId - id } } };
+		return scl;
+	});
+}
+
 const db = new Dexie("TheForumDB") as Dexie & {
 	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
@@ -159,7 +173,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(185).stores({
+db.version(188).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -172,7 +186,7 @@ db.version(185).stores({
 		return;
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
-	const newScript: IScriptLine[] = (await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
+	const newScript: IScriptLine[] = withLastNavPos(await response.json() as IScriptLine[]);
 	await db.story.bulkAdd(newScript);
 	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
 	// if (users.length != 0) {
@@ -211,7 +225,7 @@ db.version(185).stores({
 
 export async function seedNew() {
 	let response = await fetch(getJsonUrl("script.json"));
-	await db.story.bulkAdd((await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.story.bulkAdd(withLastNavPos(await response.json() as IScriptLine[]));
 	response = await fetch(getJsonUrl("users.json"));
 	let seed = 0;
 	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));

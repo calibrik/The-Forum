@@ -65,6 +65,8 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
     },
 }
 
+const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page.";
+
 export interface IEffectsOptions {
     typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
     duration?: number,
@@ -415,6 +417,7 @@ export function useStoryFuncs() {
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
     const locationRef = useRef<IDestination>(undefined);//current location for the story
+    const lastNavHint = useRef<string>("");//last navigation hint (from navigate false) to restore in the side menu when the user navigates away from the target page
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
@@ -441,6 +444,7 @@ export function useStoryFuncs() {
         }
         chatFunc.onNavigateAway();
         hintFunc.resetHint();
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: lastNavHint.current }));
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
             isStoryRecovered.current = false;
@@ -521,7 +525,11 @@ export function useStoryFuncs() {
             let hintScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.hintActionPos));
             hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
         }
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl.hint ?? "" }));
+        if (scl.action?.saveAction?.lastNavPos != undefined) {
+            let navScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.lastNavPos));
+            lastNavHint.current = navScl?.hint ?? NAV_HINT_FALLBACK;
+        }
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl.hint ?? lastNavHint.current }));
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
         if (!locationRef.current) {
@@ -667,6 +675,8 @@ export function useStoryFuncs() {
         const ticket = loopTicket.current;
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
+        let navPending = false;
+        let navHint:string|undefined = undefined;
         window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: "" }));
         while ((!scl || !scl.isActionAwait) && !scl?.action?.navigateAction?.navigate) {
             scl = await db.story.get(id);
@@ -676,16 +686,22 @@ export function useStoryFuncs() {
             if (!scl)
                 break;
             await addScriptlineToTimeline(scl, master);
+            if (scl.action?.navigateAction) {
+                navPending = true;
+                navHint = scl.hint;
+            }
         }
         if (!isMounted.current || ticket != loopTicket.current)
             return;
+        if (navPending)
+            lastNavHint.current = navHint ?? NAV_HINT_FALLBACK;
         masterRef.current = master;
         console.log("play anim")
         master.play();
         await master;
         currStoryId.current = id;
         masterRef.current = undefined;
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl?.hint ?? "" }));
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: navPending ? lastNavHint.current : (scl?.hint ?? "") }));
     });
 
     const getAnim = contextSafe((anim: string, options?: IEffectsOptions) => {
@@ -698,7 +714,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 79 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -745,6 +761,7 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
+    const _getLastNavHint = process.env.NODE_ENV == 'test' ? () => lastNavHint : undefined;
     // const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
@@ -769,6 +786,7 @@ export function useStoryFuncs() {
         _processAction,
         _getIsStoryNavRef,
         _getLocationRef,
+        _getLastNavHint,
         _getTypingBoxes,
         _getChatHook,
         _getHintHook,

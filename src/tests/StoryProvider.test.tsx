@@ -292,9 +292,16 @@ describe("useStoryFuncs", () => {
             result.current._getIsStoryNavRef!().current = true;
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
+            expect(hintDetails).toEqual([]);
+            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
         test("no reset anims if on target location on sufficient level", async () => {
@@ -304,9 +311,16 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
-            result.current._resetAnims?.();
+            await result.current._resetAnims?.();
+            expect(hintDetails).toEqual([]);
+            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.length).toEqual(1);
         });
         test("reset anims (no active anim, no left from target)", async () => {
@@ -316,11 +330,18 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
+            expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
+            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
             expect(hintResetSpy).toHaveBeenCalledTimes(1);
@@ -332,6 +353,11 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             result.current._getSavedStoryId!().current = 10;
@@ -339,6 +365,8 @@ describe("useStoryFuncs", () => {
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
+            expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
+            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
             expect(hintResetSpy).toHaveBeenCalledTimes(1);
@@ -351,6 +379,11 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             const masterRef = result.current._getMasterRef!();
@@ -358,6 +391,8 @@ describe("useStoryFuncs", () => {
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
             await result.current._resetAnims?.();
+            expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
+            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
             expect(hintResetSpy).toHaveBeenCalledTimes(1);
@@ -370,10 +405,17 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
             locationRef!.current = { where: "/user/main_hero", level: 2 };
+            const lastNavHintRef = result.current._getLastNavHint?.();
+            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
             const tl = result.current.getAnim("COLOR_OVERLAY", { duration: 0.05, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true })!;
             tl.progress(1);
             const gsapSetSpy = vi.spyOn(gsap, "set");
             await result.current._resetAnims?.();
+            expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
+            window.removeEventListener("storyHintText", onHintText);
             const calls = gsapSetSpy.mock.calls.filter((c) => String(c[0]).includes("#effectOverlay"));
             expect(calls.length).toBeGreaterThan(0);
             expect(String(calls[calls.length - 1][0])).not.toContain("#effectOverlay1");
@@ -1278,7 +1320,14 @@ describe("script checks", () => {
     test("every isActionAwait scriptline in the script should have a hint", async () => {
         await seedNew();
         const scriptlines = await db.story.toArray();
-        const awaits = scriptlines.filter(s => s.isActionAwait && s.hint == undefined);
-        expect(awaits.length).toBe(0);
+        const unresolved = scriptlines.filter(s => {
+            if (!s.isActionAwait || s.hint != undefined)
+                return false;
+            const pos = s.action?.saveAction?.lastNavPos;//nav hints moved onto the nav action lines, hint-less awaiting saves resolve them by lastNavPos
+            if (pos == undefined)
+                return true;
+            return !scriptlines.find(l => l.id == s.id + pos)?.hint;
+        });
+        expect(unresolved.length).toBe(0);
     });
 });
