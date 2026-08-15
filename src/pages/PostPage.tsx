@@ -14,6 +14,19 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost, type ISubforum } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+
+const FAKE_POST: IPost = {
+    id: "fake",
+    author: "#main_hero",
+    subforum: "zero",
+    title: "fuck zero and spearhead, all my homies hate spearhead",
+    content: "zero is mid, spearhead is a scam studio ran by actual clowns. anyone who likes this game has zero iq. mods are powertripping losers who ban anyone with an opinion. delete this post, i dare u.",
+    likes: 0,
+    comments: 0,
+    views: 3,
+    commentsDetailed: []
+};
+
 interface IPostPageProps { };
 interface IComment {
     comment?: string
@@ -45,7 +58,9 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             navigate("/")
             return;
         }
-        const post = await sanitizeDbFetch(await db.posts.where("id").equals(id??"").first());
+        const post = id === "fake"
+            ? { ...FAKE_POST, author: userState.userLoggedIn.current || "main_hero" }
+            : await sanitizeDbFetch(await db.posts.where("id").equals(id??"").first());
         if (!post) {
             navigate("/404",{replace:true})
             return;
@@ -98,7 +113,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         <div className={styles.container}>
             <div className={styles.postContainer}>
                 <div className={styles.returnContainer}>
-                    <BackButton id="back-text" />
+                    <BackButton id="back-text" isActive={id !== "fake"} />
                     <img onClick={() => navigate(`/subforum/${post?.subforum}`)} src={getImageUrl(subforumPfp??"placeholder.png")} alt="" className={styles.subforumPfp} />
                     <div className={styles.authorContainer}>
                         <span onClick={() => navigate(`/subforum/${post?.subforum}`)} className={styles.subforumName}>f/{post?.subforum}</span>

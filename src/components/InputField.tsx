@@ -7,6 +7,7 @@ interface IInputFieldProps {
     placeholder?: string;
     className?: string;
     scripted?: boolean;
+    disabled?: boolean;
     onChange?: (value: string) => void | Promise<void>
     onSuggestionClick?: (name: string) => void | Promise<void>
     onFocus?: () => void | Promise<void>
@@ -244,6 +245,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                             className={styles.inputField}
                             spellCheck={false}
                             rows={props.rows}
+                            disabled={props.disabled}
                         />
                         :
                         <input
@@ -263,6 +265,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                             name={props.name}
                             className={styles.inputField}
                             spellCheck={false}
+                            disabled={props.disabled}
                         />
                     }
                     {isTerminal ? <div className={styles.caretOverlay} aria-hidden>

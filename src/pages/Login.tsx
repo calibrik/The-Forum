@@ -2,7 +2,7 @@ import { useEffect, useRef, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
@@ -24,21 +24,25 @@ export const Login: FC<ILoginProps> = (_) => {
     const userState = useUserState();
     const passwordForgotBox = useRef<ITypingTextBoxHandle>(null);
     const storyTextBox = useRef<ITypingTextBoxHandle>(null);
+    const usernameTypingBox = useRef<ITypingTextBoxHandle>(null);
+    const passwordTypingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
     const passwordTl = useRef<gsap.core.Timeline>(undefined);
     const { contextSafe } = useGSAP();
     const story = useStory();
     const onSubmitRunning = useRef<boolean>(false);
+    const [searchParams] = useSearchParams();
+    const isExpired = searchParams.get("expired") === "true";
 
     useEffect(() => {
-        storyInit(1, [storyTextBox]);
+        storyInit(1, [storyTextBox, usernameTypingBox, passwordTypingBox]);
     }, []);
 
     const onSubmit=contextSafe(async (event: React.FormEvent<HTMLFormElement>) =>{
-        if (onSubmitRunning.current)
+        event.preventDefault();
+        if (isExpired || onSubmitRunning.current)
             return;
         onSubmitRunning.current = true;
-        event.preventDefault();
         if (nicknameInputRef.current?.getError() !== "" || passwordInputRef.current?.getError() !== "")
             return;
         const formData = new FormData(event.currentTarget);
@@ -110,9 +114,16 @@ export const Login: FC<ILoginProps> = (_) => {
             <div className={styles.loginSignupContainer}>
                 <form className={styles.card} onSubmit={onSubmit}>
                     <h1 className={styles.title}>Login</h1>
+                    {isExpired ? <p className={styles.expiredMessage}>Your session has expired, please login again</p> : ""}
                     <div className={styles.inputsContainer}>
-                        <InputField autocomplete onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" className={styles.input} />
-                        <InputField autocomplete onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder="Password" className={styles.input} />
+                        <div className={styles.inputTypingWrapper}>
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={isExpired?"":"Nickname"} className={styles.input} />
+                            <TypingTextBox ref={usernameTypingBox} className={styles.inputTypingBox} type="normal" />
+                        </div>
+                        <div className={styles.inputTypingWrapper}>
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={isExpired?"":"Password"} className={styles.input} />
+                            <TypingTextBox ref={passwordTypingBox} className={styles.inputTypingBox} type="normal" />
+                        </div>
                     </div>
                     <div className={styles.forgotPasswordContainer}>
                         <a className={styles.link} onClick={onPasswordForgot}>Forgot password or nickname?</a>

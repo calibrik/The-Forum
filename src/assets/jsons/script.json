@@ -1954,7 +1954,7 @@
                     "width": "clamp(300px,87cqw,1000px)",
                     "background-color": "transparent",
                     "padding": "0",
-                    "z-index":20
+                    "z-index": 20
                 }
             }
         },
@@ -2023,7 +2023,6 @@
         },
         "offset": ">"
     },
-    
     {
         "storyline": {
             "content": "Well, ummm",
@@ -2209,7 +2208,7 @@
             "navigateAction": {
                 "navigate": true,
                 "dest": {
-                    "where": "/login",
+                    "where": "/login?expired=true",
                     "level": 1
                 }
             }
@@ -2231,13 +2230,42 @@
     },
     {
         "storyline": {
-            "content": "and suddenly it takes him to fake login screen with message like ur session is expired, sign in again",
+            "content": "And suddenly it takes him to fake login screen with message like ur session is expired, sign in again.",
             "speed": 50,
             "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So he will try to sign in.",
+            "speed": 50,
+            "delim": " ",
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
-        "offset": ">"
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "sillygoose228",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1,
+            "hideCursorAfter": true
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "•••••••••••",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 2,
+            "hideCursorAfter": true
+        },
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -2249,7 +2277,7 @@
                 }
             }
         },
-        "offset": ">"
+        "offset": "+=2"
     },
     {
         "action": {
@@ -2266,7 +2294,7 @@
     },
     {
         "storyline": {
-            "content": "Admin will login again, to finally delete this post and boom, his creds are mine.",
+            "content": "And boom, his creds are mine.",
             "speed": 50,
             "delim": "",
             "typingBoxId": 0
@@ -2318,7 +2346,7 @@
                     "width": "clamp(300px,87cqw,1000px)",
                     "background-color": "transparent",
                     "padding": "0",
-                    "z-index":20
+                    "z-index": 20
                 }
             }
         },
@@ -2357,7 +2385,7 @@
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },

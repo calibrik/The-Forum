@@ -112,3 +112,40 @@
     font-size:clamp(1rem, 3.8cqw, 1.2rem);
     z-index: 18 !important;
 }
+
+.expired-message {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    color: colors.$secondary-color;
+    border: 1px solid colors.$primary-color;
+    background-color: rgba(colors.$primary-color, 0.5);
+    padding: 15px 8px;
+    font-size: clamp(0.8rem, 4.1cqw, 1rem);
+    margin: 0;
+}
+
+.input-typing-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-typing-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+    pointer-events: none;
+    box-sizing: border-box;
+    font-family: Roboto;
+    font-size: clamp(0.75rem, 3.9cqw, 1.2rem);
+    color: colors.$input-text-color;
+    background-color: transparent;
+    padding: 10px 8px;
+    line-height: 1.2;
+    z-index: 1;
+}

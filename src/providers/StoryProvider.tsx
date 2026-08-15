@@ -612,7 +612,8 @@ export function useStoryFuncs() {
                 content: stl.content,
                 speed: stl.speed,
                 delim: stl.delim,
-                clearAfter: stl.clearAfter
+                clearAfter: stl.clearAfter,
+                hideCursorAfter: stl.hideCursorAfter
             }), scl.offset);
         }
 
