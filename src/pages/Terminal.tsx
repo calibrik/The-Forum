@@ -1,61 +1,122 @@
-import type { FC } from "react";
-import styles from "../scss/systemApp.module.scss";
+import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
-interface ITerminalProps { };
+import { InputField, type InputFieldHandle } from "../components/InputField";
+import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { useStoryInit } from "../providers/StoryProvider";
+import { useUserState } from "../providers/UserAuth";
+import { useNavigate } from "react-router";
+import systemStyles from "../scss/systemApp.module.scss";
+import styles from "../scss/terminal.module.scss";
 
-export const Terminal: FC<ITerminalProps> = (_) => {
+type HistoryEntry =
+    | { type: "cmd"; command: string }
+    | { type: "out"; text: string };
+
+export const Terminal: FC = () => {
+    const inputRef = useRef<InputFieldHandle>(null);
+    const outputRef = useRef<HTMLDivElement>(null);
+    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const storyInit = useStoryInit();
+    const userState = useUserState();
+    const navigate = useNavigate();
+    const [history, setHistory] = useState<HistoryEntry[]>([]);
+    const [objectiveHint, setObjectiveHint] = useState<string>("");
+    const expectedCommand = useRef<string>("");
+    const expectedOutput = useRef<string>("");
+
+    const username = userState.userLoggedIn.current || "guest";
+    const userPart = `${username}@the-forum`;
+    const pathPart = ":~";
+    const dollarPart = "$";
+
+    function init() {
+        if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
+            navigate("/");
+        }
+    }
+
+    useEffect(() => {
+        storyInit(1, [typingBox], init);
+    }, []);
+
+    useEffect(() => {
+        function onStoryHintText(e: Event) {
+            setObjectiveHint((e as CustomEvent<string>).detail);
+        }
+        window.addEventListener("storyHintText", onStoryHintText);
+        return () => {
+            window.removeEventListener("storyHintText", onStoryHintText);
+        };
+    }, []);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
+
+    useEffect(() => {
+        outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
+    }, [history]);
+
+    function onSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (!inputRef.current)
+            return;
+        const cmd = inputRef.current.getInput();
+        e.currentTarget.reset();
+        if (cmd === "")
+            return;
+        const expectedCmd = expectedCommand.current;
+        let output: string;
+        if (cmd === "help") {
+            output = objectiveHint !== ""
+                ? `Current objective: ${objectiveHint}`
+                : "No current objective.";
+        }
+        else if (expectedCmd !== "" && cmd === expectedCmd) {
+            output = expectedOutput.current;
+        }
+        else {
+            output = `bash: ${cmd}: command not found`;
+        }
+        setHistory(h => [...h, { type: "cmd", command: cmd }, { type: "out", text: output }]);
+    }
+
     return (
-        <div className={styles.container}>
-            <div className={styles.appContainer}>
-                <div className={styles.headerDiv}>
-                    <TerminalIcon className={styles.icon} />
-                    <span className={styles.appLabel}>Terminal</span>
-                </div>
-                <div className={styles.contentDiv}>
-                    <p className={styles.contentTerminal}>
-                        {`root@97fc757e03d9:/home/ctf# apt update&&apt upgrade -y
-Hit:1 http://deb.debian.org/debian trixie InRelease
-Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
-Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
-Get:4 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [71.4 kB]
-Fetched 162 kB in 0s (1260 kB/s)
-4 packages can be upgraded. Run 'apt list --upgradable' to see them.
-Upgrading:
-  libssl3t64  linux-libc-dev  openssl  openssl-provider-legacy
-
-Summary:
-  Upgrading: 4, Installing: 0, Removing: 0, Not Upgrading: 0
-  Download size: 6909 kB
-  Space needed: 16.4 kB / 989 GB available
-
-Get:1 http://deb.debian.org/debian-security trixie-security/main amd64 openssl-provider-legacy amd64 3.5.1-1+deb13u1 [307 kB]
-Get:2 http://deb.debian.org/debian-security trixie-security/main amd64 libssl3t64 amd64 3.5.1-1+deb13u1 [2437 kB]
-Get:3 http://deb.debian.org/debian-security trixie-security/main amd64 linux-libc-dev all 6.12.48-1 [2671 kB]
-Get:4 http://deb.debian.org/debian-security trixie-security/main amd64 openssl amd64 3.5.1-1+deb13u1 [1494 kB]
-Fetched 6909 kB in 0s (23.6 MB/s)
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontEnd/Dialog.pm line 79, <STDIN> line 4.)
-debconf: falling back to frontend: Readline
-(Reading database ... 28243 files and directories currently installed.)
-Preparing to unpack .../openssl-provider-legacy_3.5.1-1+deb13u1_amd64.deb ...
-Unpacking openssl-provider-legacy (3.5.1-1+deb13u1) over (3.5.1-1) ...
-Setting up openssl-provider-legacy (3.5.1-1+deb13u1) ...
-(Reading database ... 28243 files and directories currently installed.)
-Preparing to unpack .../libssl3t64_3.5.1-1+deb13u1_amd64.deb ...
-Unpacking libssl3t64:amd64 (3.5.1-1+deb13u1) over (3.5.1-1) ...
-Setting up libssl3t64:amd64 (3.5.1-1+deb13u1) ...
-(Reading database ... 28243 files and directories currently installed.)
-Preparing to unpack .../linux-libc-dev_6.12.48-1_all.deb ...
-Unpacking linux-libc-dev (6.12.48-1) over (6.12.43-1) ...
-Preparing to unpack .../openssl_3.5.1-1+deb13u1_amd64.deb ...
-Unpacking openssl (3.5.1-1+deb13u1) over (3.5.1-1) ...
-Setting up linux-libc-dev (6.12.48-1) ...
-Setting up openssl (3.5.1-1+deb13u1) ...
-Processing triggers for libc-bin (2.41-12) ...
-root@97fc757e03d9:/home/ctf#`}
-                    </p>
+        <>
+            <TypingTextBox ref={typingBox} type="terminal" />
+            <div className={systemStyles.container}>
+                <div className={systemStyles.appContainer}>
+                    <div className={systemStyles.headerDiv}>
+                        <TerminalIcon className={systemStyles.icon} />
+                        <span className={systemStyles.appLabel}>Terminal</span>
+                    </div>
+                    <div className={styles.body}>
+                        <div ref={outputRef} className={styles.output}>
+                            <div className={styles.outputLine}>Type "help" to find out the current objective.</div>
+                            {history.map((entry, index) => (
+                                entry.type === "cmd" ? (
+                                    <div key={index} className={styles.outputLine}>
+                                        <span className={styles.promptUser}>{userPart}</span>
+                                        <span className={styles.promptPath}>{pathPart}</span>
+                                        <span className={styles.promptDollar}>{dollarPart}</span>
+                                        <span>{" "}{entry.command}</span>
+                                    </div>
+                                ) : (
+                                    <div key={index} className={styles.outputLine}>{entry.text}</div>
+                                )
+                            ))}
+                            <form className={styles.promptRow} onSubmit={onSubmit}>
+                                <span className={styles.promptPrefix}>
+                                    <span className={styles.promptUser}>{userPart}</span>
+                                    <span className={styles.promptPath}>{pathPart}</span>
+                                    <span className={styles.promptDollar}>{dollarPart}</span>
+                                </span>
+                                <InputField ref={inputRef} name="command" type="text" cursorType="terminal" className={styles.promptInput} />
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
-}
+};

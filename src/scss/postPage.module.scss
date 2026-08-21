@@ -22,6 +22,10 @@
     border-bottom: 1px solid colors.$tertiary-color;
 }
 
+.post-container.deleted{
+    border-bottom:none;
+}
+
 .return-container {
     display: flex;
     gap: 1.15cqw;
@@ -54,7 +58,7 @@
 
 @media (hover: hover) and (pointer: fine) {
 
-    .subforum-pfp:hover{
+    .subforum-pfp:hover {
         cursor: pointer;
     }
 
@@ -71,6 +75,27 @@
     color: colors.$secondary-color;
 }
 
+.deleted-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh;
+    padding: 10cqw 2cqw;
+    text-align: center;
+}
+
+.deleted-title {
+    font-size: clamp(1.25rem, 4.6cqw, 2rem);
+    color: colors.$secondary-color;
+}
+
+.deleted-message {
+    font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+    color: colors.$tertiary-color;
+    max-width: 400px;
+}
+
 .post-title {
     font-size: clamp(1.25rem, 4.6cqw, 2rem);
     margin: 0;
@@ -80,6 +105,8 @@
     font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
     color: colors.$tertiary-color;
     margin: 0;
+    white-space: pre-wrap; 
+    word-break: break-word;
 }
 
 .comments-list-container {
@@ -118,4 +145,45 @@
 .send-button {
     padding: 6px 15px;
     font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+}
+
+.menu-wrapper {
+    position: relative;
+    margin-left: auto;
+}
+
+.menu-dots {
+    font-size: clamp(1rem, 3cqw, 1.5rem);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    min-width: 120px;
+    margin-top: 6px;
+    padding: 4px;
+    background-color: colors.$card-bg;
+    border: 1px solid colors.$input-border;
+    border-radius: 8px;
+}
+
+.delete-option {
+    font-size: clamp(0.8rem, 2.6cqw, 1rem);
+    color: colors.$error-color;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .delete-option:hover {
+        color: colors.$secondary-color;
+        cursor: pointer;
+    }
+}
+
+.delete-option:active {
+    color: colors.$secondary-color;
 }

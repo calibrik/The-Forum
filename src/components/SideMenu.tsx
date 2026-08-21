@@ -61,7 +61,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
             story.goForwardHint("menu-icon-text");
         }
         else {
-            story.goBackHint("chat-menu");
+            story.goBackwardHint("chat-menu");
         }
     }, [isOpen])
 

@@ -18,6 +18,7 @@ export interface ITypingBoxArgs {
     speed: number,
     delim?: string,
     clearAfter?: string
+    hideCursorAfter?: boolean
     style?: React.CSSProperties
 }
 
@@ -54,6 +55,11 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 },
                 ease: "none"
             });
+        if (args.hideCursorAfter) {
+            tl.set('#cursor', {
+                visibility: 'hidden'
+            });
+        }
         if (args.clearAfter) {
             tl.add(reset(), args.clearAfter);
         }

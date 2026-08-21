@@ -8,6 +8,7 @@ export interface IStoryLine {
 	delim?: string,
 	typingBoxId: number,
 	clearAfter?: string
+	hideCursorAfter?: boolean
 }
 
 export interface IEffect {
@@ -87,11 +88,19 @@ export interface INavigateAction {
 export interface ISaveAction {
 	dest: IDestination
 	hintActionPos?: number
+	lastNavPos?: number
 }
 
 export interface ISetTextBoxStyleAction {
 	id: number,
 	style: React.CSSProperties
+}
+
+export type IShowPlaceholderField = "nickname" | "password";
+
+export interface ISetShowPlaceholdersAction {
+	field: IShowPlaceholderField,
+	show: boolean,
 }
 
 export interface IHintAction {
@@ -120,6 +129,7 @@ export interface IAction {
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
+	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 }
 
 export interface IScriptLine {
@@ -149,6 +159,19 @@ export interface IDestination {
 	from?:IDestination
 }
 
+function withLastNavPos(script: IScriptLine[]): IScriptLine[] {
+	let lastNavActionId: number | undefined = undefined;
+	return script.map((v, i) => {
+		const id = i + 1;
+		const scl = { ...v, id };
+		if (scl.action?.navigateAction)
+			lastNavActionId = id;
+		if (scl.action?.saveAction && lastNavActionId != undefined)
+			return { ...scl, action: { ...scl.action, saveAction: { ...scl.action.saveAction, lastNavPos: lastNavActionId - id } } };
+		return scl;
+	});
+}
+
 const db = new Dexie("TheForumDB") as Dexie & {
 	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
@@ -158,7 +181,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(174).stores({
+db.version(193).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -171,7 +194,7 @@ db.version(174).stores({
 		return;
 	await db.story.clear();
 	let response = await fetch(getJsonUrl("script.json"));
-	const newScript: IScriptLine[] = (await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 }));
+	const newScript: IScriptLine[] = withLastNavPos(await response.json() as IScriptLine[]);
 	await db.story.bulkAdd(newScript);
 	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
 	// if (users.length != 0) {
@@ -192,7 +215,7 @@ db.version(174).stores({
 	// }
 	await db.posts.clear();
 	response = await fetch(getJsonUrl("posts.json"));
-	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` }));
+	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` }));
 	await db.posts.bulkAdd(newPosts);
 
 	await db.subforums.clear();
@@ -210,13 +233,13 @@ db.version(174).stores({
 
 export async function seedNew() {
 	let response = await fetch(getJsonUrl("script.json"));
-	await db.story.bulkAdd((await response.json() as IScriptLine[]).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.story.bulkAdd(withLastNavPos(await response.json() as IScriptLine[]));
 	response = await fetch(getJsonUrl("users.json"));
 	let seed = 0;
 	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 	await db.users.bulkAdd(newUsers);
 	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: `p${i + 1}` })));
+	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
 	response = await fetch(getJsonUrl("subforums.json"));
 	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
 	response = await fetch(getJsonUrl("chats.json"));
