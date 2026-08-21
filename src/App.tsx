@@ -10,7 +10,6 @@ import { SubforumPosts } from './pages/SubforumPosts';
 import { SubforumMembers } from './pages/SubforumMembers';
 import { SubforumSettings } from './pages/SubforumSettings';
 import { PostPage } from './pages/PostPage';
-import { PostDeleted } from './pages/PostDeleted';
 import { User } from './pages/User';
 import { UserPosts } from './pages/UserPosts';
 import { UserComments } from './pages/UserComments';
@@ -44,7 +43,6 @@ export const appRoutes: RouteObject[] = [
 					{ path: "/login", Component: Login },
 					{ path: "/signup", Component: Signup },
 					{ path: "/post/:id", Component: PostPage },
-					{ path: "/post/deleted", Component: PostDeleted },
 					{ path: "/chat", Component: ChatMenu },
 					{ path: "/chat/:chatId", Component: Chat },
 					{

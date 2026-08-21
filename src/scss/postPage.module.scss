@@ -22,6 +22,10 @@
     border-bottom: 1px solid colors.$tertiary-color;
 }
 
+.post-container.deleted{
+    border-bottom:none;
+}
+
 .return-container {
     display: flex;
     gap: 1.15cqw;
@@ -54,21 +58,46 @@
 
 @media (hover: hover) and (pointer: fine) {
 
-    .subforum-pfp:hover{
+    .subforum-pfp:not(.static):hover {
         cursor: pointer;
     }
 
-    .subforum-name:hover,
-    .username:hover {
+    .subforum-name:not(.static):hover,
+    .username:not(.static):hover {
         cursor: pointer;
         color: colors.$secondary-color;
     }
 }
 
-.subforum-name:active,
-.username:active {
+.subforum-name:not(.static):active,
+.username:not(.static):active {
     transform: scale(0.9);
     color: colors.$secondary-color;
+}
+
+.static {
+    cursor: default;
+}
+
+.deleted-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh;
+    padding: 10cqw 2cqw;
+    text-align: center;
+}
+
+.deleted-title {
+    font-size: clamp(1.25rem, 4.6cqw, 2rem);
+    color: colors.$secondary-color;
+}
+
+.deleted-message {
+    font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+    color: colors.$tertiary-color;
+    max-width: 400px;
 }
 
 .post-title {

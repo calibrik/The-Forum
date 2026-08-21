@@ -65,7 +65,7 @@ const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: stri
     },
 }
 
-const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page.";
+const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page or quit game and log in again.";
 
 export interface IEffectsOptions {
     typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
@@ -759,7 +759,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 79 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -863,6 +863,7 @@ export const StoryProvider: FC<IStoryProviderProps> = (_) => {
             <EffectOverlay id="effectOverlay1" />
             <EffectOverlay id="effectOverlayBlur" />
             <EffectOverlay id="effectOverlay2" />
+            <EffectOverlay id="effectOverlay3" />
             <Outlet />
         </StoryContext.Provider>
     );
