@@ -197,7 +197,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
 }
 
 
-export function useHints() {
+export function useElementHints() {
     const currIndex = useRef<number>(-1);//current index in path for chained nav
     const currHint = useRef<string[]>([]);//curr hint, length ==0 means it's not set
     const currStoryHint = useRef<string[]>([]);//current story hint used for caching the last story hint for recover on page function
@@ -317,6 +317,38 @@ export function useHints() {
     return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
 }
 
+export function useObjectiveHints() {
+    const hintText = useRef<string>("");//cache of the latest objective hint (the "Current objective" text in the side menu) to restore on recovery on the target page
+    const lastNavHint = useRef<string>("");//last navigation hint (from navigate false) to show in the side menu when the user navigates away from the target page
+
+    function dispatchHint(text: string) {
+        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: text }));
+    }
+
+    function setObjectiveHint(text: string) {
+        hintText.current = text;
+    }
+
+    function resetObjectiveHint() {
+        hintText.current = "";
+    }
+
+    function restoreObjectiveHint() {
+        dispatchHint(hintText.current);
+    }
+
+    function setNavHint(text: string) {
+        lastNavHint.current = text;
+    }
+
+    function showNavHint() {
+        dispatchHint(lastNavHint.current);
+    }
+
+    const _lastNavHint = process.env.NODE_ENV == 'test' ? () => lastNavHint : undefined;
+    return { dispatchHint, setObjectiveHint, resetObjectiveHint, restoreObjectiveHint, setNavHint, showNavHint, _lastNavHint };
+}
+
 export interface IChatHandle {
     setStringToType: (string: string) => void;
     addTypingUser: (username: string) => void;
@@ -417,12 +449,12 @@ export function useStoryFuncs() {
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
     const locationRef = useRef<IDestination>(undefined);//current location for the story
-    const lastNavHint = useRef<string>("");//last navigation hint (from navigate false) to restore in the side menu when the user navigates away from the target page
     const location = useLocation();
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
-    const hintFunc = useHints();
+    const hintFunc = useElementHints();
+    const objectiveHints = useObjectiveHints();
     const chatFunc = useChat();
 
     // function initReady(level: number) {
@@ -444,7 +476,7 @@ export function useStoryFuncs() {
         }
         chatFunc.onNavigateAway();
         hintFunc.resetHint();
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: lastNavHint.current }));
+        objectiveHints.showNavHint();
         if (isStoryRecovered.current) {
             currStoryId.current = savedStoryId.current + 1;
             isStoryRecovered.current = false;
@@ -470,6 +502,7 @@ export function useStoryFuncs() {
             isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
+            objectiveHints.resetObjectiveHint();
             chatFunc.enablePreserveMessagesBuffer();
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
@@ -527,9 +560,10 @@ export function useStoryFuncs() {
         }
         if (scl.action?.saveAction?.lastNavPos != undefined) {
             let navScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.lastNavPos));
-            lastNavHint.current = navScl?.hint ?? NAV_HINT_FALLBACK;
+            objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
         }
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: scl.hint ?? lastNavHint.current }));
+        if (scl.hint != undefined)
+            objectiveHints.setObjectiveHint(scl.hint);
         if (locationRef.current && locationRef.current.level == 0)
             window.dispatchEvent(new Event("signalLevel0"))
         if (!locationRef.current) {
@@ -553,6 +587,7 @@ export function useStoryFuncs() {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
         if (level != locationRef.current.level || !isOnLocation(locationRef.current)) {
+            objectiveHints.showNavHint();
             if (locationRef.current.from && !isOnLocation(locationRef.current.from)) {
                 hintFunc.hintNavPath(locationRef.current.from);
             }
@@ -560,6 +595,7 @@ export function useStoryFuncs() {
             return;
         }
         hintFunc.resetHint();
+        objectiveHints.restoreObjectiveHint();
         isStoryRecovered.current = true;
         typingBoxes.current = tbs;
         if (hintFunc.verifyStoryHint()) {
@@ -677,7 +713,7 @@ export function useStoryFuncs() {
         let master = gsap.timeline({ paused: true });
         let navPending = false;
         let navHint:string|undefined = undefined;
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: "" }));
+        objectiveHints.dispatchHint("");
         while ((!scl || !scl.isActionAwait) && !scl?.action?.navigateAction?.navigate) {
             scl = await db.story.get(id);
             if (!isMounted.current || ticket != loopTicket.current)
@@ -693,15 +729,24 @@ export function useStoryFuncs() {
         }
         if (!isMounted.current || ticket != loopTicket.current)
             return;
-        if (navPending)
-            lastNavHint.current = navHint ?? NAV_HINT_FALLBACK;
         masterRef.current = master;
         console.log("play anim")
         master.play();
         await master;
+        if (!isMounted.current || ticket != loopTicket.current || masterRef.current !== master)
+        {
+            console.log("interrupted")
+            return;
+        }
         currStoryId.current = id;
         masterRef.current = undefined;
-        window.dispatchEvent(new CustomEvent<string>("storyHintText", { detail: navPending ? lastNavHint.current : (scl?.hint ?? "") }));
+        if (navPending) {
+            objectiveHints.setNavHint(navHint ?? NAV_HINT_FALLBACK);
+            objectiveHints.showNavHint();
+        } else {
+            objectiveHints.setObjectiveHint(scl?.hint ?? "");
+            objectiveHints.dispatchHint(scl?.hint ?? "");
+        }
     });
 
     const getAnim = contextSafe((anim: string, options?: IEffectsOptions) => {
@@ -755,13 +800,13 @@ export function useStoryFuncs() {
     const _getLocationRef = process.env.NODE_ENV == 'test' ? () => locationRef : undefined;
     const _getTypingBoxes = process.env.NODE_ENV == 'test' ? () => typingBoxes : undefined;
     const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
+    const _getObjectiveHintsHook = process.env.NODE_ENV == 'test' ? () => objectiveHints : undefined;
     const _getChatHook = process.env.NODE_ENV == 'test' ? () => chatFunc : undefined;
     const _getIsStoryRecovered = process.env.NODE_ENV == 'test' ? () => isStoryRecovered : undefined;
     const _getCurrStoryId = process.env.NODE_ENV == 'test' ? () => currStoryId : undefined;
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
-    const _getLastNavHint = process.env.NODE_ENV == 'test' ? () => lastNavHint : undefined;
     // const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
@@ -786,10 +831,11 @@ export function useStoryFuncs() {
         _processAction,
         _getIsStoryNavRef,
         _getLocationRef,
-        _getLastNavHint,
+        _getLastNavHint: objectiveHints._lastNavHint,
         _getTypingBoxes,
         _getChatHook,
         _getHintHook,
+        _getObjectiveHintsHook,
         _getIsStoryRecovered,
         _getCurrStoryId,
         _getSavedStoryId,
