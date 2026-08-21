@@ -58,25 +58,21 @@
 
 @media (hover: hover) and (pointer: fine) {
 
-    .subforum-pfp:not(.static):hover {
+    .subforum-pfp:hover {
         cursor: pointer;
     }
 
-    .subforum-name:not(.static):hover,
-    .username:not(.static):hover {
+    .subforum-name:hover,
+    .username:hover {
         cursor: pointer;
         color: colors.$secondary-color;
     }
 }
 
-.subforum-name:not(.static):active,
-.username:not(.static):active {
+.subforum-name:active,
+.username:active {
     transform: scale(0.9);
     color: colors.$secondary-color;
-}
-
-.static {
-    cursor: default;
 }
 
 .deleted-container {
@@ -109,6 +105,8 @@
     font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
     color: colors.$tertiary-color;
     margin: 0;
+    white-space: pre-wrap; 
+    word-break: break-word;
 }
 
 .comments-list-container {

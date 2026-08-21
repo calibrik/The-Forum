@@ -1,4 +1,4 @@
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type InputFieldHandle } from "../components/InputField";
@@ -33,9 +33,16 @@ export const Login: FC<ILoginProps> = (_) => {
     const onSubmitRunning = useRef<boolean>(false);
     const [searchParams] = useSearchParams();
     const isExpired = searchParams.get("expired") === "true";
+    const [showNicknamePlaceholder, setShowNicknamePlaceholder] = useState(true);
+    const [showPasswordPlaceholder, setShowPasswordPlaceholder] = useState(true);
 
     useEffect(() => {
         storyInit(1, [storyTextBox, usernameTypingBox, passwordTypingBox]);
+    }, []);
+
+    useEffect(() => {
+        story.setLoginHandle({ setShowNicknamePlaceholder, setShowPasswordPlaceholder });
+        return () => story.setLoginHandle(undefined);
     }, []);
 
     const onSubmit=contextSafe(async (event: React.FormEvent<HTMLFormElement>) =>{
@@ -117,11 +124,11 @@ export const Login: FC<ILoginProps> = (_) => {
                     {isExpired ? <p className={styles.expiredMessage}>Your session has expired, please login again</p> : ""}
                     <div className={styles.inputsContainer}>
                         <div className={styles.inputTypingWrapper}>
-                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={isExpired?"":"Nickname"} className={styles.input} />
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={showNicknamePlaceholder?"Nickname":""} className={styles.input} />
                             <TypingTextBox ref={usernameTypingBox} className={styles.inputTypingBox} type="normal" />
                         </div>
                         <div className={styles.inputTypingWrapper}>
-                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={isExpired?"":"Password"} className={styles.input} />
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={showPasswordPlaceholder?"Password":""} className={styles.input} />
                             <TypingTextBox ref={passwordTypingBox} className={styles.inputTypingBox} type="normal" />
                         </div>
                     </div>

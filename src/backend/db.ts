@@ -96,6 +96,13 @@ export interface ISetTextBoxStyleAction {
 	style: React.CSSProperties
 }
 
+export type IShowPlaceholderField = "nickname" | "password";
+
+export interface ISetShowPlaceholdersAction {
+	field: IShowPlaceholderField,
+	show: boolean,
+}
+
 export interface IHintAction {
 	ids: string[],
 }
@@ -122,6 +129,7 @@ export interface IAction {
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
+	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 }
 
 export interface IScriptLine {
@@ -173,7 +181,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(188).stores({
+db.version(193).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

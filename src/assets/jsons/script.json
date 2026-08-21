@@ -479,7 +479,7 @@
     },
     {
         "addParallelExec": {
-            "name": "1",
+            "name": "roast",
             "branches": [
                 [
                     {
@@ -726,7 +726,7 @@
     },
     {
         "addParallelExec": {
-            "name": "2",
+            "name": "zeroNews",
             "branches": [
                 [
                     {
@@ -1139,7 +1139,7 @@
     },
     {
         "addParallelExec": {
-            "name": "1",
+            "name": "noobQuestions",
             "branches": [
                 [
                     {
@@ -1234,7 +1234,7 @@
     },
     {
         "addParallelExec": {
-            "name": "1",
+            "name": "opinions",
             "branches": [
                 [
                     {
@@ -1317,7 +1317,7 @@
     },
     {
         "addParallelExec": {
-            "name": "1",
+            "name": "phonySub",
             "branches": [
                 [
                     {
@@ -1370,7 +1370,7 @@
                     },
                     {
                         "addParallelExec": {
-                            "name": "2",
+                            "name": "toxicGag",
                             "branches": [
                                 [
                                     {
@@ -1525,7 +1525,7 @@
     },
     {
         "addParallelExec": {
-            "name": "3",
+            "name": "subDown",
             "branches": [
                 [
                     {
@@ -1598,7 +1598,7 @@
     },
     {
         "addParallelExec": {
-            "name": "4",
+            "name": "postRise",
             "branches": [
                 [
                     {
@@ -2249,6 +2249,15 @@
         "offset": "+=0.3"
     },
     {
+        "action": {
+            "setShowPlaceholdersAction": {
+                "field": "nickname",
+                "show": false
+            }
+        },
+        "offset": "+=1"
+    },
+    {
         "storyline": {
             "content": "sillygoose228",
             "speed": 50,
@@ -2256,17 +2265,26 @@
             "typingBoxId": 1,
             "hideCursorAfter": true
         },
-        "offset": "+=1"
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setShowPlaceholdersAction": {
+                "field": "password",
+                "show": false
+            }
+        },
+        "offset": "+=0.5"
     },
     {
         "storyline": {
-            "content": "•••••••••••",
+            "content": "•••••••••••••••••",
             "speed": 50,
             "delim": "",
             "typingBoxId": 2,
             "hideCursorAfter": true
         },
-        "offset": "+=0.5"
+        "offset": ">"
     },
     {
         "action": {
@@ -2278,7 +2296,7 @@
                 }
             }
         },
-        "offset": "+=2"
+        "offset": "+=1"
     },
     {
         "action": {

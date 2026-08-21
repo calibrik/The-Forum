@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IMessage, type IScriptLine } from "../backend/db";
+import { db, type IAction, type IDestination, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -24,6 +24,7 @@ interface IStoryHook {
     goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
+    setLoginHandle(h: ILoginHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
     getMessageBuffer(): IMessage[],
 }
@@ -436,6 +437,28 @@ export function useChat() {
     return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, addMessagesToDb, promptMessage, enablePreserveMessagesBuffer, onNavigateAway, getMessageBuffer }
 }
 
+export interface ILoginHandle {
+    setShowNicknamePlaceholder: (show: boolean) => void;
+    setShowPasswordPlaceholder: (show: boolean) => void;
+}
+
+export function useLogin() {
+    const loginHandle = useRef<ILoginHandle>(undefined);
+
+    function setLoginHandle(handle?: ILoginHandle) {
+        loginHandle.current = handle;
+    }
+
+    function setShowPlaceholders(field: IShowPlaceholderField, show: boolean) {
+        if (field == "nickname")
+            loginHandle.current?.setShowNicknamePlaceholder(show);
+        else
+            loginHandle.current?.setShowPasswordPlaceholder(show);
+    }
+
+    return { setLoginHandle, setShowPlaceholders };
+}
+
 export function useStoryFuncs() {
     const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
@@ -456,6 +479,7 @@ export function useStoryFuncs() {
     const hintFunc = useElementHints();
     const objectiveHints = useObjectiveHints();
     const chatFunc = useChat();
+    const loginFunc = useLogin();
 
     // function initReady(level: number) {
     //     if (level != locationRef.current?.level)
@@ -535,6 +559,9 @@ export function useStoryFuncs() {
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false, false)
             chatFunc.promptMessage(action.promptMessageAction.content);
+        }
+        if (action.setShowPlaceholdersAction) {
+            loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
         }
     }
 
@@ -690,7 +717,7 @@ export function useStoryFuncs() {
                 for (let action of branches[i]) {
                     await addScriptlineToTimeline(action, branch);
                 }
-                tl.add(branch, `${scl.addParallelExec.name}${scl.offset}`);
+                tl.add(branch, `${scl.addParallelExec.name}+=0`);
             }
         }
 
@@ -759,7 +786,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 79 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -811,7 +838,6 @@ export function useStoryFuncs() {
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
-    const _getPersistedOverlayIds = process.env.NODE_ENV == 'test' ? () => persistedOverlayIds : undefined;
 
     return {
         // setTypingBoxes,
@@ -824,6 +850,7 @@ export function useStoryFuncs() {
         getMessageBuffer: chatFunc.getMessageBuffer,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
+        setLoginHandle: loginFunc.setLoginHandle,
         goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
@@ -844,8 +871,7 @@ export function useStoryFuncs() {
         // _getPageInitResolveRef,
         _showStory,
         _customizeStory,
-        _isOnLocation,
-        _getPersistedOverlayIds
+        _isOnLocation
     }
 }
 

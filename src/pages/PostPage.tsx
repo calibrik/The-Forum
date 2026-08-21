@@ -56,10 +56,10 @@ export const PostPage: FC<IPostPageProps> = (_) => {
     }
 
     async function init(){
-        // if (!userState.isRealLoggedIn.current) {
-        //     navigate("/")
-        //     return;
-        // }
+        if (!userState.isRealLoggedIn.current) {
+            navigate("/")
+            return;
+        }
         if (isDeleted)
             return;
         const post = isFake
@@ -123,10 +123,10 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                     <BackButton id="back-text" isActive={canNavigate} />
                     {!isDeleted ? (
                         <>
-                            <img onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} src={getImageUrl(subforumPfp??"placeholder.png")} alt="" className={`${styles.subforumPfp} ${canNavigate ? "" : styles.static}`} />
+                            <img onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} src={getImageUrl(subforumPfp??"placeholder.png")} alt="" className={styles.subforumPfp} />
                             <div className={styles.authorContainer}>
-                                <span onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} className={`${styles.subforumName} ${canNavigate ? "" : styles.static}`}>f/{post?.subforum}</span>
-                                <span onClick={canNavigate ? () => navigate(`/user/${post?.author}`) : undefined} className={`${styles.username} ${canNavigate ? "" : styles.static}`}>u/{post?.author}</span>
+                                <span onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} className={styles.subforumName}>f/{post?.subforum}</span>
+                                <span onClick={canNavigate ? () => navigate(`/user/${post?.author}`) : undefined} className={styles.username}>u/{post?.author}</span>
                             </div>
                         </>
                     ) : ""}
