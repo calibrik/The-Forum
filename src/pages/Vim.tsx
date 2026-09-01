@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useRef, useState, type FC, type FocusEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { InputField, type InputFieldHandle } from "../components/InputField";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useNavigate, useSearchParams } from "react-router";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
-
-const TEST_TEXT = "This is the first test line.\nThe second line of the test document.\nAnd a third line to finish the test text.";
 
 const TILDE_FILL = 40;
 
@@ -19,6 +17,7 @@ export const Vim: FC = () => {
     const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<InputFieldHandle>(null);
     const storyInit = useStoryInit();
+    const story = useStory();
     const navigate = useNavigate();
     const userState = useUserState();
     const [searchParams] = useSearchParams();
@@ -33,12 +32,16 @@ export const Vim: FC = () => {
     function setTextToType(text: string) {
         inputRef.current?.setStringToType(text);
         setHasTextToType(text !== "");
+        if (text !== "")
+            inputRef.current?.focus();
     }
 
     function onInputChange() {
         setTypedText(inputRef.current?.getInput() ?? "");
-        if (inputRef.current?.isStringTyped())
+        if (inputRef.current?.isStringTyped()) {
             setTextToType("");
+            story.resumeStoryFromHint("vim-input");
+        }
     }
 
     function init() {
@@ -47,15 +50,24 @@ export const Vim: FC = () => {
         }
     }
 
+    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
+        const target = e.relatedTarget;
+        if ((target === null || !e.currentTarget.contains(target as Node)) && hasTextToType)
+            inputRef.current?.focus();
+    }
+
     useEffect(() => {
         storyInit(2, [typingBox, narrationBox], init);
-        setTextToType(TEST_TEXT);
+        story.setVimHandle({ setTextToType });
+        return () => {
+            story.setVimHandle(undefined);
+        };
     }, []);
 
     return (
         <>
             <TypingTextBox ref={narrationBox} type="terminal" />
-            <div className={systemStyles.container}>
+            <div className={systemStyles.container} onBlur={onContainerBlur}>
             <div className={systemStyles.appContainer}>
                 <div className={systemStyles.headerDiv}>
                     <TerminalIcon className={systemStyles.icon} />

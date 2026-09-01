@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FC, type FocusEvent, type FormEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
 import systemStyles from "../scss/systemApp.module.scss";
@@ -17,6 +17,7 @@ export const Terminal: FC = () => {
     const outputRef = useRef<HTMLDivElement>(null);
     const typingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
+    const story = useStory();
     const userState = useUserState();
     const navigate = useNavigate();
     const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -37,6 +38,15 @@ export const Terminal: FC = () => {
 
     useEffect(() => {
         storyInit(1, [typingBox], init);
+        story.setTerminalHandle({
+            setExpectedCommand: function (command: string, output?: string): void {
+                expectedCommand.current = command;
+                expectedOutput.current = output ?? "";
+            },
+        });
+        return () => {
+            story.setTerminalHandle(undefined);
+        };
     }, []);
 
     useEffect(() => {
@@ -52,6 +62,12 @@ export const Terminal: FC = () => {
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
+
+    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
+        const target = e.relatedTarget;
+        if (target === null || !e.currentTarget.contains(target as Node))
+            inputRef.current?.focus();
+    }
 
     useEffect(() => {
         outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
@@ -74,6 +90,7 @@ export const Terminal: FC = () => {
         }
         else if (expectedCmd !== "" && cmd === expectedCmd) {
             output = expectedOutput.current;
+            story.resumeStoryFromHint("terminal-input");
         }
         else {
             output = `bash: ${cmd}: command not found`;
@@ -84,7 +101,7 @@ export const Terminal: FC = () => {
     return (
         <>
             <TypingTextBox ref={typingBox} type="terminal" />
-            <div className={systemStyles.container}>
+            <div className={systemStyles.container} onBlur={onContainerBlur}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />

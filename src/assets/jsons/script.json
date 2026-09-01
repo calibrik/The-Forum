@@ -2454,18 +2454,6 @@
         "offset": ">"
     },
     {
-        "effect": {
-            "name": "REVERSE_OVERLAY",
-            "options": {
-                "duration": 2,
-                "overlayNumber": [
-                    "1"
-                ]
-            }
-        },
-        "offset": ">"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
                 "id": 1,
@@ -2483,7 +2471,8 @@
             "content": "So uhhhhh, how do I create a page? I think I still remember something.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": 1,
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.5"
     },
@@ -2721,18 +2710,7 @@
         },
         "offset": ">"
     },
-    {
-        "effect": {
-            "name": "REVERSE_OVERLAY",
-            "options": {
-                "duration": 2,
-                "overlayNumber": [
-                    "Blur"
-                ]
-            }
-        },
-        "offset": ">"
-    },
+    
     {
         "action": {
             "navigateAction": {
@@ -2746,8 +2724,20 @@
         "offset": ">"
     },
     {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
         "storyline": {
-            "content": "Alright time to run this.",
+            "content": "Alright, it's time to run this.",
             "speed": 50,
             "delim": "",
             "typingBoxId": 0

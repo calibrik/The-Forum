@@ -118,6 +118,15 @@ export interface ISendMessageAction {
 	timeToType: number
 }
 
+export interface ISetTerminalCommandAction {
+	command: string,
+	output?: string,
+}
+
+export interface IVimTypeAction {
+	content: string,
+}
+
 export interface IClearTypingTextBoxes {
 	ids: number[]
 }
@@ -130,6 +139,8 @@ export interface IAction {
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
+	setTerminalCommandAction?: ISetTerminalCommandAction,
+	vimTypeAction?: IVimTypeAction,
 }
 
 export interface IScriptLine {
@@ -181,7 +192,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(193).stores({
+db.version(195).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

@@ -25,6 +25,8 @@ interface IStoryHook {
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
+    setTerminalHandle(h: ITerminalHandle | undefined): void;
+    setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
     getMessageBuffer(): IMessage[],
 }
@@ -459,6 +461,42 @@ export function useLogin() {
     return { setLoginHandle, setShowPlaceholders };
 }
 
+export interface ITerminalHandle {
+    setExpectedCommand: (command: string, output?: string) => void;
+}
+
+export function useTerminal() {
+    const terminalHandle = useRef<ITerminalHandle>(undefined);
+
+    function setTerminalHandle(handle?: ITerminalHandle) {
+        terminalHandle.current = handle;
+    }
+
+    function setTerminalCommand(command: string, output?: string) {
+        terminalHandle.current?.setExpectedCommand(command, output);
+    }
+
+    return { setTerminalHandle, setTerminalCommand };
+}
+
+export interface IVimHandle {
+    setTextToType: (text: string) => void;
+}
+
+export function useVim() {
+    const vimHandle = useRef<IVimHandle>(undefined);
+
+    function setVimHandle(handle?: IVimHandle) {
+        vimHandle.current = handle;
+    }
+
+    function setVimType(content: string) {
+        vimHandle.current?.setTextToType(content);
+    }
+
+    return { setVimHandle, setVimType };
+}
+
 export function useStoryFuncs() {
     const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
@@ -480,6 +518,8 @@ export function useStoryFuncs() {
     const objectiveHints = useObjectiveHints();
     const chatFunc = useChat();
     const loginFunc = useLogin();
+    const terminalFunc = useTerminal();
+    const vimFunc = useVim();
 
     // function initReady(level: number) {
     //     if (level != locationRef.current?.level)
@@ -562,6 +602,14 @@ export function useStoryFuncs() {
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
+        }
+        if (action.setTerminalCommandAction) {
+            hintFunc.setStoryHint(["terminal-input"], true, false);
+            terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
+        }
+        if (action.vimTypeAction) {
+            hintFunc.setStoryHint(["vim-input"], true, false);
+            vimFunc.setVimType(action.vimTypeAction.content);
         }
     }
 
@@ -786,7 +834,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 153 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());
@@ -851,6 +899,8 @@ export function useStoryFuncs() {
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
+        setTerminalHandle: terminalFunc.setTerminalHandle,
+        setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
