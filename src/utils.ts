@@ -20,6 +20,14 @@ export function numberToText(n: number) {
     return n.toString();
 }
 
+export function commonPrefixLength(a: string, b: string) {
+    const max = Math.min(a.length, b.length);
+    let i = 0;
+    while (i < max && a[i] === b[i])
+        i++;
+    return i;
+}
+
 export function formatTime(date: Date): string {
     return new Intl.DateTimeFormat('en-US', {
         hour: 'numeric',

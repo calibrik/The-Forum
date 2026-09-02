@@ -27,6 +27,8 @@ export interface ITypingTextBoxHandle {
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => gsap.core.Timeline
     applyStyle: (style: React.CSSProperties) => void
+    setContent: (content: string) => void
+    getContent: () => string
 };
 
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
@@ -94,6 +96,14 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             if (divRef.current) {
                 divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
             }
+        },
+        setContent(content) {
+            contentRef.current = content;
+            if (typingTextRef.current)
+                typingTextRef.current.innerText = content;
+        },
+        getContent() {
+            return contentRef.current;
         },
     }))
 

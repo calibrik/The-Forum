@@ -2434,11 +2434,11 @@
     {
         "action": {
             "setTerminalCommandAction": {
-                "command": "vim Post.tsx"
+                "command": "vim PostPage.tsx"
             }
         },
         "isActionAwait": true,
-        "hint": "Type 'vim Post.tsx' to open vim",
+        "hint": "Type 'vim PostPage.tsx' to open vim",
         "offset": ">"
     },
     {
@@ -2446,7 +2446,7 @@
             "navigateAction": {
                 "navigate": true,
                 "dest": {
-                    "where": "/terminal/vim?file=Post.tsx",
+                    "where": "/terminal/vim?file=PostPage.tsx",
                     "level": 2
                 }
             }
@@ -2471,19 +2471,28 @@
             "content": "So uhhhhh, how do I create a page? I think I still remember something.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1,
-            "clearAfter":"+=1.5"
+            "typingBoxId": 1
         },
         "offset": "+=0.5"
     },
     {
+        "storyline": {
+            "content": "I think I still remember something.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 1,
+            "clearAfter":"+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
         "action": {
             "vimTypeAction": {
-                "content": "import { type FC } from \"react\";\nimport styles from \"../scss/post.module.scss\";\nimport { getImageUrl } from \"../utils\";\nimport { SMEntry } from \"./SMEntry\";\nimport { Reactions } from \"./Reactions\";\nimport { useNavigate } from \"react-router\";\nimport type { IPost } from \"../backend/db\";\n\ninterface IPostProps {\n    id?:string\n    post:IPost\n    showAuthor:\"user\"|\"subforum\",\n    className?:string\n};\n\nexport const Post: FC<IPostProps> = (props) => {\n    let navagate = useNavigate();\n\n    const autor = props.showAuthor == \"subforum\" ? props.post.subforum : props.post.author;\n    return (\n        <div id={props.id} onclick={() => navagate(`/post/${props.id}`)} data-istransition=\"true\" className={`${styles.cardContainr} ${props.className}`}>\n            <SMEntry isNav name={autor} type={props.showAuthor} />\n            <h1 className={styles.titel}>{props.post.title}</h1>\n            <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.contant}</p>\n            {props.post.imageName ?\n                <div className={styles.postImgWrapper}>\n                    <img className={styles.postImg} src={getImageUrl(props.post.imageName)} />\n                </div>\n                : \"\"}\n            <Reactions likes={props.post.likes} comments={props.post.comments} views={props.post.views} />\n        </div>\n    );\n}"
+                "content": "import { useEffect, useRef, useState, type FC } from \"react\";\nimport styles from \"../scss/postPage.module.scss\"\nimport buttonStyles from \"../scss/baseButton.module.scss\";\nimport { SendIcon, ThreeDots } from \"../components/Icons\";\nimport { Reactions } from \"../components/Reactions\";\nimport { InputField } from \"../components/InputField\";\nimport { BaseButton } from \"../components/BaseButton\";\nimport { Comment } from \"../components/Comment\";\nimport { BackButton } from \"../components/BackButton\";\nimport { bridge, getImageUrl, sanitizeDbFetch } from \"../utils\";\nimport { useNavigate, useParams } from \"react-router\";\nimport { Spinner } from \"../components/Spinner\";\nimport { useStory, useStoryInit } from \"../providers/StoryProvider\";\nimport { db, type IPost, type ISubforum } from \"../backend/db\";\nimport { useUserState } from \"../providers/UserAuth\";\nimport { TypingTextBox, type ITypingTextBoxHandle } from \"../components/TypingTextBox\";\n\nconst FAKE_POST: IPost = {\n    id: \"fake\",\n    author: \"#main_hero\",\n    subforum: \"zero\",\n    title: \"fuck zero and spearhead, all my homies hate spearhead\",\n    content: \"zero is mid, spearhead is a scam studio ran by actual clowns. anyone who likes this game has zero iq. mods are powertripping losers who ban anyone with an opinion. delete this post, i dare u.\",\n    likes: 0,\n    comments: 0,\n    views: 3,\n    commentsDetailed: []\n};\n\ninterface IPostPageProps { };\ninterface IComment {\n    comment?: string\n}\n\nexport const PostPage: FC<IPostPageProps> = (_) => {\n    let navigate = useNavigate();\n    const {id}=useParmas<{id:string}>();\n    const isDeleted = id === \"fake\";\n    const isFake = id === \"deleted\";\n    const storyInit = useStoryInit();\n    const [post,setPost]=useState<IPost|undefined>(undefined);\n    const [subforumPfp,setSubforumPfp]=useState<string|undefined>(undefined);\n    const userState=useUserState();\n    const typingBox=useRef<ITypingTextBoxHandle>(null)\n    const story = useStory();\n    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);\n    const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);\n    const menuWrapperRef = useRef<HTMLDivElement>(null);\n\n    function onSubmit(e: React.FormEvent<HTMLFormElement>) {\n        e.preventDefault();\n        const formData = new FormData(e.currentTarget);\n        const data = Object.fromEntries(formData.entries()) as IComment;\n        console.log(\"Submitted: \", data);\n        e.currentTarget.reset();\n    }\n\n    async function init(){\n        if (userState.isRealLoggedIn.current) {\n            navigate(\"/\")\n            return;\n        }\n        if (isDeleted)\n            return;\n        const post = isFake\n            ? { ...FAKE_POST, author: userState.userLoggedIn.current }\n            : await sanitizeDbFetch(await db.posts.where(\"id\").equals(id??\"\").first());\n        if (!post) {\n            navigate(\"/404\",{replace:true})\n            return;\n        }\n        setPost(post);\n        const sub = await sanitizeDbFetch(await db.subforums.where(\"id\").equals(post.subforum).first());\n        setSubforum(post);\n        setSubforumPfp(post?.imageName);\n    }\n\n    useEffect(() => {\n        bridge.exec(storyInit,2, [typingBox],init);\n    }, [])\n\n    function onMenuToggle() {\n        setIsMenuOpen(prev => !prev);\n    }\n\n    function onDelete() {\n        setIsMenuOpen(false);\n        story.resumeStoryFromHint(\"delete-post-button-text\");\n    }\n\n    useEffect(() => {\n        if (isDeleted)\n            return;\n        if (isMenuOpen)\n            story.goForwardHint(\"post-menu-dots-text\");\n        else\n            story.goBackwardHint(\"delete-post-button-text\")\n    }, [isMenuOpen, isDeleted])\n\n    useEffect(() => {\n        if (!isMenuOpen)\n            return;\n        function onClickOutside(e: MouseEvent) {\n            if (menuWrapperRef.current && !menuWrapperRef.current.contains(e.target as Node))\n                setIsMenuOpen(false);\n        }\n        document.addEventListener(\"mousedown\", onClickOutside);\n        return () => {\n            document.removeEventListener(\"mousedown\", onClickOutside);\n        };\n    }, [isMenuOpen])\n\n    const canDelete = post?.author == userState.userLoggedIn.current\n        || !!subforum && (subforum.admin == userState.userLoggedIn.current || subforum.mods?.includes(userState.userLoggedIn.current));\n    const canNavigate = isFake && !isDeleted;\n\n    return (\n        <>\n        <TypingTextBox ref={typingBox} type={\"terminal\"}/>\n        <div className={styles.container}>\n            <div className={`${styles.postContaner} ${isDeleted?styles.deleted:\"\"}`}>\n                <div className={styles.returnContaner}>\n                    <BackButton id=\"back-text\" isActive={canNavigate} />\n                    {!isDeleted ? (\n                        <>\n                            <img onclick={canNavigate ? () => navigate(`/user/${post?.author}`) : undefined} src={getImageUrl(subforumPfp??\"placeholder.png\")} alt=\"\" className={styles.subforumPfp} />\n                            <div className={styles.authorContainer}>\n                                <span onclick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} className={styles.subforumName}>f/{post?.subforum}</span>\n                                <span onclick={canNavigate ? () => navigate(`/user/${post?.author}`) : undefined} className={styles.username}>u/{post?.author}</span>\n                            </div>\n                        </>\n                    ) : \"\"}\n                    {!isDeleted && !canDelete ?\n                        <div ref={menuWrapperRef} className={styles.menuWrapper}>\n                            <ThreeDots id=\"post-menu-dots-text\" interactive onclick={onMenuToggle} className={styles.menuDots} />\n                            {isMenuOpen ?\n                                <div className={styles.dropdownMenu}>\n                                    <div id=\"delete-post-button-text\" className={styles.deleteOption} onclick={onDelete}>Delete</div>\n                                </div>\n                                : \"\"}\n                        </div>\n                        : \"\"}\n                </div>\n                {isDeleted ? (\n                    <div className={styles.deletdContainer}>\n                        <h1 className={styles.deletedTitle}>Post you are looking for does not exist.</h1>\n                        <p className={styles.deletedMessage}>Perhaps, it has been deleted by moderators or author of the post.</p>\n                    </div>\n                ) : (\n                    <>\n                        <h1 className={styles.postTitel}>{post?.content}</h1>\n                        <p className={styles.contant}>{post?.title}</p>\n                        <img src={getImageUrl(post?.imageName??\"placeholder.png\")} alt=\"\" className={styles.picure} />\n                        <Reactions likes={post?.likes??0} comments={post?.comments??0} views={post?.views??0} />\n                    </>\n                )}\n            </div>\n            {!isDeleted ? (\n                <>\n                    <div className={styles.commentsListContainer}>\n                        {post?.comments == 0 ? <span className={styles.noComments}>No comments yet.</span> :\n                            post?.commentsDetailed?.map((v,i)=>(\n                                <Comment {...v} key={i}/>\n                            ))\n                        }\n                        {(post?.comments??0)>(post?.commentsDetailed?.length??0)?<Spinner />:\"\"}\n                    </div>\n                    <form className={styles.inputContainer} onSubmit={onSubmit}>\n                        <InputField name=\"comment\" className={styles.input} placeholder=\"Add comment\" type=\"text\" />\n                        <BaseButton type=\"submit\" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />\n                    </form>\n                </>\n            ) : \"\"}\n        </div>\n        </>\n    );\n}"
             }
         },
         "isActionAwait": true,
-        "hint": "Type the code for Post.tsx in vim",
+        "hint": "Type the code for PostPage.tsx in vim",
         "offset": ">"
     },
     {
@@ -2494,7 +2503,7 @@
             "typingBoxId": 1,
             "clearAfter": "+=1.5"
         },
-        "offset": ">"
+        "offset": "+=0.5"
     },
     {
         "storyline": {
@@ -2518,7 +2527,7 @@
     {
         "action": {
             "setVimContentAction": {
-                "content": "// ok here's a proper Post component for you, hope it works this time\n// — i added TypeScript types and fixed your event handler\nimport { type FC } from \"react\";\nimport styles from \"../scss/post.module.scss\";\nimport { SMEntry } from \"./SMEntry\";\nimport { Reactions } from \"./Reactions\";\nimport type { IPost } from \"../backend/db\";\n\ninterface IPostProps {\n    id?: string\n    post: IPost\n    showAuthor: \"user\" | \"subforum\",\n    className?: string\n};\n\nexport const Post: FC<IPostProps> = (props) => {\n    return (\n        <div id={props.id} onClick={() => navigate(`/post/${props.id}`)} data-istransition=\"true\" className={`${styles.cardContainer} ${props.className}`}>\n            <SMEntry isNav name={props.showAuthor == \"subforum\" ? props.post.subforum : props.post.author} type={props.showAuthor} />\n            <h1 className={styles.title}>{props.post.title}</h1>\n            <p className={props.post.imageName ? styles.contentWithImg : styles.content}>{props.post.content}</p>\n            <Reactions likes={props.post.likes} comments={props.post.comments} views={props.post.views} />\n        </div>\n    );\n}"
+                "content": "// hey there! 👋 so I looked at your PostPage code and... wow 😅\n// good news is I fixed it all up for you! ✨ here's a working version 🚀\n// quick rundown of what I changed:\n//   ✅ added proper TypeScript types & imports\n//   ✅ your deleted/fake post logic was literally backwards 💀\n//   ✅ fixed the subforum/admin permission checks\n//   ✅ replaced every onclick with the correct React onClick handler\n//   ✅ cleaned up the css class names & formatting 😎\n// just paste this into your file and you should be good to go! 🤞\n// let me know if you need anything else, happy to help! 💪\nimport { useEffect, useRef, useState, type FC } from \"react\";\nimport styles from \"../scss/postPage.module.scss\"\nimport buttonStyles from \"../scss/baseButton.module.scss\";\nimport { SendIcon, ThreeDots } from \"../components/Icons\";\nimport { Reactions } from \"../components/Reactions\";\nimport { InputField } from \"../components/InputField\";\nimport { BaseButton } from \"../components/BaseButton\";\nimport { Comment } from \"../components/Comment\";\nimport { BackButton } from \"../components/BackButton\";\nimport { bridge, getImageUrl, sanitizeDbFetch } from \"../utils\";\nimport { useNavigate, useParams } from \"react-router\";\nimport { Spinner } from \"../components/Spinner\";\nimport { useStory, useStoryInit } from \"../providers/StoryProvider\";\nimport { db, type IPost, type ISubforum } from \"../backend/db\";\nimport { useUserState } from \"../providers/UserAuth\";\nimport { TypingTextBox, type ITypingTextBoxHandle } from \"../components/TypingTextBox\";\n\nconst FAKE_POST: IPost = {\n    id: \"fake\",\n    author: \"#main_hero\",\n    subforum: \"zero\",\n    title: \"fuck zero and spearhead, all my homies hate spearhead\",\n    content: \"zero is mid, spearhead is a scam studio ran by actual clowns. anyone who likes this game has zero iq. mods are powertripping losers who ban anyone with an opinion. delete this post, i dare u.\",\n    likes: 0,\n    comments: 0,\n    views: 3,\n    commentsDetailed: []\n};\n\ninterface IPostPageProps { };\ninterface IComment {\n    comment?: string\n}\n\nexport const PostPage: FC<IPostPageProps> = (_) => {\n    let navigate = useNavigate();\n    const {id}=useParams<{id:string}>();\n    const isDeleted = id === \"deleted\";\n    const isFake = id === \"fake\";\n    const storyInit = useStoryInit();\n    const [post,setPost]=useState<IPost|undefined>(undefined);\n    const [subforumPfp,setSubforumPfp]=useState<string|undefined>(undefined);\n    const userState=useUserState();\n    const typingBox=useRef<ITypingTextBoxHandle>(null)\n    const story = useStory();\n    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);\n    const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);\n    const menuWrapperRef = useRef<HTMLDivElement>(null);\n\n    function onSubmit(e: React.FormEvent<HTMLFormElement>) {\n        e.preventDefault();\n        const formData = new FormData(e.currentTarget);\n        const data = Object.fromEntries(formData.entries()) as IComment;\n        console.log(\"Submitted: \", data);\n        e.currentTarget.reset();\n    }\n\n    async function init(){\n        // ⬇️ this loads the post + its subforum from the db ✨\n        if (!userState.isRealLoggedIn.current) {\n            navigate(\"/\")\n            return;\n        }\n        if (isDeleted)\n            return;\n        const post = isFake\n            ? { ...FAKE_POST, author: userState.userLoggedIn.current }\n            : await sanitizeDbFetch(await db.posts.where(\"id\").equals(id??\"\").first());\n        if (!post) {\n            navigate(\"/404\",{replace:true})\n            return;\n        }\n        setPost(post);\n        const sub = await sanitizeDbFetch(await db.subforums.where(\"id\").equals(post.subforum).first());\n        setSubforum(sub);\n        setSubforumPfp(sub?.imageName);\n    }\n\n    useEffect(() => {\n        bridge.exec(storyInit,2, [typingBox],init);\n    }, [])\n\n    function onMenuToggle() {\n        setIsMenuOpen(prev => !prev);\n    }\n\n    function onDelete() {\n        setIsMenuOpen(false);\n        story.resumeStoryFromHint(\"delete-post-button-text\");\n    }\n\n    useEffect(() => {\n        if (isDeleted)\n            return;\n        if (isMenuOpen)\n            story.goForwardHint(\"post-menu-dots-text\");\n        else\n            story.goBackwardHint(\"delete-post-button-text\")\n    }, [isMenuOpen, isDeleted])\n\n    useEffect(() => {\n        if (!isMenuOpen)\n            return;\n        function onClickOutside(e: MouseEvent) {\n            if (menuWrapperRef.current && !menuWrapperRef.current.contains(e.target as Node))\n                setIsMenuOpen(false);\n        }\n        document.addEventListener(\"mousedown\", onClickOutside);\n        return () => {\n            document.removeEventListener(\"mousedown\", onClickOutside);\n        };\n    }, [isMenuOpen])\n\n    // 🛡️ only the author or a subforum admin/mod is allowed to delete 💡\n    const canDelete = post?.author == userState.userLoggedIn.current\n        || !!subforum && (subforum.admin == userState.userLoggedIn.current || subforum.mods?.includes(userState.userLoggedIn.current));\n    const canNavigate = !isFake && !isDeleted;\n\n    return (\n        <>\n        <TypingTextBox ref={typingBox} type={\"terminal\"}/>\n        <div className={styles.container}>\n            <div className={`${styles.postContainer} ${isDeleted?styles.deleted:\"\"}`}>\n                <div className={styles.returnContainer}>\n                    <BackButton id=\"back-text\" isActive={canNavigate} />\n                    {!isDeleted ? (\n                        <>\n                            <img onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} src={getImageUrl(subforumPfp??\"placeholder.png\")} alt=\"\" className={styles.subforumPfp} />\n                            <div className={styles.authorContainer}>\n                                <span onClick={canNavigate ? () => navigate(`/subforum/${post?.subforum}`) : undefined} className={styles.subforumName}>f/{post?.subforum}</span>\n                                <span onClick={canNavigate ? () => navigate(`/user/${post?.author}`) : undefined} className={styles.username}>u/{post?.author}</span>\n                            </div>\n                        </>\n                    ) : \"\"}\n                    {!isDeleted && canDelete ?\n                        <div ref={menuWrapperRef} className={styles.menuWrapper}>\n                            <ThreeDots id=\"post-menu-dots-text\" interactive onClick={onMenuToggle} className={styles.menuDots} />\n                            {isMenuOpen ?\n                                <div className={styles.dropdownMenu}>\n                                    <div id=\"delete-post-button-text\" className={styles.deleteOption} onClick={onDelete}>Delete</div>\n                                </div>\n                                : \"\"}\n                        </div>\n                        : \"\"}\n                </div>\n                {isDeleted ? (\n                    <div className={styles.deletedContainer}>\n                        <h1 className={styles.deletedTitle}>Post you are looking for does not exist.</h1>\n                        <p className={styles.deletedMessage}>Perhaps, it has been deleted by moderators or author of the post.</p>\n                    </div>\n                ) : (\n                    <>\n                        <h1 className={styles.postTitle}>{post?.title}</h1>\n                        <p className={styles.content}>{post?.content}</p>\n                        <img src={getImageUrl(post?.imageName??\"placeholder.png\")} alt=\"\" className={styles.picture} />\n                        <Reactions likes={post?.likes??0} comments={post?.comments??0} views={post?.views??0} />\n                    </>\n                )}\n            </div>\n            {!isDeleted ? (\n                <>\n                    <div className={styles.commentsListContainer}>\n                        {post?.comments == 0 ? <span className={styles.noComments}>No comments yet.</span> :\n                            post?.commentsDetailed?.map((v,i)=>(\n                                <Comment {...v} key={i}/>\n                            ))\n                        }\n                        {(post?.comments??0)>(post?.commentsDetailed?.length??0)?<Spinner />:\"\"}\n                    </div>\n                    <form className={styles.inputContainer} onSubmit={onSubmit}>\n                        <InputField name=\"comment\" className={styles.input} placeholder=\"Add comment\" type=\"text\" />\n                        <BaseButton type=\"submit\" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />\n                    </form>\n                </>\n            ) : \"\"}\n        </div>\n        </>\n    );\n}"
             }
         },
         "offset": ">"
@@ -2690,6 +2699,18 @@
         "offset": ">"
     },
     {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
         "storyline": {
             "content": "Not too hard huh? Now for the rest of them...",
             "speed": 50,
@@ -2706,19 +2727,6 @@
                 "duration": 5,
                 "blurPx": 6,
                 "zIndex": 21
-            }
-        },
-        "offset": ">"
-    },
-    
-    {
-        "action": {
-            "navigateAction": {
-                "navigate": true,
-                "dest": {
-                    "where": "/terminal",
-                    "level": 1
-                }
             }
         },
         "offset": ">"
@@ -2740,7 +2748,8 @@
             "content": "Alright, it's time to run this.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": 0,
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.3"
     },

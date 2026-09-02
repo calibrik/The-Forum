@@ -7,8 +7,9 @@ import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTe
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
+import { commonPrefixLength } from "../utils";
 
-const TILDE_FILL = 40;
+const TILDE_FILL = 0;
 
 const tildeRows = Array.from(Array(TILDE_FILL).keys());
 
@@ -16,28 +17,47 @@ export const Vim: FC = () => {
     const typingBox = useRef<ITypingTextBoxHandle>(null);
     const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<InputFieldHandle>(null);
+    const bufferBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
     const story = useStory();
     const navigate = useNavigate();
     const userState = useUserState();
     const [searchParams] = useSearchParams();
     const fileName = searchParams.get("file") ?? "The-Forum.txt";
-    const [typedText, setTypedText] = useState<string>("");
     const [hasTextToType, setHasTextToType] = useState<boolean>(false);
+    const [lineCount, setLineCount] = useState<number>(0);
+    const [byteCount, setByteCount] = useState<number>(0);
     const editorRef = useRef<HTMLDivElement>(null);
 
-    const lineCount = typedText === "" ? 0 : typedText.split("\n").length;
-    const byteCount = typedText.length;
+    function updateCounts(content: string) {
+        setLineCount(content === "" ? 0 : content.split("\n").length);
+        setByteCount(content.length);
+    }
+
+    function applyTextToType(text: string) {
+        const charsTyped = commonPrefixLength(bufferBox.current?.getContent() ?? "", text);
+        inputRef.current?.setStringToType(text, charsTyped);
+    }
 
     function setTextToType(text: string) {
-        inputRef.current?.setStringToType(text);
-        setHasTextToType(text !== "");
-        if (text !== "")
-            inputRef.current?.focus();
+        if (text !== "") {
+            applyTextToType(text);
+            setHasTextToType(true);
+        } else {
+            const content = inputRef.current?.getInput() ?? "";
+            bufferBox.current?.setContent(content);
+            updateCounts(content);
+            setHasTextToType(false);
+        }
+    }
+
+    function setVimContent(content: string) {
+        bufferBox.current?.setContent(content);
+        updateCounts(content);
+        setHasTextToType(false);
     }
 
     function onInputChange() {
-        setTypedText(inputRef.current?.getInput() ?? "");
         if (inputRef.current?.isStringTyped()) {
             setTextToType("");
             story.resumeStoryFromHint("vim-input");
@@ -57,8 +77,13 @@ export const Vim: FC = () => {
     }
 
     useEffect(() => {
+        if (hasTextToType)
+            inputRef.current?.focus();
+    }, [hasTextToType]);
+
+    useEffect(() => {
         storyInit(2, [typingBox, narrationBox], init);
-        story.setVimHandle({ setTextToType });
+        story.setVimHandle({ setTextToType, setVimContent });
         return () => {
             story.setVimHandle(undefined);
         };
@@ -75,7 +100,8 @@ export const Vim: FC = () => {
                 </div>
                 <div ref={editorRef} className={styles.editorArea}>
                     <div className={styles.buffer}>
-                        <InputField ref={inputRef} scripted textarea rows={1} onChange={onInputChange} cursorType="terminal" name="command" type="text" className={styles.bufferInput} />
+                        <InputField typeSpeed={10} ref={inputRef} scripted textarea rows={1} onChange={onInputChange} cursorType="terminal" name="command" type="text" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
+                        <TypingTextBox ref={bufferBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} />
                         {tildeRows.map(i => (
                             <div key={`tilde-${i}`} className={styles.line}>
                                 <span className={styles.tilde}>~</span>

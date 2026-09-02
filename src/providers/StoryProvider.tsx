@@ -481,6 +481,7 @@ export function useTerminal() {
 
 export interface IVimHandle {
     setTextToType: (text: string) => void;
+    setVimContent: (content: string) => void;
 }
 
 export function useVim() {
@@ -494,7 +495,11 @@ export function useVim() {
         vimHandle.current?.setTextToType(content);
     }
 
-    return { setVimHandle, setVimType };
+    function setVimContent(content: string) {
+        vimHandle.current?.setVimContent(content);
+    }
+
+    return { setVimHandle, setVimType, setVimContent };
 }
 
 export function useStoryFuncs() {
@@ -610,6 +615,9 @@ export function useStoryFuncs() {
         if (action.vimTypeAction) {
             hintFunc.setStoryHint(["vim-input"], true, false);
             vimFunc.setVimType(action.vimTypeAction.content);
+        }
+        if (action.setVimContentAction) {
+            vimFunc.setVimContent(action.setVimContentAction.content);
         }
     }
 

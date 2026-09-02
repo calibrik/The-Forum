@@ -19,6 +19,7 @@ interface IInputFieldProps {
     textarea?: boolean
     rows?: number
     resizable?: boolean
+    typeSpeed?:number
 };
 export type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -26,7 +27,7 @@ export type InputFieldHandle = {
     getError: () => string;
     focus: () => void;
     blur: () => void;
-    setStringToType: (string: string) => void;
+    setStringToType: (string: string, charsTyped?: number) => void;
     isStringTyped: () => boolean;
 }
 
@@ -126,12 +127,17 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         blur() {
             inputRef.current?.blur();
         },
-        setStringToType(string) {
+        setStringToType(string, charsTyped) {
             if (!props.scripted || inputRef.current === null)
                 return;
-            currTyped.current = 0;
             stringToType.current = string;
+            currTyped.current = string === "" ? 0 : Math.min(Math.max(charsTyped ?? 0, 0), string.length);
             inputRef.current.disabled = stringToType.current === "";
+            if (string !== "") {
+                inputRef.current.value = string.substring(0, currTyped.current);
+                updateCaretPosition();
+                autoResize();
+            }
         },
         isStringTyped() {
             return props.scripted && stringToType.current !== "" ? currTyped.current >= stringToType.current.length : false;
@@ -206,7 +212,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         if (e.key == "Backspace")
             currTyped.current = Math.max(currTyped.current - 1, 0);
         else
-            currTyped.current = Math.min(currTyped.current + 1, stringToType.current.length);
+            currTyped.current = Math.min(currTyped.current + (props.typeSpeed??1), stringToType.current.length);
         const expectedString=stringToType.current.substring(0, currTyped.current)
         setTimeout(() => {
             inputRef.current!.value = expectedString;

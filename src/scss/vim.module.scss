@@ -110,3 +110,18 @@
     color: colors.$secondary-color;
     padding: 4px 8px;
 }
+
+.bufferContent {
+    background-color: transparent;
+    border: none;
+    color: colors.$secondary-color;
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+.hidden {
+    display: none;
+}
