@@ -28,6 +28,7 @@ export const Vim: FC = () => {
     const [lineCount, setLineCount] = useState<number>(0);
     const [byteCount, setByteCount] = useState<number>(0);
     const editorRef = useRef<HTMLDivElement>(null);
+    const textToType = useRef<string>("")
 
     function updateCounts(content: string) {
         setLineCount(content === "" ? 0 : content.split("\n").length);
@@ -41,7 +42,7 @@ export const Vim: FC = () => {
 
     function setTextToType(text: string) {
         if (text !== "") {
-            applyTextToType(text);
+            textToType.current = text;
             setHasTextToType(true);
         } else {
             const content = inputRef.current?.getInput() ?? "";
@@ -77,8 +78,10 @@ export const Vim: FC = () => {
     }
 
     useEffect(() => {
-        if (hasTextToType)
+        if (hasTextToType) {
+            applyTextToType(textToType.current);
             inputRef.current?.focus();
+        }
     }, [hasTextToType]);
 
     useEffect(() => {
@@ -93,32 +96,32 @@ export const Vim: FC = () => {
         <>
             <TypingTextBox ref={narrationBox} type="terminal" />
             <div className={systemStyles.container} onBlur={onContainerBlur}>
-            <div className={systemStyles.appContainer}>
-                <div className={systemStyles.headerDiv}>
-                    <TerminalIcon className={systemStyles.icon} />
-                    <span className={systemStyles.appLabel}>vim - {fileName}</span>
-                </div>
-                <div ref={editorRef} className={styles.editorArea}>
-                    <div className={styles.buffer}>
-                        <InputField typeSpeed={10} ref={inputRef} scripted textarea rows={1} onChange={onInputChange} cursorType="terminal" name="command" type="text" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
-                        <TypingTextBox ref={bufferBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} />
-                        {tildeRows.map(i => (
-                            <div key={`tilde-${i}`} className={styles.line}>
-                                <span className={styles.tilde}>~</span>
-                            </div>
-                        ))}
+                <div className={systemStyles.appContainer}>
+                    <div className={systemStyles.headerDiv}>
+                        <TerminalIcon className={systemStyles.icon} />
+                        <span className={systemStyles.appLabel}>vim - {fileName}</span>
+                    </div>
+                    <div ref={editorRef} className={styles.editorArea}>
+                        <div className={styles.buffer}>
+                            <InputField typeSpeed={10} ref={inputRef} scripted textarea rows={1} onChange={onInputChange} cursorType="terminal" name="command" type="text" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
+                            <TypingTextBox ref={bufferBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} />
+                            {tildeRows.map(i => (
+                                <div key={`tilde-${i}`} className={styles.line}>
+                                    <span className={styles.tilde}>~</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className={styles.statusBar}>
+                        <span className={hasTextToType ? styles.insertMode : ""}>
+                            {hasTextToType ? "-- INSERT --" : `"${fileName}" ${lineCount}L, ${byteCount}B`}
+                        </span>
+                        <span>1,1  All</span>
+                    </div>
+                    <div className={styles.commandLineRow}>
+                        <TypingTextBox ref={typingBox} className={styles.commandLineBox} type={"terminal"} />
                     </div>
                 </div>
-                <div className={styles.statusBar}>
-                    <span className={hasTextToType ? styles.insertMode : ""}>
-                        {hasTextToType ? "-- INSERT --" : `"${fileName}" ${lineCount}L, ${byteCount}B`}
-                    </span>
-                    <span>1,1  All</span>
-                </div>
-                <div className={styles.commandLineRow}>
-                    <TypingTextBox ref={typingBox} className={styles.commandLineBox} type={"terminal"} />
-                </div>
-            </div>
             </div>
         </>
     );
