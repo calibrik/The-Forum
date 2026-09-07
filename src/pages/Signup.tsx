@@ -76,7 +76,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     }
 
     function onPasswordChange(_: string) {
-        if (passwordInputRef.current?.getInput() !== confirmPasswordInputRef.current?.getInput()) {
+        if (passwordInputRef.current?.getInput().trim() !== confirmPasswordInputRef.current?.getInput().trim()) {
             confirmPasswordInputRef.current?.setError("Passwords don't match!");
         }
         else {

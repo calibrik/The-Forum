@@ -29,6 +29,7 @@
     box-sizing: border-box;
     resize: none;
     overflow: hidden;
+    text-indent: var(--prompt-indent, 0);
 }
 
 .input-field {
@@ -111,6 +112,7 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    text-indent: var(--prompt-indent, 0);
 }
 
 .block-cursor {

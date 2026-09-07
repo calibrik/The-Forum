@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC, type FocusEvent, type FormEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { InputField, type InputFieldHandle } from "../components/InputField";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
@@ -29,6 +29,8 @@ export const Terminal: FC = () => {
     const userPart = `${username}@the-forum`;
     const pathPart = ":~";
     const dollarPart = "$";
+
+
 
     function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
@@ -73,12 +75,14 @@ export const Terminal: FC = () => {
         outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
     }, [history]);
 
-    function onSubmit(e: FormEvent<HTMLFormElement>) {
+    function onSubmit(e: React.KeyboardEvent) {
+        if (e.key != "Enter")
+            return;
         e.preventDefault();
         if (!inputRef.current)
             return;
-        const cmd = inputRef.current.getInput();
-        e.currentTarget.reset();
+        const cmd = inputRef.current.getInput().trim();
+        inputRef.current.setInput("");
         if (cmd === "")
             return;
         const expectedCmd = expectedCommand.current;
@@ -98,6 +102,15 @@ export const Terminal: FC = () => {
         setHistory(h => [...h, { type: "cmd", command: cmd }, { type: "out", text: output }]);
     }
 
+    const prefix = (
+        <div className={styles.promptDiv}>
+            <span className={styles.promptUser}>{userPart}</span>
+            <span className={styles.promptPath}>{pathPart}</span>
+            <span className={styles.promptDollar}>{dollarPart}</span>
+        </div>
+    );
+    const promptIndent = `${userPart}${pathPart}${dollarPart} `.length;
+
     return (
         <>
             <TypingTextBox ref={typingBox} type="terminal" />
@@ -113,22 +126,18 @@ export const Terminal: FC = () => {
                             {history.map((entry, index) => (
                                 entry.type === "cmd" ? (
                                     <div key={index} className={styles.outputLine}>
-                                        <span className={styles.promptUser}>{userPart}</span>
-                                        <span className={styles.promptPath}>{pathPart}</span>
-                                        <span className={styles.promptDollar}>{dollarPart}</span>
-                                        <span>{" "}{entry.command}</span>
+                                        {prefix}
+                                        <span> {entry.command}</span>
                                     </div>
                                 ) : (
                                     <div key={index} className={styles.outputLine}>{entry.text}</div>
                                 )
                             ))}
-                            <form className={styles.promptRow} onSubmit={onSubmit}>
-                                <span className={styles.promptPrefix}>
-                                    <span className={styles.promptUser}>{userPart}</span>
-                                    <span className={styles.promptPath}>{pathPart}</span>
-                                    <span className={styles.promptDollar}>{dollarPart}</span>
-                                </span>
-                                <InputField ref={inputRef} name="command" type="text" cursorType="terminal" className={styles.promptInput} />
+                            <form style={{ "--prompt-indent": `${promptIndent}ch` } as CSSProperties} className={styles.promptRow}>
+                                <div className={styles.promptPrefix}>
+                                    {prefix}
+                                </div>
+                                <InputField onKeyDown={onSubmit} ref={inputRef} textarea name="command" type="text" cursorType="terminal" className={styles.promptInput} />
                             </form>
                         </div>
                     </div>

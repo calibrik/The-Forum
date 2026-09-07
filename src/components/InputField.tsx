@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent, type ReactNode } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent, type CSSProperties, type ReactNode } from "react";
 import styles from "../scss/inputField.module.scss";
 import { Eye, EyeSlash } from "./Icons";
 interface IInputFieldProps {
@@ -12,6 +12,7 @@ interface IInputFieldProps {
     onSuggestionClick?: (name: string) => void | Promise<void>
     onFocus?: () => void | Promise<void>
     onBlur?: () => void | Promise<void>
+    onKeyDown?: (e: React.KeyboardEvent) => void | Promise<void>
     icon?: ReactNode;
     id?: string
     autocomplete?: boolean
@@ -20,6 +21,7 @@ interface IInputFieldProps {
     rows?: number
     resizable?: boolean
     typeSpeed?: number
+    style?:CSSProperties
 };
 export type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -29,6 +31,7 @@ export type InputFieldHandle = {
     blur: () => void;
     setStringToType: (string: string, charsTyped?: number) => void;
     isStringTyped: () => boolean;
+    setInput:(value:string)=>void
 }
 
 export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props, ref) => {
@@ -52,6 +55,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             return;
         el.style.height = "auto";
         el.style.height = `${el.scrollHeight}px`;
+        el.scrollIntoView({ block: "end" });
     }, [isTextarea, isResizable]);
 
     const updateCaretPosition = useCallback(() => {
@@ -116,7 +120,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
             setErrMsg(msg);
         },
         getInput() {
-            return inputRef.current?.value.trim() ?? "";
+            return inputRef.current?.value ?? "";
         },
         getError() {
             return errMsg;
@@ -141,6 +145,13 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         },
         isStringTyped() {
             return props.scripted && stringToType.current !== "" ? currTyped.current >= stringToType.current.length : false;
+        },
+        setInput(value) {
+            if (inputRef.current === null)
+                return;
+            inputRef.current.value=value;
+            updateCaretPosition();
+            autoResize();
         },
     }));
 
@@ -204,7 +215,11 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
 
     function onKeyDown(e: React.KeyboardEvent) {
         updateCaretPosition();
-        if (!props.scripted || e.key == "Enter")
+        if (props.onKeyDown)
+            props.onKeyDown(e);
+        if (!props.scripted)
+            return;
+        if (!props.textarea&&e.key == "Enter")
             return;
         e.preventDefault();
         if (stringToType.current === "")
@@ -228,7 +243,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
     const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""} ${isTerminal ? styles.terminal : ""} ${isTextarea ? styles.textarea : ""} ${isResizable ? styles.resizable : ""}`;
     return (
         <div className={styles.container} >
-            <div className={className} data-istransition="true" id={props.id}>
+            <div style={props.style} className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
@@ -249,7 +264,7 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
                             name={props.name}
                             className={styles.inputField}
                             spellCheck={false}
-                            rows={props.rows}
+                            rows={props.rows??1}
                             disabled={props.disabled}
                         />
                         :
