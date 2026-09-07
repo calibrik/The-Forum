@@ -25,3 +25,6 @@ jobs:
 
             - name: Execute Tests
               run: npm run test:ci
+
+            - name: Compile App
+              run: npm run build
