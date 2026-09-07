@@ -19,7 +19,7 @@ interface IInputFieldProps {
     textarea?: boolean
     rows?: number
     resizable?: boolean
-    typeSpeed?:number
+    typeSpeed?: number
 };
 export type InputFieldHandle = {
     setError: (msg: string) => void;
@@ -212,17 +212,16 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         if (e.key == "Backspace")
             currTyped.current = Math.max(currTyped.current - 1, 0);
         else
-            currTyped.current = Math.min(currTyped.current + (props.typeSpeed??1), stringToType.current.length);
-        const expectedString=stringToType.current.substring(0, currTyped.current)
+            currTyped.current = Math.min(currTyped.current + (props.typeSpeed ?? 1), stringToType.current.length);
+        const expectedString = stringToType.current.substring(0, currTyped.current)
         setTimeout(() => {
             inputRef.current!.value = expectedString;
             updateCaretPosition();
             autoResize();
+            if (props.onChange)
+                props.onChange(expectedString);
         }, 0);//trick for mobile, so last typed letter doesn't appear in input, only scripted string
-        if (props.onChange) {
-            props.onChange(inputRef.current?.value ?? "");
-            return;
-        }
+
     }
 
     const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />

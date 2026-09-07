@@ -6,16 +6,39 @@
     overflow-y: auto;
     overflow-x: auto;
     background-color: black;
-    padding: 6px 0;
     scrollbar-width: none;
     box-sizing: border-box;
 }
 
 .buffer {
+    position: relative;
     font-family: "Courier Prime", monospace;
     font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
-    line-height: 1.5;
-    padding:10px;
+    line-height: 1.3;
+    padding: 10px 5px;
+    box-sizing: border-box;
+    min-height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+}
+
+.bufferText {
+    min-width: 0;
+    width: 100%;
+    min-height:100%;
+    // padding-left: 2ch;
+}
+
+.bufferGutter {
+    // position: absolute;
+    // top: 10px;
+    // bottom: 10px;
+    // left: 10px;
+    // width: 3ch;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .lineText {
@@ -40,6 +63,7 @@
     padding: 0 10px;
 }
 
+.bufferContent,
 .bufferInput {
     background-color: transparent;
     border: none;
@@ -49,7 +73,7 @@
     font-family: "Courier Prime", monospace;
     font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
     white-space: pre-wrap; 
-    word-break: break-word;
+    word-break: break-all;
     line-height: 1.3;
 }
 
@@ -69,11 +93,18 @@
 .line {
     display: flex;
     white-space: pre;
+    width: 100%;
     // padding: 0 10px;
 }
 
+.num-line,
 .tilde {
+    width: 100%;
     color: colors.$tertiary-color;
+}
+
+.num-line{
+    text-align: start;
 }
 
 .tildeFill {
@@ -109,17 +140,6 @@
     line-height: 1.3;
     color: colors.$secondary-color;
     padding: 4px 8px;
-}
-
-.bufferContent {
-    background-color: transparent;
-    border: none;
-    color: colors.$secondary-color;
-    font-family: "Courier Prime", monospace;
-    font-size: clamp(0.9rem, 3.4cqw, 1.1rem);
-    white-space: pre-wrap;
-    word-break: break-word;
-    line-height: 1.3;
 }
 
 .hidden {

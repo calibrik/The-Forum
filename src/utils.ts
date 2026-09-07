@@ -80,3 +80,26 @@ export async function sanitizeDbFetch<T>(obj: T) {
         return obj;
     return JSON.parse(await clearStringFromUserNicknameHash(JSON.stringify(obj))) as T;
 }
+
+export function getContainerCharCapacity(container: HTMLElement) {
+    const style = window.getComputedStyle(container);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) 
+        return { cols: 0, rows: 0, total: 0 };
+
+    ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const charWidth = ctx.measureText("0").width;
+    const paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+    const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+    const innerWidth = container.clientWidth - paddingX;
+    const innerHeight = container.clientHeight - paddingY;
+    const lineHeight = parseFloat(style.lineHeight) ?? (parseFloat(style.fontSize) * 1.2);
+    const cols = Math.floor(innerWidth / charWidth);
+    const rows = Math.floor(innerHeight / lineHeight);
+
+    return {
+        cols,                
+        rows,                 
+    };
+}
