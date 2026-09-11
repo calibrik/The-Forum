@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, type IAction, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -463,6 +463,8 @@ export function useLogin() {
 
 export interface ITerminalHandle {
     setExpectedCommand: (command: string, output?: string) => void;
+    addHistory: (history: IHistoryEntry[]) => void;
+    setPromptVisible: (visible: boolean) => void;
 }
 
 export function useTerminal() {
@@ -476,12 +478,19 @@ export function useTerminal() {
         terminalHandle.current?.setExpectedCommand(command, output);
     }
 
-    return { setTerminalHandle, setTerminalCommand };
+    function addTerminalHistory(history: IHistoryEntry[]) {
+        terminalHandle.current?.addHistory(history);
+    }
+
+    function setPromptVisibility(visible: boolean) {
+        terminalHandle.current?.setPromptVisible(visible);
+    }
+
+    return { setTerminalHandle, setTerminalCommand, addTerminalHistory, setPromptVisibility };
 }
 
 export interface IVimHandle {
     setTextToType: (text: string) => void;
-    setVimContent: (content: string) => void;
 }
 
 export function useVim() {
@@ -495,11 +504,7 @@ export function useVim() {
         vimHandle.current?.setTextToType(content);
     }
 
-    function setVimContent(content: string) {
-        vimHandle.current?.setVimContent(content);
-    }
-
-    return { setVimHandle, setVimType, setVimContent };
+    return { setVimHandle, setVimType };
 }
 
 export function useStoryFuncs() {
@@ -612,12 +617,18 @@ export function useStoryFuncs() {
             hintFunc.setStoryHint(["terminal-input"], true, false);
             terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
         }
+        if (action.addTerminalHistoryAction) {
+            terminalFunc.addTerminalHistory(action.addTerminalHistoryAction.history);
+        }
+        if (action.setPromptVisibilityAction) {
+            terminalFunc.setPromptVisibility(action.setPromptVisibilityAction.visible);
+        }
         if (action.vimTypeAction) {
             hintFunc.setStoryHint(["vim-input"], true, false);
             vimFunc.setVimType(action.vimTypeAction.content);
         }
-        if (action.setVimContentAction) {
-            vimFunc.setVimContent(action.setVimContentAction.content);
+        if (action.setTypingBoxContentAction) {
+            typingBoxes.current[action.setTypingBoxContentAction.typingBoxId]?.current?.setContent(action.setTypingBoxContentAction.content);
         }
     }
 
@@ -740,7 +751,8 @@ export function useStoryFuncs() {
                 speed: stl.speed,
                 delim: stl.delim,
                 clearAfter: stl.clearAfter,
-                hideCursorAfter: stl.hideCursorAfter
+                hideCursorAfter: stl.hideCursorAfter,
+                clearBefore: stl.clearBefore
             }), scl.offset);
         }
 

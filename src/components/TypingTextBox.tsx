@@ -11,6 +11,7 @@ interface ITypingTextBoxProps {
     content?: string
     addDefaultClass?: boolean
     style?: React.CSSProperties
+    onContentSet?: (content: string) => void
 };
 
 export interface ITypingBoxArgs {
@@ -19,6 +20,7 @@ export interface ITypingBoxArgs {
     delim?: string,
     clearAfter?: string
     hideCursorAfter?: boolean
+    clearBefore?: boolean
     style?: React.CSSProperties
 }
 
@@ -39,12 +41,14 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     const typingTextRef = useRef<HTMLSpanElement>(null);
 
     const getTimeline = contextSafe((args: ITypingBoxArgs) => {
-        let finContent = contentRef.current + (args.delim ?? "") + args.content;
+        const tl = gsap.timeline();
+        if (args.clearBefore)
+            tl.add(reset());
+        const finContent = contentRef.current + (args.delim ?? "") + args.content;
         contentRef.current = finContent;
-        const tl = gsap.timeline()
-            .set(divRef.current, {
-                display: "block"
-            });
+        tl.set(divRef.current, {
+            display: "block"
+        });
         tl.set('#cursor', {
             visibility: 'visible'
         })
@@ -101,6 +105,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             contentRef.current = content;
             if (typingTextRef.current)
                 typingTextRef.current.innerText = content;
+            props.onContentSet?.(content);
         },
         getContent() {
             return contentRef.current;

@@ -9,6 +9,7 @@ export interface IStoryLine {
 	typingBoxId: number,
 	clearAfter?: string
 	hideCursorAfter?: boolean
+	clearBefore?: boolean
 }
 
 export interface IEffect {
@@ -127,8 +128,22 @@ export interface IVimTypeAction {
 	content: string,
 }
 
-export interface ISetVimContentAction {
+export interface ISetTypingBoxContentAction {
 	content: string,
+	typingBoxId: number,
+}
+
+export interface IHistoryEntry {
+	type: "cmd" | "out",
+	text: string,
+}
+
+export interface IAddTerminalHistoryAction {
+	history: IHistoryEntry[],
+}
+
+export interface ISetPromptVisibilityAction {
+	visible: boolean,
 }
 
 export interface IClearTypingTextBoxes {
@@ -145,7 +160,9 @@ export interface IAction {
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
-	setVimContentAction?: ISetVimContentAction,
+	setTypingBoxContentAction?: ISetTypingBoxContentAction,
+	addTerminalHistoryAction?: IAddTerminalHistoryAction,
+	setPromptVisibilityAction?: ISetPromptVisibilityAction,
 }
 
 export interface IScriptLine {
@@ -197,7 +214,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(199).stores({
+db.version(203).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

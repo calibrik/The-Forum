@@ -5,12 +5,9 @@ import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTe
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
+import type { IHistoryEntry } from "../backend/db";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/terminal.module.scss";
-
-type HistoryEntry =
-    | { type: "cmd"; command: string }
-    | { type: "out"; text: string };
 
 export const Terminal: FC = () => {
     const inputRef = useRef<InputFieldHandle>(null);
@@ -20,8 +17,9 @@ export const Terminal: FC = () => {
     const story = useStory();
     const userState = useUserState();
     const navigate = useNavigate();
-    const [history, setHistory] = useState<HistoryEntry[]>([]);
+    const [history, setHistory] = useState<IHistoryEntry[]>([]);
     const [objectiveHint, setObjectiveHint] = useState<string>("");
+    const [isPromptVisible, setIsPromptVisible] = useState<boolean>(true);
     const expectedCommand = useRef<string>("");
     const expectedOutput = useRef<string>("");
 
@@ -44,6 +42,12 @@ export const Terminal: FC = () => {
             setExpectedCommand: function (command: string, output?: string): void {
                 expectedCommand.current = command;
                 expectedOutput.current = output ?? "";
+            },
+            addHistory: function (entries: IHistoryEntry[]): void {
+                setHistory(h => [...h, ...entries]);
+            },
+            setPromptVisible: function (visible: boolean): void {
+                setIsPromptVisible(visible);
             },
         });
         return () => {
@@ -99,7 +103,9 @@ export const Terminal: FC = () => {
         else {
             output = `bash: ${cmd}: command not found`;
         }
-        setHistory(h => [...h, { type: "cmd", command: cmd }, { type: "out", text: output }]);
+        setHistory(h => output !== ""
+            ? [...h, { type: "cmd", text: cmd }, { type: "out", text: output }]
+            : [...h, { type: "cmd", text: cmd }]);
     }
 
     const prefix = (
@@ -127,13 +133,13 @@ export const Terminal: FC = () => {
                                 entry.type === "cmd" ? (
                                     <div key={index} className={styles.outputLine}>
                                         {prefix}
-                                        <span> {entry.command}</span>
+                                        <span> {entry.text}</span>
                                     </div>
                                 ) : (
                                     <div key={index} className={styles.outputLine}>{entry.text}</div>
                                 )
                             ))}
-                            <form style={{ "--prompt-indent": `${promptIndent}ch` } as CSSProperties} className={styles.promptRow}>
+                            <form style={{ "--prompt-indent": `${promptIndent}ch`, display: isPromptVisible ? undefined : "none" } as CSSProperties} className={styles.promptRow}>
                                 <div className={styles.promptPrefix}>
                                     {prefix}
                                 </div>

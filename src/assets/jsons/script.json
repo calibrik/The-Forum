@@ -2468,7 +2468,7 @@
     },
     {
         "storyline": {
-            "content": "So uhhhhh, how do I create a page? I think I still remember something.",
+            "content": "So uhhhhh, how do I create a page?",
             "speed": 50,
             "delim": "",
             "typingBoxId": 1
@@ -2497,13 +2497,22 @@
     },
     {
         "storyline": {
-            "content": "Ok, I actually forgot everything. I don't think this even works.",
+            "content": "Ok, I actually forgot everything.",
             "speed": 50,
             "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "I don't think this even works.",
+            "speed": 50,
+            "delim": " ",
             "typingBoxId": 1,
             "clearAfter": "+=1.5"
         },
-        "offset": "+=0.5"
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -2516,7 +2525,52 @@
     },
     {
         "storyline": {
-            "content": "No, not for vibe coding, I'll just ask it for... you know ... general directions. Some boilerplate code to start with, you know.",
+            "content": "No, not for vibe coding, I'll just ask it for",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 1
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "you know",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "general directions.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Some boilerplate code to start with, you know.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 1,
@@ -2526,21 +2580,49 @@
     },
     {
         "storyline": {
-            "content": "Aight...this goes here...",
+            "content": "Aight",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 1
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "this goes here",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
         },
         "offset": ">"
     },
     {
         "action": {
-            "setVimContentAction": {
+            "setTypingBoxContentAction": {
+                "typingBoxId": 2,
                 "content": "// hey there! 👋 I read the code you sent and I found the problems - don't worry, we'll fix them together! 💪\n// since you're just starting out, I'll explain each one simply, no fancy words ✨\n//\n// 1) class vs className: you wrote class on your boxes, but that's the old HTML way. React wants className instead! I changed them all 🙈\n// 2) onclick vs onClick: same idea - it's onClick with a big O in React. I fixed the spelling everywhere (even on your Delete button)!\n// 3) small typos: postContaner, returnContaner, authorContaner, postTitel and contant were spelled wrong. they're now postContainer, returnContainer, authorContainer, postTitle and postContent 🙂\n// 4) author header order: you had them swapped - the subforum name (f/zero) goes first and the username (u/fartsniffer69) after it. I flipped them back!\n// 5) title vs post text: you put the long text in the headline and the headline inside the paragraph. I moved them where they belong 🎯\n// 6) the Delete button: yours was always visible even when the menu was closed! now it only shows after you press the ⋯ button, like a real dropdown menu 😅\n// 7) the Delete click: you wrote navigate(...) right away, so the page was sending you to the login screen all by itself! I wrapped it in an arrow function, so it only happens when you actually click Delete 🙂\n// 8) the counters: you had 3 likes and 0 views, but it's 0 likes and 3 views. I fixed the numbers!\n//\n// and here's the corrected page, with little notes on what each part does so you can learn 🚀\n// just copy it into your file and save - you got this! 💪\nimport { useState } from \"react\"; // this lets the page remember things (like an open menu)\nimport { useNavigate } from \"react-router\"; // this helps us move between pages\n\nexport const PostPage = () => {\n    const navigate = useNavigate(); // a little helper that lets us jump to other pages\n    const [isMenuOpen, setIsMenuOpen] = useState(false); // remembers if the ⋯ menu is open (it starts closed)\n\n    return (\n        <div className=\"postContainer\"> {/* the box that holds the whole post page */}\n            {/* 👉 the back button - when you click it, you go back to the previous page */}\n            <div className=\"returnContainer\">\n                <button onClick={() => navigate(-1)}>← back</button>\n            </div>\n\n            {/* 👉 who wrote the post - click the forum name or the username to visit them */}\n            <div className=\"authorContainer\">\n                <span className=\"subforumName\" onClick={() => navigate(\"/subforum/zero\")}>f/zero</span>\n                <span className=\"username\" onClick={() => navigate(\"/user/fartsniffer69\")}>u/fartsniffer69</span>\n            </div>\n\n            {/* 👉 the ⋯ menu button - click it to make the Delete option appear */}\n            <div className=\"menuWrapper\">\n                <button onClick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {isMenuOpen && (\n                    /* 👉 Delete - clicking it takes you to the login page (this is the trick!) */\n                    <button className=\"deleteOption\" onClick={() => navigate(\"/login?expired=true\")}>Delete</button>\n                )}\n            </div>\n\n            {/* 👉 the post title (the headline of the post) */}\n            <h1 className=\"postTitle\">fuck zero and spearhead, all my homies hate spearhead</h1>\n\n            {/* 👉 the post text (the main body of the post) */}\n            <p className=\"postContent\">zero is mid, spearhead is a scam studio ran by actual clowns. anyone who likes this game has zero iq. mods are powertripping losers who ban anyone with an opinion. delete this post, i dare u.</p>\n\n            {/* 👉 the little counters below the post */}\n            <div className=\"reactions\">\n                <span>0 likes</span>\n                <span>0 comments</span>\n                <span>3 views</span>\n            </div>\n        </div>\n    );\n};"
             }
         },
-        "offset": "-=1"
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 800,
+            "delim": "",
+            "typingBoxId": 1,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
     },
     {
         "storyline": {
@@ -2563,19 +2645,19 @@
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                            "clearBefore": true,
+                            "hideCursorAfter": true
                         },
                         "offset": ">"
                     },
                     {
-                        "storyline": {
-                            "content": "E37: No write since last change (add ! to override)",
-                            "speed": 50,
-                            "delim": "",
-                            "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "E37: No write since last change (add ! to override)",
+                                "typingBoxId": 0
+                            }
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
                         "storyline": {
@@ -2583,19 +2665,19 @@
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                            "clearBefore": true,
+                            "hideCursorAfter": true
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
-                        "storyline": {
-                            "content": "Not an editor command: exit",
-                            "speed": 50,
-                            "delim": "",
-                            "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "Not an editor command: exit",
+                                "typingBoxId": 0
+                            }
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
                         "storyline": {
@@ -2603,19 +2685,19 @@
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                            "clearBefore": true,
+                            "hideCursorAfter": true
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
-                        "storyline": {
-                            "content": "E37: No write since last change (add ! to override)",
-                            "speed": 50,
-                            "delim": "",
-                            "typingBoxId": 0,
-                            "clearAfter": "+=0.8"
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "E37: No write since last change (add ! to override)",
+                                "typingBoxId": 0
+                            }
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     },
                     {
                         "storyline": {
@@ -2623,9 +2705,10 @@
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 0,
-                            "clearAfter": "+=1.5"
+                            "clearBefore": true,
+                            "hideCursorAfter": true
                         },
-                        "offset": ">"
+                        "offset": "+=2"
                     }
                 ],
                 [
@@ -2649,7 +2732,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "fuck..uhhh...I forgot again...",
+                            "content": "fuck..uhhh...I forgot again",
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 1
@@ -2667,7 +2750,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "fucking dumbass...",
+                            "content": "fucking dumbass",
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 1
@@ -2685,7 +2768,25 @@
                     },
                     {
                         "storyline": {
-                            "content": "uhhhh...here it is.",
+                            "content": "uhhhh",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": 800,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "here it is.",
                             "speed": 50,
                             "delim": "",
                             "typingBoxId": 1,
@@ -2706,6 +2807,19 @@
                     "where": "/terminal",
                     "level": 1
                 }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim PostPage.tsx"
+                    }
+                ]
             }
         },
         "offset": ">"
@@ -2745,6 +2859,149 @@
         "offset": ">"
     },
     {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Login.tsx"
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim PostDeleted.tsx"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.3"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim FakeForum.Backend.csproj"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.8"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Program.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.1"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim appsettings.json"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.6"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Models/User.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.4"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Data/AppDbContext.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.9"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Controllers/AuthController.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.2"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Controllers/UsersController.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.7"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Dockerfile"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim docker-compose.yaml"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.3"
+    },
+    {
         "effect": {
             "name": "REVERSE_OVERLAY",
             "options": {
@@ -2769,13 +3026,124 @@
     {
         "action": {
             "setTerminalCommandAction": {
-                "command": "docker compose up --build",
-                "output": "[+] Building 1.9s (16/16) FINISHED\n => [internal] load local bake definitions                                                                         0.0s\n => => reading from stdin 1.20kB                                                                                   0.0s\n => [webapp internal] load build definition from Dockerfile                                                        0.0s\n => => transferring dockerfile: 777B                                                                               0.0s\n => [webapp internal] load metadata for docker.io/library/node:24-alpine                                           1.0s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0                                           0.3s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0-alpine                                 0.3s\n => [webapp internal] load .dockerignore                                                                           0.0s\n => => transferring context: 246B                                                                                  0.0s\n => [webapp final 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => => resolve mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => [webapp frontend 1/6] FROM docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => => resolve docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => [webapp internal] load build context                                                                           0.0s\n => => transferring context: 18.75kB                                                                               0.0s\n => [webapp backend 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => => resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => CACHED [webapp final 2/3] WORKDIR /app                                                                         0.0s\n => CACHED [webapp backend 2/7] WORKDIR /src/backend                                                               0.0s\n => CACHED [webapp backend 3/7] COPY ./fake_forum.Backend/fake_forum.Backend/fake_forum.Backend.csproj .          0.0s\n => CACHED [webapp backend 4/7] RUN dotnet restore \"fake_forum.Backend.csproj\"                                    0.0s\n => CACHED [webapp backend 5/7] COPY ./fake_forum.Backend .                                                       0.0s\n => CACHED [webapp backend 6/7] RUN dotnet publish \"/src/backend/fake_forum.Backend/fake_forum.Backend.csproj\"   0.0s\n => CACHED [webapp frontend 2/6] WORKDIR /src/frontend                                                             0.0s\n => CACHED [webapp frontend 3/6] COPY ./fake_forum-frontend/package*.json ./                                      0.0s\n => CACHED [webapp frontend 4/6] RUN npm install                                                                   0.0s\n => CACHED [webapp frontend 5/6] COPY ./fake_forum-frontend ./                                                    0.0s\n => CACHED [webapp frontend 6/6] RUN npm run build                                                                 0.0s\n => CACHED [webapp backend 7/7] COPY --from=frontend ./src/frontend/dist /app/wwwroot                              0.0s\n => CACHED [webapp final 3/3] COPY --from=backend ./app .                                                          0.0s\n => [webapp] exporting to image                                                                                    0.2s\n => => exporting layers                                                                                            0.0s\n => => exporting manifest sha256:6ef00b015f6a964a859fd8fdb36fca3e6d5d1ce0a64b43f7f168a7436686e268                  0.0s\n => => exporting config sha256:0587d35c29a73590b1b55b7c46925cd4503ab90c01be3ef0da9250e5cc0ab0db                    0.0s\n => => exporting attestation manifest sha256:8596439a208f4725bfdd96872bfcc977506fa8d9b552e09d5b3ca8ad1ca9ee72      0.0s\n => => exporting manifest list sha256:80d6a7b62bb91fc12a6afd76752d9efa2ef17b7673f54e31dec772ccc6606be2             0.0s\n => => naming to docker.io/library/fake_forum-webapp:latest                                                       0.0s\n => => unpacking to docker.io/library/fake_forum-webapp:latest                                                    0.0s\n => [webapp] resolving provenance for metadata file                                                                0.0s\n[+] Running 2/2\n ✔ fake_forum-webapp                 Built                                                                        0.0s\n ✔ Network fake_forum_app-network    Created                                                                      0.0s\n ✔ Container fake_forum-webapp-1     Started                                                                      0.8s"
+                "command": "docker compose up --build"
             }
         },
         "isActionAwait": true,
         "hint": "Type 'docker compose up --build' to run the server",
         "offset": ">"
+    },
+    {
+        "action": {
+            "setPromptVisibilityAction": {
+                "visible": false
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "[+] Building 14s (16/16) FINISHED\n => [internal] load local bake definitions                                                                         0.0s\n => => reading from stdin 1.20kB                                                                                   0.0s\n => [webapp internal] load build definition from Dockerfile                                                        0.0s\n => => transferring dockerfile: 777B                                                                               0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp internal] load metadata for docker.io/library/node:24-alpine                                           1.0s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0                                           0.3s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0-alpine                                 0.3s\n => [webapp internal] load .dockerignore                                                                           0.0s\n => => transferring context: 246B                                                                                  0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp final 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => => resolve mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => [webapp frontend 1/6] FROM docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => => resolve docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => [webapp internal] load build context                                                                           0.0s\n => => transferring context: 18.75kB                                                                               0.0s\n => [webapp backend 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => => resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp final 2/3] WORKDIR /app                                                                                0.0s\n => [webapp backend 2/7] WORKDIR /src/backend                                                                      0.0s\n => [webapp backend 3/7] COPY ./fake_forum.Backend/fake_forum.Backend/fake_forum.Backend.csproj .                 0.0s\n => [webapp backend 4/7] RUN dotnet restore \"fake_forum.Backend.csproj\"                                           1.5s\n => [webapp backend 5/7] COPY ./fake_forum.Backend .                                                              0.0s\n => [webapp backend 6/7] RUN dotnet publish \"/src/backend/fake_forum.Backend/fake_forum.Backend.csproj\"          2.5s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp frontend 2/6] WORKDIR /src/frontend                                                                    0.0s\n => [webapp frontend 3/6] COPY ./fake_forum-frontend/package*.json ./                                             0.0s\n => [webapp frontend 4/6] RUN npm install                                                                          2.0s\n => [webapp frontend 5/6] COPY ./fake_forum-frontend ./                                                           0.0s\n => [webapp frontend 6/6] RUN npm run build                                                                        3.0s\n => [webapp backend 7/7] COPY --from=frontend ./src/frontend/dist /app/wwwroot                                     0.0s\n => [webapp final 3/3] COPY --from=backend ./app .                                                                 0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp] exporting to image                                                                                    2.0s\n => => exporting layers                                                                                            0.0s\n => => exporting manifest sha256:6ef00b015f6a964a859fd8fdb36fca3e6d5d1ce0a64b43f7f168a7436686e268                  0.0s\n => => exporting config sha256:0587d35c29a73590b1b55b7c46925cd4503ab90c01be3ef0da9250e5cc0ab0db                    0.0s\n => => exporting attestation manifest sha256:8596439a208f4725bfdd96872bfcc977506fa8d9b552e09d5b3ca8ad1ca9ee72      0.0s\n => => exporting manifest list sha256:80d6a7b62bb91fc12a6afd76752d9efa2ef17b7673f54e31dec772ccc6606be2             0.0s\n => => naming to docker.io/library/fake_forum-webapp:latest                                                       0.0s\n => => unpacking to docker.io/library/fake_forum-webapp:latest                                                    0.0s\n => [webapp] resolving provenance for metadata file                                                                0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "[+] Running 2/2\n ✔ fake_forum-webapp                 Built                                                                        0.0s\n ✔ Network fake_forum_app-network    Created                                                                      0.0s\n ✔ Container fake_forum-webapp-1     Started                                                                      0.8s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=0.8"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "webapp-1     | warn: Microsoft.AspNetCore.Hosting.Diagnostics[15]\nwebapp-1     |       Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:80'.\nwebapp-1     | info: Microsoft.Hosting.Lifetime[14]\nwebapp-1     |       Now listening on: http://[::]:80\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Application started. Press Ctrl+C to shut down.\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Hosting environment: Production\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Content root path: /app"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.5"
     },
     {
         "storyline": {
@@ -2785,6 +3153,6 @@
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
-        "offset": ">"
+        "offset": "+=3"
     }
 ]

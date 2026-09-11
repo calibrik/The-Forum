@@ -10,7 +10,7 @@ import { useUserState } from "../providers/UserAuth";
 import { commonPrefixLength, getContainerCharCapacity } from "../utils";
 
 export const Vim: FC = () => {
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const commandBox = useRef<ITypingTextBoxHandle>(null);
     const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<InputFieldHandle>(null);
     const bufferTypingBox = useRef<ITypingTextBoxHandle>(null);
@@ -84,11 +84,9 @@ export const Vim: FC = () => {
         setTildeCount(Math.max(containerCapacity.rows - newNumeratedLines.length, 0));
     }, [hasTextToType]);
 
-    function setVimContent(content: string) {
-        bufferTypingBox.current?.setContent(content);
+    function onBufferContentSet(content: string) {
         calculateNumeratedLines();
         updateCounts(content);
-        setHasTextToType(false);
     }
 
     function onInputChange() {
@@ -129,8 +127,8 @@ export const Vim: FC = () => {
     }, [calculateNumeratedLines]);
 
     useEffect(() => {
-        storyInit(2, [typingBox, narrationBox], init);
-        story.setVimHandle({ setTextToType, setVimContent });
+        storyInit(2, [commandBox, narrationBox, bufferTypingBox], init);
+        story.setVimHandle({ setTextToType });
         return () => {
             story.setVimHandle(undefined);
         };
@@ -161,7 +159,7 @@ export const Vim: FC = () => {
                             </div>
                             <div ref={bufferRef} className={styles.bufferText}>
                                 <InputField typeSpeed={10} ref={inputRef} scripted textarea onChange={onInputChange} cursorType="terminal" name="command" type="text" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
-                                <TypingTextBox ref={bufferTypingBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} />
+                                <TypingTextBox ref={bufferTypingBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
                             </div>
 
                         </div>
@@ -173,7 +171,7 @@ export const Vim: FC = () => {
                         <span>1,1  All</span>
                     </div>
                     <div className={styles.commandLineRow}>
-                        <TypingTextBox ref={typingBox} className={styles.commandLineBox} type={"terminal"} />
+                        <TypingTextBox ref={commandBox} className={styles.commandLineBox} type={"terminal"} />
                     </div>
                 </div>
             </div>
