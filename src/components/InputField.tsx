@@ -53,9 +53,15 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
         const el = inputRef.current;
         if (!isTextarea || isResizable || !el)
             return;
+        const orig=el.value;
+        const inputPos=el.selectionStart;
+        el.value+=" ";
         el.style.height = "auto";
         el.style.height = `${el.scrollHeight}px`;
         el.scrollIntoView({ block: "end" });
+        el.value=orig;
+        el.selectionStart=inputPos;
+        el.selectionEnd=inputPos;
     }, [isTextarea, isResizable]);
 
     const updateCaretPosition = useCallback(() => {
@@ -214,11 +220,11 @@ export const InputField = forwardRef<InputFieldHandle, IInputFieldProps>((props,
 
 
     function onKeyDown(e: React.KeyboardEvent) {
-        updateCaretPosition();
         if (props.onKeyDown)
             props.onKeyDown(e);
         if (!props.scripted)
             return;
+        updateCaretPosition();
         if (!props.textarea&&e.key == "Enter")
             return;
         e.preventDefault();

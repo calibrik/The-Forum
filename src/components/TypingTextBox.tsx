@@ -42,6 +42,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
 
     const getTimeline = contextSafe((args: ITypingBoxArgs) => {
         const tl = gsap.timeline();
+        tl.add(()=>console.log("exec typing",args.content,props.className));
         if (args.clearBefore)
             tl.add(reset());
         const finContent = contentRef.current + (args.delim ?? "") + args.content;
@@ -83,7 +84,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 clearProps: "all",
             })
             .add(() => {
-                // console.log("resetting", divRef.current);
                 if (divRef.current) {
                     divRef.current.style.display = "none";
                 }

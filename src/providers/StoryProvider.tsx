@@ -515,7 +515,6 @@ export function useStoryFuncs() {
     const navigate = useNavigate();
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
-    // const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
@@ -530,13 +529,6 @@ export function useStoryFuncs() {
     const loginFunc = useLogin();
     const terminalFunc = useTerminal();
     const vimFunc = useVim();
-
-    // function initReady(level: number) {
-    //     if (level != locationRef.current?.level)
-    //         return;
-    //     if (pageInitResolveRef.current)
-    //         pageInitResolveRef.current();
-    // }
 
     function isStoryGoing() {
         return masterRef.current != undefined;
@@ -733,8 +725,8 @@ export function useStoryFuncs() {
         });
     }
 
-    async function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
-        scl = await sanitizeDbFetch(scl);
+    function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
+        console.log("adding",scl);
         if (scl.storyline) {
             const stl = scl.storyline;
             if (stl.typingBoxId >= typingBoxes.current.length) {
@@ -783,7 +775,7 @@ export function useStoryFuncs() {
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
                 for (let action of branches[i]) {
-                    await addScriptlineToTimeline(action, branch);
+                    addScriptlineToTimeline(action, branch);
                 }
                 tl.add(branch, `${scl.addParallelExec.name}+=0`);
             }
@@ -816,7 +808,8 @@ export function useStoryFuncs() {
             id++;
             if (!scl)
                 break;
-            await addScriptlineToTimeline(scl, master);
+            scl = await sanitizeDbFetch(scl);
+            addScriptlineToTimeline(scl, master);
             if (scl.action?.navigateAction) {
                 navPending = true;
                 navHint = scl.hint;
@@ -828,8 +821,7 @@ export function useStoryFuncs() {
         console.log("play anim")
         master.play();
         await master;
-        if (!isMounted.current || ticket != loopTicket.current || masterRef.current !== master)
-        {
+        if (!isMounted.current || ticket != loopTicket.current || masterRef.current !== master) {
             console.log("interrupted")
             return;
         }
@@ -902,15 +894,12 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
-    // const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
 
     return {
-        // setTypingBoxes,
         getAnim,
-        // initReady,
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
@@ -938,7 +927,6 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
-        // _getPageInitResolveRef,
         _showStory,
         _customizeStory,
         _isOnLocation
@@ -986,7 +974,6 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        // bridge.exec(story.initReady, childLevel);
         bridge.exec(story.recoverStoryOnPage, childLevel, typingBoxes);
     }
 

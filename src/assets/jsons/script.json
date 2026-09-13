@@ -2635,6 +2635,19 @@
         "offset": "+=0.3"
     },
     {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 1,
+                "style": {
+                    "top": "60%",
+                    "left": "10%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
         "addParallelExec": {
             "name": "exit-attempts",
             "branches": [

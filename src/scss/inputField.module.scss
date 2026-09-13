@@ -39,6 +39,8 @@
     padding: 0;
     flex-grow: 1;
     color: inherit;
+    white-space: break-spaces; 
+    word-break: break-all;
 }
 
 .input{
