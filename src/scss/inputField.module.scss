@@ -130,6 +130,10 @@
     visibility: hidden;
     animation: cursor-blink 1s step-end infinite;
 }
+.input-wrapper.textarea {
+    align-items: flex-start;
+}
+
 .input-wrapper.textarea .placeholder {
     top: 0;
 }

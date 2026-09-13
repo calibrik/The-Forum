@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type FC, type FocusEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { Textarea } from "../components/Textarea";
+import { type IInputFieldHandle } from "../components/InputField";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useNavigate, useSearchParams } from "react-router";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
@@ -12,7 +13,7 @@ import { commonPrefixLength, getContainerCharCapacity } from "../utils";
 export const Vim: FC = () => {
     const commandBox = useRef<ITypingTextBoxHandle>(null);
     const narrationBox = useRef<ITypingTextBoxHandle>(null);
-    const inputRef = useRef<InputFieldHandle>(null);
+    const inputRef = useRef<IInputFieldHandle>(null);
     const bufferTypingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
     const story = useStory();
@@ -158,7 +159,7 @@ export const Vim: FC = () => {
                                 ))}
                             </div>
                             <div ref={bufferRef} className={styles.bufferText}>
-                                <InputField typeSpeed={10} ref={inputRef} scripted textarea onChange={onInputChange} cursorType="terminal" name="command" type="text" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
+                                <Textarea typeSpeed={10} ref={inputRef} scripted onChange={onInputChange} cursorType="terminal" name="command" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
                                 <TypingTextBox ref={bufferTypingBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
                             </div>
 

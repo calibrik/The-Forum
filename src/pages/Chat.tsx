@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
 import { bridge, formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
@@ -149,7 +149,7 @@ export const Chat: FC<IChatProps> = () => {
     const userState = useUserState();
     let navigate = useNavigate();
     const { chatId } = useParams<{ chatId: string }>();
-    const inputRef = useRef<InputFieldHandle>(null);
+    const inputRef = useRef<IInputFieldHandle>(null);
     const story = useStory();
     const typingBox = useRef<ITypingTextBoxHandle>(null);
 

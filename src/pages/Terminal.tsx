@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { Textarea } from "../components/Textarea";
+import { type IInputFieldHandle } from "../components/InputField";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
@@ -10,7 +11,7 @@ import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/terminal.module.scss";
 
 export const Terminal: FC = () => {
-    const inputRef = useRef<InputFieldHandle>(null);
+    const inputRef = useRef<IInputFieldHandle>(null);
     const outputRef = useRef<HTMLDivElement>(null);
     const typingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
@@ -143,7 +144,7 @@ export const Terminal: FC = () => {
                                 <div className={styles.promptPrefix}>
                                     {prefix}
                                 </div>
-                                <InputField onKeyDown={onSubmit} ref={inputRef} textarea name="command" type="text" cursorType="terminal" className={styles.promptInput} />
+                                <Textarea onKeyDown={onSubmit} ref={inputRef} name="command" cursorType="terminal" className={styles.promptInput} />
                             </form>
                         </div>
                     </div>

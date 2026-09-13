@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
@@ -18,8 +18,8 @@ type LoginData = {
 }
 
 export const Login: FC<ILoginProps> = (_) => {
-    const nicknameInputRef = useRef<InputFieldHandle>(null);
-    const passwordInputRef = useRef<InputFieldHandle>(null);
+    const nicknameInputRef = useRef<IInputFieldHandle>(null);
+    const passwordInputRef = useRef<IInputFieldHandle>(null);
     let navigate = useNavigate();
     const userState = useUserState();
     const passwordForgotBox = useRef<ITypingTextBoxHandle>(null);
