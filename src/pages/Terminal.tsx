@@ -1,26 +1,26 @@
-import { useEffect, useRef, useState, type FC, type FormEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEvent } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { Textarea } from "../components/Textarea";
+import { type IInputFieldHandle } from "../components/InputField";
 import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
+import type { IHistoryEntry } from "../backend/db";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/terminal.module.scss";
 
-type HistoryEntry =
-    | { type: "cmd"; command: string }
-    | { type: "out"; text: string };
-
 export const Terminal: FC = () => {
-    const inputRef = useRef<InputFieldHandle>(null);
+    const inputRef = useRef<IInputFieldHandle>(null);
     const outputRef = useRef<HTMLDivElement>(null);
     const typingBox = useRef<ITypingTextBoxHandle>(null);
     const storyInit = useStoryInit();
+    const story = useStory();
     const userState = useUserState();
     const navigate = useNavigate();
-    const [history, setHistory] = useState<HistoryEntry[]>([]);
+    const [history, setHistory] = useState<IHistoryEntry[]>([]);
     const [objectiveHint, setObjectiveHint] = useState<string>("");
+    const [isPromptVisible, setIsPromptVisible] = useState<boolean>(true);
     const expectedCommand = useRef<string>("");
     const expectedOutput = useRef<string>("");
 
@@ -28,6 +28,8 @@ export const Terminal: FC = () => {
     const userPart = `${username}@the-forum`;
     const pathPart = ":~";
     const dollarPart = "$";
+
+
 
     function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
@@ -37,6 +39,21 @@ export const Terminal: FC = () => {
 
     useEffect(() => {
         storyInit(1, [typingBox], init);
+        story.setTerminalHandle({
+            setExpectedCommand: function (command: string, output?: string): void {
+                expectedCommand.current = command;
+                expectedOutput.current = output ?? "";
+            },
+            addHistory: function (entries: IHistoryEntry[]): void {
+                setHistory(h => [...h, ...entries]);
+            },
+            setPromptVisible: function (visible: boolean): void {
+                setIsPromptVisible(visible);
+            },
+        });
+        return () => {
+            story.setTerminalHandle(undefined);
+        };
     }, []);
 
     useEffect(() => {
@@ -53,16 +70,24 @@ export const Terminal: FC = () => {
         inputRef.current?.focus();
     }, []);
 
+    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
+        const target = e.relatedTarget;
+        if (target === null || !e.currentTarget.contains(target as Node))
+            inputRef.current?.focus();
+    }
+
     useEffect(() => {
         outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
     }, [history]);
 
-    function onSubmit(e: FormEvent<HTMLFormElement>) {
+    function onSubmit(e: React.KeyboardEvent) {
+        if (e.key != "Enter")
+            return;
         e.preventDefault();
         if (!inputRef.current)
             return;
-        const cmd = inputRef.current.getInput();
-        e.currentTarget.reset();
+        const cmd = inputRef.current.getInput().trim();
+        inputRef.current.setInput("");
         if (cmd === "")
             return;
         const expectedCmd = expectedCommand.current;
@@ -74,17 +99,29 @@ export const Terminal: FC = () => {
         }
         else if (expectedCmd !== "" && cmd === expectedCmd) {
             output = expectedOutput.current;
+            story.resumeStoryFromHint("terminal-input");
         }
         else {
             output = `bash: ${cmd}: command not found`;
         }
-        setHistory(h => [...h, { type: "cmd", command: cmd }, { type: "out", text: output }]);
+        setHistory(h => output !== ""
+            ? [...h, { type: "cmd", text: cmd }, { type: "out", text: output }]
+            : [...h, { type: "cmd", text: cmd }]);
     }
+
+    const prefix = (
+        <div className={styles.promptDiv}>
+            <span className={styles.promptUser}>{userPart}</span>
+            <span className={styles.promptPath}>{pathPart}</span>
+            <span className={styles.promptDollar}>{dollarPart}</span>
+        </div>
+    );
+    const promptIndent = `${userPart}${pathPart}${dollarPart} `.length;
 
     return (
         <>
             <TypingTextBox ref={typingBox} type="terminal" />
-            <div className={systemStyles.container}>
+            <div className={systemStyles.container} onBlur={onContainerBlur}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
@@ -96,22 +133,18 @@ export const Terminal: FC = () => {
                             {history.map((entry, index) => (
                                 entry.type === "cmd" ? (
                                     <div key={index} className={styles.outputLine}>
-                                        <span className={styles.promptUser}>{userPart}</span>
-                                        <span className={styles.promptPath}>{pathPart}</span>
-                                        <span className={styles.promptDollar}>{dollarPart}</span>
-                                        <span>{" "}{entry.command}</span>
+                                        {prefix}
+                                        <span> {entry.text}</span>
                                     </div>
                                 ) : (
                                     <div key={index} className={styles.outputLine}>{entry.text}</div>
                                 )
                             ))}
-                            <form className={styles.promptRow} onSubmit={onSubmit}>
-                                <span className={styles.promptPrefix}>
-                                    <span className={styles.promptUser}>{userPart}</span>
-                                    <span className={styles.promptPath}>{pathPart}</span>
-                                    <span className={styles.promptDollar}>{dollarPart}</span>
-                                </span>
-                                <InputField ref={inputRef} name="command" type="text" cursorType="terminal" className={styles.promptInput} />
+                            <form style={{ "--prompt-indent": `${promptIndent}ch`, display: isPromptVisible ? undefined : "none" } as CSSProperties} className={styles.promptRow}>
+                                <div className={styles.promptPrefix}>
+                                    {prefix}
+                                </div>
+                                <Textarea onKeyDown={onSubmit} ref={inputRef} name="command" cursorType="terminal" className={styles.promptInput} />
                             </form>
                         </div>
                     </div>

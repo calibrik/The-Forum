@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { InputField, type InputFieldHandle } from "./InputField";
+import { InputField, type IInputFieldHandle } from "./InputField";
 import { Search } from "./Icons";
 import { SMEntry } from "./SMEntry";
 import styles from "../scss/searchField.module.scss";
@@ -23,7 +23,7 @@ export interface ISearchFieldHandle{
 }
 
 export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((props,ref) => {
-    const inputRef = useRef<InputFieldHandle>(null);
+    const inputRef = useRef<IInputFieldHandle>(null);
     const [suggestions, setSuggestions] = useState<ISuggestion[]>([]);
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const suggestionHint = useRef<string|undefined>(undefined);

@@ -1,7 +1,7 @@
 import { useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
-import { InputField, type InputFieldHandle } from "../components/InputField";
+import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
@@ -16,9 +16,9 @@ type SignupData = {
 }
 
 export const Signup: FC<ISignupProps> = (_) => {
-    const nicknameInputRef = useRef<InputFieldHandle>(null);
-    const passwordInputRef = useRef<InputFieldHandle>(null);
-    const confirmPasswordInputRef = useRef<InputFieldHandle>(null);
+    const nicknameInputRef = useRef<IInputFieldHandle>(null);
+    const passwordInputRef = useRef<IInputFieldHandle>(null);
+    const confirmPasswordInputRef = useRef<IInputFieldHandle>(null);
     let navigate = useNavigate();
     const modals = useModals();
     const answerRef = useRef<boolean>(false);
@@ -76,7 +76,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     }
 
     function onPasswordChange(_: string) {
-        if (passwordInputRef.current?.getInput() !== confirmPasswordInputRef.current?.getInput()) {
+        if (passwordInputRef.current?.getInput().trim() !== confirmPasswordInputRef.current?.getInput().trim()) {
             confirmPasswordInputRef.current?.setError("Passwords don't match!");
         }
         else {

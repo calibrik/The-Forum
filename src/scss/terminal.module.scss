@@ -1,5 +1,12 @@
 @use "./colors.scss" as colors;
 
+%terminalText {
+    font-family: "Courier Prime", monospace;
+    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+    line-height: 1.4;
+    color: colors.$secondary-color;
+}
+
 .body {
     flex: 1 1 0;
     display: flex;
@@ -12,31 +19,30 @@
     flex: 1 1 0;
     overflow-y: auto;
     padding: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: colors.$tertiary-color black;
+    scrollbar-width: none;
     box-sizing: border-box;
 }
 
+.prompt-div{
+    display:inline
+}
+
 .outputLine {
-    font-family: "Courier Prime", monospace;
-    font-size: clamp(1rem, 3.8cqw, 1.2rem);
-    line-height: 1.4;
-    color: colors.$secondary-color;
+    @extend %terminalText;
     white-space: pre-wrap;
-    word-break: break-word;
+    word-break: break-all;
 }
 
 .promptRow {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    @extend %terminalText;
+    position: relative;
+    // display: flex;
+    // gap: 8px;
 }
 
 .promptPrefix {
-    display: flex;
-    font-family: "Courier Prime", monospace;
-    font-size: clamp(1rem, 3.8cqw, 1.2rem);
     white-space: nowrap;
+    position: absolute;
 }
 
 .promptUser {
@@ -52,13 +58,13 @@
 }
 
 .promptRow .promptInput {
+    @extend %terminalText;
     background-color: transparent;
     border: none;
     border-radius: 0;
     box-shadow: none;
-    color: colors.$secondary-color;
-    font-family: "Courier Prime", monospace;
-    font-size: clamp(1rem, 3.8cqw, 1.2rem);
+    display: inline;
+    word-break: break-all;
 }
 
 .promptRow .promptInput:hover {
@@ -69,5 +75,3 @@
     border: none;
     box-shadow: none;
 }
-
-

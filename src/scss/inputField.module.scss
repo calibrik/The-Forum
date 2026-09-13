@@ -29,6 +29,7 @@
     box-sizing: border-box;
     resize: none;
     overflow: hidden;
+    text-indent: var(--prompt-indent, 0);
 }
 
 .input-field {
@@ -38,6 +39,8 @@
     padding: 0;
     flex-grow: 1;
     color: inherit;
+    white-space: break-spaces; 
+    word-break: break-all;
 }
 
 .input{
@@ -111,6 +114,7 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    text-indent: var(--prompt-indent, 0);
 }
 
 .block-cursor {
@@ -126,6 +130,10 @@
     visibility: hidden;
     animation: cursor-blink 1s step-end infinite;
 }
+.input-wrapper.textarea {
+    align-items: flex-start;
+}
+
 .input-wrapper.textarea .placeholder {
     top: 0;
 }

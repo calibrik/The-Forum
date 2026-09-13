@@ -1,15 +1,14 @@
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState, type ChangeEvent, type CSSProperties, type ReactNode } from "react";
 import styles from "../scss/inputField.module.scss";
-import { Eye, EyeSlash } from "./Icons";
-interface IInputFieldProps {
-    type: string;
+import { type IInputFieldHandle } from "./InputField";
+
+interface ITextareaProps {
     name?: string;
     placeholder?: string;
     className?: string;
     scripted?: boolean;
     disabled?: boolean;
     onChange?: (value: string) => void | Promise<void>
-    onSuggestionClick?: (name: string) => void | Promise<void>
     onFocus?: () => void | Promise<void>
     onBlur?: () => void | Promise<void>
     onKeyDown?: (e: React.KeyboardEvent) => void | Promise<void>
@@ -17,24 +16,15 @@ interface IInputFieldProps {
     id?: string
     autocomplete?: boolean
     cursorType?: "normal" | "terminal"
+    rows?: number
+    resizable?: boolean
     typeSpeed?: number
-    style?:CSSProperties
+    style?: CSSProperties
 };
-export interface IInputFieldHandle {
-    setError: (msg: string) => void;
-    getInput: () => string;
-    getError: () => string;
-    focus: () => void;
-    blur: () => void;
-    setStringToType: (string: string, charsTyped?: number) => void;
-    isStringTyped: () => boolean;
-    setInput:(value:string)=>void
-}
 
-export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props, ref) => {
+export const Textarea = forwardRef<IInputFieldHandle, ITextareaProps>((props, ref) => {
     const [errMsg, setErrMsg] = useState<string>("");
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [type, setType] = useState<string>(props.type);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     const isFocused = useRef<boolean>(false);
     const placeholder = useRef<HTMLSpanElement>(null);
     const stringToType = useRef<string>("");
@@ -43,6 +33,22 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
     const [hasSelection, setHasSelection] = useState<boolean>(false);
     const isMouseDown = useRef<boolean>(false);
     const isTerminal = (props.cursorType ?? "normal") === "terminal";
+    const isResizable = props.resizable ?? false;
+
+    const autoResize = useCallback(() => {
+        const el = inputRef.current;
+        if (isResizable || !el)
+            return;
+        const orig = el.value;
+        const inputPos = el.selectionStart;
+        el.value += " ";
+        el.style.height = "auto";
+        el.style.height = `${el.scrollHeight}px`;
+        el.scrollIntoView({ block: "end" });
+        el.value = orig;
+        el.selectionStart = inputPos;
+        el.selectionEnd = inputPos;
+    }, [isResizable]);
 
     const updateCaretPosition = useCallback(() => {
         const input = inputRef.current;
@@ -53,13 +59,14 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setCaretText(input.value.substring(0, caret));
     }, [isTerminal]);
 
-    function onChange(event: ChangeEvent<HTMLInputElement>) {
+    function onChange(event: ChangeEvent<HTMLTextAreaElement>) {
         if (props.scripted) {
             return;
         }
         const value = event.target.value ?? "";
         setErrMsg("");
         updateCaretPosition();
+        autoResize();
         if (stringToType.current != "") {
             event.preventDefault();
         }
@@ -76,16 +83,28 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         if (form) {
             form.addEventListener("reset", onReset);
         }
+        autoResize();
         return () => form?.removeEventListener("reset", onReset);
     }, []);
 
     useEffect(() => {
         const ready = document.fonts?.ready;
-        if (ready)
+        if (ready) {
             ready.then(() => {
                 updateCaretPosition();
+                autoResize();
             }).catch(() => { });
+        }
     }, [updateCaretPosition]);
+
+    useEffect(() => {
+        const onWindowResize = () => {
+            updateCaretPosition();
+            autoResize();
+        };
+        window.addEventListener("resize", onWindowResize);
+        return () => window.removeEventListener("resize", onWindowResize);
+    }, [updateCaretPosition, autoResize]);
 
     useImperativeHandle(ref, () => ({
         setError(msg: string) {
@@ -112,6 +131,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
             if (string !== "") {
                 inputRef.current.value = string.substring(0, currTyped.current);
                 updateCaretPosition();
+                autoResize();
             }
         },
         isStringTyped() {
@@ -120,17 +140,11 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setInput(value) {
             if (inputRef.current === null)
                 return;
-            inputRef.current.value=value;
+            inputRef.current.value = value;
             updateCaretPosition();
+            autoResize();
         },
     }));
-
-    function onPasswordEyeClick() {
-        if (type == "password")
-            setType("text");
-        else
-            setType("password");
-    }
 
     function onInputFocus() {
         if (placeholder.current) {
@@ -154,6 +168,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
     function onReset() {
         if (!isFocused.current)
             placeholder.current!.style.display = "";
+        autoResize();
     }
 
     function onSelect() {
@@ -181,15 +196,12 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         }
     }
 
-
     function onKeyDown(e: React.KeyboardEvent) {
         if (props.onKeyDown)
             props.onKeyDown(e);
         if (!props.scripted)
             return;
         updateCaretPosition();
-        if (e.key == "Enter")
-            return;
         e.preventDefault();
         if (stringToType.current === "")
             return;
@@ -201,21 +213,21 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setTimeout(() => {
             inputRef.current!.value = expectedString;
             updateCaretPosition();
+            autoResize();
             if (props.onChange)
                 props.onChange(expectedString);
         }, 0);//trick for mobile, so last typed letter doesn't appear in input, only scripted string
 
     }
 
-    const passwordEye = type == "password" ? <Eye interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} /> : <EyeSlash interactive className={styles.passwordIcon} onClick={onPasswordEyeClick} />
-    const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""} ${isTerminal ? styles.terminal : ""}`;
+    const className = `${styles.inputWrapper} ${props.className} ${errMsg != "" ? styles.error : ""} ${isTerminal ? styles.terminal : ""} ${styles.textarea} ${isResizable ? styles.resizable : ""}`;
     return (
         <div className={styles.container} >
             <div style={props.style} className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
                     <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
-                    <input
+                    <textarea
                         onKeyDown={onKeyDown}
                         onKeyUp={onKeyUp}
                         onClick={onClick}
@@ -228,10 +240,10 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
                         onChange={onChange}
                         onFocus={onInputFocus}
                         onBlur={onInputBlur}
-                        type={type}
                         name={props.name}
                         className={styles.inputField}
                         spellCheck={false}
+                        rows={props.rows ?? 1}
                         disabled={props.disabled}
                     />
                     {isTerminal ? <div className={styles.caretOverlay} aria-hidden>
@@ -239,7 +251,6 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
                         {hasSelection ? "" : <span className={styles.blockCursor} />}
                     </div> : ""}
                 </div>
-                {props.type == "password" ? passwordEye : ""}
             </div>
             {errMsg != "" ?
                 <span className={styles.errorMsg}>{errMsg}</span>

@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, type IAction, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -25,6 +25,8 @@ interface IStoryHook {
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
+    setTerminalHandle(h: ITerminalHandle | undefined): void;
+    setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
     getMessageBuffer(): IMessage[],
 }
@@ -459,6 +461,52 @@ export function useLogin() {
     return { setLoginHandle, setShowPlaceholders };
 }
 
+export interface ITerminalHandle {
+    setExpectedCommand: (command: string, output?: string) => void;
+    addHistory: (history: IHistoryEntry[]) => void;
+    setPromptVisible: (visible: boolean) => void;
+}
+
+export function useTerminal() {
+    const terminalHandle = useRef<ITerminalHandle>(undefined);
+
+    function setTerminalHandle(handle?: ITerminalHandle) {
+        terminalHandle.current = handle;
+    }
+
+    function setTerminalCommand(command: string, output?: string) {
+        terminalHandle.current?.setExpectedCommand(command, output);
+    }
+
+    function addTerminalHistory(history: IHistoryEntry[]) {
+        terminalHandle.current?.addHistory(history);
+    }
+
+    function setPromptVisibility(visible: boolean) {
+        terminalHandle.current?.setPromptVisible(visible);
+    }
+
+    return { setTerminalHandle, setTerminalCommand, addTerminalHistory, setPromptVisibility };
+}
+
+export interface IVimHandle {
+    setTextToType: (text: string) => void;
+}
+
+export function useVim() {
+    const vimHandle = useRef<IVimHandle>(undefined);
+
+    function setVimHandle(handle?: IVimHandle) {
+        vimHandle.current = handle;
+    }
+
+    function setVimType(content: string) {
+        vimHandle.current?.setTextToType(content);
+    }
+
+    return { setVimHandle, setVimType };
+}
+
 export function useStoryFuncs() {
     const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
@@ -467,7 +515,6 @@ export function useStoryFuncs() {
     const navigate = useNavigate();
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
-    // const pageInitResolveRef = useRef<() => void>(undefined);//resolve for page
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
@@ -480,13 +527,8 @@ export function useStoryFuncs() {
     const objectiveHints = useObjectiveHints();
     const chatFunc = useChat();
     const loginFunc = useLogin();
-
-    // function initReady(level: number) {
-    //     if (level != locationRef.current?.level)
-    //         return;
-    //     if (pageInitResolveRef.current)
-    //         pageInitResolveRef.current();
-    // }
+    const terminalFunc = useTerminal();
+    const vimFunc = useVim();
 
     function isStoryGoing() {
         return masterRef.current != undefined;
@@ -562,6 +604,23 @@ export function useStoryFuncs() {
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
+        }
+        if (action.setTerminalCommandAction) {
+            hintFunc.setStoryHint(["terminal-input"], true, false);
+            terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
+        }
+        if (action.addTerminalHistoryAction) {
+            terminalFunc.addTerminalHistory(action.addTerminalHistoryAction.history);
+        }
+        if (action.setPromptVisibilityAction) {
+            terminalFunc.setPromptVisibility(action.setPromptVisibilityAction.visible);
+        }
+        if (action.vimTypeAction) {
+            hintFunc.setStoryHint(["vim-input"], true, false);
+            vimFunc.setVimType(action.vimTypeAction.content);
+        }
+        if (action.setTypingBoxContentAction) {
+            typingBoxes.current[action.setTypingBoxContentAction.typingBoxId]?.current?.setContent(action.setTypingBoxContentAction.content);
         }
     }
 
@@ -666,8 +725,8 @@ export function useStoryFuncs() {
         });
     }
 
-    async function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
-        scl = await sanitizeDbFetch(scl);
+    function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
+        console.log("adding",scl);
         if (scl.storyline) {
             const stl = scl.storyline;
             if (stl.typingBoxId >= typingBoxes.current.length) {
@@ -684,7 +743,8 @@ export function useStoryFuncs() {
                 speed: stl.speed,
                 delim: stl.delim,
                 clearAfter: stl.clearAfter,
-                hideCursorAfter: stl.hideCursorAfter
+                hideCursorAfter: stl.hideCursorAfter,
+                clearBefore: stl.clearBefore
             }), scl.offset);
         }
 
@@ -715,7 +775,7 @@ export function useStoryFuncs() {
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
                 for (let action of branches[i]) {
-                    await addScriptlineToTimeline(action, branch);
+                    addScriptlineToTimeline(action, branch);
                 }
                 tl.add(branch, `${scl.addParallelExec.name}+=0`);
             }
@@ -748,7 +808,8 @@ export function useStoryFuncs() {
             id++;
             if (!scl)
                 break;
-            await addScriptlineToTimeline(scl, master);
+            scl = await sanitizeDbFetch(scl);
+            addScriptlineToTimeline(scl, master);
             if (scl.action?.navigateAction) {
                 navPending = true;
                 navHint = scl.hint;
@@ -760,8 +821,7 @@ export function useStoryFuncs() {
         console.log("play anim")
         master.play();
         await master;
-        if (!isMounted.current || ticket != loopTicket.current || masterRef.current !== master)
-        {
+        if (!isMounted.current || ticket != loopTicket.current || masterRef.current !== master) {
             console.log("interrupted")
             return;
         }
@@ -834,15 +894,12 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
-    // const _getPageInitResolveRef = process.env.NODE_ENV == 'test' ? () => pageInitResolveRef : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
 
     return {
-        // setTypingBoxes,
         getAnim,
-        // initReady,
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
@@ -851,6 +908,8 @@ export function useStoryFuncs() {
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
+        setTerminalHandle: terminalFunc.setTerminalHandle,
+        setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
@@ -868,7 +927,6 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
-        // _getPageInitResolveRef,
         _showStory,
         _customizeStory,
         _isOnLocation
@@ -916,7 +974,6 @@ export function useStoryInit() {
             await pageInit();
         if (ticket != loopTicket.current)
             return;
-        // bridge.exec(story.initReady, childLevel);
         bridge.exec(story.recoverStoryOnPage, childLevel, typingBoxes);
     }
 

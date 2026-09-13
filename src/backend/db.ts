@@ -9,6 +9,7 @@ export interface IStoryLine {
 	typingBoxId: number,
 	clearAfter?: string
 	hideCursorAfter?: boolean
+	clearBefore?: boolean
 }
 
 export interface IEffect {
@@ -118,6 +119,33 @@ export interface ISendMessageAction {
 	timeToType: number
 }
 
+export interface ISetTerminalCommandAction {
+	command: string,
+	output?: string,
+}
+
+export interface IVimTypeAction {
+	content: string,
+}
+
+export interface ISetTypingBoxContentAction {
+	content: string,
+	typingBoxId: number,
+}
+
+export interface IHistoryEntry {
+	type: "cmd" | "out",
+	text: string,
+}
+
+export interface IAddTerminalHistoryAction {
+	history: IHistoryEntry[],
+}
+
+export interface ISetPromptVisibilityAction {
+	visible: boolean,
+}
+
 export interface IClearTypingTextBoxes {
 	ids: number[]
 }
@@ -130,6 +158,11 @@ export interface IAction {
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
+	setTerminalCommandAction?: ISetTerminalCommandAction,
+	vimTypeAction?: IVimTypeAction,
+	setTypingBoxContentAction?: ISetTypingBoxContentAction,
+	addTerminalHistoryAction?: IAddTerminalHistoryAction,
+	setPromptVisibilityAction?: ISetPromptVisibilityAction,
 }
 
 export interface IScriptLine {
@@ -181,7 +214,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 }
 
-db.version(193).stores({
+db.version(206).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

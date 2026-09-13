@@ -17,10 +17,10 @@ import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTe
 
 const FAKE_POST: IPost = {
     id: "fake",
-    author: "#main_hero",
+    author: "fartsniffer69",
     subforum: "zero",
-    title: "fuck zero and spearhead, all my homies hate spearhead",
-    content: "zero is mid, spearhead is a scam studio ran by actual clowns. anyone who likes this game has zero iq. mods are powertripping losers who ban anyone with an opinion. delete this post, i dare u.",
+    title: "zero is the worst game oat",
+    content: "zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.",
     likes: 0,
     comments: 0,
     views: 3,
@@ -110,8 +110,8 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         };
     }, [isMenuOpen])
 
-    const canDelete = post?.author == userState.userLoggedIn.current
-        || !!subforum && (subforum.admin == userState.userLoggedIn.current || subforum.mods?.includes(userState.userLoggedIn.current));
+    const canDelete = isFake||post?.author == userState.userLoggedIn.current
+        || subforum?.admin == userState.userLoggedIn.current || subforum?.mods?.includes(userState.userLoggedIn.current);
     const canNavigate = !isFake && !isDeleted;
 
     return (
