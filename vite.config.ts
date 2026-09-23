@@ -18,4 +18,26 @@ export default defineConfig({
 		environment: 'jsdom',
 		setupFiles: './src/setupTests.ts',
 	},
+	build: {
+		assetsInlineLimit: 0,
+		rollupOptions: {
+			output: {
+				manualChunks(id) {
+					if (id.includes('node_modules')) {
+						if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router/') || id.includes('/scheduler/')) {
+							return 'react';
+						}
+
+						if (id.includes('/gsap/') || id.includes('/@gsap/react/')) {
+							return 'gsap';
+						}
+
+						if (id.includes('/dexie/')) {
+							return 'db';
+						}
+					}
+				},
+			},
+		},
+	},
 })
