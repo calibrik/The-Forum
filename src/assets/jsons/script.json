@@ -3242,5 +3242,1292 @@
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2
+                }
+            }
+        },
+        "hint": "Go to your profile page",
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2
+                }
+            }
+        },
+        "hint": "Search for 'sillygoose228' in the search bar",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "10%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "God, even his name is stupid.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Not like mine tho.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "#main_hero.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "You might not see this yet, but my nickname has at least 2 hidden meanings and 3 references to 3 different pieces of media, I've spent like a whole day coming up with that.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "So anyway, now I need to shoot him a message.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/sillygoose228",
+                    "level": 2
+                }
+            },
+            "hintAction": {
+                "ids": [
+                    "send-message-text"
+                ]
+            },
+            "addNewChat": {
+                "nickname": "Sillygoose228"
+            }
+        },
+        "hint": "Press 'Send message' on sillygoose228's profile page",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/sillygoose228",
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "12%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Ok, so, It'll go like that, uhhh",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Dear sillygoose228, it came to my attention that",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "deleteTextFromTypingBox": {
+                "typingBoxId": 0,
+                "symbolsCount": 48
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, who the fuck reports posts like that?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Dear sillygoose228, there is a post I want you to look at",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "deleteTextFromTypingBox": {
+                "typingBoxId": 0,
+                "symbolsCount": 57
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Nah, it sounds so stupid, he'll definitely catch me.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "No, I need to go simple, like",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Dear sillygoose228, look at this post",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "deleteTextFromTypingBox": {
+                "typingBoxId": 0,
+                "symbolsCount": 37
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Nooo, why \"dear\"? We haven't even met.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "No, I need to be plain and direct like",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Look at this post",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "deleteTextFromTypingBox": {
+                "typingBoxId": 0,
+                "symbolsCount": 17
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, no, even simpler, just send him the link to the post.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, that will do, it definitely won't arouse suspicion!",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "https://the-frum.netlify.app/p412",
+                "isLink": true
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sillygoose228",
+                "content": "?",
+                "timeToType": 2
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Shit, he knows, I'm done for.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "it's the post from ur sub"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "I'm reporting it"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "like a good forumer"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, I think I saved it.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "He won't know what's coming.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sillygoose228",
+                "content": "uhhh ok, lemme look at it",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "So now we wait",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "storyline": {
+            "content": "...............",
+            "speed": 400,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearAfter": ">"
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 1,
+                "style": {
+                    "top": "6%",
+                    "left": "4%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "I think it takes longer than it should, no?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 1
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 2,
+                "style": {
+                    "top": "16%",
+                    "right": "5%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Shit, he is probably reporting me already",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 2
+        },
+        "offset": "-=1.5"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 3,
+                "style": {
+                    "top": "30%",
+                    "left": "10%",
+                    "width": "clamp(150px,26cqw,300px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "What do I do?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 3
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 4,
+                "style": {
+                    "top": "34%",
+                    "right": "14%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Should I check in on the progress?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 4
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 5,
+                "style": {
+                    "top": "48%",
+                    "left": "22%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Or just let him do his thing?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 5
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 6,
+                "style": {
+                    "bottom": "28%",
+                    "left": "5%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Or maybe block him and delete all evidence?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 6
+        },
+        "offset": "-=1.1"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 7,
+                "style": {
+                    "top": "62%",
+                    "right": "6%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "He is probably calling police on me already, shit",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 7
+        },
+        "offset": "-=1.6"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 8,
+                "style": {
+                    "bottom": "12%",
+                    "right": "22%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I'm fucked, I'm definitely fucked.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 8
+        },
+        "offset": "-=1.9"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 9,
+                "style": {
+                    "bottom": "8%",
+                    "left": "12%",
+                    "width": "clamp(150px,26cqw,300px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I need to bail.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 9
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 10,
+                "style": {
+                    "top": "42%",
+                    "left": "44%",
+                    "width": "clamp(180px,32cqw,360px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Fuck, fuck, fuck, fuck.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 10
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "clearTypingTextBoxes": {
+            "ids": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "block-user-text"
+                ]
+            }
+        },
+        "hint": "Block sillygoose228",
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Oh, oh shit, I got him!",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearBefore": true
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Here his password!",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "His password is iwantaigirlfriendtopegme822? I guess bro.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "addPasswordFor": {
+                "nickname": "Sillygoose228",
+                "password": "iwantaigirlfriendtopegme822"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sillygoose228",
+                "content": "yeah, I deleted the post, but something weird is going on, I can't even find the fartsniffer69 on The Forum to ban him from the sub",
+                "timeToType": 8
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "38%",
+                    "left": "0",
+                    "width": "100cqw",
+                    "padding": "0",
+                    "background-color": "transparent",
+                    "font-size": "clamp(2rem,7cqw,6rem)",
+                    "text-align": "center"
+                }
+            }
+        },
+        "offset": "+=7.5"
+    },
+    {
+        "storyline": {
+            "content": "FUCK. SHIT. FUCK.",
+            "speed": 60,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearBefore": true
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I FUCKED UP.",
+            "speed": 60,
+            "delim": "\n",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I FORGOT TO CHANGE AN AUTHOR OF THE POST FROM PLACEHOLDER.",
+            "speed": 60,
+            "delim": "\n",
+            "typingBoxId": 0,
+            "clearAfter": "+=2"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "top": "12%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Even tho I got his creds already, he might realize what's going on and change his password.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I need to convince him it's ok.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "uhhh idk, this user shows as deleted to me already. Maybe The Forum admins already banned this guy, but website doesn't reflect it yet."
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "yk the forum is really buggy sometimes."
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sillygoose228",
+                "content": "yeah, right",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sillygoose228",
+                "content": "strangely enough, website was lagging even more, when I was deleting that post",
+                "timeToType": 5
+            }
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "storyline": {
+            "content": "Fucking clanker gave me shit code.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=5.5"
+    },
+    {
+        "storyline": {
+            "content": "I specifically asked it to make code as optimized as possible and make no mistakes.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Can't trust shit these days.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0,
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "addParallelExec": {
+            "name": "stillTyping",
+            "branches": [
+                [
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 1,
+                                "style": {
+                                    "top": "10%",
+                                    "right": "6%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "What is he typing for so long?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 1
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 2,
+                                "style": {
+                                    "top": "26%",
+                                    "left": "8%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Fuck, I might be burned here.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 2
+                        },
+                        "offset": "-=1.2"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 3,
+                                "style": {
+                                    "top": "42%",
+                                    "right": "14%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "What if he is gonna ask me about how did I find this post?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 3
+                        },
+                        "offset": "-=1.3"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 4,
+                                "style": {
+                                    "bottom": "30%",
+                                    "left": "6%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Or why am I reporting it even tho im not even a follower?",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 4
+                        },
+                        "offset": "-=1.5"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 5,
+                                "style": {
+                                    "bottom": "10%",
+                                    "right": "20%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Shit, I even forgot to follow fucking zero sub!",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 5
+                        },
+                        "offset": "-=1.6"
+                    },
+                    {
+                        "action": {
+                            "setTextBoxStyleAction": {
+                                "id": 6,
+                                "style": {
+                                    "top": "62%",
+                                    "left": "30%",
+                                    "width": "clamp(180px,32cqw,360px)"
+                                }
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Yeah, I might be done for here.",
+                            "speed": 50,
+                            "delim": "",
+                            "typingBoxId": 6
+                        },
+                        "offset": "-=1.4"
+                    },
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10
+                            ]
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Sillygoose228",
+                                "content": "yeah, it's probably nothing",
+                                "timeToType": 12
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "…jesus bro I was losing my shit here and he was just taking his time to write THIS?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=9"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "#main_hero",
+                "content": "for sure"
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "storyline": {
+            "content": "Now the fun part.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0,
+            "clearBefore": true
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I need to log out and log in as him and take over the sub.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2
+                }
+            },
+            "setExpectedUser": {
+                "nickname": "Sillygoose228"
+            }
+        },
+        "hint": "Log out and log in as sillygoose228",
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now I need to remove all the modes and transfer the ownership to my account.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero/settings",
+                    "level": 3
+                }
+            }
+        },
+        "hint": "Open the f/zero subforum settings",
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/subforum/zero/settings",
+                    "level": 3
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setModsToRemove": {
+                "subforum": "zero"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Demote all the mods of the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTransferTo": {
+                "subforum": "zero",
+                "user": "#main_hero"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Transfer the ownership of the f/zero subforum to your account",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And I'm done lol.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "That's it, I fucking did it!",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Now I gotta go back and tell cyberdivers I got the keys.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
+                }
+            },
+            "setExpectedUser": {
+                "nickname": "#main_hero"
+            }
+        },
+        "hint": "Log out and log in as #main_hero and open the 'cyberdivers' chat",
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "from": {
+                        "where": "/chat",
+                        "level": 1
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": 0,
+                "style": {
+                    "width": "auto",
+                    "top": "90%",
+                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "musky_diver",
+                "content": "bro ts is just too funny",
+                "timeToType": 2.5
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "can we ban this mom's hacker bro",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sinius",
+                "content": "just stop giving attention to this clown ass",
+                "timeToType": 4
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sinius",
+                "content": "he is actually retarded idk",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "#main_hero",
+                "content": "I hacked the zero sub"
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "#main_hero",
+                "content": "check the admins"
+            }
+        },
+        "offset": "+=1"
     }
 ]
