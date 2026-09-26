@@ -103,13 +103,32 @@ describe("useChat", () => {
 
 describe("useHints", () => {
     describe("hintNavPath", () => {
-        test("hintNavPath (/user/main_hero level 2 from /chat)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
+        test("hintNavPath (/user/main_hero level 2 from /chat, logged in as main_hero)", async () => {
+            const { result } = renderHook(() => {
+                const hints = useElementHints();
+                const userState = useUserState();
+                return { hints, userState };
+            }, {
                 wrapper: AllTheProvidersForMock
             });
+            result.current.userState.userLoggedIn.current = "main_hero";
             vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hintNavPath({ level: 2, where: "/user/main_hero" });
-            expect(result.current._getCurrHint?.().current).toEqual(["user-icon-text"]);
+            result.current.hints.hintNavPath({ level: 2, where: "/user/main_hero" });
+            expect(result.current.hints._getCurrHint?.().current).toEqual(["user-icon-text"]);
+        });
+
+        test("hintNavPath (/user/someone level 2 from /chat, logged in as main_hero)", async () => {
+            const { result } = renderHook(() => {
+                const hints = useElementHints();
+                const userState = useUserState();
+                return { hints, userState };
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            result.current.userState.userLoggedIn.current = "main_hero";
+            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
+            result.current.hints.hintNavPath({ level: 2, where: "/user/someone" });
+            expect(result.current.hints._getCurrHint?.().current).toEqual(["header-search", ""]);
         });
 
         test("hintNavPath (/user/main_hero/comments level 3 from /user/main_hero)", async () => {

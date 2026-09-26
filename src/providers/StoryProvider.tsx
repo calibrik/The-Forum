@@ -35,36 +35,47 @@ interface IStoryProvider extends IStoryHook {
     _getStoryHook: () => StoryFuncsType | undefined
 }
 
-const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
-    "user": (location, targetLocation, mismatchedLevel) => {
-        if (location[1] == "post")
+interface INavHintContext {
+    location: string[];
+    targetLocation: string[];
+    mismatchedLevel: number;
+    userLoggedIn: string;
+    searchField?: ISearchFieldHandle;
+}
+
+const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
+    "user": (ctx) => {
+        if (ctx.location[1] == "post")
             return ["back-text"];
-        if (mismatchedLevel == 3) {
-            return [targetLocation[3] ?? "posts"];
+        if (ctx.mismatchedLevel == 3) {
+            return [ctx.targetLocation[3] ?? "posts"];
         }
-        return ["user-icon-text"];
-    },
-    "subforum": (location, targetLocation, mismatchedLevel, searchField) => {
-        if (location[1] == "post")
-            return ["back-text"];
-        if (mismatchedLevel == 3) {
-            return [targetLocation[3] ?? "posts"];
-        }
-        searchField?.setSuggestionHint(`f/${targetLocation[2]}`);
+        if (ctx.userLoggedIn == ctx.targetLocation[2])
+            return ["user-icon-text"];
+        ctx.searchField?.setSuggestionHint(`u/${ctx.targetLocation[2]}`);
         return ["header-search", ""];
     },
-    "chat": (location, targetLocation, mismatchedLevel) => {
-        if (mismatchedLevel == 2) {
-            if (location.length >= 3)
+    "subforum": (ctx) => {
+        if (ctx.location[1] == "post")
+            return ["back-text"];
+        if (ctx.mismatchedLevel == 3) {
+            return [ctx.targetLocation[3] ?? "posts"];
+        }
+        ctx.searchField?.setSuggestionHint(`f/${ctx.targetLocation[2]}`);
+        return ["header-search", ""];
+    },
+    "chat": (ctx) => {
+        if (ctx.mismatchedLevel == 2) {
+            if (ctx.location.length >= 3)
                 return ["back-text"];
-            return [targetLocation[2]];
+            return [ctx.targetLocation[2]];
         }
         return ["menu-icon-text", "chat-menu"];
     },
-    "post": (location, targetLocation, _mismatchedLevel) => {
-        if (location[1] == "post")
+    "post": (ctx) => {
+        if (ctx.location[1] == "post")
             return ["back-text"];
-        return [targetLocation[2]];
+        return [ctx.targetLocation[2]];
     },
 }
 
@@ -207,6 +218,7 @@ export function useElementHints() {
     const headerSearch = useRef<ISearchFieldHandle>(null);
     const isStoryHint = useRef<boolean>(false);//is story hint currently hinting (for nav hint to trigger)
     const isLegitStoryHint = useRef<boolean>(true)//is story hint produced from hint action or artificially planted
+    const userState = useUserState();
 
     function setHeaderSearch(ref: ISearchFieldHandle | null) {
         headerSearch.current = ref;
@@ -291,7 +303,13 @@ export function useElementHints() {
             currHint.current = [];
             return;
         }
-        currHint.current = navFunc(location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
+        currHint.current = navFunc({
+            location,
+            targetLocation,
+            mismatchedLevel,
+            userLoggedIn: userState.userLoggedIn.current,
+            searchField: headerSearch.current ?? undefined
+        });
         currIndex.current = 0;
         bridge.exec(hint, currHint.current[currIndex.current]);
     }
@@ -846,7 +864,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 216 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await sanitizeDbFetch(await db.chats.toArray());

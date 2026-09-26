@@ -3267,7 +3267,6 @@
                 }
             }
         },
-        "hint": "Go to your profile page",
         "offset": ">"
     },
     {
@@ -3284,6 +3283,17 @@
     },
     {
         "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
             "navigateAction": {
                 "navigate": false,
                 "dest": {
@@ -3292,6 +3302,7 @@
                 }
             }
         },
+        "isActionAwait": true,
         "hint": "Search for 'sillygoose228' in the search bar",
         "offset": ">"
     },
@@ -3353,18 +3364,6 @@
             "typingBoxId": 0,
             "clearAfter": "+=1.5"
         },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "saveAction": {
-                "dest": {
-                    "where": "/user/Sillygoose228",
-                    "level": 2
-                }
-            }
-        },
-        "isActionAwait": true,
         "offset": ">"
     },
     {
