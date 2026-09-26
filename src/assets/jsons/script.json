@@ -3326,7 +3326,7 @@
             "delim": "",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.5"
     },
     {
         "storyline": {
@@ -3368,35 +3368,34 @@
     },
     {
         "action": {
-            "navigateAction": {
-                "navigate": false,
-                "dest": {
-                    "where": "/chat/sillygoose228",
-                    "level": 2
-                }
-            },
             "hintAction": {
                 "ids": [
-                    "send-message-text"
+                    "send-message"
                 ]
-            },
-            "addNewChat": {
-                "nickname": "Sillygoose228"
             }
         },
         "hint": "Press 'Send message' on sillygoose228's profile page",
+        "isActionAwait":true,
         "offset": ">"
     },
     {
         "action": {
-            "saveAction": {
+            "addNewChat": {
+                "nickname": "Sillygoose228"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
                 "dest": {
                     "where": "/chat/sillygoose228",
                     "level": 2
                 }
             }
         },
-        "isActionAwait": true,
         "offset": ">"
     },
     {
@@ -4320,13 +4319,18 @@
                     "where": "/user/Sillygoose228",
                     "level": 2
                 }
-            },
-            "setExpectedUser": {
-                "nickname": "Sillygoose228"
             }
         },
         "hint": "Log out and log in as sillygoose228",
         "offset": "+=1"
+    },
+    {
+        "action": {
+            "setExpectedUser": {
+                "nickname": "Sillygoose228"
+            }
+        },
+        "offset": ">"
     },
     {
         "action": {
@@ -4434,13 +4438,18 @@
                         "level": 1
                     }
                 }
-            },
-            "setExpectedUser": {
-                "nickname": "#main_hero"
             }
         },
         "hint": "Log out and log in as #main_hero and open the 'cyberdivers' chat",
         "offset": "+=1"
+    },
+    {
+        "action": {
+            "setExpectedUser": {
+                "nickname": "#main_hero"
+            }
+        },
+        "offset": ">"
     },
     {
         "action": {

@@ -227,12 +227,13 @@ export function useElementHints() {
     function hint(id: string) {
         if (id == "")
             return;
-        let el = document.querySelector(`#${id}`);
-        if (!el) {
+        const els = document.querySelectorAll(`#${id}`);
+        if (els.length == 0) {
             console.error(`No element with id ${id}`)
             return;
         }
-        el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
+        const hintClass = id.includes("text") ? styles.hintText : styles.hint;
+        els.forEach((el) => el.classList.add(hintClass));
     }
 
     function goForwardHint(clickedId: string) {
@@ -270,7 +271,8 @@ export function useElementHints() {
         const id = currHint.current[currIndex.current];
         if (id == "")
             return;
-        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+        const hintClass = id.includes("text") ? styles.hintText : styles.hint;
+        document.querySelectorAll(`#${id}`).forEach((el) => el.classList.remove(hintClass));
     }
 
     function getCurrentStoryHint() {
@@ -535,7 +537,7 @@ export function useStoryFuncs() {
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
-    const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
+    const pageStoryId = useRef<number>(1);//points at next action after page navigation or save to recover on page from
     const locationRef = useRef<IDestination>(undefined);//current location for the story
     const location = useLocation();
     const userState = useUserState();
@@ -562,7 +564,7 @@ export function useStoryFuncs() {
         hintFunc.resetHint();
         objectiveHints.showNavHint();
         if (isStoryRecovered.current) {
-            currStoryId.current = savedStoryId.current + 1;
+            currStoryId.current = pageStoryId.current;
             isStoryRecovered.current = false;
         }
         if (masterRef.current) {

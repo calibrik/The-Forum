@@ -74,7 +74,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
 
     return (
         <div className={styles.container} tabIndex={-1} onFocus={onFocus} onBlur={onBlur}>
-            <InputField className={props.className} icon={<Search id={props.id} className={styles.icon} />} id={props.id} onChange={onChange} ref={inputRef} placeholder="Search" type={"text"} />
+            <InputField className={props.className} icon={<Search className={styles.icon} />} id={props.id} onChange={onChange} ref={inputRef} placeholder="Search" type={"text"} />
             {isFocused && suggestions.length != 0 ?
                 <div className={styles.dropdown}>
                     {

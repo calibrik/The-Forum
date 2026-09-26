@@ -379,7 +379,7 @@ describe("useStoryFuncs", () => {
             window.addEventListener("storyHintText", onHintText);
             const chatResetSpy = vi.spyOn(result.current._getChatHook!(), "onNavigateAway");
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
-            result.current._getSavedStoryId!().current = 10;
+            result.current._getPageStoryIdRef!().current = 10;
             result.current._getIsStoryRecovered!().current = true;
             const tbs = result.current._getTypingBoxes!();
             tbs.current = [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>];
@@ -389,7 +389,7 @@ describe("useStoryFuncs", () => {
             expect(result.current._getTypingBoxes?.().current.length).toEqual(0);
             expect(chatResetSpy).toHaveBeenCalledTimes(1);
             expect(hintResetSpy).toHaveBeenCalledTimes(1);
-            expect(result.current._getCurrStoryId!().current).toEqual(11);
+            expect(result.current._getCurrStoryId!().current).toEqual(10);
         });
         test("reset anims (active anim, no left from target)", async () => {
             const { result } = renderHook(() => useStoryFuncs(), {

@@ -214,7 +214,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
             <div style={props.style} className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
-                    <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
+                    <span ref={placeholder} className={styles.placeholder}>{props.placeholder}</span>
                     <input
                         onKeyDown={onKeyDown}
                         onKeyUp={onKeyUp}

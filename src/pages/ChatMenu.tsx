@@ -57,7 +57,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     const [chats, setChats] = useState<IChat[]>([]);
     const userState = useUserState();
     let navigate = useNavigate();
-    const { hintHolders, setHintHolder } = useHintHolders();
+    const { transferHints, setHintHolder } = useHintHolders();
 
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
@@ -74,9 +74,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     useEffect(() => {
         if (chats.length==0)
             return;
-        const hint = hintHolders.current.get("cyberdivers")?.getHintClass();
-        if (hint)
-            document.getElementById("cyberdivers")?.classList.add(hint);
+        transferHints();
     }, [chats])
 
 

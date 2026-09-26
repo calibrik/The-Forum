@@ -14,7 +14,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     const storyInit = useStoryInit();
     const { name } = useParams<{ name: string }>();
     const [posts, setPosts] = useState<IPost[]>([]);
-    const { hintHolders, setHintHolder } = useHintHolders();
+    const { transferHints, setHintHolder } = useHintHolders();
     const [, typingBoxes] = useOutletContext<[ISubforum | undefined, RefObject<ITypingTextBoxHandle | null>[]]>();
 
     async function init() {
@@ -28,15 +28,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     useEffect(() => {
         if (posts.length == 0)
             return;
-        let hint = hintHolders.current.get("p4")?.getHintClass();
-        if (hint)
-            document.getElementById("p4")?.classList.add(hint);
-        hint = hintHolders.current.get("p5")?.getHintClass();
-        if (hint)
-            document.getElementById("p5")?.classList.add(hint);
-        hint = hintHolders.current.get("p6")?.getHintClass();
-        if (hint)
-            document.getElementById("p6")?.classList.add(hint);
+        transferHints();
     }, [posts]);
 
 
