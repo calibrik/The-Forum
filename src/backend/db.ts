@@ -212,6 +212,10 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
+	postsBuffer: EntityTable<IPost, "id">
+	chatsBuffer: EntityTable<IChat, "id">
+	usersBuffer: EntityTable<IUser, "id">
+	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
 db.version(210).stores({
@@ -262,6 +266,13 @@ db.version(210).stores({
 	await db.chats.bulkAdd(newChats);
 
 	await db.storyMessages.clear();
+})
+
+db.version(211).stores({
+	postsBuffer: "id, author, subforum",
+	chatsBuffer: "id, owner",
+	usersBuffer: "++id, nickname, savedStoryId",
+	storyMessagesBuffer: "id,chatId"
 })
 
 export async function seedNew() {

@@ -28,7 +28,7 @@ interface IStoryHook {
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
-    getMessageBuffer(): IMessage[],
+    getMessages(chatId: string): Promise<IMessage[]>,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
 interface IStoryProvider extends IStoryHook {
@@ -381,12 +381,42 @@ export interface IChatHandle {
     getId: () => string
 }
 
+export function useBuffers() {
+    const preserveBuffers = useRef<boolean>(false);
+
+    async function enablePreserveBuffers() {
+        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count()]);
+        if (counts.every((c) => c == 0))
+            return;
+        preserveBuffers.current = true;
+    }
+
+    async function resetBuffers() {
+        await Promise.all([db.postsBuffer.clear(), db.chatsBuffer.clear(), db.usersBuffer.clear(), db.storyMessagesBuffer.clear()]);
+    }
+
+    async function sinkBuffers() {
+        await db.posts.bulkPut(await db.postsBuffer.toArray());
+        await db.chats.bulkPut(await db.chatsBuffer.toArray());
+        await db.users.bulkPut(await db.usersBuffer.toArray());
+        await db.storyMessages.bulkPut(await db.storyMessagesBuffer.toArray());
+        await resetBuffers();
+        preserveBuffers.current = false;
+    }
+
+    async function onNavigateAway() {
+        if (preserveBuffers.current)
+            return;
+        await resetBuffers();
+    }
+
+    return { enablePreserveBuffers, resetBuffers, sinkBuffers, onNavigateAway };
+}
+
 export function useChat() {
-    const messagesBuffer = useRef<IMessage[]>([]);
     const chatHandle = useRef<IChatHandle>(undefined);
     const userState = useUserState();
     const lastId = useRef<number>(0);
-    const preserveMessagesBuffer = useRef<boolean>(false);
 
     async function addMessageFromUser(content: string) {
         const message: IMessage = {
@@ -396,7 +426,7 @@ export function useChat() {
             timeSent: new Date(),
             chatId: chatHandle.current?.getId() ?? ""
         }
-        messagesBuffer.current.push(message);
+        await db.storyMessagesBuffer.put(message);
         chatHandle.current?.addMessage(message);
     }
 
@@ -405,22 +435,17 @@ export function useChat() {
             id: lastId.current++,
             from: from,
             content: content,
-            timeSent: new Date(),
-            chatId: chatHandle.current?.getId() ?? ""
+            chatId: chatHandle.current?.getId() ?? "",
+            timeSent: new Date()
         }
         message.isReply = isReplyDiff ? message.id + isReplyDiff : undefined;
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
             await delay(timeToType);
-        messagesBuffer.current.push(message);
+        message.timeSent=new Date();
+        await db.storyMessagesBuffer.put(message);
         chatHandle.current?.removeTypingUser(message.from);
         chatHandle.current?.addMessage(message);
-    }
-
-    async function sinkMessages() {
-        await db.storyMessages.bulkAdd(messagesBuffer.current);
-        preserveMessagesBuffer.current = false;
-        resetMessages();
     }
 
     async function addMessagesToDb(msgs: IMessage[]) {
@@ -429,34 +454,20 @@ export function useChat() {
 
     async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
-        lastId.current = await db.storyMessages.count() + messagesBuffer.current.length + 1;
+        lastId.current = await db.storyMessages.count() + await db.storyMessagesBuffer.count() + 1;
     }
 
-    function enablePreserveMessagesBuffer() {
-        if (messagesBuffer.current.length == 0)
-            return;
-        preserveMessagesBuffer.current = true;
-    }
-
-    function resetMessages() {
-        messagesBuffer.current = [];
-    }
-
-    function onNavigateAway() {
-        if (preserveMessagesBuffer.current)
-            return;
-        resetMessages();
+    async function getMessages(chatId: string) {
+        const messages = await db.storyMessages.where("chatId").equals(chatId).toArray();
+        const bufferedMessages = await db.storyMessagesBuffer.where("chatId").equals(chatId).toArray();
+        return [...messages, ...bufferedMessages];
     }
 
     function promptMessage(content: string) {
         chatHandle.current?.setStringToType(content);
     }
 
-    function getMessageBuffer() {
-        return messagesBuffer.current;
-    }
-
-    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, addMessagesToDb, promptMessage, enablePreserveMessagesBuffer, onNavigateAway, getMessageBuffer }
+    return { addMessageFromNPC, addMessageFromUser, setChatHandle, addMessagesToDb, getMessages, promptMessage }
 }
 
 export interface ILoginHandle {
@@ -545,6 +556,7 @@ export function useStoryFuncs() {
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
     const hintFunc = useElementHints();
     const objectiveHints = useObjectiveHints();
+    const bufferFunc = useBuffers();
     const chatFunc = useChat();
     const loginFunc = useLogin();
     const terminalFunc = useTerminal();
@@ -560,9 +572,9 @@ export function useStoryFuncs() {
         if (locationRef.current && isOnLocation(locationRef.current)) {
             return;
         }
-        chatFunc.onNavigateAway();
         hintFunc.resetHint();
         objectiveHints.showNavHint();
+        await bufferFunc.onNavigateAway();
         if (isStoryRecovered.current) {
             currStoryId.current = pageStoryId.current;
             isStoryRecovered.current = false;
@@ -584,12 +596,12 @@ export function useStoryFuncs() {
 
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
+            await bufferFunc.enablePreserveBuffers();
             isStoryNavRef.current = true;
             isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
             objectiveHints.resetObjectiveHint();
-            chatFunc.enablePreserveMessagesBuffer();
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
                 navigate(action.navigateAction.dest?.where ?? "");
@@ -607,7 +619,7 @@ export function useStoryFuncs() {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
             savedStoryId.current = storyId;
             pageStoryId.current = storyId + 1;
-            chatFunc.sinkMessages();
+            await bufferFunc.sinkBuffers();
         }
         if (action.hintAction) {
             hintFunc.setStoryHint(action.hintAction.ids)
@@ -746,7 +758,7 @@ export function useStoryFuncs() {
     }
 
     function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
-        console.log("adding",scl);
+        console.log("adding", scl);
         if (scl.storyline) {
             const stl = scl.storyline;
             if (stl.typingBoxId >= typingBoxes.current.length) {
@@ -819,7 +831,7 @@ export function useStoryFuncs() {
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
         let navPending = false;
-        let navHint:string|undefined = undefined;
+        let navHint: string | undefined = undefined;
         objectiveHints.dispatchHint("");
         while ((!scl || !scl.isActionAwait) && !scl?.action?.navigateAction?.navigate) {
             scl = await db.story.get(id);
@@ -909,6 +921,7 @@ export function useStoryFuncs() {
     const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
     const _getObjectiveHintsHook = process.env.NODE_ENV == 'test' ? () => objectiveHints : undefined;
     const _getChatHook = process.env.NODE_ENV == 'test' ? () => chatFunc : undefined;
+    const _getBuffersHook = process.env.NODE_ENV == 'test' ? () => bufferFunc : undefined;
     const _getIsStoryRecovered = process.env.NODE_ENV == 'test' ? () => isStoryRecovered : undefined;
     const _getCurrStoryId = process.env.NODE_ENV == 'test' ? () => currStoryId : undefined;
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
@@ -924,7 +937,8 @@ export function useStoryFuncs() {
         recoverCheckpoint,
         createUser,
         recoverStoryOnPage,
-        getMessageBuffer: chatFunc.getMessageBuffer,
+        getMessages: chatFunc.getMessages,
+        resetBuffers: bufferFunc.resetBuffers,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
@@ -940,6 +954,7 @@ export function useStoryFuncs() {
         _getLastNavHint: objectiveHints._lastNavHint,
         _getTypingBoxes,
         _getChatHook,
+        _getBuffersHook,
         _getHintHook,
         _getObjectiveHintsHook,
         _getIsStoryRecovered,
@@ -957,6 +972,10 @@ const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
 export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const storyFunc = useStoryFuncs();
+
+    useEffect(() => {
+        storyFunc.resetBuffers();
+    }, []);
 
     return (
         <StoryContext.Provider value={{

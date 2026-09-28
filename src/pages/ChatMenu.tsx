@@ -22,9 +22,8 @@ const Dialog: FC<IDialogProps> = (props) => {
         const user = await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
         if (!user)
             return;
-        const buffer = story.getMessageBuffer();
-        const lm = buffer.length > 0 ? buffer[buffer.length - 1] : await db.storyMessages.where("chatId").equals(props.chat.id).last();
-        setLastMessage(lm);
+        const msgs = await story.getMessages(props.chat.id);
+        setLastMessage(msgs[msgs.length - 1]);
     }
 
     async function onClick() {
