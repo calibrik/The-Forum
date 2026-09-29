@@ -217,7 +217,6 @@ export function useElementHints() {
     const currStoryHint = useRef<string[]>([]);//current story hint used for caching the last story hint for recover on page function
     const headerSearch = useRef<ISearchFieldHandle>(null);
     const isStoryHint = useRef<boolean>(false);//is story hint currently hinting (for nav hint to trigger)
-    const isLegitStoryHint = useRef<boolean>(true)//is story hint produced from hint action or artificially planted
     const userState = useUserState();
 
     function setHeaderSearch(ref: ISearchFieldHandle | null) {
@@ -243,7 +242,7 @@ export function useElementHints() {
         }
     }
 
-    function setStoryHint(hints: string[], dontActivate?: boolean, isLegit?: boolean) {
+    function setStoryHint(hints: string[], dontActivate?: boolean) {
         currHint.current = hints;
         currStoryHint.current = hints;
         currIndex.current = 0;
@@ -251,7 +250,6 @@ export function useElementHints() {
             isStoryHint.current = true;
             hint(hints[0]);
         }
-        isLegitStoryHint.current = isLegit ?? true;
     }
 
     function resetStoryHint() {
@@ -279,10 +277,6 @@ export function useElementHints() {
         if (currStoryHint.current.length == 0)
             return "";
         return currStoryHint.current[currIndex.current];
-    }
-
-    function verifyStoryHint() {
-        return getCurrentStoryHint() !== "" && isLegitStoryHint.current;
     }
 
     function hintNavPath(target?: IDestination) {
@@ -334,10 +328,9 @@ export function useElementHints() {
     const _getCurrHint = process.env.NODE_ENV == 'test' ? () => currHint : undefined;
     const _getCurrIndex = process.env.NODE_ENV == 'test' ? () => currIndex : undefined;
     const _getIsStoryHint = process.env.NODE_ENV == 'test' ? () => isStoryHint : undefined;
-    const _getisLegitStoryHint = process.env.NODE_ENV == 'test' ? () => isLegitStoryHint : undefined;
     const _hint = process.env.NODE_ENV == 'test' ? hint : undefined;
 
-    return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
+    return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint };
 }
 
 export function useObjectiveHints() {
@@ -574,7 +567,6 @@ export function useStoryFuncs() {
         }
         hintFunc.resetHint();
         objectiveHints.showNavHint();
-        await bufferFunc.onNavigateAway();
         if (isStoryRecovered.current) {
             currStoryId.current = pageStoryId.current;
             isStoryRecovered.current = false;
@@ -591,7 +583,8 @@ export function useStoryFuncs() {
         gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
-        typingBoxes.current = [];
+        typingBoxes.current = []; 
+        await bufferFunc.onNavigateAway();
     });
 
     async function processAction(action: IAction, storyId: number) {
@@ -631,14 +624,14 @@ export function useStoryFuncs() {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
         if (action.promptMessageAction) {
-            hintFunc.setStoryHint(["chat-input", "chat-send"], false, false)
+            hintFunc.setStoryHint(["chat-input", "chat-send"], false)
             chatFunc.promptMessage(action.promptMessageAction.content);
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
         }
         if (action.setTerminalCommandAction) {
-            hintFunc.setStoryHint(["terminal-input"], true, false);
+            hintFunc.setStoryHint(["terminal-input"], true);
             terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
         }
         if (action.addTerminalHistoryAction) {
@@ -648,7 +641,7 @@ export function useStoryFuncs() {
             terminalFunc.setPromptVisibility(action.setPromptVisibilityAction.visible);
         }
         if (action.vimTypeAction) {
-            hintFunc.setStoryHint(["vim-input"], true, false);
+            hintFunc.setStoryHint(["vim-input"], true);
             vimFunc.setVimType(action.vimTypeAction.content);
         }
         if (action.setTypingBoxContentAction) {
@@ -672,10 +665,6 @@ export function useStoryFuncs() {
         currStoryId.current = id + 1;
         pageStoryId.current = id + 1;
         locationRef.current = scl.action?.saveAction?.dest;
-        if (scl.action?.saveAction?.hintActionPos) {
-            let hintScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.hintActionPos));
-            hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
-        }
         if (scl.action?.saveAction?.lastNavPos != undefined) {
             let navScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.lastNavPos));
             objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
@@ -716,10 +705,6 @@ export function useStoryFuncs() {
         objectiveHints.restoreObjectiveHint();
         isStoryRecovered.current = true;
         typingBoxes.current = tbs;
-        if (hintFunc.verifyStoryHint()) {
-            hintFunc.reactivateStoryHint();
-            return;
-        }
         bridge.exec(showStory, pageStoryId.current);
     }
 

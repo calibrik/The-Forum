@@ -146,22 +146,21 @@
     },
     {
         "action": {
-            "hintAction": {
-                "ids": [
-                    "cd-profile-text"
-                ]
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2
+                }
             }
         },
         "offset": ">"
     },
     {
         "action": {
-            "saveAction": {
-                "dest": {
-                    "where": "/user/#main_hero",
-                    "level": 2
-                },
-                "hintActionPos": -1
+            "hintAction": {
+                "ids": [
+                    "cd-profile-text"
+                ]
             }
         },
         "offset": ">",

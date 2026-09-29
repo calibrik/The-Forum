@@ -669,7 +669,6 @@ describe("useStoryFuncs", () => {
             const hintHook = result.current!._getHintHook!();
             expect(hintHook._getIsStoryHint!().current).toEqual(true);
             expect(hintHook._getCurrHint!().current).toEqual(["test-id"]);
-            expect(hintHook._getisLegitStoryHint!().current).toEqual(true);
         });
         test("setTextBoxStyle action", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -793,34 +792,6 @@ describe("useStoryFuncs", () => {
             });
         });
 
-        test("recovery with hintActionPos", async () => {
-            const { result } = renderHook(() => useStory()._getStoryHook!(), {
-                wrapper: AllTheProvidersForMock
-            });
-            await db.story.put({ id: 9, action: { hintAction: { ids: ["recovered-hint"] } }, offset: ">" });
-            const setStoryHintSpy = vi.spyOn(result.current!._getHintHook!(), "setStoryHint");
-
-            await db.story.put({
-                action: {
-                    saveAction: {
-                        dest: { where: "/chat", level: 1 },
-                        hintActionPos: -1
-                    }
-                },
-                offset: '',
-                id: 10
-            });
-            await result.current!.recoverCheckpoint!(10);
-            expect(setStoryHintSpy).toHaveBeenCalledWith(["recovered-hint"], true);
-            expect(result.current!._getSavedStoryId!().current).toEqual(10);
-            expect(result.current!._getCurrStoryId!().current).toEqual(11);
-            expect(result.current!._getPageStoryIdRef!().current).toEqual(11);
-            expect(result.current!._getLocationRef!().current).toEqual({ where: "/chat", level: 1 });
-            await waitFor(() => {
-                expect(exposedMockRouter?.state.location.pathname).toEqual("/chat");
-            });
-        });
-
         test("fetches the hint from the recovered scriptline", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
@@ -850,44 +821,6 @@ describe("useStoryFuncs", () => {
             expect(setObjectiveHintSpy).toHaveBeenCalledWith("Say hi to your mates in the chat");
             await waitFor(() => {
                 expect(hintDetails).toContain("Say hi to your mates in the chat");
-            });
-
-            window.removeEventListener("storyHintText", onHintText);
-        });
-
-        test("fetches hint text together with hintAction ids on recovery", async () => {
-            const { result } = renderHook(() => {
-                const storyHook = useStory()._getStoryHook!();
-                const userState = useUserState();
-                return { storyHook, userState };
-            }, { wrapper: AllTheProvidersForMock });
-            result.current.userState.isRealLoggedIn.current = true;
-            result.current.userState.userLoggedIn.current = "main_hero";
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"));
-            await db.story.put({ id: 9, action: { hintAction: { ids: ["recovered-hint"] } }, offset: ">" });
-            const setStoryHintSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "setStoryHint");
-            const setObjectiveHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "setObjectiveHint");
-
-            await db.story.put({
-                action: {
-                    saveAction: {
-                        dest: { where: "/chat", level: 1 },
-                        hintActionPos: -1
-                    }
-                },
-                hint: "Go say hi to your mates",
-                offset: "",
-                id: 10
-            });
-            const hintDetails: string[] = [];
-            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
-            window.addEventListener("storyHintText", onHintText);
-
-            await result.current.storyHook!.recoverCheckpoint!(10);
-            expect(setStoryHintSpy).toHaveBeenCalledWith(["recovered-hint"], true);
-            expect(setObjectiveHintSpy).toHaveBeenCalledWith("Go say hi to your mates");
-            await waitFor(() => {
-                expect(hintDetails).toContain("Go say hi to your mates");
             });
 
             window.removeEventListener("storyHintText", onHintText);
@@ -1037,32 +970,6 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
         });
 
-        test("success - reactivate story hint", async () => {
-            const { result } = renderHook(() => {
-                const storyHook = useStory()._getStoryHook!();
-                const userState = useUserState();
-                return { storyHook, userState };
-            }, { wrapper: AllTheProvidersForMock });
-
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"));
-            result.current.userState.isRealLoggedIn.current = true;
-            result.current.storyHook!._getIsStoryRecovered!().current = false;
-            result.current.storyHook!._getLocationRef!().current = { where: "/chat", level: 1 };
-            const hintHook = result.current.storyHook!._getHintHook!();
-            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(true);
-            const reactivateHintSpy = vi.spyOn(hintHook, "reactivateStoryHint");
-            const resetHintSpy = vi.spyOn(hintHook, "resetHint");
-            const restoreObjectiveHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "restoreObjectiveHint");
-
-            result.current.storyHook!.recoverStoryOnPage!(1, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
-
-            expect(result.current.storyHook!._getTypingBoxes!().current.length).toEqual(1);
-            expect(resetHintSpy).toHaveBeenCalled();
-            expect(restoreObjectiveHintSpy).toHaveBeenCalled();
-            expect(reactivateHintSpy).toHaveBeenCalled();
-            expect(result.current.storyHook!._getIsStoryRecovered!().current).toBe(true);
-        });
-
         test("success - show story", async () => {
             const { result } = renderHook(() => {
                 const storyHook = useStory()._getStoryHook!();
@@ -1079,7 +986,6 @@ describe("useStoryFuncs", () => {
 
             const hintHook = result.current.storyHook!._getHintHook!();
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
-            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
             const restoreObjectiveHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "restoreObjectiveHint");
 
             result.current.storyHook!.recoverStoryOnPage!(2, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
@@ -1110,7 +1016,6 @@ describe("useStoryFuncs", () => {
 
             const hintHook = result.current.storyHook!._getHintHook!();
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
-            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
             const restoreObjectiveHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "restoreObjectiveHint");
 
             result.current.storyHook!.recoverStoryOnPage!(2, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);
@@ -1200,7 +1105,6 @@ describe("useStoryFuncs", () => {
 
             const hintHook = result.current.storyHook!._getHintHook!();
             const resetHintSpy = vi.spyOn(hintHook, "resetHint");
-            vi.spyOn(hintHook, "verifyStoryHint").mockReturnValue(false);
             const restoreObjectiveHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "restoreObjectiveHint");
 
             result.current.storyHook!.recoverStoryOnPage!(2, [{ current: null } as unknown as React.RefObject<ITypingTextBoxHandle | null>]);

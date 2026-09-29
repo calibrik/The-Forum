@@ -88,7 +88,7 @@ export interface INavigateAction {
 
 export interface ISaveAction {
 	dest: IDestination
-	hintActionPos?: number
+	// hintActionPos?: number
 	lastNavPos?: number
 }
 
@@ -218,7 +218,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(210).stores({
+db.version(211).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
