@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { bridge, formatDay, formatTime, getImageUrl, resolveChatView, sanitizeDbFetch } from "../utils";
+import { bridge, formatDay, formatTime, getImageUrl, resolveChatView } from "../utils";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -192,7 +192,7 @@ export const Chat: FC<IChatProps> = () => {
             navigate("/");
             return;
         }
-        const chat = await resolveChatView(await sanitizeDbFetch(rawChat), userState.userLoggedIn.current);
+        const chat = await resolveChatView(rawChat, userState.userLoggedIn.current);
         setChat(chat);
         const msgs = await story.getMessages(chat.id);
         setMessages(msgs);

@@ -60,36 +60,14 @@ export const bridge = {
     }
 }
 
-async function clearStringFromUserNicknameHash(s: string) {
-    const user = await db.users.where("savedStoryId").aboveOrEqual(0).first()
-    if (!user)
-        return s;
-    const regex = new RegExp(`#${user.nickname}`, 'g');
-    return s.replace(regex, user.nickname);
-}
-
-export async function addHashToUserNickname(nickname: string) {
-    const user = await db.users.where("savedStoryId").aboveOrEqual(0).first()
-    if (!user)
-        return nickname;
-    return user.nickname == nickname ? `#${nickname}` : nickname;
-}
-
 export async function resolveChatView(chat: IChat, nickname: string): Promise<IChat> {
     if (chat.type == "gc")
         return chat;
-    const other = chat.owner.find((o) => o.replace("#", "").toLowerCase() != nickname.toLowerCase());
+    const other = chat.owner.find((o) => o.toLowerCase() != nickname.toLowerCase());
     if (!other)
         return chat;
-    const otherNickname = other.replace("#", "");
-    const user = await db.users.where("nickname").equals(otherNickname).first();
-    return { ...chat, name: otherNickname, imageName: user?.imageName ?? chat.imageName ?? "placeholder.png" };
-}
-
-export async function sanitizeDbFetch<T>(obj: T) {
-    if (!obj)
-        return obj;
-    return JSON.parse(await clearStringFromUserNicknameHash(JSON.stringify(obj))) as T;
+    const user = await db.users.where("nickname").equals(other).first();
+    return { ...chat, name: other, imageName: user?.imageName ?? chat.imageName ?? "placeholder.png" };
 }
 
 export function getContainerCharCapacity(container: HTMLElement) {

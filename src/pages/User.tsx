@@ -89,8 +89,14 @@ export const User: FC<IUserPageProps> = (_) => {
         accInfoRef.current?.toggle();
     }
 
-    function onMessageClick() {
-        story.resumeStoryFromHint("send-message");
+    async function onMessageClick() {
+        if (!userState.isRealLoggedIn||userState.userLoggedIn.current==""||story.resumeStoryFromHint("send-message"))
+            return;
+        const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(userState.userLoggedIn.current).toArray(), db.chats.where("owner").equals(userState.userLoggedIn.current).toArray()]);
+        const chats = [...buffered, ...saved];
+        const chat=chats.find(c=>c.owner.find(u=>u==username));
+        if (chat)
+            navigate(`/chat/${chat.id}`);
     }
 
     async function init() {

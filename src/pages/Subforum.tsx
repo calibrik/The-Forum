@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FC } from "react";
-import { addHashToUserNickname, bridge, getImageUrl, numberToText, sanitizeDbFetch } from "../utils";
+import { bridge, getImageUrl, numberToText } from "../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
@@ -27,7 +27,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
             navigate("/")
             return;
         }
-        const subforum = await sanitizeDbFetch(await db.subforums.where("name").equals(await addHashToUserNickname(name??"")).first());
+        const subforum = await db.subforums.where("name").equals(name??"").first();
         if (!subforum) {
             console.error(`No ${name} subforum found.`)
             navigate("/404", { replace: true })

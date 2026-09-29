@@ -1,18 +1,21 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import { db, seedNew } from '../backend/db';
-import { useChat, useElementHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
-import { render, renderHook, waitFor } from '@testing-library/react';
+import { db, seedUsers } from '../backend/db';
+import { StoryProvider, useChat, useElementHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
+import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
 import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
-import { useUserState } from '../providers/UserAuth';
-import { addHashToUserNickname, bridge, sanitizeDbFetch } from '../utils';
+import { UserProvider, useUserState } from '../providers/UserAuth';
+import { bridge } from '../utils';
+import { ModalsProvider } from '../providers/Modals';
+import { Signup } from '../pages/Signup';
+import { createMemoryRouter, RouterProvider } from 'react-router';
 
 
 describe("test of testing", () => {
     beforeAll(async () => {
-        await seedNew();
+        await seedUsers();
     })
 
     test("test 1", async () => {
@@ -1121,56 +1124,79 @@ describe("useStoryFuncs", () => {
     });
 
     describe("customizeStory", () => {
-        test("should replace old nickname with new nickname across relevant tables, while keeping #", async () => {
+        test("should replace the main hero nickname with the new nickname across all tables", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
-            await seedNew();
             const newNick = "ShinyNewHero";
             await result.current!._customizeStory!(newNick);
 
-            let scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am #${newNick}.`);
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/#${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 16)?.action?.saveAction?.dest?.where).toBe(`/user/#${newNick}`);
+            const scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
+            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
+            expect(scriptlinesAfter.find(s => s.id === 16)?.action?.saveAction?.dest?.where).toBe(`/user/${newNick}`);
             expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
-            let postsAfter = await db.posts.toArray();
-            expect(postsAfter.find(p => p.id === "p2")?.author).toBe(`#${newNick}`);
-            expect(postsAfter.find(p => p.id === "p3")?.content).toBe(`Testing #${newNick} shit`);
+            const usersAfter = await db.users.toArray();
+            expect(usersAfter.find(u => u.savedStoryId != undefined)?.nickname).toBe(newNick);
+            expect(usersAfter.find(u => u.nickname === "penis")).toBeDefined();
+
+            const postsAfter = await db.posts.toArray();
+            expect(postsAfter.find(p => p.id === "p2")?.author).toBe(newNick);
+            expect(postsAfter.find(p => p.id === "p3")?.content).toBe(`Testing ${newNick} shit`);
             expect(postsAfter.find(p => p.id === "p3")?.author).toBe("penis");
 
-            let chatsAfter = await db.chats.toArray();
-            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([`#${newNick}`]);
+            const chatsAfter = await db.chats.toArray();
+            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([newNick]);
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0].from).toBe(`pinchIt`);
 
-            let subforumsAfter = await db.subforums.toArray();
+            const subforumsAfter = await db.subforums.toArray();
             expect(subforumsAfter.find(s => s.id === 1)?.admin).toBe("john_cyberdiverO7");
-            expect(subforumsAfter.find(s => s.id === 1)?.members.find((m) => m === "main_hero")).toBeUndefined();
+            expect(subforumsAfter.find(s => s.id === 1)?.members).toContain(newNick);
         });
         test("shouldn't replace the words in story", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
-            await seedNew();
-            await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: "am" });
-            const newNick = "ShinyNewHero";
+            const newNick = "am";
             await result.current!._customizeStory!(newNick);
 
-            let scriptlinesAfter = await db.story.toArray();
+            const scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
             expect(scriptlinesAfter.find(s => s.id === 9)?.storyline?.content).toBe("I am a gamer with 10+ years experience, especially in the game called Cyberdivers.");
         });
         test("shouldn't replace the keys", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
                 wrapper: AllTheProvidersForMock
             });
-            await seedNew();
-            await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: "dest" });
-            const newNick = "main_hero";
+            const newNick = "dest";
             await result.current!._customizeStory!(newNick);
 
-            let scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/#${newNick}`);
+            const scriptlinesAfter = await db.story.toArray();
+            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
+        });
+        test("should wipe the tables before adding new ones", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await result.current!._customizeStory!("FirstHero");
+            const counts = await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count()]);
+
+            await Promise.all([
+                db.story.put({ id: 9999, offset: ">" }),
+                db.users.put({ id: 9999, nickname: "ghost" }),
+                db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [] }),
+                db.subforums.put({ id: 9999, name: "ghost", followers: 0, description: "ghost", imageName: "ghost", admin: "ghost", mods: [], members: ["ghost"] }),
+                db.chats.put({ id: "ghost", owner: ["ghost"], type: "gc", pregenMessages: [], isRead: false, initTimeDiff: 0 })
+            ]);
+            await result.current!._customizeStory!("SecondHero");
+
+            expect(await db.story.where("id").equals(9999).count()).toBe(0);
+            expect(await db.users.where("nickname").equals("ghost").count()).toBe(0);
+            expect(await db.posts.where("author").equals("ghost").count()).toBe(0);
+            expect(await db.subforums.where("name").equals("ghost").count()).toBe(0);
+            expect(await db.chats.where("owner").equals("ghost").count()).toBe(0);
+            expect(await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count()])).toEqual(counts);
         });
     });
     describe("createUser", () => {
@@ -1181,7 +1207,6 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
 
-            await seedNew();
             const newNickname = "TestHero";
             const newPassword = "testpassword123";
 
@@ -1195,7 +1220,7 @@ describe("useStoryFuncs", () => {
             const createdAt = new Date();
             await result.current.storyFuncs!.createUser(newNickname, newPassword);
             expect(customizeStorySpy).toHaveBeenCalledWith(result.current.storyFuncs!._customizeStory, newNickname);
-            expect(dbUsersModifySpy).toHaveBeenCalledWith({ nickname: newNickname, password: newPassword, savedStoryId: 1 });
+            expect(dbUsersModifySpy).toHaveBeenCalledWith({ password: newPassword, savedStoryId: 1 });
             expect(dbStoryMessagesClearSpy).toHaveBeenCalled();
             const chatsAmount = await db.chats.count();
             expect(chatAddMessagesToDbSpy).toHaveBeenCalledTimes(chatsAmount);
@@ -1208,28 +1233,6 @@ describe("useStoryFuncs", () => {
         });
     });
 });
-
-describe("utils", () => {
-    describe("sanitizedDbFetch", () => {
-        test("should fetch without # before users nickname", async () => {
-            await seedNew();
-            const scriptline = await sanitizeDbFetch(await db.story.where("id").equals(16).first());
-            expect(scriptline?.action?.saveAction?.dest.where).toBe(`/user/main_hero`);
-            let post = await sanitizeDbFetch(await db.posts.where("id").equals("p1").first());
-            expect(post?.author).toBe(`main_hero`);
-            post = await sanitizeDbFetch(await db.posts.where("id").equals("p3").first());
-            expect(post?.author).toBe(`penis`);
-            expect(post?.content).toBe("Testing main_hero shit");
-        })
-    });
-    describe("addHashToUserNickname", () => {
-        test("should add # to user nickname", async () => {
-            await seedNew();
-            expect(await addHashToUserNickname("main_hero")).toBe("#main_hero");
-            expect(await addHashToUserNickname("test")).toBe("test");
-        });
-    });
-})
 
 describe("storyInit", () => {
     test("regular flow", async () => {
@@ -1259,7 +1262,7 @@ describe("storyInit", () => {
             wrapper: AllTheProvidersForMock
         });
         const callsSpy = vi.spyOn(bridge, "exec");
-        await seedNew();
+        await db.users.add({ nickname: "main_hero" });
         result.current!.userState!.isRealLoggedIn.current = true;
         result.current!.userState!.userLoggedIn.current = "main_hero";
         exposedMockRouter?.navigate("/user/main_hero/comments");
@@ -1329,7 +1332,10 @@ describe("isOnLocation", () => {
 
 describe("script checks", () => {
     test("every isActionAwait scriptline in the script should have a hint", async () => {
-        await seedNew();
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        await result.current!.createUser("TestHero", "testpassword123");
         const scriptlines = await db.story.toArray();
         const unresolved = scriptlines.filter(s => {
             if (!s.isActionAwait || s.hint != undefined)
@@ -1340,5 +1346,38 @@ describe("script checks", () => {
             return !scriptlines.find(l => l.id == s.id + pos)?.hint;
         });
         expect(unresolved.length).toBe(0);
+    });
+});
+
+describe("taken nickname", () => {
+    test("should not create a user with a taken nickname", async () => {
+        await seedUsers();
+        const usersAmount = await db.users.count();
+        const router = createMemoryRouter([
+            {
+                path: "/",
+                Component: StoryProvider,
+                children: [
+                    { path: "/", Component: Signup }
+                ]
+            }
+        ], { initialEntries: ["/"] });
+        const { container } = render(
+            <UserProvider>
+                <ModalsProvider>
+                    <RouterProvider router={router} />
+                </ModalsProvider>
+            </UserProvider>
+        );
+        fireEvent.change(container.querySelector("input[name='nickname']")!, { target: { value: "penis" } });
+        fireEvent.change(container.querySelector("input[name='password']")!, { target: { value: "password123" } });
+        fireEvent.change(container.querySelector("input[name='confirmPassword']")!, { target: { value: "password123" } });
+        fireEvent.submit(container.querySelector("form")!);
+        fireEvent.click(screen.getByText("Confirm"));
+
+        await waitFor(() => expect(screen.getByText("Nickname already exists")).toBeInTheDocument());
+        expect(await db.users.where("savedStoryId").aboveOrEqual(1).count()).toBe(0);
+        expect(await db.users.count()).toBe(usersAmount);
+        expect(router.state.location.pathname).toBe("/");
     });
 });

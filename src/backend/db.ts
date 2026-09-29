@@ -225,7 +225,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(212).stores({
+db.version(213).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -240,64 +240,43 @@ db.version(212).stores({
 	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')
 		return;
-	await db.story.clear();
-	let response = await fetch(getJsonUrl("script.json"));
-	const newScript: IScriptLine[] = withLastNavPos(await response.json() as IScriptLine[]);
-	await db.story.bulkAdd(newScript);
-	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
-	// if (users.length != 0) {
-	// 	const lastSave = await tx.table("story")
-	// 		.toCollection()
-	// 		.reverse()
-	// 		.filter(scl => scl.action?.name === "SAVE"&&scl.id<=(users[0].savedStoryId??0))
-	// 		.first() as IScriptLine;
-	// 	users[0].savedStoryId=lastSave.id;
-	// }
-	await db.users.clear();
-	response = await fetch(getJsonUrl("users.json"));
-	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
-	await db.users.bulkAdd(newUsers);
-	// if (users.length != 0) {
-	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
-	// }
-	await db.posts.clear();
-	response = await fetch(getJsonUrl("posts.json"));
-	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` }));
-	await db.posts.bulkAdd(newPosts);
-
-	await db.subforums.clear();
-	response = await fetch(getJsonUrl("subforums.json"));
-	const newSubforums: ISubforum[] = (await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 }));
-	await db.subforums.bulkAdd(newSubforums);
-
-	await db.chats.clear();
-	response = await fetch(getJsonUrl("chats.json"));
-	const newChats: IChat[] = (await response.json() as IChat[]);
-	await db.chats.bulkAdd(newChats);
-
-	await db.storyMessages.clear();
+	await Promise.all(db.tables.map((table) => table.clear()));
+	await seedUsers();
 })
 
-export async function seedNew() {
-	let response = await fetch(getJsonUrl("script.json"));
-	await db.story.bulkAdd(withLastNavPos(await response.json() as IScriptLine[]));
-	response = await fetch(getJsonUrl("users.json"));
+async function fetchSeed<T>(name: string, nickname?: string) {
+	const response = await fetch(getJsonUrl(name));
+	const json = JSON.stringify(await response.json());
+	return JSON.parse(nickname == undefined ? json : json.replace(/#main_hero/g, nickname)) as T;
+}
+
+function mapUsers(users: IUser[]): IUser[] {
 	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
-	await db.users.bulkAdd(newUsers);
-	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
-	response = await fetch(getJsonUrl("subforums.json"));
-	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
-	response = await fetch(getJsonUrl("chats.json"));
-	await db.chats.bulkAdd(await response.json() as IChat[]);
+	return users.map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
+}
+
+export async function seedUsers() {
+	await db.users.clear();
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json")));
+}
+
+export async function seedTables(nickname: string) {
+	await db.story.clear();
+	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", nickname)));
+	await db.users.clear();
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", nickname)));
+	await db.posts.clear();
+	await db.posts.bulkAdd((await fetchSeed<IPost[]>("posts.json", nickname)).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
+	await db.subforums.clear();
+	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", nickname)).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.chats.clear();
+	await db.chats.bulkAdd(await fetchSeed<IChat[]>("chats.json", nickname));
 }
 
 db.on("populate", async () => {
 	if (process.env.NODE_ENV == 'test') 
 		return;
-	await seedNew();
+	await seedUsers();
 })
 
 await db.open()

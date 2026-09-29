@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -9,7 +9,7 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { addHashToUserNickname, bridge, delay, sanitizeDbFetch } from "../utils";
+import { bridge, delay } from "../utils";
 interface IStoryProviderProps {
 };
 
@@ -414,10 +414,10 @@ export function useChat() {
     async function addChat(id: string, owner: string[], type: IChat["type"]) {
         const chat: IChat = {
             id: id,
-            owner: await Promise.all(owner.map((nickname) => addHashToUserNickname(nickname))),
+            owner: owner,
             type: type,
             pregenMessages: [],
-            isRead: false,
+            isRead: true,
             initTimeDiff: 0,
         }
         await db.chatsBuffer.put(chat);
@@ -673,7 +673,7 @@ export function useStoryFuncs() {
     }
 
     async function recoverCheckpoint(id: number) {
-        const scl = await sanitizeDbFetch(await db.story.get(id));
+        const scl = await db.story.get(id);
         if (!scl)
             return;
         savedStoryId.current = id;
@@ -681,7 +681,7 @@ export function useStoryFuncs() {
         pageStoryId.current = id + 1;
         locationRef.current = scl.action?.saveAction?.dest;
         if (scl.action?.saveAction?.lastNavPos != undefined) {
-            let navScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.lastNavPos));
+            let navScl = await db.story.get(id + scl.action.saveAction.lastNavPos);
             objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
         }
         if (scl.hint != undefined)
@@ -724,37 +724,7 @@ export function useStoryFuncs() {
     }
 
     async function customizeStory(nickname: string) {
-        const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
-        const regex = new RegExp(`#${users[0].nickname}`, 'g');
-        nickname = `#${nickname}`
-        await db.story.toCollection().modify((scl) => {
-            const sclString = JSON.stringify(scl);
-            if (!regex.test(sclString)) {
-                return false;
-            }
-            Object.assign(scl, JSON.parse(sclString.replace(regex, nickname)));
-        });
-        await db.posts.toCollection().modify((post) => {
-            const postString = JSON.stringify(post);
-            if (!regex.test(postString)) {
-                return false;
-            }
-            Object.assign(post, JSON.parse(postString.replace(regex, nickname)));
-        });
-        await db.chats.toCollection().modify((chat) => {
-            const chatString = JSON.stringify(chat);
-            if (!regex.test(chatString)) {
-                return false;
-            }
-            Object.assign(chat, JSON.parse(chatString.replace(regex, nickname)));
-        });
-        await db.subforums.toCollection().modify((subforum) => {
-            const subforumString = JSON.stringify(subforum);
-            if (!regex.test(subforumString)) {
-                return false;
-            }
-            Object.assign(subforum, JSON.parse(subforumString.replace(regex, nickname)));
-        });
+        await seedTables(nickname);
     }
 
     function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
@@ -840,7 +810,6 @@ export function useStoryFuncs() {
             id++;
             if (!scl)
                 break;
-            scl = await sanitizeDbFetch(scl);
             addScriptlineToTimeline(scl, master);
             if (scl.action?.navigateAction) {
                 navPending = true;
@@ -878,10 +847,10 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 216 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 216 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
-        let chats = await sanitizeDbFetch(await db.chats.toArray());
+        let chats = await db.chats.toArray();
         for (let chat of chats) {
             const chatTime = new Date(createdAt);
             chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);

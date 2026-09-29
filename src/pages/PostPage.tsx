@@ -7,7 +7,7 @@ import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
-import { bridge, getImageUrl, sanitizeDbFetch } from "../utils";
+import { bridge, getImageUrl } from "../utils";
 import { useNavigate, useParams } from "react-router";
 import { Spinner } from "../components/Spinner";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -64,13 +64,13 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             return;
         const post = isFake
             ? { ...FAKE_POST, author: userState.userLoggedIn.current }
-            : await sanitizeDbFetch(await db.posts.where("id").equals(id??"").first());
+            : await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})
             return;
         }
         setPost(post);
-        const sub = await sanitizeDbFetch(await db.subforums.where("id").equals(post.subforum).first());
+        const sub = await db.subforums.where("id").equals(post.subforum).first();
         setSubforum(sub);
         setSubforumPfp(sub?.imageName);
     }
