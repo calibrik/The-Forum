@@ -696,7 +696,7 @@ describe("useStoryFuncs", () => {
             const storyHintSpy = vi.spyOn(result.current!._getHintHook!(), "setStoryHint");
             const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
             await result.current!._processAction!({ promptMessageAction: { content: "test prompt" } }, 10);
-            expect(storyHintSpy).toHaveBeenCalledWith(["chat-input", "chat-send"], false, false);
+            expect(storyHintSpy).toHaveBeenCalledWith(["chat-input", "chat-send"], false);
             expect(promptSpy).toHaveBeenCalledWith("test prompt");
         });
     });
@@ -1132,7 +1132,7 @@ describe("useStoryFuncs", () => {
             let scriptlinesAfter = await db.story.toArray();
             expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am #${newNick}.`);
             expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/#${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 17)?.action?.saveAction?.dest?.where).toBe(`/user/#${newNick}`);
+            expect(scriptlinesAfter.find(s => s.id === 16)?.action?.saveAction?.dest?.where).toBe(`/user/#${newNick}`);
             expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
             let postsAfter = await db.posts.toArray();
@@ -1141,7 +1141,7 @@ describe("useStoryFuncs", () => {
             expect(postsAfter.find(p => p.id === "p3")?.author).toBe("penis");
 
             let chatsAfter = await db.chats.toArray();
-            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toBe(`#${newNick}`);
+            expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([`#${newNick}`]);
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0].from).toBe(`pinchIt`);
 
             let subforumsAfter = await db.subforums.toArray();
@@ -1213,7 +1213,7 @@ describe("utils", () => {
     describe("sanitizedDbFetch", () => {
         test("should fetch without # before users nickname", async () => {
             await seedNew();
-            const scriptline = await sanitizeDbFetch(await db.story.where("id").equals(17).first());
+            const scriptline = await sanitizeDbFetch(await db.story.where("id").equals(16).first());
             expect(scriptline?.action?.saveAction?.dest.where).toBe(`/user/main_hero`);
             let post = await sanitizeDbFetch(await db.posts.where("id").equals("p1").first());
             expect(post?.author).toBe(`main_hero`);

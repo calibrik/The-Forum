@@ -3380,7 +3380,12 @@
     {
         "action": {
             "addNewChat": {
-                "nickname": "Sillygoose228"
+                "id": "c14a5155-a221-447c-98ed-21b138f468d7",
+                "owner": [
+                    "#main_hero",
+                    "Sillygoose228"
+                ],
+                "type": "dm"
             }
         },
         "offset": ">"
@@ -3390,7 +3395,22 @@
             "navigateAction": {
                 "navigate": true,
                 "dest": {
-                    "where": "/chat/sillygoose228",
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
+                    "level": 2
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "from":{
+                        "level":1,
+                        "where":"/chat"
+                    },
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
                     "level": 2
                 }
             }
@@ -3415,8 +3435,7 @@
             "content": "Ok, so, It'll go like that, uhhh",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearAfter": "+=1.5"
+            "typingBoxId": 0
         },
         "offset": ">"
     },
@@ -3424,7 +3443,7 @@
         "storyline": {
             "content": "Dear sillygoose228, it came to my attention that",
             "speed": 50,
-            "delim": "",
+            "delim": " ",
             "typingBoxId": 0
         },
         "offset": ">"
@@ -3445,7 +3464,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -3454,7 +3473,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -3472,7 +3491,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -3503,12 +3522,12 @@
     },
     {
         "storyline": {
-            "content": "Nooo, why \"dear\"? We haven't even met.",
+            "content": "Nooo, why \"dear\"? We haven't even met yet.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.3"
     },
     {
         "storyline": {
@@ -3544,7 +3563,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.3 "
     },
     {
         "storyline": {

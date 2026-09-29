@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -9,7 +9,7 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { bridge, delay, sanitizeDbFetch } from "../utils";
+import { addHashToUserNickname, bridge, delay, sanitizeDbFetch } from "../utils";
 interface IStoryProviderProps {
 };
 
@@ -411,6 +411,18 @@ export function useChat() {
     const userState = useUserState();
     const lastId = useRef<number>(0);
 
+    async function addChat(id: string, owner: string[], type: IChat["type"]) {
+        const chat: IChat = {
+            id: id,
+            owner: await Promise.all(owner.map((nickname) => addHashToUserNickname(nickname))),
+            type: type,
+            pregenMessages: [],
+            isRead: false,
+            initTimeDiff: 0,
+        }
+        await db.chatsBuffer.put(chat);
+    }
+
     async function addMessageFromUser(content: string) {
         const message: IMessage = {
             id: lastId.current++,
@@ -460,7 +472,7 @@ export function useChat() {
         chatHandle.current?.setStringToType(content);
     }
 
-    return { addMessageFromNPC, addMessageFromUser, setChatHandle, addMessagesToDb, getMessages, promptMessage }
+    return { addMessageFromNPC, addMessageFromUser, addChat, setChatHandle, addMessagesToDb, getMessages, promptMessage }
 }
 
 export interface ILoginHandle {
@@ -622,6 +634,9 @@ export function useStoryFuncs() {
         }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
+        }
+        if (action.addNewChat) {
+            await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
         }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)

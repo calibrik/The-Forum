@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon } from "../components/Icons";
-import { bridge, formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { bridge, formatDay, formatTime, getImageUrl, resolveChatView, sanitizeDbFetch } from "../utils";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -181,8 +181,9 @@ export const Chat: FC<IChatProps> = () => {
             navigate("/");
             return;
         }
-        const chat = await sanitizeDbFetch(await db.chats.where("id").equals(chatId ?? "").first());
-        if (!chat) {
+        const id = chatId ?? "";
+        const rawChat = await db.chatsBuffer.where("id").equals(id).first() ?? await db.chats.where("id").equals(id).first();
+        if (!rawChat) {
             navigate("/404");
             return;
         }
@@ -191,6 +192,7 @@ export const Chat: FC<IChatProps> = () => {
             navigate("/");
             return;
         }
+        const chat = await resolveChatView(await sanitizeDbFetch(rawChat), userState.userLoggedIn.current);
         setChat(chat);
         const msgs = await story.getMessages(chat.id);
         setMessages(msgs);
@@ -235,14 +237,14 @@ export const Chat: FC<IChatProps> = () => {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <BackButton id="back-text" />
-                    <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
+                    <img src={getImageUrl(chat?.imageName ?? "placeholder.png")} className={styles.pfp} />
                     <div className={styles.chatDiv}>
                         <p className={styles.nickname}>{chat?.name}</p>
-                        <span className={styles.membersCount}>{chat?.membersAmount} members</span>
+                        {chat?.membersAmount != undefined && <span className={styles.membersCount}>{chat.membersAmount} members</span>}
                     </div>
                 </div>
                 <div ref={chatContainerRef} className={styles.chatContainer}>
-                    <Spinner />
+                    {chat?.pregenMessages.length!=0?<Spinner />:""}
                     {messages.map((msg, index) => {
                         let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} />;
                         if (index == 0)

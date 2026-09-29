@@ -1,4 +1,4 @@
-import { db } from "./backend/db";
+import { db, type IChat } from "./backend/db";
 
 export function getImageUrl(name: string): string {
     return new URL(`./assets/images/${name}`, import.meta.url).href;
@@ -73,6 +73,17 @@ export async function addHashToUserNickname(nickname: string) {
     if (!user)
         return nickname;
     return user.nickname == nickname ? `#${nickname}` : nickname;
+}
+
+export async function resolveChatView(chat: IChat, nickname: string): Promise<IChat> {
+    if (chat.type == "gc")
+        return chat;
+    const other = chat.owner.find((o) => o.replace("#", "").toLowerCase() != nickname.toLowerCase());
+    if (!other)
+        return chat;
+    const otherNickname = other.replace("#", "");
+    const user = await db.users.where("nickname").equals(otherNickname).first();
+    return { ...chat, name: otherNickname, imageName: user?.imageName ?? chat.imageName ?? "placeholder.png" };
 }
 
 export async function sanitizeDbFetch<T>(obj: T) {

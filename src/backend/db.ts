@@ -36,11 +36,11 @@ export interface IPregenMessage {
 
 export interface IChat {
 	id: string,
-	imageName: string,
-	owner: string,
+	imageName?: string,
+	owner: string[],
 	type: "gc" | "dm",
-	membersAmount: number,
-	name: string,
+	membersAmount?: number,
+	name?: string,
 	pregenMessages: IPregenMessage[],
 	isRead: boolean,
 	initTimeDiff: number,//time diff to sign up time, in mins
@@ -119,6 +119,12 @@ export interface ISendMessageAction {
 	timeToType: number
 }
 
+export interface IAddNewChatAction {
+	id: string,
+	owner: string[],
+	type: "gc" | "dm",
+}
+
 export interface ISetTerminalCommandAction {
 	command: string,
 	output?: string,
@@ -157,6 +163,7 @@ export interface IAction {
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
+	addNewChat?: IAddNewChatAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
@@ -218,13 +225,17 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(211).stores({
+db.version(212).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
-	chats: "id, owner",
-	storyMessages: "id,chatId"
+	chats: "id, *owner",
+	storyMessages: "id,chatId",
+	postsBuffer: "id, author, subforum",
+	chatsBuffer: "id, *owner",
+	usersBuffer: "++id, nickname, savedStoryId",
+	storyMessagesBuffer: "id,chatId"
 }).upgrade(async () => {
 	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')
@@ -266,13 +277,6 @@ db.version(211).stores({
 	await db.chats.bulkAdd(newChats);
 
 	await db.storyMessages.clear();
-})
-
-db.version(211).stores({
-	postsBuffer: "id, author, subforum",
-	chatsBuffer: "id, owner",
-	usersBuffer: "++id, nickname, savedStoryId",
-	storyMessagesBuffer: "id,chatId"
 })
 
 export async function seedNew() {

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { addHashToUserNickname, bridge, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { addHashToUserNickname, bridge, formatTime, getImageUrl, resolveChatView, sanitizeDbFetch } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -37,7 +37,7 @@ const Dialog: FC<IDialogProps> = (props) => {
 
     return (
         <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
-            <img src={getImageUrl(props.chat.imageName)} alt="" className={styles.pfp} />
+            <img src={getImageUrl(props.chat.imageName ?? "placeholder.png")} alt="" className={styles.pfp} />
             <div className={styles.info}>
                 <h3 className={styles.nickname}>{props.chat.name}</h3>
                 <div className={styles.lastMessageDiv}>
@@ -63,7 +63,11 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
             navigate("/")
             return;
         }
-        setChats(await sanitizeDbFetch(await db.chats.where("owner").equals(await addHashToUserNickname(userState.userLoggedIn.current ?? "")).toArray()));
+        const nickname = userState.userLoggedIn.current;
+        const owner = await addHashToUserNickname(nickname);
+        const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(owner).toArray(), db.chats.where("owner").equals(owner).toArray()]);
+        const chats = await sanitizeDbFetch([...buffered, ...saved]);
+        setChats(await Promise.all(chats.map((chat) => resolveChatView(chat, nickname))));
     }
 
     useEffect(() => {
