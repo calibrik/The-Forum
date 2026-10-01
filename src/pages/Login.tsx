@@ -105,7 +105,7 @@ export const Login: FC<ILoginProps> = (_) => {
         }
         let content = users.length == 0 ? "You don't even have the account yet, you can't forget what you didn't know, idiot." :
             `Bro, seriously? How fucking hard is it to remember this? Your nickname is ${users[0].nickname}, password is ${users[0].password}\n\nFucking moron.`;
-        const tl = passwordForgotBox.current?.getTimeline({
+        const tl = passwordForgotBox.current?.getTypingTimeline({
             content: content,
             speed: 50,
             clearAfter:"+=5"

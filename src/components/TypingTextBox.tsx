@@ -24,8 +24,14 @@ export interface ITypingBoxArgs {
     style?: React.CSSProperties
 }
 
+export interface ITypingBoxDeleteArgs {
+    symbolsCount: number,
+    speed: number,
+}
+
 export interface ITypingTextBoxHandle {
-    getTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
+    getTypingTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
+    getDeleteTimeline: (args: ITypingBoxDeleteArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => gsap.core.Timeline
     applyStyle: (style: React.CSSProperties) => void
@@ -40,7 +46,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     const cursorRef = useRef<ICursorHandle>(null);
     const typingTextRef = useRef<HTMLSpanElement>(null);
 
-    const getTimeline = contextSafe((args: ITypingBoxArgs) => {
+    const getTypingTimeline = contextSafe((args: ITypingBoxArgs) => {
         const tl = gsap.timeline();
         tl.add(()=>console.log("exec typing",args.content,props.className));
         if (args.clearBefore)
@@ -73,13 +79,34 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         return tl;
     });
 
+    const getDeleteTimeline = contextSafe((args: ITypingBoxDeleteArgs) => {
+        const tl = gsap.timeline();
+        const startContent = contentRef.current;
+        const finContent = startContent.slice(0, startContent.length - args.symbolsCount);
+        const counter = { i: startContent.length };
+        contentRef.current = finContent;
+        tl.set(divRef.current, {
+            display: "block"
+        });
+        tl.set('#cursor', {
+            visibility: 'visible'
+        })
+            .to(counter, {
+                i: finContent.length,
+                duration: (args.symbolsCount * args.speed) / 1000,
+                ease: "none",
+                onUpdate: () => { typingTextRef.current!.textContent = startContent.slice(0, counter.i); }
+            });
+        return tl;
+    });
+
     const reset = contextSafe(() => {
         contentRef.current = "";
         return gsap.timeline()
             .set("#typingText", {
                 text: "",
             })
-            .add(() => { typingTextRef.current!.innerText = ""; })
+            .add(() => { typingTextRef.current!.textContent = ""; })
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
             })
@@ -91,7 +118,8 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     })
 
     useImperativeHandle(ref, () => ({
-        getTimeline,
+        getTypingTimeline,
+        getDeleteTimeline,
         setCursorType(type) {
             cursorRef.current?.setType(type);
         },
@@ -131,3 +159,4 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         </div>
     );
 });
+

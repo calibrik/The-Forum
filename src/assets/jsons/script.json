@@ -3334,7 +3334,7 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=0.5"
     },
     {
         "storyline": {
@@ -3343,11 +3343,20 @@
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "storyline": {
-            "content": "You might not see this yet, but my nickname has at least 2 hidden meanings and 3 references to 3 different pieces of media, I've spent like a whole day coming up with that.",
+            "content": "You might not see this yet, but my nickname has at least 2 hidden meanings and 3 references to 3 different pieces of media.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": 0
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I've spent like a whole day coming up with that.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0,
@@ -3441,19 +3450,18 @@
     },
     {
         "storyline": {
-            "content": "Dear sillygoose228, it came to my attention that",
+            "content": "\"Dear sillygoose228, it came to my attention that",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": ">"
+        "offset": "+=0.5"
     },
     {
-        "action": {
-            "deleteTextFromTypingBox": {
-                "typingBoxId": 0,
-                "symbolsCount": 48
-            }
+        "deleteTextFromTypingBox": {
+            "typingBoxId": 0,
+            "symbolsCount": 50,
+            "speed": 50
         },
         "offset": "+=0.5"
     },
@@ -3468,7 +3476,7 @@
     },
     {
         "storyline": {
-            "content": "Dear sillygoose228, there is a post I want you to look at",
+            "content": "\"Dear sillygoose228, there is a post I want you to look at\"",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
@@ -3476,11 +3484,10 @@
         "offset": "+=0.5"
     },
     {
-        "action": {
-            "deleteTextFromTypingBox": {
-                "typingBoxId": 0,
-                "symbolsCount": 57
-            }
+        "deleteTextFromTypingBox": {
+            "typingBoxId": 0,
+            "symbolsCount": 60,
+            "speed": 50
         },
         "offset": "+=0.5"
     },
@@ -3504,19 +3511,18 @@
     },
     {
         "storyline": {
-            "content": "Dear sillygoose228, look at this post",
+            "content": "\"Dear sillygoose228, look at this post\"",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=0.5"
     },
     {
-        "action": {
-            "deleteTextFromTypingBox": {
-                "typingBoxId": 0,
-                "symbolsCount": 37
-            }
+        "deleteTextFromTypingBox": {
+            "typingBoxId": 0,
+            "symbolsCount": 40,
+            "speed": 50
         },
         "offset": "+=0.5"
     },
@@ -3540,19 +3546,18 @@
     },
     {
         "storyline": {
-            "content": "Look at this post",
+            "content": "\"Look at this post\"",
             "speed": 50,
             "delim": " ",
             "typingBoxId": 0
         },
-        "offset": "+=0.3"
+        "offset": "+=0.5"
     },
     {
-        "action": {
-            "deleteTextFromTypingBox": {
-                "typingBoxId": 0,
-                "symbolsCount": 17
-            }
+        "deleteTextFromTypingBox": {
+            "typingBoxId": 0,
+            "symbolsCount": 20,
+            "speed": 50
         },
         "offset": "+=0.5"
     },
@@ -3570,14 +3575,15 @@
             "content": "Yeah, that will do, it definitely won't arouse suspicion!",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": 0,
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.3"
     },
     {
         "action": {
             "promptMessageAction": {
-                "content": "https://the-frum.netlify.app/p412",
+                "content": "/post/fake",
                 "isLink": true
             }
         },

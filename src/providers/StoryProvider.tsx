@@ -740,7 +740,7 @@ export function useStoryFuncs() {
                 console.error(`No ref assigned for index ${stl.typingBoxId}.`)
                 return;
             }
-            tl.add(box.getTimeline({
+            tl.add(box.getTypingTimeline({
                 content: stl.content,
                 speed: stl.speed,
                 delim: stl.delim,
@@ -781,6 +781,15 @@ export function useStoryFuncs() {
                 }
                 tl.add(branch, `${scl.addParallelExec.name}+=0`);
             }
+        }
+
+        if (scl.deleteTextFromTypingBox) {
+            const box = typingBoxes.current[scl.deleteTextFromTypingBox.typingBoxId]?.current;
+            if (box)
+                tl.add(box.getDeleteTimeline({
+                    symbolsCount: scl.deleteTextFromTypingBox.symbolsCount,
+                    speed: scl.deleteTextFromTypingBox.speed
+                }), scl.offset);
         }
 
         if (scl.clearTypingTextBoxes) {

@@ -527,7 +527,7 @@ describe("useStoryFuncs", () => {
             result.current.userState.userLoggedIn.current = "main_hero";
             vi.stubGlobal("location", new URL("http://localhost:3000/user/penis"));
 
-            const mockBox = { current: { getTimeline: () => gsap.timeline().to({}, { duration: 1 }), reset: () => gsap.timeline() } } as unknown as React.RefObject<ITypingTextBoxHandle | null>;
+            const mockBox = { current: { getTypingTimeline: () => gsap.timeline().to({}, { duration: 1 }), reset: () => gsap.timeline() } } as unknown as React.RefObject<ITypingTextBoxHandle | null>;
             result.current.storyFuncs!._getTypingBoxes!().current = [mockBox];
 
             await db.story.bulkAdd([

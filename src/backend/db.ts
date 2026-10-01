@@ -152,6 +152,12 @@ export interface ISetPromptVisibilityAction {
 	visible: boolean,
 }
 
+export interface IDeleteTextFromTypingBoxAction {
+	symbolsCount: number,
+	speed: number,
+	typingBoxId: number,
+}
+
 export interface IClearTypingTextBoxes {
 	ids: number[]
 }
@@ -179,6 +185,7 @@ export interface IScriptLine {
 	action?: IAction,
 	addParallelExec?: IAddParallelExec
 	clearTypingTextBoxes?: IClearTypingTextBoxes
+	deleteTextFromTypingBox?: IDeleteTextFromTypingBoxAction
 	hint?: string,//what the player is expected to do while the story waits on this scriptline (isActionAwait)
 	isActionAwait?: boolean,
 	offset: string,
@@ -225,7 +232,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(213).stores({
+db.version(214).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
