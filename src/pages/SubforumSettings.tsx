@@ -7,6 +7,7 @@ import { BaseButton } from "../components/BaseButton";
 import { useStoryInit } from "../providers/StoryProvider";
 import { SearchField } from "../components/SearchField";
 import { bridge } from "../utils";
+import { useParams } from "react-router";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;
@@ -17,6 +18,7 @@ interface ISubforumSettingsSectionProps {
 const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set<string>());
     const storyInit = useStoryInit();
+    const { name } = useParams<{ name: string }>();
 
     function removeUser(name: string) {
         let n = new Set(selectedUsers);
@@ -37,7 +39,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
 
     useEffect(() => {
         bridge.exec(storyInit,3, []);
-    }, [])
+    }, [name])
 
     return (
         <form className={styles.section} onSubmit={onSubmit}>

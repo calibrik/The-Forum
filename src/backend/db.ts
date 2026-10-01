@@ -110,6 +110,7 @@ export interface IHintAction {
 
 export interface IPromptMessage {
 	content: string,
+	isLink?:boolean
 }
 
 export interface ISendMessageAction {
@@ -232,7 +233,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(214).stores({
+db.version(217).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

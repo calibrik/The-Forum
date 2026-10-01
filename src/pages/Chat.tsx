@@ -13,7 +13,7 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { Divider } from "../components/Divider";
 import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
 
 interface IChatProps { };
@@ -89,6 +89,7 @@ const Message: FC<IMessageProps> = (props) => {
     );
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
     const timeSent = formatTime(props.message.timeSent);
+    const isLink = props.message.content.startsWith(window.location.origin);
 
     async function init() {
         let user = await db.users.where("nickname").equals(props.message.from).first();
@@ -135,7 +136,11 @@ const Message: FC<IMessageProps> = (props) => {
                     </div>
                 </div>
                 : ""}
-            <p className={styles.message}>{content}</p>
+            <p className={styles.message}>
+                {isLink
+                    ? <span className={styles.link}>{props.message.content}</span>
+                    : content}
+            </p>
         </div>
     );
 }

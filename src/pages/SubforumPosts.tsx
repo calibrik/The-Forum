@@ -23,7 +23,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
 
     useEffect(() => {
         bridge.exec(storyInit, 3, typingBoxes, init);
-    }, [])
+    }, [name])
 
     useEffect(() => {
         if (posts.length == 0)

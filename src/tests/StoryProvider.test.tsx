@@ -702,6 +702,23 @@ describe("useStoryFuncs", () => {
             expect(storyHintSpy).toHaveBeenCalledWith(["chat-input", "chat-send"], false);
             expect(promptSpy).toHaveBeenCalledWith("test prompt");
         });
+        test("promptMessage action (isLink)", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"));
+            const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
+            await result.current!._processAction!({ promptMessageAction: { content: "/post/fake", isLink: true } }, 10);
+            expect(promptSpy).toHaveBeenCalledWith("http://localhost:3000/post/fake");
+        });
+        test("promptMessage action (isLink false)", async () => {
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
+            await result.current!._processAction!({ promptMessageAction: { content: "test prompt", isLink: false } }, 10);
+            expect(promptSpy).toHaveBeenCalledWith("test prompt");
+        });
     });
 
     describe("resumeStoryFromHint", () => {

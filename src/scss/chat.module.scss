@@ -101,6 +101,26 @@
     font-size: clamp(0.9rem, 3.4cqw, 1.2rem);
 }
 
+.link {
+    color: colors.$link-color;
+    border-bottom: 1px solid;
+    padding: 0 1px;
+    text-decoration: none;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        color: #de0004;
+        cursor: pointer;
+    }
+}
+
+.link:active {
+    color: #de0004;
+    transform: scale(0.9);
+}
+
 .input-container {
     display: flex;
     margin-top: auto;

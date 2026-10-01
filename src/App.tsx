@@ -21,12 +21,11 @@ import { Notepad } from './pages/Notepad';
 import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
 import { Vim } from './pages/Vim';
-import { TextPlugin } from 'gsap/all';
 import { UserProvider } from './providers/UserAuth';
 import { StoryProvider } from './providers/StoryProvider';
 import type { FC, ReactNode } from 'react';
 
-gsap.registerPlugin(useGSAP, TextPlugin);
+gsap.registerPlugin(useGSAP);
 
 export const appRoutes: RouteObject[] = [
 	{

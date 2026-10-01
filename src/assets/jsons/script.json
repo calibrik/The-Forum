@@ -3461,7 +3461,7 @@
         "deleteTextFromTypingBox": {
             "typingBoxId": 0,
             "symbolsCount": 50,
-            "speed": 50
+            "speed": 30
         },
         "offset": "+=0.5"
     },
@@ -3487,7 +3487,7 @@
         "deleteTextFromTypingBox": {
             "typingBoxId": 0,
             "symbolsCount": 60,
-            "speed": 50
+            "speed": 30
         },
         "offset": "+=0.5"
     },
@@ -3522,7 +3522,7 @@
         "deleteTextFromTypingBox": {
             "typingBoxId": 0,
             "symbolsCount": 40,
-            "speed": 50
+            "speed": 30
         },
         "offset": "+=0.5"
     },
@@ -3557,7 +3557,7 @@
         "deleteTextFromTypingBox": {
             "typingBoxId": 0,
             "symbolsCount": 20,
-            "speed": 50
+            "speed": 30
         },
         "offset": "+=0.5"
     },
@@ -3589,7 +3589,7 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
-        "offset": "+=1"
+        "offset": ">"
     },
     {
         "action": {

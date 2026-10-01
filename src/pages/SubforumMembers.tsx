@@ -3,7 +3,7 @@ import styles from "../scss/subforumMembersPage.module.scss";
 import { SMEntry } from "../components/SMEntry";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
-import { useOutletContext } from "react-router";
+import { useOutletContext, useParams } from "react-router";
 import type { ISubforum } from "../backend/db";
 import { bridge } from "../utils";
 interface ISubforumMembersProps { };
@@ -11,10 +11,11 @@ interface ISubforumMembersProps { };
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const storyInit = useStoryInit();
     const [subforum] = useOutletContext<[ISubforum | undefined, unknown]>();
+    const { name } = useParams<{ name: string }>();
 
     useEffect(() => {
         bridge.exec(storyInit,3, []);
-    }, [])
+    }, [name])
 
     return (
         <div className={styles.container}>

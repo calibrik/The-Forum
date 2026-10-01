@@ -640,7 +640,8 @@ export function useStoryFuncs() {
         }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)
-            chatFunc.promptMessage(action.promptMessageAction.content);
+            const { content, isLink } = action.promptMessageAction;
+            chatFunc.promptMessage(isLink ? window.location.origin + content : content);
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);

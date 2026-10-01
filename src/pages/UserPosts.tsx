@@ -19,7 +19,7 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
 
     useEffect(()=>{
         bridge.exec(storyInit,3, [], init);
-    },[])
+    },[username])
 
     return (
             <div className={styles.container}>

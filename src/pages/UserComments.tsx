@@ -4,14 +4,16 @@ import { Comment } from "../components/Comment";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { bridge } from "../utils";
+import { useParams } from "react-router";
 interface IUserCommentsProps { };
 
 export const UserComments: FC<IUserCommentsProps> = (_) => {
     const storyInit = useStoryInit();
+    const {username}=useParams<{username:string}>();
 
     useEffect(() => {
         bridge.exec(storyInit,3, []);
-    }, [])
+    }, [username])
 
     return (
         <div className={styles.container}>
