@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import { bridge, getImageUrl, numberToText } from "../utils";
 import { Outlet, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
@@ -10,7 +10,7 @@ import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { db, type ISubforum } from "../backend/db";
 import { Spinner } from "../components/Spinner";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
@@ -19,8 +19,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const navigate = useNavigate();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
-    const typingBox1 = useRef<ITypingTextBoxHandle>(null);
-    const typingBox2 = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
@@ -37,7 +36,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox1], init);
+        bridge.exec(storyInit,2, getTypingBoxes(), init);
     }, [name])
 
     let menuOptions: IMenuOption[] = [
@@ -64,8 +63,8 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox1} type="terminal" />
-            <TypingTextBox ref={typingBox2} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar2")} type="terminal" />
             <div id="subforumContainer" className={styles.container}>
                 <img data-fall="true" src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
                 <div data-fall="true" className={styles.subProfileContainer}>
@@ -86,7 +85,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                     </div>
                 </div>
                 <div data-fall="true" className={styles.contentContainer}>
-                    <Outlet context={[subforum, [typingBox1, typingBox2]]} />
+                    <Outlet context={[subforum, getTypingBoxes()]} />
                 </div>
             </div>
         </>

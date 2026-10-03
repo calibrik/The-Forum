@@ -13,8 +13,8 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { Divider } from "../components/Divider";
 import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
-import { Link, useNavigate, useParams } from "react-router";
-import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
+import { useNavigate, useParams } from "react-router";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 
 interface IChatProps { };
 interface IMessageProps {
@@ -156,7 +156,7 @@ export const Chat: FC<IChatProps> = () => {
     const { chatId } = useParams<{ chatId: string }>();
     const inputRef = useRef<IInputFieldHandle>(null);
     const story = useStory();
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -228,7 +228,7 @@ export const Chat: FC<IChatProps> = () => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox], init);
+        bridge.exec(storyInit,2, getTypingBoxes(), init);
         return ()=>{
             story.setChatHandle(undefined);
         }
@@ -238,7 +238,9 @@ export const Chat: FC<IChatProps> = () => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type={"terminal"} />
+            {Array.from({ length: 11 }, (_, i) => (
+                <TypingTextBox key={i} ref={setTypingBox(`nar${i}`)} type={"terminal"} />
+            ))}
             <div className={styles.container}>
                 <div className={styles.header}>
                     <BackButton id="back-text" />

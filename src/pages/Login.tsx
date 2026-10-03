@@ -6,7 +6,7 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 
@@ -22,10 +22,7 @@ export const Login: FC<ILoginProps> = (_) => {
     const passwordInputRef = useRef<IInputFieldHandle>(null);
     let navigate = useNavigate();
     const userState = useUserState();
-    const passwordForgotBox = useRef<ITypingTextBoxHandle>(null);
-    const storyTextBox = useRef<ITypingTextBoxHandle>(null);
-    const usernameTypingBox = useRef<ITypingTextBoxHandle>(null);
-    const passwordTypingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const passwordTl = useRef<gsap.core.Timeline>(undefined);
     const { contextSafe } = useGSAP();
@@ -37,7 +34,7 @@ export const Login: FC<ILoginProps> = (_) => {
     const [showPasswordPlaceholder, setShowPasswordPlaceholder] = useState(true);
 
     useEffect(() => {
-        storyInit(1, [storyTextBox, usernameTypingBox, passwordTypingBox]);
+        storyInit(1, getTypingBoxes());
     }, []);
 
     useEffect(() => {
@@ -101,11 +98,11 @@ export const Login: FC<ILoginProps> = (_) => {
         let users = await db.users.where("savedStoryId").aboveOrEqual(1).toArray();
         if (passwordTl.current) {
             passwordTl.current.kill();
-            await passwordForgotBox.current?.reset();
+            await getTypingBoxes().get("forgotPassword")?.reset();
         }
         let content = users.length == 0 ? "You don't even have the account yet, you can't forget what you didn't know, idiot." :
             `Bro, seriously? How fucking hard is it to remember this? Your nickname is ${users[0].nickname}, password is ${users[0].password}\n\nFucking moron.`;
-        const tl = passwordForgotBox.current?.getTypingTimeline({
+        const tl = getTypingBoxes().get("forgotPassword")?.getTypingTimeline({
             content: content,
             speed: 50,
             clearAfter:"+=5"
@@ -116,8 +113,8 @@ export const Login: FC<ILoginProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={storyTextBox} type={"terminal"} />
-            <TypingTextBox className={styles.passwordForgetBox} addDefaultClass ref={passwordForgotBox} type={"terminal"} />
+            <TypingTextBox ref={setTypingBox("nar1")} type={"terminal"} />
+            <TypingTextBox className={styles.passwordForgetBox} addDefaultClass ref={setTypingBox("forgotPassword")} type={"terminal"} />
             <div className={styles.loginSignupContainer}>
                 <form className={styles.card} onSubmit={onSubmit}>
                     <h1 className={styles.title}>Login</h1>
@@ -125,11 +122,11 @@ export const Login: FC<ILoginProps> = (_) => {
                     <div className={styles.inputsContainer}>
                         <div className={styles.inputTypingWrapper}>
                             <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={showNicknamePlaceholder?"Nickname":""} className={styles.input} />
-                            <TypingTextBox ref={usernameTypingBox} className={styles.inputTypingBox} type="normal" />
+                            <TypingTextBox ref={setTypingBox("nickname")} className={styles.inputTypingBox} type="normal" />
                         </div>
                         <div className={styles.inputTypingWrapper}>
                             <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={showPasswordPlaceholder?"Password":""} className={styles.input} />
-                            <TypingTextBox ref={passwordTypingBox} className={styles.inputTypingBox} type="normal" />
+                            <TypingTextBox ref={setTypingBox("password")} className={styles.inputTypingBox} type="normal" />
                         </div>
                     </div>
                     <div className={styles.forgotPasswordContainer}>

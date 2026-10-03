@@ -156,3 +156,24 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     );
 });
 
+export function useTypingBoxes() {
+    const typingBoxes = useRef<Map<string, ITypingTextBoxHandle>>(new Map());
+
+    function setTypingBox(key: string) {
+        return (ref: ITypingTextBoxHandle | null) => {
+            if (ref) {
+                typingBoxes.current.set(key, ref);
+            }
+            else {
+                typingBoxes.current.delete(key);
+            }
+        }
+    }
+
+    function getTypingBoxes() {
+        return typingBoxes.current;
+    }
+
+    return { setTypingBox, getTypingBoxes };
+}
+

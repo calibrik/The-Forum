@@ -14,7 +14,7 @@
         "storyline": {
             "content": "Hi.",
             "speed": 50,
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=3"
     },
@@ -23,7 +23,7 @@
             "content": "I am #main_hero.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -32,7 +32,7 @@
             "content": "I'm starting this file cuz I need to save my thoughts somewhere.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -41,7 +41,7 @@
             "content": "I'll maybe use them for the big blog post.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -50,7 +50,7 @@
             "content": "Or a game, like a visual novel, that'd be cool.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -59,7 +59,7 @@
             "content": "Stuff in my head just feels too important to let it go like that, you know?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -68,7 +68,7 @@
             "content": "So, uhhh where do I start?",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=2"
     },
@@ -77,7 +77,7 @@
             "content": "I am a gamer with 10+ years experience, especially in the game called Cyberdivers.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -92,7 +92,7 @@
             "content": "I have more than 1000 hours in it and, boy, lemme tell you, I am very good in this game.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -101,7 +101,7 @@
             "content": "I can show you.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -170,7 +170,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "10%",
                     "left": "5%",
@@ -184,7 +184,7 @@
         "storyline": {
             "content": "...",
             "speed": 1000,
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -193,7 +193,7 @@
             "content": "you know what, matchmaking in this game is unfair bullshit, I always play with weak ass teammates.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -202,7 +202,7 @@
             "content": "Also, enemies balance in this game is broken.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -211,7 +211,7 @@
             "content": "Also, I didn't unlock all the latest guns.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=2"
     },
@@ -220,7 +220,7 @@
             "content": "Also, game is a bug-ridden mess.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=2.5"
     },
@@ -229,7 +229,7 @@
             "content": "But usually, I play a lot better than this, it's just a bad luck is what it is, trust.",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=1"
@@ -237,7 +237,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "20%",
                     "left": "5%",
@@ -251,7 +251,7 @@
         "storyline": {
             "content": "Anyway, I'm well respected in the cyberdivers community, people know my name.",
             "speed": 50,
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -260,7 +260,7 @@
             "content": "Lemme show them to you.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -270,7 +270,7 @@
             "content": "Search up the cyberdivers subforum.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -291,7 +291,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "30%",
                     "right": "10%",
@@ -306,7 +306,7 @@
             "content": "I kinda forgot to explain, what kind of game this is.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -315,7 +315,7 @@
             "content": "So it’s a horde shooter, where there are different apps that needed to be protected from different threats, so companies hire cyberdivers as freelancers to deal with them, but it’s represented as them actually fighting one of three factions: AI bots, Bugs or Hackers.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -325,7 +325,7 @@
             "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -334,7 +334,7 @@
             "content": "We call hackers squids, cuz in game they look like squids, and their tentacles can penetrate everything.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -343,7 +343,7 @@
             "content": "And when I say everything, I mean everything.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -352,7 +352,7 @@
             "content": "Like walls.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -361,7 +361,7 @@
             "content": "I meant walls.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=1"
@@ -369,7 +369,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "20%",
                     "width": "clamp(200px,50cqw,500px)"
@@ -383,7 +383,7 @@
             "content": "My friends from here once challenged me to play a game with them, and I absolutely destroyed them.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -392,7 +392,7 @@
             "content": "Even though we were in the same team.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -401,7 +401,7 @@
             "content": "I mean, my contribution to the game was essential.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -410,7 +410,7 @@
             "content": "We lost anyway, but without me it wouldn't have been such a close fight.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -419,7 +419,7 @@
             "content": "But oh well, what can u do with shit teammates, right?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -429,7 +429,7 @@
             "content": "Hold on, lemme hit them up in the chat, my mates will love to see me.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -603,7 +603,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
                                     "top": "50%",
@@ -618,7 +618,7 @@
                             "content": "They love me.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -627,7 +627,7 @@
                             "content": "I know it looks like they are grilling the fuck out of me and calling me bad at the game or something, but it’s actually fine, you just don’t get it.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -636,7 +636,7 @@
                             "content": "It’s how we show love and respect for each other, just friendly roasting.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -646,7 +646,7 @@
                             "content": "They know I’m good at the game, they are just fucking with me.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -663,7 +663,7 @@
                     {
                         "clearTypingTextBoxes": {
                             "ids": [
-                                0
+                                "nar1"
                             ]
                         },
                         "offset": "+=10"
@@ -671,7 +671,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "auto",
                                     "top": "90%",
@@ -686,7 +686,7 @@
                             "content": "It’s all just jokes, trust me.",
                             "speed": 100,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=3"
                         },
                         "offset": ">"
@@ -870,7 +870,7 @@
                     {
                         "clearTypingTextBoxes": {
                             "ids": [
-                                0
+                                "nar1"
                             ]
                         },
                         "offset": ">"
@@ -878,7 +878,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
                                     "top": "10%",
@@ -893,7 +893,7 @@
                             "content": "Ah yes, Zero.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=18.8"
                     },
@@ -902,7 +902,7 @@
                             "content": "Made by the same developer, Spearhead Studios, as our game.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -911,7 +911,7 @@
                             "content": "Instead of making content and patches for Cyberdivers, they decided to make some random ass spin-off in the same universe, and the game wasn't even that good.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -920,7 +920,7 @@
                             "content": "And now they are working on the dlc for it, while cyberdivers is dying without new updates, fucking idiots.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -933,7 +933,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
                     "top": "15%",
@@ -948,7 +948,7 @@
             "content": "You know what, I wanna check how do they do in their sub. I bet you they are moaning and bitching over there, because of the delay.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -957,7 +957,7 @@
             "content": "Can’t wait to see it.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -997,7 +997,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
                     "top": "42%",
@@ -1012,7 +1012,7 @@
             "content": "Bruh what?",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=3"
     },
@@ -1021,7 +1021,7 @@
             "content": "\"Let devs take as much time as they need\", bro wtf, they are so",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -1030,7 +1030,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1039,7 +1039,7 @@
             "content": "so",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1048,7 +1048,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1057,7 +1057,7 @@
             "content": "so fucking lame.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -1079,7 +1079,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
                     "top": "55%",
@@ -1094,7 +1094,7 @@
             "content": "Look at these posts bruh.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=3"
         },
         "offset": ">"
@@ -1104,7 +1104,7 @@
             "content": "So spineless, like \"our dlc got delayed? It's ok, let them take their time\" tf is this.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1113,7 +1113,7 @@
             "content": "You absolutely should demand new content from the devs, they are working for you, not the other way around, you fucking paid them for the product, where is your rage?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=3"
         },
         "offset": "+=0.3"
@@ -1161,7 +1161,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
                                     "top": "28%",
@@ -1176,7 +1176,7 @@
                             "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like don't u see the vent in there?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -1185,7 +1185,7 @@
                             "content": "Have you tried looking or do you just run to this subforum for help at any minor inconvenience?",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1194,7 +1194,7 @@
                             "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think by themselves.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1203,7 +1203,7 @@
                             "content": "But they all are allowing them to remain stupid.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -1257,7 +1257,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
                                     "top": "18%",
@@ -1272,7 +1272,7 @@
                             "content": "Oh boy, look how nice everyone here is bruh. Look how everyone being respectful to each other, like isn't it fucking pathetic?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -1281,7 +1281,7 @@
                             "content": "There is either right opinion or wrong opinion, nothing in between.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1290,7 +1290,7 @@
                             "content": "If y'all being so polite and agree with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -1340,7 +1340,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 0,
+                                "id": "nar1",
                                 "style": {
                                     "width": "clamp(200px,50cqw,500px)",
                                     "top": "20%"
@@ -1354,7 +1354,7 @@
                             "content": "Nah, this sub is phony as fuck.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -1363,7 +1363,7 @@
                             "content": "Everyone is being so nice like we are gonna believe it.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1377,7 +1377,7 @@
                                             "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
                                             "speed": 50,
                                             "delim": " ",
-                                            "typingBoxId": 0
+                                            "typingBoxId": "nar1"
                                         },
                                         "offset": "+=0.3"
                                     }
@@ -1412,7 +1412,7 @@
                                     {
                                         "action": {
                                             "setTextBoxStyleAction": {
-                                                "id": 1,
+                                                "id": "nar2",
                                                 "style": {
                                                     "width": "auto",
                                                     "top": "50%",
@@ -1428,7 +1428,7 @@
                                             "content": "Some time later...",
                                             "speed": 50,
                                             "delim": "",
-                                            "typingBoxId": 1
+                                            "typingBoxId": "nar2"
                                         },
                                         "offset": "+=1"
                                     }
@@ -1440,7 +1440,7 @@
                     {
                         "clearTypingTextBoxes": {
                             "ids": [
-                                1
+                                "nar2"
                             ]
                         },
                         "offset": "+=2"
@@ -1463,7 +1463,7 @@
                             "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
                             "speed": 50,
                             "delim": ", ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "-=2"
                     },
@@ -1472,7 +1472,7 @@
                             "content": "Brutal, but honest.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1481,7 +1481,7 @@
                             "content": "Yes, we won't mince our words and roast your ass to the crust, but you will learn from it and be better.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1490,7 +1490,7 @@
                             "content": "And these guys thinking they are helping anyone with this fake ass niceness.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -1500,7 +1500,7 @@
                             "content": "They are just delusional, aren't they?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": ">"
@@ -1540,7 +1540,7 @@
                             "content": "Nah, this sub should go down.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -1549,7 +1549,7 @@
                             "content": "And I think I just thought of something genius.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1558,7 +1558,7 @@
                             "content": "I remember back when I was a kid, my mom sent me to do some programming courses and I learned smth about webdev and some cybersecurity stuff, like phishing.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1567,7 +1567,7 @@
                             "content": "Shit, it was ages ago.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1576,7 +1576,7 @@
                             "content": "Met some cool guys there, but we didn't really click. They thought I was kinda weird.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1585,7 +1585,7 @@
                             "content": "Well, whatever, who gives a shit right?",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -1616,7 +1616,7 @@
                             "content": "Anyway, what if I could create a fake website to steal zero sub admin's account and take over the sub?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -1625,7 +1625,7 @@
                             "content": "I could show them what real life is.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0
+                            "typingBoxId": "nar1"
                         },
                         "offset": "+=0.3"
                     },
@@ -1634,7 +1634,7 @@
                             "content": "I should let my friends in cyberdivers chat know, I'm sure they will be as excited as I am right now to get back at these dumbasses.",
                             "speed": 50,
                             "delim": " ",
-                            "typingBoxId": 0,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.3"
@@ -1853,7 +1853,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "width": "clamp(200px,50cqw,500px)",
                     "top": "50%",
@@ -1868,7 +1868,7 @@
             "content": "No no, I know what it is, it's a language",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=6"
     },
@@ -1877,7 +1877,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1886,7 +1886,7 @@
             "content": "for hacking databases",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1895,7 +1895,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1904,7 +1904,7 @@
             "content": "or something.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -1914,7 +1914,7 @@
             "content": "It doesn't matter, they'll see, I absolutely can do it.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -1948,7 +1948,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "10%",
                     "width": "clamp(300px,87cqw,1000px)",
@@ -1965,7 +1965,7 @@
             "content": "Alright, I need a plan.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -1974,7 +1974,7 @@
             "content": "How am I gonna do that?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -1983,7 +1983,7 @@
             "content": "Brief search on phishing shows that hackers send fake login screens and people fall for them.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -1992,7 +1992,7 @@
             "content": "Why don't I do the same?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2001,7 +2001,7 @@
             "content": "Admin will click on the link and",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2010,7 +2010,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2019,7 +2019,7 @@
             "content": "well yeah, he'll probably suspect something.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2028,7 +2028,7 @@
             "content": "Well, ummm",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2037,7 +2037,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2046,7 +2046,7 @@
             "content": "maybee",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2055,7 +2055,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2064,7 +2064,7 @@
             "content": "uhhh",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2073,7 +2073,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2082,7 +2082,7 @@
             "content": "I need to bait him!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2091,7 +2091,7 @@
             "content": "Like, I'll tell him that he won $300 in the giveaway and all he needs to do to collect it is to click on that link.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2100,7 +2100,7 @@
             "content": "Yeah, this is fucking retarded, this is never gonna work, this is like the stupidest thing ever I could suggest.",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2109,7 +2109,7 @@
             "content": "Or what if",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2118,7 +2118,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2127,7 +2127,7 @@
             "content": "I'll report to him some post which needs to be deleted, but it won't be an actual post, it will be a fake post!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2136,7 +2136,7 @@
             "content": "Admin will click on that to check it out.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2167,7 +2167,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "25%",
                     "left": "5%",
@@ -2182,7 +2182,7 @@
             "content": "Then he'll click on the delete button.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -2218,7 +2218,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "25%",
                     "left": "5%",
@@ -2233,7 +2233,7 @@
             "content": "And suddenly it takes him to fake login screen with message like ur session is expired, sign in again.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2242,7 +2242,7 @@
             "content": "So he will try to sign in.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2261,7 +2261,7 @@
             "content": "sillygoose228",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1,
+            "typingBoxId": "nickname",
             "hideCursorAfter": true
         },
         "offset": ">"
@@ -2280,7 +2280,7 @@
             "content": "•••••••••••••••••",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 2,
+            "typingBoxId": "password",
             "hideCursorAfter": true
         },
         "offset": ">"
@@ -2300,7 +2300,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "25%",
                     "left": "5%",
@@ -2315,7 +2315,7 @@
             "content": "And boom, his creds are mine.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2324,7 +2324,7 @@
             "content": "He will see that the post was deleted, so he won't suspect anything, at least for the time being.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2358,7 +2358,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "10%",
                     "width": "clamp(300px,87cqw,1000px)",
@@ -2375,7 +2375,7 @@
             "content": "I'm a genius!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2384,7 +2384,7 @@
             "content": "Now I just need to figure out how to code all that.",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2393,7 +2393,7 @@
             "content": "Alright, first I gotta open vim.",
             "speed": 50,
             "delim": "\n\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2402,7 +2402,7 @@
             "content": "Fuck IDEs, they are for pussies.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2455,7 +2455,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 1,
+                "id": "nar1",
                 "style": {
                     "top": "18%",
                     "left": "5%",
@@ -2470,7 +2470,7 @@
             "content": "So uhhhhh, how do I create a page?",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
@@ -2479,7 +2479,7 @@
             "content": "I think I still remember something.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 1,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2499,7 +2499,7 @@
             "content": "Ok, I actually forgot everything.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=1.5"
     },
@@ -2508,7 +2508,7 @@
             "content": "I don't think this even works.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 1,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2518,7 +2518,7 @@
             "content": "Anyway, I think I'll just ask AI.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2527,7 +2527,7 @@
             "content": "No, not for vibe coding, I'll just ask it for",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2536,7 +2536,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2545,7 +2545,7 @@
             "content": "you know",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2554,7 +2554,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2563,7 +2563,7 @@
             "content": "general directions.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -2572,7 +2572,7 @@
             "content": "Some boilerplate code to start with, you know.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 1,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -2582,7 +2582,7 @@
             "content": "Aight",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2591,7 +2591,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2600,14 +2600,14 @@
             "content": "this goes here",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
     {
         "action": {
             "setTypingBoxContentAction": {
-                "typingBoxId": 2,
+                "typingBoxId": "buffer",
                 "content": "// hey there! 👋 I read the code you sent and I found the problems - don't worry, we'll fix them together! 💪\n//\n// 1) include vs import: when we borrow a tool from another file we say import. include is from other languages and React doesn't know it 🙂\n// 2) class vs className: you wrote class on your boxes, but that's the old HTML way. React wants className instead! I changed them all 🙈\n// 3) onclick vs onClick: same idea - it's onClick with a big O in React. I fixed it everywhere (even on your Delete button)! 🙂\n// 4) pretend tags: you wrote <box>, <text> and <paragraph>, but those aren't real tags! the real ones are <div>, <span> and <p>. I swapped them back 🎯\n// 5) author header order: you had them swapped - the subforum name (f/zero) goes first and the username (u/fartsniffer69) after it. I flipped them back!\n// 6) title vs post text: you put the long text in the headline and the headline inside the paragraph. I moved them where they belong 🎯\n// 7) the Delete button: yours was always visible even when the menu was closed! now it only shows after you press the ⋯ button, like a real dropdown menu 😅\n// 8) the Delete click: you wrote navigate(...) right away, so the page was sending you to the login screen all by itself! I wrapped it in an arrow function, so it only happens when you actually click Delete 🙂\n// 9) the counters: you had 3 likes and 0 views, but it's 0 likes and 3 views. I fixed the numbers!\n//\n// and here's the corrected page, with little notes on what each part does so you can learn 🚀\n// just copy it into your file and save - you got this! 💪\nimport { useState } from \"react\"; // this lets the page remember things (like an open menu)\nimport { useNavigate } from \"react-router\"; // this helps us move between pages\n\nexport const PostPage = () => {\n    const navigate = useNavigate(); // a little helper that lets us jump to other pages\n    const [isMenuOpen, setIsMenuOpen] = useState(false); // remembers if the ⋯ menu is open (it starts closed)\n\n    return (\n        <div className=\"postContainer\"> {/* the box that holds the whole post page */}\n            {/* 👉 the back button - when you click it, you go back to the previous page */}\n            <div className=\"returnContainer\">\n                <button onClick={() => navigate(-1)}>← back</button>\n            </div>\n\n            {/* 👉 who wrote the post - click the forum name or the username to visit them */}\n            <div className=\"authorContainer\">\n                <span className=\"subforumName\" onClick={() => navigate(\"/subforum/zero\")}>f/zero</span>\n                <span className=\"username\" onClick={() => navigate(\"/user/fartsniffer69\")}>u/fartsniffer69</span>\n            </div>\n\n            {/* 👉 the ⋯ menu button - click it to make the Delete option appear */}\n            <div className=\"menuWrapper\">\n                <button onClick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {isMenuOpen && (\n                    /* 👉 Delete - clicking it takes you to the login page (this is the trick!) */\n                    <button className=\"deleteOption\" onClick={() => navigate(\"/login?expired=true\")}>Delete</button>\n                )}\n            </div>\n\n            {/* 👉 the post title (the headline of the post) */}\n            <h1 className=\"postTitle\">zero is the worst game oat</h1>\n\n            {/* 👉 the post text (the main body of the post) */}\n            <p className=\"postContent\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</p>\n\n            {/* 👉 the little counters below the post */}\n            <div className=\"reactions\">\n                <span>0 likes</span>\n                <span>0 comments</span>\n                <span>3 views</span>\n            </div>\n        </div>\n    );\n};"
             }
         },
@@ -2618,7 +2618,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2627,7 +2627,7 @@
             "content": "yep",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2636,7 +2636,7 @@
             "content": "...",
             "speed": 800,
             "delim": "",
-            "typingBoxId": 1
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -2645,7 +2645,7 @@
             "content": "looks good",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1,
+            "typingBoxId": "nar1",
             "clearAfter": "+=3"
         },
         "offset": ">"
@@ -2655,7 +2655,7 @@
             "content": "And first page done!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 1,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -2663,7 +2663,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 1,
+                "id": "nar1",
                 "style": {
                     "top": "60%",
                     "left": "20%",
@@ -2683,7 +2683,7 @@
                             "content": ":q",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "command",
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
@@ -2693,7 +2693,7 @@
                         "action": {
                             "setTypingBoxContentAction": {
                                 "content": "E37: No write since last change (add ! to override)",
-                                "typingBoxId": 0
+                                "typingBoxId": "command"
                             }
                         },
                         "offset": "+=2"
@@ -2703,7 +2703,7 @@
                             "content": "exit",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "command",
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
@@ -2713,7 +2713,7 @@
                         "action": {
                             "setTypingBoxContentAction": {
                                 "content": "Not an editor command: exit",
-                                "typingBoxId": 0
+                                "typingBoxId": "command"
                             }
                         },
                         "offset": "+=2"
@@ -2723,7 +2723,7 @@
                             "content": ":quit",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "command",
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
@@ -2733,7 +2733,7 @@
                         "action": {
                             "setTypingBoxContentAction": {
                                 "content": "E37: No write since last change (add ! to override)",
-                                "typingBoxId": 0
+                                "typingBoxId": "command"
                             }
                         },
                         "offset": "+=2"
@@ -2743,7 +2743,7 @@
                             "content": ":wq",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 0,
+                            "typingBoxId": "command",
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
@@ -2756,7 +2756,7 @@
                             "content": "Ok, how do I exit?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2765,7 +2765,7 @@
                             "content": "...",
                             "speed": 800,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2774,7 +2774,7 @@
                             "content": "fuck I forgot again",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2783,7 +2783,7 @@
                             "content": "...",
                             "speed": 800,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2792,7 +2792,7 @@
                             "content": "fucking dumbass",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2801,7 +2801,7 @@
                             "content": "...",
                             "speed": 800,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2810,7 +2810,7 @@
                             "content": "uhhhh",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2819,7 +2819,7 @@
                             "content": "...",
                             "speed": 800,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar1"
                         },
                         "offset": ">"
                     },
@@ -2828,7 +2828,7 @@
                             "content": "here it is.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1,
+                            "typingBoxId": "nar1",
                             "clearAfter": "+=1.5"
                         },
                         "offset": ">"
@@ -2866,7 +2866,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "18%",
                     "left": "5%",
@@ -2881,7 +2881,7 @@
             "content": "Not too hard huh? Now for the rest of them...",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -3096,7 +3096,7 @@
             "content": "Alright, it's time to run this.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -3228,7 +3228,7 @@
             "content": "Aaaand im done!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=3"
     },
@@ -3237,7 +3237,7 @@
             "content": "Now I just need to trick sillygoose228.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -3308,7 +3308,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "10%",
                     "left": "5%",
@@ -3323,7 +3323,7 @@
             "content": "God, even his name is stupid.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
@@ -3332,7 +3332,7 @@
             "content": "Not like mine tho.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
@@ -3341,7 +3341,7 @@
             "content": "#main_hero.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -3350,7 +3350,7 @@
             "content": "You might not see this yet, but my nickname has at least 2 hidden meanings and 3 references to 3 different pieces of media.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -3359,7 +3359,7 @@
             "content": "I've spent like a whole day coming up with that.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -3369,7 +3369,7 @@
             "content": "So anyway, now I need to shoot him a message.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": ">"
@@ -3383,7 +3383,7 @@
             }
         },
         "hint": "Press 'Send message' on sillygoose228's profile page",
-        "isActionAwait":true,
+        "isActionAwait": true,
         "offset": ">"
     },
     {
@@ -3415,9 +3415,9 @@
         "action": {
             "saveAction": {
                 "dest": {
-                    "from":{
-                        "level":1,
-                        "where":"/chat"
+                    "from": {
+                        "level": 1,
+                        "where": "/chat"
                     },
                     "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
                     "level": 2
@@ -3429,7 +3429,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "12%",
                     "left": "5%",
@@ -3444,7 +3444,7 @@
             "content": "Ok, so, It'll go like that, uhhh",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -3453,13 +3453,13 @@
             "content": "\"Dear sillygoose228, it came to my attention that",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
     {
         "deleteTextFromTypingBox": {
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "symbolsCount": 50,
             "speed": 30
         },
@@ -3470,7 +3470,7 @@
             "content": "No, who the fuck reports posts like that?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -3479,13 +3479,13 @@
             "content": "\"Dear sillygoose228, there is a post I want you to look at\"",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
     {
         "deleteTextFromTypingBox": {
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "symbolsCount": 60,
             "speed": 30
         },
@@ -3496,7 +3496,7 @@
             "content": "Nah, it sounds so stupid, he'll definitely catch me.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -3505,7 +3505,7 @@
             "content": "No, I need to go simple, like",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -3514,13 +3514,13 @@
             "content": "\"Dear sillygoose228, look at this post\"",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
     {
         "deleteTextFromTypingBox": {
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "symbolsCount": 40,
             "speed": 30
         },
@@ -3531,7 +3531,7 @@
             "content": "Nooo, why \"dear\"? We haven't even met yet.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -3540,7 +3540,7 @@
             "content": "No, I need to be plain and direct like",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -3549,13 +3549,13 @@
             "content": "\"Look at this post\"",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
     {
         "deleteTextFromTypingBox": {
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "symbolsCount": 20,
             "speed": 30
         },
@@ -3566,7 +3566,7 @@
             "content": "No, no, even simpler, just send him the link to the post.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3 "
     },
@@ -3575,8 +3575,8 @@
             "content": "Yeah, that will do, it definitely won't arouse suspicion!",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
-            "clearAfter":"+=1.5"
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -3599,14 +3599,15 @@
                 "timeToType": 2
             }
         },
-        "offset": ">"
+        "offset": "+=1"
     },
     {
         "storyline": {
             "content": "Shit, he knows, I'm done for.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": "+=2.5"
     },
@@ -3644,8 +3645,8 @@
         "storyline": {
             "content": "Yeah, I think I saved it.",
             "speed": 50,
-            "delim": " ",
-            "typingBoxId": 0
+            "delim": "",
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
@@ -3654,7 +3655,8 @@
             "content": "He won't know what's coming.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -3670,27 +3672,38 @@
     },
     {
         "storyline": {
-            "content": "So now we wait",
+            "content": "So now we wait.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": "+=3.5"
     },
     {
         "storyline": {
             "content": "...............",
-            "speed": 400,
+            "speed": 600,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": ">"
         },
         "offset": "+=1"
     },
     {
+        "storyline": {
+            "content": "I think it takes longer than it should, no?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter":"+=1.5"
+        },
+        "offset": ">"
+    },
+    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 1,
+                "id": "nar2",
                 "style": {
                     "top": "6%",
                     "left": "4%",
@@ -3698,21 +3711,12 @@
                 }
             }
         },
-        "offset": "+=3"
-    },
-    {
-        "storyline": {
-            "content": "I think it takes longer than it should, no?",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 1
-        },
         "offset": ">"
     },
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 2,
+                "id": "nar3",
                 "style": {
                     "top": "16%",
                     "right": "5%",
@@ -3723,18 +3727,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "Shit, he is probably reporting me already",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 2
-        },
-        "offset": "-=1.5"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 3,
+                "id": "nar4",
                 "style": {
                     "top": "30%",
                     "left": "10%",
@@ -3745,18 +3740,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "What do I do?",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 3
-        },
-        "offset": "-=0.5"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 4,
+                "id": "nar5",
                 "style": {
                     "top": "34%",
                     "right": "14%",
@@ -3767,18 +3753,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "Should I check in on the progress?",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 4
-        },
-        "offset": "-=0.5"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 5,
+                "id": "nar6",
                 "style": {
                     "top": "48%",
                     "left": "22%",
@@ -3789,18 +3766,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "Or just let him do his thing?",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 5
-        },
-        "offset": "-=1.2"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 6,
+                "id": "nar7",
                 "style": {
                     "bottom": "28%",
                     "left": "5%",
@@ -3811,18 +3779,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "Or maybe block him and delete all evidence?",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 6
-        },
-        "offset": "-=1.1"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 7,
+                "id": "nar8",
                 "style": {
                     "top": "62%",
                     "right": "6%",
@@ -3833,18 +3792,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "He is probably calling police on me already, shit",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 7
-        },
-        "offset": "-=1.6"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 8,
+                "id": "nar9",
                 "style": {
                     "bottom": "12%",
                     "right": "22%",
@@ -3855,18 +3805,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "I'm fucked, I'm definitely fucked.",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 8
-        },
-        "offset": "-=1.9"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 9,
+                "id": "nar10",
                 "style": {
                     "bottom": "8%",
                     "left": "12%",
@@ -3877,18 +3818,9 @@
         "offset": ">"
     },
     {
-        "storyline": {
-            "content": "I need to bail.",
-            "speed": 50,
-            "delim": "",
-            "typingBoxId": 9
-        },
-        "offset": "-=1.2"
-    },
-    {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 10,
+                "id": "nar1",
                 "style": {
                     "top": "42%",
                     "left": "44%",
@@ -3900,27 +3832,135 @@
     },
     {
         "storyline": {
+            "content": "Fuck, I'm so cooked, It's fucking over.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar2"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Shit, he is probably reporting me already",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar3"
+        },
+        "offset": "-=1.5"
+    },
+    {
+        "storyline": {
+            "content": "What do I do?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar4"
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Should I check in on the progress?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar5"
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Or just let him do his thing?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar6"
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "storyline": {
+            "content": "Or maybe block him and delete all evidence?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar7"
+        },
+        "offset": "-=1.1"
+    },
+    {
+        "storyline": {
+            "content": "He is probably calling police on me already, shit",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar8"
+        },
+        "offset": "-=1.6"
+    },
+    {
+        "storyline": {
+            "content": "I'm fucked, I'm definitely fucked.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar9"
+        },
+        "offset": "-=1.9"
+    },
+    {
+        "storyline": {
+            "content": "I need to bail.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar10"
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "storyline": {
             "content": "Fuck, fuck, fuck, fuck.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 10
+            "typingBoxId": "nar1"
         },
         "offset": "-=0.5"
     },
     {
         "clearTypingTextBoxes": {
             "ids": [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10
+                "nar2",
+                "nar3",
+                "nar4",
+                "nar5",
+                "nar6",
+                "nar7",
+                "nar8",
+                "nar9",
+                "nar10",
+                "nar1"
             ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "38%",
+                    "left": "0",
+                    "width": "100cqw",
+                    "padding": "0",
+                    "background-color": "transparent",
+                    "font-size": "clamp(2rem,7cqw,6rem)",
+                    "text-align": "center"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I SHOULD BLOCK HIM.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -3932,16 +3972,29 @@
                 ]
             }
         },
+        "isActionAwait":true,
         "hint": "Block sillygoose228",
-        "offset": "+=1"
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTextBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "12%",
+                    "left": "5%",
+                    "width": "clamp(200px,50cqw,500px)"
+                }
+            }
+        },
+        "offset": ">"
     },
     {
         "storyline": {
             "content": "Oh, oh shit, I got him!",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
-            "clearBefore": true
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -3950,18 +4003,36 @@
             "content": "Here his password!",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
     {
         "storyline": {
-            "content": "His password is iwantaigirlfriendtopegme822? I guess bro.",
+            "content": "His password is iwantaigirlfriendtopegme822?",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I guess bro.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
     },
     {
         "action": {
@@ -3985,7 +4056,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "38%",
                     "left": "0",
@@ -4004,7 +4075,7 @@
             "content": "FUCK. SHIT. FUCK.",
             "speed": 60,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearBefore": true
         },
         "offset": ">"
@@ -4014,7 +4085,7 @@
             "content": "I FUCKED UP.",
             "speed": 60,
             "delim": "\n",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
     },
@@ -4023,7 +4094,7 @@
             "content": "I FORGOT TO CHANGE AN AUTHOR OF THE POST FROM PLACEHOLDER.",
             "speed": 60,
             "delim": "\n",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=2"
         },
         "offset": "+=0.5"
@@ -4031,7 +4102,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "top": "12%",
                     "left": "5%",
@@ -4046,7 +4117,7 @@
             "content": "Even tho I got his creds already, he might realize what's going on and change his password.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -4055,7 +4126,7 @@
             "content": "I need to convince him it's ok.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -4104,7 +4175,7 @@
             "content": "Fucking clanker gave me shit code.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=5.5"
     },
@@ -4113,7 +4184,7 @@
             "content": "I specifically asked it to make code as optimized as possible and make no mistakes.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -4122,7 +4193,7 @@
             "content": "Can't trust shit these days.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
@@ -4135,7 +4206,7 @@
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 1,
+                                "id": "nar2",
                                 "style": {
                                     "top": "10%",
                                     "right": "6%",
@@ -4150,14 +4221,14 @@
                             "content": "What is he typing for so long?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 1
+                            "typingBoxId": "nar2"
                         },
                         "offset": ">"
                     },
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 2,
+                                "id": "nar3",
                                 "style": {
                                     "top": "26%",
                                     "left": "8%",
@@ -4172,14 +4243,14 @@
                             "content": "Fuck, I might be burned here.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 2
+                            "typingBoxId": "nar3"
                         },
                         "offset": "-=1.2"
                     },
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 3,
+                                "id": "nar4",
                                 "style": {
                                     "top": "42%",
                                     "right": "14%",
@@ -4194,14 +4265,14 @@
                             "content": "What if he is gonna ask me about how did I find this post?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 3
+                            "typingBoxId": "nar4"
                         },
                         "offset": "-=1.3"
                     },
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 4,
+                                "id": "nar5",
                                 "style": {
                                     "bottom": "30%",
                                     "left": "6%",
@@ -4216,14 +4287,14 @@
                             "content": "Or why am I reporting it even tho im not even a follower?",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 4
+                            "typingBoxId": "nar5"
                         },
                         "offset": "-=1.5"
                     },
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 5,
+                                "id": "nar6",
                                 "style": {
                                     "bottom": "10%",
                                     "right": "20%",
@@ -4238,14 +4309,14 @@
                             "content": "Shit, I even forgot to follow fucking zero sub!",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 5
+                            "typingBoxId": "nar6"
                         },
                         "offset": "-=1.6"
                     },
                     {
                         "action": {
                             "setTextBoxStyleAction": {
-                                "id": 6,
+                                "id": "nar7",
                                 "style": {
                                     "top": "62%",
                                     "left": "30%",
@@ -4260,23 +4331,22 @@
                             "content": "Yeah, I might be done for here.",
                             "speed": 50,
                             "delim": "",
-                            "typingBoxId": 6
+                            "typingBoxId": "nar7"
                         },
                         "offset": "-=1.4"
                     },
                     {
                         "clearTypingTextBoxes": {
                             "ids": [
-                                1,
-                                2,
-                                3,
-                                4,
-                                5,
-                                6,
-                                7,
-                                8,
-                                9,
-                                10
+                                "nar2",
+                                "nar3",
+                                "nar4",
+                                "nar5",
+                                "nar6",
+                                "nar7",
+                                "nar8",
+                                "nar9",
+                                "nar10"
                             ]
                         },
                         "offset": ">"
@@ -4303,7 +4373,7 @@
             "content": "…jesus bro I was losing my shit here and he was just taking his time to write THIS?",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=9"
     },
@@ -4321,7 +4391,7 @@
             "content": "Now the fun part.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0,
+            "typingBoxId": "nar1",
             "clearBefore": true
         },
         "offset": "+=1"
@@ -4331,7 +4401,7 @@
             "content": "I need to log out and log in as him and take over the sub.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -4373,7 +4443,7 @@
             "content": "Now I need to remove all the modes and transfer the ownership to my account.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": ">"
     },
@@ -4428,7 +4498,7 @@
             "content": "And I'm done lol.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=1"
     },
@@ -4437,7 +4507,7 @@
             "content": "That's it, I fucking did it!",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -4446,7 +4516,7 @@
             "content": "Now I gotta go back and tell cyberdivers I got the keys.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": 0
+            "typingBoxId": "nar1"
         },
         "offset": "+=0.3"
     },
@@ -4494,7 +4564,7 @@
     {
         "action": {
             "setTextBoxStyleAction": {
-                "id": 0,
+                "id": "nar1",
                 "style": {
                     "width": "auto",
                     "top": "90%",

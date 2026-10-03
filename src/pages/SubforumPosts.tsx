@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC, type RefObject } from "react";
+import { useEffect, useState, type FC } from "react";
 import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
@@ -15,7 +15,7 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     const { name } = useParams<{ name: string }>();
     const [posts, setPosts] = useState<IPost[]>([]);
     const { transferHints, setHintHolder } = useHintHolders();
-    const [, typingBoxes] = useOutletContext<[ISubforum | undefined, RefObject<ITypingTextBoxHandle | null>[]]>();
+    const [, typingBoxes] = useOutletContext<[ISubforum | undefined, Map<string, ITypingTextBoxHandle>]>();
 
     async function init() {
         setPosts(await db.posts.where("subforum").equals(name ?? "").toArray());

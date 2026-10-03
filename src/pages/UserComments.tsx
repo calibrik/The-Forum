@@ -12,7 +12,7 @@ export const UserComments: FC<IUserCommentsProps> = (_) => {
     const {username}=useParams<{username:string}>();
 
     useEffect(() => {
-        bridge.exec(storyInit,3, []);
+        bridge.exec(storyInit,3, new Map());
     }, [username])
 
     return (

@@ -8,7 +8,7 @@ import { useUserState } from "../providers/UserAuth";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IUser } from "../backend/db";
 import { Spinner } from "../components/Spinner";
-import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import { BaseButton } from "../components/BaseButton";
 import baseButtonStyles from "../scss/baseButton.module.scss";
@@ -79,7 +79,7 @@ export const User: FC<IUserPageProps> = (_) => {
     let navigate = useNavigate();
     const [user, setUser] = useState<IUser | undefined>(undefined)//{nickname:"yo",imageName:"placeholder.png",id:4,description:"blow me"}
     const storyInit = useStoryInit();
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const accInfoRef = useRef<IAccInfoHandle>(null);
     const { transferHints, setHintHolder } = useHintHolders();
 
@@ -113,7 +113,7 @@ export const User: FC<IUserPageProps> = (_) => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit, 2, [typingBox], init);
+        bridge.exec(storyInit, 2, getTypingBoxes(), init);
     }, [username])
 
     useEffect(() => {
@@ -144,7 +144,7 @@ export const User: FC<IUserPageProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
             <div className={styles.container}>
                 <img src={getImageUrl(user?.imageName ?? "pfp1.png")} className={styles.pfpBg} />
                 <div className={styles.subProfileContainer}>

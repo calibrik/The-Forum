@@ -6,7 +6,7 @@ export interface IStoryLine {
 	content: string,
 	speed: number,
 	delim?: string,
-	typingBoxId: number,
+	typingBoxId: string,
 	clearAfter?: string
 	hideCursorAfter?: boolean
 	clearBefore?: boolean
@@ -93,7 +93,7 @@ export interface ISaveAction {
 }
 
 export interface ISetTextBoxStyleAction {
-	id: number,
+	id: string,
 	style: React.CSSProperties
 }
 
@@ -137,7 +137,7 @@ export interface IVimTypeAction {
 
 export interface ISetTypingBoxContentAction {
 	content: string,
-	typingBoxId: number,
+	typingBoxId: string,
 }
 
 export interface IHistoryEntry {
@@ -156,11 +156,11 @@ export interface ISetPromptVisibilityAction {
 export interface IDeleteTextFromTypingBoxAction {
 	symbolsCount: number,
 	speed: number,
-	typingBoxId: number,
+	typingBoxId: string,
 }
 
 export interface IClearTypingTextBoxes {
-	ids: number[]
+	ids: string[]
 }
 
 export interface IAction {
@@ -233,7 +233,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(217).stores({
+db.version(219).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

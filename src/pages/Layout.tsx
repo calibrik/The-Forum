@@ -17,7 +17,7 @@ export const Layout: FC<ILayoutProps> = (_) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current !== "");
 
     function init() {
-        bridge.exec(storyInit,0, [], async () => {
+        bridge.exec(storyInit,0, new Map(), async () => {
             await isLoggedInPromiseRef.current;
         });
     }

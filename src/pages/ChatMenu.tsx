@@ -72,7 +72,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit, 1, [], init);
+        bridge.exec(storyInit, 1, new Map(), init);
     }, [])
 
     useEffect(() => {

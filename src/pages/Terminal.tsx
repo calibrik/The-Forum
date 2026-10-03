@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEve
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
@@ -13,7 +13,7 @@ import styles from "../scss/terminal.module.scss";
 export const Terminal: FC = () => {
     const inputRef = useRef<IInputFieldHandle>(null);
     const outputRef = useRef<HTMLDivElement>(null);
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const story = useStory();
     const userState = useUserState();
@@ -38,7 +38,7 @@ export const Terminal: FC = () => {
     }
 
     useEffect(() => {
-        storyInit(1, [typingBox], init);
+        storyInit(1, getTypingBoxes(), init);
         story.setTerminalHandle({
             setExpectedCommand: function (command: string, output?: string): void {
                 expectedCommand.current = command;
@@ -120,7 +120,7 @@ export const Terminal: FC = () => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
             <div className={systemStyles.container} onBlur={onContainerBlur}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>

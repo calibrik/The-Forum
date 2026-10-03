@@ -18,7 +18,7 @@ interface IStoryHook {
     // initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
-    recoverStoryOnPage: (level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) => void
+    recoverStoryOnPage: (level: number, tbs: Map<string, ITypingTextBoxHandle>) => void
     createUser: (nickname: string, password: string) => Promise<void>
     goBackwardHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
@@ -82,7 +82,7 @@ const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
 const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page or quit game and log in again.";
 
 export interface IEffectsOptions {
-    typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
+    typingBoxes?: RefObject<Map<string, ITypingTextBoxHandle>>,
     duration?: number,
     opacity?: number
     backgroundColor?: string
@@ -116,7 +116,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             .set("#contentDiv", {
                 overflowY: "visible"
             })
-            .add(() => (options?.typingBoxes?.current[0].current?.setCursorType("terminal")))
+            .add(() => (options?.typingBoxes?.current.get("nar1")?.setCursorType("terminal")))
             .set("#container", {
                 clearProps: "all"
             }, "+=0.6")
@@ -544,7 +544,7 @@ export function useVim() {
 }
 
 export function useStoryFuncs() {
-    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
+    const typingBoxes = useRef<Map<string, ITypingTextBoxHandle>>(new Map());//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
     const { contextSafe } = useGSAP();
     const loopTicket = useRef<number>(0);//protection against strict mode
@@ -586,8 +586,8 @@ export function useStoryFuncs() {
         if (masterRef.current) {
             masterRef.current.kill();
             masterRef.current = undefined;
-            for (let tb of typingBoxes.current) {
-                await tb.current?.reset();
+            for (let tb of typingBoxes.current.values()) {
+                await tb.reset();
             }
         }
         const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
@@ -595,7 +595,7 @@ export function useStoryFuncs() {
         gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
-        typingBoxes.current = []; 
+        typingBoxes.current = new Map(); 
         await bufferFunc.onNavigateAway();
     });
 
@@ -630,7 +630,7 @@ export function useStoryFuncs() {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
         if (action.setTextBoxStyleAction) {
-            typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
+            typingBoxes.current.get(action.setTextBoxStyleAction.id)?.applyStyle(action.setTextBoxStyleAction.style);
         }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
@@ -661,7 +661,7 @@ export function useStoryFuncs() {
             vimFunc.setVimType(action.vimTypeAction.content);
         }
         if (action.setTypingBoxContentAction) {
-            typingBoxes.current[action.setTypingBoxContentAction.typingBoxId]?.current?.setContent(action.setTypingBoxContentAction.content);
+            typingBoxes.current.get(action.setTypingBoxContentAction.typingBoxId)?.setContent(action.setTypingBoxContentAction.content);
         }
     }
 
@@ -706,7 +706,7 @@ export function useStoryFuncs() {
         return true;
     }
 
-    function recoverStoryOnPage(level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) {
+    function recoverStoryOnPage(level: number, tbs: Map<string, ITypingTextBoxHandle>) {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
         if (level != locationRef.current.level || !isOnLocation(locationRef.current)) {
@@ -732,13 +732,9 @@ export function useStoryFuncs() {
         console.log("adding", scl);
         if (scl.storyline) {
             const stl = scl.storyline;
-            if (stl.typingBoxId >= typingBoxes.current.length) {
-                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
-                return;
-            }
-            const box = typingBoxes.current[stl.typingBoxId].current;
+            const box = typingBoxes.current.get(stl.typingBoxId);
             if (!box) {
-                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
+                console.error(`No ref assigned for id ${stl.typingBoxId}.`)
                 return;
             }
             tl.add(box.getTypingTimeline({
@@ -785,7 +781,7 @@ export function useStoryFuncs() {
         }
 
         if (scl.deleteTextFromTypingBox) {
-            const box = typingBoxes.current[scl.deleteTextFromTypingBox.typingBoxId]?.current;
+            const box = typingBoxes.current.get(scl.deleteTextFromTypingBox.typingBoxId);
             if (box)
                 tl.add(box.getDeleteTimeline({
                     symbolsCount: scl.deleteTextFromTypingBox.symbolsCount,
@@ -795,9 +791,10 @@ export function useStoryFuncs() {
 
         if (scl.clearTypingTextBoxes) {
             for (let id of scl.clearTypingTextBoxes.ids) {
-                if (!typingBoxes.current[id].current)
+                const box = typingBoxes.current.get(id);
+                if (!box)
                     continue;
-                tl.add(typingBoxes.current[id].current.reset(), scl.offset);
+                tl.add(box.reset(), scl.offset);
             }
         }
     }
@@ -985,7 +982,7 @@ export function useStoryInit() {
     const story = useStory();
     const loopTicket = useRef<number>(0);
 
-    async function storyInit(childLevel: number, typingBoxes: RefObject<ITypingTextBoxHandle | null>[], pageInit?: () => Promise<void> | void) {
+    async function storyInit(childLevel: number, typingBoxes: Map<string, ITypingTextBoxHandle>, pageInit?: () => Promise<void> | void) {
         loopTicket.current++;
         const ticket = loopTicket.current;
         if (pageInit)

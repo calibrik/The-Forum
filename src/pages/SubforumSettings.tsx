@@ -38,7 +38,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,3, []);
+        bridge.exec(storyInit,3, new Map());
     }, [name])
 
     return (

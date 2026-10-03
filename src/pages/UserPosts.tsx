@@ -18,7 +18,7 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
     }
 
     useEffect(()=>{
-        bridge.exec(storyInit,3, [], init);
+        bridge.exec(storyInit,3, new Map(), init);
     },[username])
 
     return (

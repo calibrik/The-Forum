@@ -4,17 +4,15 @@ import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useNavigate, useSearchParams } from "react-router";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
 import { commonPrefixLength, getContainerCharCapacity } from "../utils";
 
 export const Vim: FC = () => {
-    const commandBox = useRef<ITypingTextBoxHandle>(null);
-    const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<IInputFieldHandle>(null);
-    const bufferTypingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const story = useStory();
     const navigate = useNavigate();
@@ -36,18 +34,18 @@ export const Vim: FC = () => {
     }
 
     function applyTextToType(text: string) {
-        const charsTyped = commonPrefixLength(bufferTypingBox.current?.getContent() ?? "", text);
+        const charsTyped = commonPrefixLength(getTypingBoxes().get("buffer")?.getContent() ?? "", text);
         inputRef.current?.setStringToType(text, charsTyped);
     }
 
     function setTextToType(text: string) {
         if (text !== "") {
-            const content = bufferTypingBox.current?.getContent() ?? "";
+            const content = getTypingBoxes().get("buffer")?.getContent() ?? "";
             textToType.current = content+text;
             setHasTextToType(true);
         } else {
             const content = inputRef.current?.getInput() ?? "";
-            bufferTypingBox.current?.setContent(content);
+            getTypingBoxes().get("buffer")?.setContent(content);
             updateCounts(content);
             setHasTextToType(false);
         }
@@ -60,7 +58,7 @@ export const Vim: FC = () => {
         if (hasTextToType)
             content = inputRef.current?.getInput() ?? "";
         else
-            content = bufferTypingBox.current?.getContent() ?? "";
+            content = getTypingBoxes().get("buffer")?.getContent() ?? "";
 
         const containerCapacity = getContainerCharCapacity(bufferRef.current)
         if (content == "") {
@@ -128,7 +126,7 @@ export const Vim: FC = () => {
     }, [calculateNumeratedLines]);
 
     useEffect(() => {
-        storyInit(2, [commandBox, narrationBox, bufferTypingBox], init);
+        storyInit(2, getTypingBoxes(), init);
         story.setVimHandle({ setTextToType });
         return () => {
             story.setVimHandle(undefined);
@@ -137,7 +135,7 @@ export const Vim: FC = () => {
 
     return (
         <>
-            <TypingTextBox ref={narrationBox} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
             <div className={systemStyles.container} onBlur={onContainerBlur}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
@@ -160,7 +158,7 @@ export const Vim: FC = () => {
                             </div>
                             <div ref={bufferRef} className={styles.bufferText}>
                                 <Textarea typeSpeed={10} ref={inputRef} scripted onChange={onInputChange} cursorType="terminal" name="command" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
-                                <TypingTextBox ref={bufferTypingBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
+                                <TypingTextBox ref={setTypingBox("buffer")} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
                             </div>
 
                         </div>
@@ -172,7 +170,7 @@ export const Vim: FC = () => {
                         <span>1,1  All</span>
                     </div>
                     <div className={styles.commandLineRow}>
-                        <TypingTextBox ref={commandBox} className={styles.commandLineBox} type={"terminal"} />
+                        <TypingTextBox ref={setTypingBox("command")} className={styles.commandLineBox} type={"terminal"} />
                     </div>
                 </div>
             </div>

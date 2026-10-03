@@ -14,7 +14,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const { name } = useParams<{ name: string }>();
 
     useEffect(() => {
-        bridge.exec(storyInit,3, []);
+        bridge.exec(storyInit,3, new Map());
     }, [name])
 
     return (
