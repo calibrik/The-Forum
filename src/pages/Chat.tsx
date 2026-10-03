@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
-import { Dot, Reply, SendIcon } from "../components/Icons";
+import { Dot, Reply, SendIcon, ThreeDots } from "../components/Icons";
 import { bridge, formatDay, formatTime, getImageUrl, resolveChatView } from "../utils";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
@@ -149,7 +149,9 @@ export const Chat: FC<IChatProps> = () => {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [typing, setTyping] = useState<Set<string>>(new Set());
     const [chat, setChat] = useState<IChat>();
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const menuWrapperRef = useRef<HTMLDivElement>(null);
     const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
@@ -179,6 +181,15 @@ export const Chat: FC<IChatProps> = () => {
             story.goBackwardHint("chat-send");
         else
             story.goForwardHint("chat-input")
+    }
+
+    function onMenuToggle() {
+        setIsMenuOpen(prev => !prev);
+    }
+
+    function onChatMenuAction() {
+        setIsMenuOpen(false);
+        story.resumeStoryFromHint("block-user-text");
     }
 
     async function init() {
@@ -234,6 +245,26 @@ export const Chat: FC<IChatProps> = () => {
         }
     }, [])
 
+    useEffect(() => {
+        if (isMenuOpen)
+            story.goForwardHint("chat-menu-dots-text");
+        else
+            story.goBackwardHint("block-user")
+    }, [isMenuOpen])
+
+    useEffect(() => {
+        if (!isMenuOpen)
+            return;
+        function onClickOutside(e: MouseEvent) {
+            if (menuWrapperRef.current && !menuWrapperRef.current.contains(e.target as Node))
+                setIsMenuOpen(false);
+        }
+        document.addEventListener("mousedown", onClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", onClickOutside);
+        };
+    }, [isMenuOpen])
+
     const typingArray = Array.from(typing);
 
     return (
@@ -249,6 +280,16 @@ export const Chat: FC<IChatProps> = () => {
                         <p className={styles.nickname}>{chat?.name}</p>
                         {chat?.membersAmount != undefined && <span className={styles.membersCount}>{chat.membersAmount} members</span>}
                     </div>
+                    {chat ?
+                        <div ref={menuWrapperRef} className={styles.menuWrapper}>
+                            <ThreeDots id="chat-menu-dots-text" interactive onClick={onMenuToggle} className={styles.menuDots} />
+                            {isMenuOpen ?
+                                <div className={styles.dropdownMenu}>
+                                    <div id="block-user-text" className={styles.menuOption} onClick={onChatMenuAction}>{chat.type === "gc" ? "Leave" : "Block"}</div>
+                                </div>
+                                : ""}
+                        </div>
+                        : ""}
                 </div>
                 <div ref={chatContainerRef} className={styles.chatContainer}>
                     {chat?.pregenMessages.length!=0?<Spinner />:""}

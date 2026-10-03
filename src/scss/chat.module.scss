@@ -224,6 +224,47 @@
     gap:2px;
 }
 
+.menu-wrapper {
+    position: relative;
+    margin-left: auto;
+}
+
+.menu-dots {
+    font-size: clamp(1rem, 3cqw, 1.5rem);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    min-width: 120px;
+    margin-top: 6px;
+    padding: 4px;
+    background-color: colors.$card-bg;
+    border: 1px solid colors.$input-border;
+    border-radius: 8px;
+}
+
+.menu-option {
+    font-size: clamp(0.8rem, 2.6cqw, 1rem);
+    color: colors.$error-color;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .menu-option:hover {
+        color: colors.$secondary-color;
+        cursor: pointer;
+    }
+}
+
+.menu-option:active {
+    color: colors.$secondary-color;
+}
+
 @keyframes pulse {
   from {
     background-color: #4a4a4a;
