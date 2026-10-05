@@ -447,7 +447,7 @@ export function useChat() {
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
             await delay(timeToType);
-        message.timeSent=new Date();
+        message.timeSent = new Date();
         await db.storyMessagesBuffer.put(message);
         chatHandle.current?.removeTypingUser(message.from);
         chatHandle.current?.addMessage(message);
@@ -595,7 +595,7 @@ export function useStoryFuncs() {
         gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
-        typingBoxes.current = new Map(); 
+        typingBoxes.current = new Map();
         await bufferFunc.onNavigateAway();
     });
 
@@ -790,12 +790,14 @@ export function useStoryFuncs() {
         }
 
         if (scl.clearTypingTextBoxes) {
+            const t = gsap.timeline();
             for (let id of scl.clearTypingTextBoxes.ids) {
                 const box = typingBoxes.current.get(id);
                 if (!box)
                     continue;
-                tl.add(box.reset(), scl.offset);
+                t.add(box.reset(), ">");
             }
+            tl.add(t, scl.offset);
         }
     }
 

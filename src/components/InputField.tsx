@@ -18,7 +18,7 @@ interface IInputFieldProps {
     autocomplete?: boolean
     cursorType?: "normal" | "terminal"
     typeSpeed?: number
-    style?:CSSProperties
+    style?: CSSProperties
 };
 export interface IInputFieldHandle {
     setError: (msg: string) => void;
@@ -28,7 +28,7 @@ export interface IInputFieldHandle {
     blur: () => void;
     setStringToType: (string: string, charsTyped?: number) => void;
     isStringTyped: () => boolean;
-    setInput:(value:string)=>void
+    setInput: (value: string) => void
 }
 
 export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props, ref) => {
@@ -120,7 +120,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setInput(value) {
             if (inputRef.current === null)
                 return;
-            inputRef.current.value=value;
+            inputRef.current.value = value;
             updateCaretPosition();
         },
     }));
@@ -200,6 +200,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         const expectedString = stringToType.current.substring(0, currTyped.current)
         setTimeout(() => {
             inputRef.current!.value = expectedString;
+            inputRef.current!.scrollLeft = inputRef.current!.scrollWidth;
             updateCaretPosition();
             if (props.onChange)
                 props.onChange(expectedString);
