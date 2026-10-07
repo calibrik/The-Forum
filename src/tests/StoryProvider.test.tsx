@@ -26,6 +26,13 @@ function mockTypingBoxes() {
     return new Map<string, ITypingTextBoxHandle>([["nar1", mockTypingBox]]);
 }
 
+function stubGetAnim(getAnim: (...args: never[]) => unknown) {
+    const realExec = bridge.exec as unknown as (...args: unknown[]) => unknown;
+    vi.spyOn(bridge, "exec").mockImplementation(((fn: unknown, ...args: unknown[]) =>
+        fn === getAnim ? Promise.resolve(gsap.timeline()) : realExec(fn, ...args)
+    ) as unknown as typeof bridge.exec);
+}
+
 
 describe("test of testing", () => {
     beforeAll(async () => {
@@ -130,7 +137,7 @@ describe("useHints", () => {
             });
             result.current.userState.userLoggedIn.current = "main_hero";
             vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, where: "/user/main_hero" });
+            result.current.hints.hintNavPath({ level: 2, user: "main_hero", where: "/user/main_hero" });
             expect(result.current.hints._getCurrHint?.().current).toEqual(["user-icon-text"]);
         });
 
@@ -144,7 +151,7 @@ describe("useHints", () => {
             });
             result.current.userState.userLoggedIn.current = "main_hero";
             vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, where: "/user/someone" });
+            result.current.hints.hintNavPath({ level: 2, user: "main_hero", where: "/user/someone" });
             expect(result.current.hints._getCurrHint?.().current).toEqual(["header-search", ""]);
         });
 
@@ -153,7 +160,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 3, where: "/user/main_hero/comments" });
+            result.current.hintNavPath({ level: 3, user: "", where: "/user/main_hero/comments" });
             expect(result.current._getCurrHint?.().current).toEqual(["comments"]);
         });
 
@@ -162,7 +169,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
-            result.current.hintNavPath({ level: 3, where: "/user/main_hero" });
+            result.current.hintNavPath({ level: 3, user: "", where: "/user/main_hero" });
             expect(result.current._getCurrHint?.().current).toEqual(["posts"]);
         });
 
@@ -171,7 +178,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"))
-            result.current.hintNavPath({ level: 3, where: "/subforum/test/comments" });
+            result.current.hintNavPath({ level: 3, user: "", where: "/subforum/test/comments" });
             expect(result.current._getCurrHint?.().current).toEqual(["comments"]);
         });
 
@@ -180,7 +187,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test2"))
-            result.current.hintNavPath({ level: 2, where: "/subforum/test" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test" });
             expect(result.current._getCurrHint?.().current).toEqual(["header-search", ""]);
         });
 
@@ -189,7 +196,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/chat/test2"))
-            result.current.hintNavPath({ level: 2, where: "/chat/test" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/chat/test" });
             expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
         });
 
@@ -198,7 +205,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hintNavPath({ level: 2, where: "/chat/test" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/chat/test" });
             expect(result.current._getCurrHint?.().current).toEqual(["test"]);
         });
 
@@ -207,7 +214,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 1, where: "/chat" });
+            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
             expect(result.current._getCurrHint?.().current).toEqual(["menu-icon-text", "chat-menu"]);
         });
 
@@ -216,7 +223,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
-            result.current.hintNavPath({ level: 2, where: "/user/main_hero" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/user/main_hero" });
             expect(result.current._getCurrHint?.().current).toEqual([]);
         });
 
@@ -225,7 +232,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 2, where: "/post/p5" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/post/p5" });
             expect(result.current._getCurrHint?.().current).toEqual(["p5"]);
         });
 
@@ -234,7 +241,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, where: "/user/main_hero" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/user/main_hero" });
             expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
         });
 
@@ -243,7 +250,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, where: "/subforum/test" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test" });
             expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
         });
 
@@ -252,7 +259,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 1, where: "/chat" });
+            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
             expect(result.current._getCurrHint?.().current).toEqual(["menu-icon-text", "chat-menu"]);
         });
 
@@ -261,7 +268,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, where: "/post/p4" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/post/p4" });
             expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
         });
 
@@ -271,12 +278,40 @@ describe("useHints", () => {
             });
             const hintSpy = vi.spyOn(bridge, "exec");
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/comments"))
-            result.current.hintNavPath({ level: 3, where: "/subforum/test" });
-            result.current.hintNavPath({ level: 2, where: "/subforum/test2" });
+            result.current.hintNavPath({ level: 3, user: "", where: "/subforum/test" });
+            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test2" });
             expect(hintSpy).toHaveBeenCalledTimes(1);
             const args = hintSpy.mock.calls[0]
             expect(args[0]).toBe(result.current._hint);
             expect(args[1]).toBe("posts");
+        });
+
+        test("hintNavPath hints the logout button when the logged in user is wrong", async () => {
+            const { result } = renderHook(() => {
+                const hints = useElementHints();
+                const userState = useUserState();
+                return { hints, userState };
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            result.current.userState.userLoggedIn.current = "main_hero";
+            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
+            result.current.hints.hintNavPath({ level: 2, user: "sillygoose228", where: "/user/sillygoose228" });
+            expect(result.current.hints._getCurrHint?.().current).toEqual(["menu-icon-text", "logout"]);
+        });
+
+        test("hintNavPath uses the normal path hint when the logged in user matches", async () => {
+            const { result } = renderHook(() => {
+                const hints = useElementHints();
+                const userState = useUserState();
+                return { hints, userState };
+            }, {
+                wrapper: AllTheProvidersForMock
+            });
+            result.current.userState.userLoggedIn.current = "sillygoose228";
+            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
+            result.current.hints.hintNavPath({ level: 2, user: "sillygoose228", where: "/user/sillygoose228" });
+            expect(result.current.hints._getCurrHint?.().current).toEqual(["user-icon-text"]);
         });
     });
 
@@ -309,7 +344,7 @@ describe("useHints", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 1, where: "/chat" });
+            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
             expect(result.current._getCurrIndex?.().current).toEqual(0);
             result.current.goForwardHint("menu-icon-text");
             expect(result.current._getCurrIndex?.().current).toEqual(1);
@@ -327,7 +362,7 @@ describe("useStoryFuncs", () => {
             });
             result.current._getIsStoryNavRef!().current = true;
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -346,7 +381,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -365,7 +400,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -388,7 +423,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -414,7 +449,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -440,7 +475,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2 };
+            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
             const lastNavHintRef = result.current._getLastNavHint?.();
             lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
             const hintDetails: string[] = [];
@@ -477,7 +512,7 @@ describe("useStoryFuncs", () => {
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             await db.story.bulkAdd([
-                { id: 1, action: { navigateAction: { dest: { where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } }, navigate: false } }, offset: ">" },
+                { id: 1, action: { navigateAction: { dest: { where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } }, navigate: false } }, offset: ">" },
             ]);
             await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current._showStory!(1);
@@ -492,7 +527,7 @@ describe("useStoryFuncs", () => {
             });
             await db.users.add({ nickname: "penis" });
             await db.story.bulkAdd([
-                { id: 1, action: { navigateAction: { dest: { where: "/user/penis", level: 2 }, navigate: true } }, offset: ">" },
+                { id: 1, action: { navigateAction: { dest: { where: "/user/penis", level: 2, user: "" }, navigate: true } }, offset: ">" },
             ]);
             await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current!._showStory!(1);
@@ -516,12 +551,12 @@ describe("useStoryFuncs", () => {
             result.current.userState.isRealLoggedIn.current = true;
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
-            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/user/penis", level: 2 }, navigate: true } }, 10);
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/user/penis", level: 2, user: "" }, navigate: true } }, 10);
             const locationRef = result.current.storyFuncs!._getLocationRef!();
             await waitFor(async () => {
                 expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis");
             });
-            expect(locationRef.current).toEqual({ where: "/user/penis", level: 2 });
+            expect(locationRef.current).toEqual({ where: "/user/penis", level: 2, user: "" });
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
             expect(bufferPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
@@ -546,7 +581,7 @@ describe("useStoryFuncs", () => {
 
             await db.story.bulkAdd([
                 { id: 1, storyline: { content: "you conclude your business on this page", speed: 50, typingBoxId: "nar1" }, offset: ">" },
-                { id: 2, action: { navigateAction: { dest: { where: "/chat", level: 1 }, navigate: true } }, offset: ">" },
+                { id: 2, action: { navigateAction: { dest: { where: "/chat", level: 1, user: "main_hero" }, navigate: true } }, offset: ">" },
                 { id: 3, storyline: { content: "pick a chat to continue", speed: 50, typingBoxId: "nar1" }, isActionAwait: true, hint: "open a chat", offset: ">" },
             ]);
 
@@ -595,12 +630,12 @@ describe("useStoryFuncs", () => {
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
             const storyHintNavSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "hintNavPath");
-            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/user/penis", level: 2 }, navigate: false } }, 10);
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/user/penis", level: 2, user: "" }, navigate: false } }, 10);
             const locationRef = result.current.storyFuncs!._getLocationRef!();
             await waitFor(async () => {
                 expect(exposedMockRouter?.state.location.pathname).not.toEqual("/user/penis");
             });
-            expect(locationRef.current).toEqual({ where: "/user/penis", level: 2 });
+            expect(locationRef.current).toEqual({ where: "/user/penis", level: 2, user: "" });
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
             expect(bufferPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
@@ -622,16 +657,16 @@ describe("useStoryFuncs", () => {
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
             const hintNavSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "hintNavPath");
-            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } }, navigate: false } }, 10);
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } }, navigate: false } }, 10);
             const locationRef = result.current.storyFuncs!._getLocationRef!();
             await waitFor(async () => {
                 expect(exposedMockRouter?.state.location.pathname).not.toEqual("/user/penis");
             });
-            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } });
+            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } });
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
             expect(bufferPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
-            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, where: "/subforum/test" }));
+            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, user: "", where: "/subforum/test" }));
             expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
         });
 
@@ -649,16 +684,16 @@ describe("useStoryFuncs", () => {
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
             const hintNavSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "hintNavPath");
-            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } }, navigate: false } }, 10);
+            await result.current.storyFuncs!._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } }, navigate: false } }, 10);
             const locationRef = result.current.storyFuncs!._getLocationRef!();
             await waitFor(async () => {
                 expect(exposedMockRouter?.state.location.pathname).not.toEqual("/user/penis");
             });
-            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, from: { level: 2, where: "/subforum/test" } });
+            expect(locationRef.current).toEqual({ where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } });
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
             expect(bufferPreserveSpy).toHaveBeenCalled();
             expect(storyHintResetSpy).toHaveBeenCalled();
-            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, where: "/post/p4" }));
+            expect(hintNavSpy).toHaveBeenCalledWith(expect.objectContaining({ level: 2, user: "", where: "/post/p4" }));
             expect(result.current.storyFuncs!._getIsStoryRecovered!().current).toEqual(false);
         });
 
@@ -672,7 +707,7 @@ describe("useStoryFuncs", () => {
             });
             await db.users.add({ nickname: "smth", password: "123", savedStoryId: 1 });
             const bufferSinkSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "sinkBuffers");
-            await result.current.storyFuncs!._processAction!({ saveAction: { dest: { where: "/user/penis", level: 2 } } }, 10);
+            await result.current.storyFuncs!._processAction!({ saveAction: { dest: { where: "/user/penis", level: 2, user: "" } } }, 10);
             expect(bufferSinkSpy).toHaveBeenCalled();
             expect(result.current.storyFuncs?._getSavedStoryId!().current).toEqual(10);
             expect(result.current.storyFuncs!._getPageStoryIdRef!().current).toEqual(11);
@@ -775,7 +810,7 @@ describe("useStoryFuncs", () => {
             await db.story.put({
                 action: {
                     saveAction: {
-                        dest: { where: "/user/penis", level: 2 }
+                        dest: { where: "/user/penis", level: 2, user: "" }
                     }
                 },
                 offset: '',
@@ -786,7 +821,7 @@ describe("useStoryFuncs", () => {
             expect(result.current!._getSavedStoryId!().current).toEqual(10);
             expect(result.current!._getCurrStoryId!().current).toEqual(11);
             expect(result.current!._getPageStoryIdRef!().current).toEqual(11);
-            expect(result.current!._getLocationRef!().current).toEqual({ where: "/user/penis", level: 2 });
+            expect(result.current!._getLocationRef!().current).toEqual({ where: "/user/penis", level: 2, user: "" });
             await waitFor(() => {
                 expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis");
             });
@@ -800,9 +835,9 @@ describe("useStoryFuncs", () => {
                 action: {
                     saveAction: {
                         dest: {
-                            where: "/chat/test", level: 2, from: {
+                            where: "/chat/test", level: 2, user: "", from: {
                                 where: "/chat",
-                                level: 1
+                                level: 1, user: ""
                             }
                         }
                     }
@@ -816,9 +851,9 @@ describe("useStoryFuncs", () => {
             expect(result.current!._getCurrStoryId!().current).toEqual(11);
             expect(result.current!._getPageStoryIdRef!().current).toEqual(11);
             expect(result.current!._getLocationRef!().current).toEqual({
-                where: "/chat/test", level: 2, from: {
+                where: "/chat/test", level: 2, user: "", from: {
                     where: "/chat",
-                    level: 1
+                    level: 1, user: ""
                 }
             });
             await waitFor(() => {
@@ -839,7 +874,7 @@ describe("useStoryFuncs", () => {
             await db.story.put({
                 action: {
                     saveAction: {
-                        dest: { where: "/chat", level: 1 }
+                        dest: { where: "/chat", level: 1, user: "main_hero" }
                     }
                 },
                 hint: "Say hi to your mates in the chat",
@@ -873,7 +908,7 @@ describe("useStoryFuncs", () => {
             await db.story.put({
                 action: {
                     saveAction: {
-                        dest: { where: "/chat", level: 1 }
+                        dest: { where: "/chat", level: 1, user: "main_hero" }
                     }
                 },
                 offset: "",
@@ -892,6 +927,27 @@ describe("useStoryFuncs", () => {
             });
 
             window.removeEventListener("storyHintText", onHintText);
+        });
+
+        test("overrides the logged in user with the expected user from the save dest", async () => {
+            const { result } = renderHook(() => {
+                const storyHook = useStory()._getStoryHook!();
+                const userState = useUserState();
+                return { storyHook, userState };
+            }, { wrapper: AllTheProvidersForMock });
+            vi.stubGlobal("location", new URL("http://localhost:3000/chat"));
+            result.current.userState.userLoggedIn.current = "someone_else";
+            await db.story.put({
+                action: {
+                    saveAction: {
+                        dest: { where: "/chat", level: 1, user: "main_hero" }
+                    }
+                },
+                offset: ">",
+                id: 10
+            });
+            await result.current.storyHook!.recoverCheckpoint!(10);
+            expect(result.current.userState.userLoggedIn.current).toBe("main_hero");
         });
     });
 
@@ -917,7 +973,7 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy).not.toHaveBeenCalled();
 
             // Case: !isRealLoggedIn
-            result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
+            result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1, user: "" };
             result.current.userState.isRealLoggedIn.current = false;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             result.current.storyHook!.recoverStoryOnPage!(1, mockTypingBoxes());
@@ -925,7 +981,7 @@ describe("useStoryFuncs", () => {
             expect(showStorySpy).not.toHaveBeenCalled();
 
             // Case: isStoryRecovered
-            result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1 };
+            result.current.storyHook!._getLocationRef!().current = { where: "/test", level: 1, user: "" };
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = true;
             result.current.storyHook!.recoverStoryOnPage!(1, mockTypingBoxes());
@@ -946,7 +1002,7 @@ describe("useStoryFuncs", () => {
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             vi.stubGlobal("location", new URL("http://localhost:3000/user/test/comments"));
-            const target = { where: "/user/penis", level: 2 };
+            const target = { where: "/user/penis", level: 2, user: "" };
             result.current.storyHook!._getLocationRef!().current = target;
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
             const showNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "showNavHint");
@@ -969,7 +1025,7 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/other"));
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            const target = { where: "/subforum/test", level: 2 };
+            const target = { where: "/subforum/test", level: 2, user: "" };
             result.current.storyHook!._getLocationRef!().current = target;
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
             const showNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "showNavHint");
@@ -992,7 +1048,7 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/terminal/vim?file=Other.tsx"));
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            const target = { where: "/terminal/vim?file=Post.tsx", level: 2 };
+            const target = { where: "/terminal/vim?file=Post.tsx", level: 2, user: "" };
             result.current.storyHook!._getLocationRef!().current = target;
             const hintNavSpy = vi.spyOn(result.current.storyHook!._getHintHook!(), "hintNavPath");
             const showNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "showNavHint");
@@ -1015,7 +1071,7 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/penis"));
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            result.current.storyHook!._getLocationRef!().current = { where: "/user/penis", level: 2 };
+            result.current.storyHook!._getLocationRef!().current = { where: "/user/penis", level: 2, user: "" };
             result.current.storyHook!._getPageStoryIdRef!().current = 50;
 
             const hintHook = result.current.storyHook!._getHintHook!();
@@ -1045,7 +1101,7 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/terminal/vim?file=Post.tsx"));
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
-            result.current.storyHook!._getLocationRef!().current = { where: "/terminal/vim?file=Post.tsx", level: 2 };
+            result.current.storyHook!._getLocationRef!().current = { where: "/terminal/vim?file=Post.tsx", level: 2, user: "" };
             result.current.storyHook!._getPageStoryIdRef!().current = 50;
 
             const hintHook = result.current.storyHook!._getHintHook!();
@@ -1073,8 +1129,8 @@ describe("useStoryFuncs", () => {
 
             vi.stubGlobal("location", new URL("http://localhost:3000/user/penis"));
             result.current!.storyHook!._getLocationRef!().current = {
-                where: "/post/p5", level: 2, from: {
-                    level: 2,
+                where: "/post/p5", level: 2, user: "", from: {
+                    level: 2, user: "",
                     where: "/subforum/test"
                 }
             };
@@ -1085,7 +1141,7 @@ describe("useStoryFuncs", () => {
             const showNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "showNavHint");
             result.current.storyHook!.recoverStoryOnPage!(2, mockTypingBoxes());
             expect(hintNavSpy).toHaveBeenCalledWith(
-                expect.objectContaining({ level: 2, where: "/subforum/test" })
+                expect.objectContaining({ level: 2, user: "", where: "/subforum/test" })
             );
             expect(showNavHintSpy).toHaveBeenCalled();
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
@@ -1100,8 +1156,8 @@ describe("useStoryFuncs", () => {
 
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
             result.current!.storyHook!._getLocationRef!().current = {
-                where: "/post/p5", level: 2, from: {
-                    level: 2,
+                where: "/post/p5", level: 2, user: "", from: {
+                    level: 2, user: "",
                     where: "/subforum/test"
                 }
             };
@@ -1112,7 +1168,7 @@ describe("useStoryFuncs", () => {
             const showNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "showNavHint");
             result.current.storyHook!.recoverStoryOnPage!(2, mockTypingBoxes());
             expect(hintNavSpy).toHaveBeenCalledWith(
-                expect.objectContaining({ level: 2, where: "/post/p5" })
+                expect.objectContaining({ level: 2, user: "", where: "/post/p5" })
             );
             expect(showNavHintSpy).toHaveBeenCalled();
             expect(showStorySpy.mock.calls.find((call) => call[0] === result.current.storyHook?._showStory)).toBeUndefined();
@@ -1130,8 +1186,8 @@ describe("useStoryFuncs", () => {
             result.current.userState.isRealLoggedIn.current = true;
             result.current.storyHook!._getIsStoryRecovered!().current = false;
             result.current!.storyHook!._getLocationRef!().current = {
-                where: "/post/p5", level: 2, from: {
-                    level: 2,
+                where: "/post/p5", level: 2, user: "", from: {
+                    level: 2, user: "",
                     where: "/subforum/test"
                 }
             };
@@ -1311,7 +1367,7 @@ describe("isOnLocation", () => {
         const { result } = renderHook(() => useStory()._getStoryHook!(), {
             wrapper: AllTheProvidersForMock
         });
-        const target = { where: "/any/path", level: 0 };
+        const target = { where: "/any/path", level: 0, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(true);
     });
 
@@ -1320,7 +1376,7 @@ describe("isOnLocation", () => {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
-        const target = { where: "/user/main_hero", level: 2 };
+        const target = { where: "/user/main_hero", level: 2, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(true);
     });
 
@@ -1329,7 +1385,7 @@ describe("isOnLocation", () => {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/user/other/comments"));
-        const target = { where: "/user/main_hero", level: 2 };
+        const target = { where: "/user/main_hero", level: 2, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(false);
     });
 
@@ -1338,7 +1394,7 @@ describe("isOnLocation", () => {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/comments"));
-        const target = { where: "/subforum/test/comments", level: 3 };
+        const target = { where: "/subforum/test/comments", level: 3, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(true);
     });
 
@@ -1347,7 +1403,7 @@ describe("isOnLocation", () => {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/settings"));
-        const target = { where: "/subforum/test/comments", level: 3 };
+        const target = { where: "/subforum/test/comments", level: 3, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(false);
     });
 
@@ -1356,8 +1412,36 @@ describe("isOnLocation", () => {
             wrapper: AllTheProvidersForMock
         });
         vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
-        const target = { where: "/subforum/test/comments", level: 3 };
+        const target = { where: "/subforum/test/comments", level: 3, user: "" };
         expect(result.current!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns false when the logged in user is not the expected user", async () => {
+        const { result } = renderHook(() => {
+            const storyHook = useStory()._getStoryHook!();
+            const userState = useUserState();
+            return { storyHook, userState };
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
+        result.current.userState.userLoggedIn.current = "someone_else";
+        const target = { where: "/user/main_hero", level: 2, user: "main_hero" };
+        expect(result.current.storyHook!._isOnLocation!(target)).toBe(false);
+    });
+
+    test("returns true when the logged in user matches the expected user", async () => {
+        const { result } = renderHook(() => {
+            const storyHook = useStory()._getStoryHook!();
+            const userState = useUserState();
+            return { storyHook, userState };
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
+        result.current.userState.userLoggedIn.current = "main_hero";
+        const target = { where: "/user/main_hero", level: 2, user: "main_hero" };
+        expect(result.current.storyHook!._isOnLocation!(target)).toBe(true);
     });
 });
 
@@ -1410,5 +1494,94 @@ describe("taken nickname", () => {
         expect(await db.users.where("savedStoryId").aboveOrEqual(1).count()).toBe(0);
         expect(await db.users.count()).toBe(usersAmount);
         expect(router.state.location.pathname).toBe("/");
+    });
+});
+
+describe("login and logout", () => {
+    test("login (already real logged in) sets the user, dispatches loggedIn and navigates to the profile", async () => {
+        const { result } = renderHook(() => ({
+            storyHook: useStory()._getStoryHook!(),
+            userState: useUserState()
+        }), { wrapper: AllTheProvidersForMock });
+        await db.users.add({ nickname: "logintester", password: "pw", savedStoryId: 5 });
+        result.current.userState.isRealLoggedIn.current = true;
+        let loggedIn = false;
+        const onLoggedIn = () => { loggedIn = true; };
+        window.addEventListener("loggedIn", onLoggedIn);
+        const errors = await result.current.storyHook!.login!("logintester", "pw");
+        window.removeEventListener("loggedIn", onLoggedIn);
+        expect(errors).toEqual({});
+        expect(result.current.userState.userLoggedIn.current).toBe("logintester");
+        expect(loggedIn).toBe(true);
+        await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toBe("/user/logintester"));
+    });
+
+    test("real login fades the overlay, logs in and recovers the save checkpoint", async () => {
+        const { result } = renderHook(() => ({
+            storyHook: useStory()._getStoryHook!(),
+            userState: useUserState()
+        }), { wrapper: AllTheProvidersForMock });
+        stubGetAnim(result.current.storyHook!.getAnim);
+        await db.users.add({ nickname: "reallogin", password: "pw", savedStoryId: 10 });
+        await db.story.put({
+            action: { saveAction: { dest: { where: "/chat", level: 1, user: "main_hero" } } },
+            offset: ">",
+            id: 10
+        });
+        let loggedIn = false;
+        const onLoggedIn = () => { loggedIn = true; };
+        window.addEventListener("loggedIn", onLoggedIn);
+        const errors = await result.current.storyHook!.login!("reallogin", "pw");
+        window.removeEventListener("loggedIn", onLoggedIn);
+        expect(errors).toEqual({});
+        expect(loggedIn).toBe(true);
+        expect(result.current.userState.isRealLoggedIn.current).toBe(true);
+        expect(result.current.userState.userLoggedIn.current).toBe("main_hero");
+        await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toBe("/chat"));
+    });
+
+    test("login returns field errors for empty fields, unknown nickname and wrong password", async () => {
+        const { result } = renderHook(() => useStory()._getStoryHook!(), {
+            wrapper: AllTheProvidersForMock
+        });
+        expect(await result.current!.login!("", "")).toEqual({ nickname: "Field cannot be empty", password: "Field cannot be empty" });
+        expect(await result.current!.login!("nobody", "pw")).toEqual({ nickname: "Nickname is not found." });
+        await db.users.add({ nickname: "errortester", password: "pw", savedStoryId: 5 });
+        expect(await result.current!.login!("errortester", "wrong")).toEqual({ password: "Incorrect password." });
+    });
+
+    test("logout clears the user, dispatches loggedOut and navigates to /login", async () => {
+        const { result } = renderHook(() => ({
+            storyHook: useStory()._getStoryHook!(),
+            userState: useUserState()
+        }), { wrapper: AllTheProvidersForMock });
+        result.current.userState.userLoggedIn.current = "main_hero";
+        let loggedOut = false;
+        const onLoggedOut = () => { loggedOut = true; };
+        window.addEventListener("loggedOut", onLoggedOut);
+        result.current.storyHook!.logout!();
+        window.removeEventListener("loggedOut", onLoggedOut);
+        expect(result.current.userState.userLoggedIn.current).toBe("");
+        expect(loggedOut).toBe(true);
+        await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toBe("/login"));
+    });
+
+    test("quitGame resets the login state, dispatches loggedOut and navigates to /", async () => {
+        const { result } = renderHook(() => ({
+            storyHook: useStory()._getStoryHook!(),
+            userState: useUserState()
+        }), { wrapper: AllTheProvidersForMock });
+        stubGetAnim(result.current.storyHook!.getAnim);
+        result.current.userState.isRealLoggedIn.current = true;
+        result.current.userState.userLoggedIn.current = "main_hero";
+        let loggedOut = false;
+        const onLoggedOut = () => { loggedOut = true; };
+        window.addEventListener("loggedOut", onLoggedOut);
+        await result.current.storyHook!.quitGame!();
+        window.removeEventListener("loggedOut", onLoggedOut);
+        expect(result.current.userState.userLoggedIn.current).toBe("");
+        expect(result.current.userState.isRealLoggedIn.current).toBe(false);
+        expect(loggedOut).toBe(true);
+        await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toBe("/"));
     });
 });

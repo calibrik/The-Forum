@@ -29,6 +29,10 @@ interface IStoryHook {
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
     getMessages(chatId: string): Promise<IMessage[]>,
+    login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
+    logout: () => void,
+    quitGame: () => Promise<void>,
+    getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
 interface IStoryProvider extends IStoryHook {
@@ -284,6 +288,12 @@ export function useElementHints() {
             return;
         }
         isStoryHint.current = false;
+        if (target.user !== userState.userLoggedIn.current) {
+            currHint.current = ["menu-icon-text", "logout"];
+            currIndex.current = 0;
+            bridge.exec(hint, currHint.current[currIndex.current]);
+            return;
+        }
         const location = window.location.pathname.split('/').slice(0, target.level + 1);
         const targetLocation = target.where.split('/');
         let mismatchedLevel = 0;
@@ -638,6 +648,13 @@ export function useStoryFuncs() {
         if (action.addNewChat) {
             await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
         }
+        if (action.addPasswordFor) {
+            const { nickname, password } = action.addPasswordFor;
+            const user = await db.usersBuffer.where("nickname").equals(nickname).first()
+                ?? await db.users.where("nickname").equals(nickname).first();
+            if (user)
+                await db.usersBuffer.put({ ...user, password: password });
+        }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)
             const { content, isLink } = action.promptMessageAction;
@@ -680,7 +697,13 @@ export function useStoryFuncs() {
         savedStoryId.current = id;
         currStoryId.current = id + 1;
         pageStoryId.current = id + 1;
-        locationRef.current = scl.action?.saveAction?.dest;
+        const dest = scl.action?.saveAction?.dest
+        if (!dest) {
+            console.error(dest, "This scriptline is not a save action.")
+            return;
+        }
+        locationRef.current = dest;
+        userState.userLoggedIn.current = dest.user;
         if (scl.action?.saveAction?.lastNavPos != undefined) {
             let navScl = await db.story.get(id + scl.action.saveAction.lastNavPos);
             objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
@@ -698,6 +721,8 @@ export function useStoryFuncs() {
     }
 
     function isOnLocation(target: IDestination) {
+        if (target.user !== userState.userLoggedIn.current)
+            return false;
         if (target.level > 0) {
             const location = (window.location.pathname + window.location.search).split('/').slice(0, target.level + 1).join('/');
             const targetLocation = target.where.split('/').slice(0, target.level + 1).join('/');
@@ -880,6 +905,58 @@ export function useStoryFuncs() {
         }
     }
 
+    async function login(nickname: string, password: string): Promise<{ nickname?: string; password?: string }> {
+        const errors: { nickname?: string; password?: string } = {};
+        nickname = nickname.trim();
+        password = password.trim();
+        if (nickname === "")
+            errors.nickname = "Field cannot be empty";
+        if (password === "")
+            errors.password = "Field cannot be empty";
+        if (errors.nickname || errors.password)
+            return errors;
+        const user = await db.users.where("nickname").equals(nickname).toArray();
+        if (user.length != 1 || user[0].savedStoryId == 0) {
+            errors.nickname = "Nickname is not found.";
+            return errors;
+        }
+        if (!user[0].password || user[0].password != password || !userState.isRealLoggedIn.current && user[0].savedStoryId === undefined) {
+            errors.password = "Incorrect password.";
+            return errors;
+        }
+        userState.userLoggedIn.current = nickname;
+        if (!userState.isRealLoggedIn.current) {
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+            window.dispatchEvent(new Event("loggedIn"));
+            userState.isRealLoggedIn.current = true;
+            await recoverCheckpoint(user[0].savedStoryId ?? 0);
+            await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+            return errors;
+        }
+        window.dispatchEvent(new Event("loggedIn"));
+        navigate(`/user/${nickname}`);
+        return errors;
+    }
+
+    function logout() {
+        userState.userLoggedIn.current = "";
+        window.dispatchEvent(new Event("loggedOut"));
+        navigate("/login");
+    }
+
+    const quitGame = contextSafe(async () => {
+        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+        userState.userLoggedIn.current = "";
+        userState.isRealLoggedIn.current = false;
+        window.dispatchEvent(new Event("loggedOut"));
+        navigate("/");
+        await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+    });
+
+    function getExpectedUser() {
+        return locationRef.current?.user;
+    }
+
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -914,6 +991,10 @@ export function useStoryFuncs() {
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
+        login,
+        logout,
+        quitGame,
+        getExpectedUser,
         recoverStoryOnPage,
         getMessages: chatFunc.getMessages,
         resetBuffers: bufferFunc.resetBuffers,

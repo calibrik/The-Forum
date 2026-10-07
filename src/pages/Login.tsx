@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
@@ -20,7 +20,6 @@ type LoginData = {
 export const Login: FC<ILoginProps> = (_) => {
     const nicknameInputRef = useRef<IInputFieldHandle>(null);
     const passwordInputRef = useRef<IInputFieldHandle>(null);
-    let navigate = useNavigate();
     const userState = useUserState();
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
@@ -42,7 +41,7 @@ export const Login: FC<ILoginProps> = (_) => {
         return () => story.setLoginHandle(undefined);
     }, []);
 
-    const onSubmit=contextSafe(async (event: React.FormEvent<HTMLFormElement>) =>{
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (isExpired || onSubmitRunning.current)
             return;
@@ -51,42 +50,14 @@ export const Login: FC<ILoginProps> = (_) => {
             return;
         const formData = new FormData(event.currentTarget);
         const data = Object.fromEntries(formData.entries()) as LoginData;
-        let isGood: boolean = true;
-        if (data.nickname.trim() === "") {
-            nicknameInputRef.current?.setError("Field cannot be empty");
-            isGood = false;
-        }
-        if (data.nickname.trim() === "") {
-            passwordInputRef.current?.setError("Field cannot be empty");
-            isGood = false;
-        }
-        if (!isGood) {
+        const errors = await story.login(data.nickname, data.password);
+        if (errors.nickname)
+            nicknameInputRef.current?.setError(errors.nickname);
+        if (errors.password)
+            passwordInputRef.current?.setError(errors.password);
+        if (errors.nickname || errors.password)
             onSubmitRunning.current = false;
-            return;
-        }
-        let user = await db.users.where("nickname").equals(data.nickname.trim()).toArray();
-        if (user.length != 1||user[0].savedStoryId==0) {
-            nicknameInputRef.current?.setError("Nickname is not found.");
-            onSubmitRunning.current = false;
-            return;
-        }
-        if (!user[0].password || user[0].password != data.password.trim()||!userState.isRealLoggedIn.current&&user[0].savedStoryId===undefined) {
-            passwordInputRef.current?.setError("Incorrect password.");
-            onSubmitRunning.current = false;
-            return;
-        }
-        userState.userLoggedIn.current=data.nickname.trim();   
-        if (!userState.isRealLoggedIn.current) {
-            await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
-            window.dispatchEvent(new Event("loggedIn")); 
-            userState.isRealLoggedIn.current=true;
-            story.recoverCheckpoint(user[0].savedStoryId ?? 0);
-            await story.getAnim("REVERSE_OVERLAY",{duration:2,backgroundColor:"black",overlayNumber:["1"]});
-            return;
-        }
-        window.dispatchEvent(new Event("loggedIn")); 
-        navigate(`/user/${data.nickname}`);
-    });
+    };
 
     function onChange() {
         nicknameInputRef.current?.setError("");
@@ -95,13 +66,20 @@ export const Login: FC<ILoginProps> = (_) => {
 
     const onPasswordForgot = contextSafe(async (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        let users = await db.users.where("savedStoryId").aboveOrEqual(1).toArray();
         if (passwordTl.current) {
             passwordTl.current.kill();
             await getTypingBoxes().get("forgotPassword")?.reset();
         }
-        let content = users.length == 0 ? "You don't even have the account yet, you can't forget what you didn't know, idiot." :
-            `Bro, seriously? How fucking hard is it to remember this? Your nickname is ${users[0].nickname}, password is ${users[0].password}\n\nFucking moron.`;
+        const expected = userState.isRealLoggedIn.current ? story.getExpectedUser() : undefined;
+        const expectedUser = expected ? await db.users.where("nickname").equals(expected).first() : undefined;
+        let content: string;
+        if (expectedUser) {
+            content = `I need to login as ${expectedUser.nickname} and password is uhhhhhhhh ${expectedUser.password} ...I think?`;
+        } else {
+            const user = await db.users.where("savedStoryId").aboveOrEqual(1).first();
+            content = !user ? "You don't even have the account yet, you can't forget what you didn't know, idiot." :
+                `Bro, seriously? How fucking hard is it to remember this? Your nickname is ${user.nickname}, password is ${user.password}\n\nFucking moron.`;
+        }
         const tl = getTypingBoxes().get("forgotPassword")?.getTypingTimeline({
             content: content,
             speed: 50,

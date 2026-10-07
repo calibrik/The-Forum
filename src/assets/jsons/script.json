@@ -4,7 +4,8 @@
             "saveAction": {
                 "dest": {
                     "where": "/start",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -125,7 +126,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/user/#main_hero",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -149,7 +151,8 @@
             "saveAction": {
                 "dest": {
                     "where": "/user/#main_hero",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -280,7 +283,8 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/cyberdivers",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -440,9 +444,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -456,9 +462,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -714,9 +722,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -969,9 +979,11 @@
                     "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 3
+                        "level": 3,
+                        "user": "#main_hero"
                     },
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -985,9 +997,11 @@
                     "where": "/post/p4",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 3
+                        "level": 3,
+                        "user": "#main_hero"
                     },
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -1068,7 +1082,8 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/zero",
-                    "level": 3
+                    "level": 3,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -1126,9 +1141,11 @@
                     "where": "/post/p5",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 3
+                        "level": 3,
+                        "user": "#main_hero"
                     },
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -1221,9 +1238,11 @@
                     "where": "/post/p6",
                     "from": {
                         "where": "/subforum/zero",
-                        "level": 3
+                        "level": 3,
+                        "user": "#main_hero"
                     },
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -1306,7 +1325,8 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/zero",
-                    "level": 3
+                    "level": 3,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -1651,9 +1671,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -1667,9 +1689,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -1939,7 +1963,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/terminal",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2146,7 +2171,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/post/fake",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2209,7 +2235,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/login?expired=true",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2258,7 +2285,7 @@
     },
     {
         "storyline": {
-            "content": "sillygoose228",
+            "content": "Sillygoose228",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nickname",
@@ -2277,7 +2304,7 @@
     },
     {
         "storyline": {
-            "content": "•••••••••••••••••",
+            "content": "•••••••••••••••••••••••••••",
             "speed": 50,
             "delim": "",
             "typingBoxId": "password",
@@ -2291,7 +2318,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/post/deleted",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2349,7 +2377,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/terminal",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2424,7 +2453,8 @@
             "saveAction": {
                 "dest": {
                     "where": "/terminal",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2446,7 +2476,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/terminal/vim?file=PostPage.tsx",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -2844,7 +2875,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/terminal",
-                    "level": 1
+                    "level": 1,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -3262,7 +3294,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/user/#main_hero",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -3285,7 +3318,8 @@
             "saveAction": {
                 "dest": {
                     "where": "/user/#main_hero",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -3297,7 +3331,8 @@
                 "navigate": false,
                 "dest": {
                     "where": "/user/Sillygoose228",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -3405,7 +3440,8 @@
                 "navigate": true,
                 "dest": {
                     "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -3417,10 +3453,12 @@
                 "dest": {
                     "from": {
                         "level": 1,
+                        "user": "#main_hero",
                         "where": "/chat"
                     },
                     "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
-                    "level": 2
+                    "level": 2,
+                    "user": "#main_hero"
                 }
             }
         },
@@ -4234,7 +4272,7 @@
             "sendMessageAction": {
                 "from": "Sillygoose228",
                 "content": "yeah, it's probably nothing",
-                "timeToType": 20
+                "timeToType": 23
             }
         },
         "offset": ">"
@@ -4518,7 +4556,7 @@
             "typingBoxId": "nar1",
             "clearAfter":"+=1.5"
         },
-        "offset": "+=1"
+        "offset": "+=2.5"
     },
     {
         "action": {
@@ -4529,6 +4567,23 @@
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
         "offset": ">" 
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "from": {
+                        "level": 1,
+                        "user": "#main_hero",
+                        "where": "/chat"
+                    },
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
     },
     {
         "storyline": {
@@ -4554,32 +4609,14 @@
                 "navigate": false,
                 "dest": {
                     "where": "/user/Sillygoose228",
-                    "level": 2
+                    "level": 2,
+                    "user": "Sillygoose228"
                 }
             }
         },
+        "isActionAwait":true,
         "hint": "Log out and log in as sillygoose228",
         "offset": "+=1"
-    },
-    {
-        "action": {
-            "setExpectedUser": {
-                "nickname": "Sillygoose228"
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "saveAction": {
-                "dest": {
-                    "where": "/user/Sillygoose228",
-                    "level": 2
-                }
-            }
-        },
-        "isActionAwait": true,
-        "offset": ">"
     },
     {
         "storyline": {
@@ -4596,7 +4633,8 @@
                 "navigate": false,
                 "dest": {
                     "where": "/subforum/zero/settings",
-                    "level": 3
+                    "level": 3,
+                    "user": "Sillygoose228"
                 }
             }
         },
@@ -4608,11 +4646,11 @@
             "saveAction": {
                 "dest": {
                     "where": "/subforum/zero/settings",
-                    "level": 3
+                    "level": 3,
+                    "user": "Sillygoose228"
                 }
             }
         },
-        "isActionAwait": true,
         "offset": ">"
     },
     {
@@ -4670,9 +4708,11 @@
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }
@@ -4682,21 +4722,15 @@
     },
     {
         "action": {
-            "setExpectedUser": {
-                "nickname": "#main_hero"
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
             "saveAction": {
                 "dest": {
                     "where": "/chat/cyberdivers",
                     "level": 2,
+                    "user": "#main_hero",
                     "from": {
                         "where": "/chat",
-                        "level": 1
+                        "level": 1,
+                        "user": "#main_hero"
                     }
                 }
             }

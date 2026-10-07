@@ -11,6 +11,7 @@ import { useUserState } from "../providers/UserAuth";
 import { db, type ISubforum } from "../backend/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
@@ -20,6 +21,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
+    const hintHolders=useHintHolders()
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
@@ -34,6 +36,10 @@ export const Subforum: FC<ISubforumProps> = (_) => {
         }
         setSubforum(subforum);
     }
+
+    useEffect(()=>{
+        hintHolders.transferHints();
+    },[subforum])
 
     useEffect(() => {
         bridge.exec(storyInit,2, getTypingBoxes(), init);
@@ -88,6 +94,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                     <Outlet context={[subforum, getTypingBoxes()]} />
                 </div>
             </div>
+            <HintHolder ref={hintHolders.setHintHolder("settings")} id="settings"/>
         </>
     );
 }

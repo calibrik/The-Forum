@@ -126,6 +126,11 @@ export interface IAddNewChatAction {
 	type: "gc" | "dm",
 }
 
+export interface IAddPasswordForAction {
+	nickname: string,
+	password: string,
+}
+
 export interface ISetTerminalCommandAction {
 	command: string,
 	output?: string,
@@ -171,6 +176,7 @@ export interface IAction {
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	addNewChat?: IAddNewChatAction,
+	addPasswordFor?: IAddPasswordForAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
@@ -204,6 +210,7 @@ export interface IUser {
 export interface IDestination {
 	where: string
 	level: number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
+	user: string //nickname of the user that is expected to be logged in at this destination
 	from?:IDestination
 }
 
@@ -233,7 +240,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	storyMessagesBuffer: EntityTable<IMessage, "id">
 }
 
-db.version(229).stores({
+db.version(231).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

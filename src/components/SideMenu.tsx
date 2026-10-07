@@ -2,9 +2,7 @@ import { type FC, useCallback, useEffect, useRef, useState } from "react";
 import { Home, Chat, Gear, Leave, QuestionHint } from "./Icons";
 import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
-import { useUserState } from "../providers/UserAuth";
 import { useStory } from "../providers/StoryProvider";
-import { useGSAP } from "@gsap/react";
 
 interface ISideMenuProps { };
 
@@ -13,9 +11,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     const [hintText, setHintText] = useState<string>("");
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
-    const userState = useUserState();
     const story = useStory();
-    const { contextSafe } = useGSAP();
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
         e.preventDefault();
@@ -29,21 +25,14 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     function onLogout(e: React.MouseEvent<HTMLDivElement>) {
         e.preventDefault();
         setIsOpen(false);
-        userState.userLoggedIn.current = "";
-        window.dispatchEvent(new Event("loggedOut"));
-        navigate("/login");
+        story.logout();
     }
 
-    const onRealLogout = contextSafe(async (e: React.MouseEvent) => {
+    function onRealLogout(e: React.MouseEvent) {
         e.preventDefault();
         setIsOpen(false);
-        await story.getAnim("COLOR_OVERLAY",{duration:2,backgroundColor:"black",opacity:1,overlayNumber:["1"]});
-        userState.userLoggedIn.current = "";
-        userState.isRealLoggedIn.current = false;
-        window.dispatchEvent(new Event("loggedOut"));
-        navigate("/");
-        await story.getAnim("REVERSE_OVERLAY",{duration:2,backgroundColor:"black",overlayNumber:["1"]});
-    })
+        story.quitGame();
+    }
 
     const toggleOpen = useCallback(() => {
         setIsOpen((p) => !p);
@@ -107,7 +96,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
                     </div>
                 </div>
                 : ""}
-            <div onClick={onLogout} className={`${styles.itemDiv} ${styles.leaveDiv}`}>
+            <div onClick={onLogout} id="logout" className={`${styles.itemDiv} ${styles.leaveDiv}`}>
                 <Leave className={styles.icon} />
                 <span className={styles.itemName}>Log Out</span>
             </div>
