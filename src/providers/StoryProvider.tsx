@@ -25,6 +25,8 @@ interface IStoryHook {
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
+    setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
+    toggleDemoting: () => void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
@@ -56,7 +58,7 @@ const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
         }
         if (ctx.userLoggedIn == ctx.targetLocation[2])
             return ["user-icon-text"];
-        ctx.searchField?.setSuggestionHint(`u/${ctx.targetLocation[2]}`);
+        ctx.searchField?.setSuggestionHint([`u/${ctx.targetLocation[2]}`]);
         return ["header-search", ""];
     },
     "subforum": (ctx) => {
@@ -65,7 +67,7 @@ const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
         if (ctx.mismatchedLevel == 3) {
             return [ctx.targetLocation[3] ?? "posts"];
         }
-        ctx.searchField?.setSuggestionHint(`f/${ctx.targetLocation[2]}`);
+        ctx.searchField?.setSuggestionHint([`f/${ctx.targetLocation[2]}`]);
         return ["header-search", ""];
     },
     "chat": (ctx) => {
@@ -388,14 +390,14 @@ export function useBuffers() {
     const preserveBuffers = useRef<boolean>(false);
 
     async function enablePreserveBuffers() {
-        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count()]);
+        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count(), db.subforumsBuffer.count()]);
         if (counts.every((c) => c == 0))
             return;
         preserveBuffers.current = true;
     }
 
     async function resetBuffers() {
-        await Promise.all([db.postsBuffer.clear(), db.chatsBuffer.clear(), db.usersBuffer.clear(), db.storyMessagesBuffer.clear()]);
+        await Promise.all([db.postsBuffer.clear(), db.chatsBuffer.clear(), db.usersBuffer.clear(), db.storyMessagesBuffer.clear(), db.subforumsBuffer.clear()]);
     }
 
     async function sinkBuffers() {
@@ -403,6 +405,7 @@ export function useBuffers() {
         await db.chats.bulkPut(await db.chatsBuffer.toArray());
         await db.users.bulkPut(await db.usersBuffer.toArray());
         await db.storyMessages.bulkPut(await db.storyMessagesBuffer.toArray());
+        await db.subforums.bulkPut(await db.subforumsBuffer.toArray());
         await resetBuffers();
         preserveBuffers.current = false;
     }
@@ -553,6 +556,24 @@ export function useVim() {
     return { setVimHandle, setVimType };
 }
 
+export interface ISubforumSettingsHandle {
+    toggleDemoting: () => void;
+}
+
+export function useSubforumSettings() {
+    const subforumSettingsHandle = useRef<ISubforumSettingsHandle>(undefined);
+
+    function setSubforumSettingsHandle(handle?: ISubforumSettingsHandle) {
+        subforumSettingsHandle.current = handle;
+    }
+
+    function toggleDemoting() {
+        subforumSettingsHandle.current?.toggleDemoting();
+    }
+
+    return { setSubforumSettingsHandle, toggleDemoting };
+}
+
 export function useStoryFuncs() {
     const typingBoxes = useRef<Map<string, ITypingTextBoxHandle>>(new Map());//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
@@ -576,6 +597,7 @@ export function useStoryFuncs() {
     const loginFunc = useLogin();
     const terminalFunc = useTerminal();
     const vimFunc = useVim();
+    const subforumSettingsFunc = useSubforumSettings();
 
     function isStoryGoing() {
         return masterRef.current != undefined;
@@ -639,8 +661,8 @@ export function useStoryFuncs() {
         if (action.hintAction) {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
-        if (action.setTextBoxStyleAction) {
-            typingBoxes.current.get(action.setTextBoxStyleAction.id)?.applyStyle(action.setTextBoxStyleAction.style);
+        if (action.setTypingBoxStyleAction) {
+            typingBoxes.current.get(action.setTypingBoxStyleAction.id)?.applyStyle(action.setTypingBoxStyleAction.style);
         }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
@@ -662,6 +684,15 @@ export function useStoryFuncs() {
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
+        }
+        if (action.setModsToRemove) {
+            const targetSubforum = await db.subforumsBuffer.where("name").equals(action.setModsToRemove.subforum).first()
+                ?? await db.subforums.where("name").equals(action.setModsToRemove.subforum).first();
+            if (targetSubforum) {
+                await db.subforumsBuffer.put(targetSubforum);
+                hintFunc.setStoryHint(["demote-search", "", "demote-submit"]);
+                subforumSettingsFunc.toggleDemoting();
+            }
         }
         if (action.setTerminalCommandAction) {
             hintFunc.setStoryHint(["terminal-input"], true);
@@ -881,7 +912,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 216 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 341 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1001,6 +1032,8 @@ export function useStoryFuncs() {
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
+        setSubforumSettingsHandle: subforumSettingsFunc.setSubforumSettingsHandle,
+        toggleDemoting: subforumSettingsFunc.toggleDemoting,
         setTerminalHandle: terminalFunc.setTerminalHandle,
         setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,

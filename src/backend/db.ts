@@ -92,7 +92,7 @@ export interface ISaveAction {
 	lastNavPos?: number
 }
 
-export interface ISetTextBoxStyleAction {
+export interface ISetTypingBoxStyleAction {
 	id: string,
 	style: React.CSSProperties
 }
@@ -102,6 +102,10 @@ export type IShowPlaceholderField = "nickname" | "password";
 export interface ISetShowPlaceholdersAction {
 	field: IShowPlaceholderField,
 	show: boolean,
+}
+
+export interface ISetModsToRemoveAction {
+	subforum: string,
 }
 
 export interface IHintAction {
@@ -171,13 +175,14 @@ export interface IClearTypingTextBoxes {
 export interface IAction {
 	navigateAction?: INavigateAction,
 	saveAction?: ISaveAction
-	setTextBoxStyleAction?: ISetTextBoxStyleAction
+	setTypingBoxStyleAction?: ISetTypingBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	addNewChat?: IAddNewChatAction,
 	addPasswordFor?: IAddPasswordForAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
+	setModsToRemove?: ISetModsToRemoveAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
 	setTypingBoxContentAction?: ISetTypingBoxContentAction,
@@ -238,9 +243,10 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	chatsBuffer: EntityTable<IChat, "id">
 	usersBuffer: EntityTable<IUser, "id">
 	storyMessagesBuffer: EntityTable<IMessage, "id">
+	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(231).stores({
+db.version(234).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -250,7 +256,8 @@ db.version(231).stores({
 	postsBuffer: "id, author, subforum",
 	chatsBuffer: "id, *owner",
 	usersBuffer: "++id, nickname, savedStoryId",
-	storyMessagesBuffer: "id,chatId"
+	storyMessagesBuffer: "id,chatId",
+	subforumsBuffer: "++id, name"
 }).upgrade(async () => {
 	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')

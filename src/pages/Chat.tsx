@@ -187,7 +187,7 @@ export const Chat: FC<IChatProps> = () => {
         setIsMenuOpen(prev => !prev);
     }
 
-    function onChatMenuAction() {
+    function onBlockOrLeave() {
         setIsMenuOpen(false);
         story.resumeStoryFromHint("block-user-text");
     }
@@ -285,7 +285,7 @@ export const Chat: FC<IChatProps> = () => {
                             <ThreeDots id="chat-menu-dots-text" interactive onClick={onMenuToggle} className={styles.menuDots} />
                             {isMenuOpen ?
                                 <div className={styles.dropdownMenu}>
-                                    <div id="block-user-text" className={styles.menuOption} onClick={onChatMenuAction}>{chat.type === "gc" ? "Leave" : "Block"}</div>
+                                    <div id="block-user-text" className={styles.menuOption} onClick={onBlockOrLeave}>{chat.type === "gc" ? "Leave" : "Block"}</div>
                                 </div>
                                 : ""}
                         </div>

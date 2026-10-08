@@ -172,12 +172,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "10%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -239,12 +238,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "20%",
-                    "left": "5%",
-                    "width": "clamp(150px,36cqw,400px)"
+                    "left": "5%"
                 }
             }
         },
@@ -294,12 +292,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "30%",
-                    "right": "10%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "right": "10%"
                 }
             }
         },
@@ -372,11 +369,10 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "top": "20%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "top": "20%"
                 }
             }
         },
@@ -610,10 +606,9 @@
                     },
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
                                     "top": "50%",
                                     "right": "5%"
                                 }
@@ -678,7 +673,7 @@
                     },
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
                                     "width": "auto",
@@ -887,10 +882,9 @@
                     },
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
                                     "top": "10%",
                                     "right": "5%"
                                 }
@@ -942,10 +936,9 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "width": "clamp(200px,50cqw,500px)",
                     "top": "15%",
                     "left": "5%"
                 }
@@ -1010,10 +1003,9 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "width": "clamp(200px,50cqw,500px)",
                     "top": "42%",
                     "right": "5%"
                 }
@@ -1093,10 +1085,9 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "width": "clamp(200px,50cqw,500px)",
                     "top": "55%",
                     "right": "5%"
                 }
@@ -1177,10 +1168,9 @@
                 [
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
                                     "top": "28%",
                                     "left": "5%"
                                 }
@@ -1275,10 +1265,9 @@
                 [
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
                                     "top": "18%",
                                     "right": "15%"
                                 }
@@ -1359,10 +1348,9 @@
                 [
                     {
                         "action": {
-                            "setTextBoxStyleAction": {
+                            "setTypingBoxStyleAction": {
                                 "id": "nar1",
                                 "style": {
-                                    "width": "clamp(200px,50cqw,500px)",
                                     "top": "20%"
                                 }
                             }
@@ -1431,7 +1419,7 @@
                                     },
                                     {
                                         "action": {
-                                            "setTextBoxStyleAction": {
+                                            "setTypingBoxStyleAction": {
                                                 "id": "nar2",
                                                 "style": {
                                                     "width": "auto",
@@ -1876,10 +1864,9 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "width": "clamp(200px,50cqw,500px)",
                     "top": "50%",
                     "right": "5%"
                 }
@@ -1972,7 +1959,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "10%",
@@ -2192,12 +2179,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "25%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -2244,12 +2230,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "25%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -2327,12 +2312,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "25%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -2386,7 +2370,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "10%",
@@ -2485,12 +2469,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "18%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -2693,12 +2676,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "60%",
-                    "left": "20%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "20%"
                 }
             }
         },
@@ -2897,12 +2879,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "18%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -3342,12 +3323,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "10%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -3445,6 +3425,7 @@
                 }
             }
         },
+        "hint":"Go to the chat with Sillygoose228",
         "offset": ">"
     },
     {
@@ -3466,12 +3447,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "12%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -3740,7 +3720,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar2",
                 "style": {
                     "top": "6%",
@@ -3753,7 +3733,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar3",
                 "style": {
                     "top": "16%",
@@ -3766,7 +3746,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar4",
                 "style": {
                     "top": "30%",
@@ -3779,7 +3759,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar5",
                 "style": {
                     "top": "34%",
@@ -3792,7 +3772,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar6",
                 "style": {
                     "top": "48%",
@@ -3805,7 +3785,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar7",
                 "style": {
                     "bottom": "28%",
@@ -3818,7 +3798,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar8",
                 "style": {
                     "top": "62%",
@@ -3831,7 +3811,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar9",
                 "style": {
                     "bottom": "12%",
@@ -3844,7 +3824,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar10",
                 "style": {
                     "bottom": "8%",
@@ -3857,7 +3837,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "42%",
@@ -3977,7 +3957,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top":"40%",
@@ -4036,12 +4016,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "12%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -4105,7 +4084,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top":"40%",
@@ -4169,12 +4148,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "12%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -4298,7 +4276,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar2",
                 "style": {
                     "top": "10%",
@@ -4311,7 +4289,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar3",
                 "style": {
                     "top": "26%",
@@ -4324,7 +4302,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar4",
                 "style": {
                     "top": "42%",
@@ -4337,7 +4315,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar5",
                 "style": {
                     "bottom": "30%",
@@ -4350,7 +4328,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar6",
                 "style": {
                     "bottom": "10%",
@@ -4363,7 +4341,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar7",
                 "style": {
                     "top": "62%",
@@ -4376,7 +4354,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar8",
                 "style": {
                     "top": "12%",
@@ -4389,7 +4367,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar9",
                 "style": {
                     "top": "30%",
@@ -4402,7 +4380,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar10",
                 "style": {
                     "bottom": "6%",
@@ -4415,7 +4393,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "42%",
@@ -4537,12 +4515,11 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "top": "12%",
-                    "left": "5%",
-                    "width": "clamp(200px,50cqw,500px)"
+                    "left": "5%"
                 }
             }
         },
@@ -4619,11 +4596,24 @@
         "offset": "+=1"
     },
     {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "12%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
         "storyline": {
-            "content": "Now I need to remove all the modes and transfer the ownership to my account.",
+            "content": "Now I need to remove all the mods and transfer the ownership to my account.",
             "speed": 50,
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "clearAfter":"+=1.5"
         },
         "offset": ">"
     },
@@ -4651,6 +4641,7 @@
                 }
             }
         },
+        "isActionAwait":true,
         "offset": ">"
     },
     {
@@ -4661,6 +4652,28 @@
         },
         "isActionAwait": true,
         "hint": "Demote all the mods of the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "12%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And now transfer ownership to me.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter":"+=1.5"
+        },
         "offset": ">"
     },
     {
@@ -4697,7 +4710,8 @@
             "content": "Now I gotta go back and tell cyberdivers I got the keys.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -4740,7 +4754,7 @@
     },
     {
         "action": {
-            "setTextBoxStyleAction": {
+            "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
                     "width": "auto",
@@ -4776,7 +4790,8 @@
             "sendMessageAction": {
                 "from": "Sinius",
                 "content": "just stop giving attention to this clown ass",
-                "timeToType": 4
+                "timeToType": 4,
+                "isReplyDiff":-1
             }
         },
         "offset": "+=3.5"
@@ -4798,7 +4813,7 @@
                 "content": "I hacked the zero sub"
             }
         },
-        "offset": "+=2"
+        "offset": ">"
     },
     {
         "action": {
@@ -4807,6 +4822,6 @@
                 "content": "check the admins"
             }
         },
-        "offset": "+=1"
+        "offset": ">"
     }
 ]

@@ -729,7 +729,7 @@ describe("useStoryFuncs", () => {
             const applyStyleSpy = vi.fn();
             const mockRef = { applyStyle: applyStyleSpy } as unknown as ITypingTextBoxHandle;
             result.current!._getTypingBoxes!().current = new Map([["nar1", mockRef]]);
-            await result.current!._processAction!({ setTextBoxStyleAction: { id: "nar1", style: { color: "red" } } }, 10);
+            await result.current!._processAction!({ setTypingBoxStyleAction: { id: "nar1", style: { color: "red" } } }, 10);
             expect(applyStyleSpy).toHaveBeenCalledWith({ color: "red" });
         });
         test("sendMessage action", async () => {

@@ -8,6 +8,7 @@
     z-index:20;
     line-height: 1.3;
     font-size: clamp(0.9rem, 3cqw, 1.3rem);
+    width: clamp(200px,50cqw,500px);
     pointer-events: none;
     background-color: colors.$system-app-bg-transluscent;
     // border-radius: 6px;
