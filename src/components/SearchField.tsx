@@ -54,6 +54,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
         if (props.onSuggestionClick)
             await props.onSuggestionClick(name);
         inputRef.current?.setInput("");
+        inputRef.current?.blur();
         setIsFocused(false);
     }
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FC } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
@@ -67,16 +67,6 @@ export const Terminal: FC = () => {
     }, []);
 
     useEffect(() => {
-        inputRef.current?.focus();
-    }, []);
-
-    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
-        const target = e.relatedTarget;
-        if (target === null || !e.currentTarget.contains(target as Node))
-            inputRef.current?.focus();
-    }
-
-    useEffect(() => {
         outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
     }, [history]);
 
@@ -99,6 +89,7 @@ export const Terminal: FC = () => {
         }
         else if (expectedCmd !== "" && cmd === expectedCmd) {
             output = expectedOutput.current;
+            story.goBackwardHint("");
             story.resumeStoryFromHint("terminal-input");
         }
         else {
@@ -121,7 +112,7 @@ export const Terminal: FC = () => {
     return (
         <>
             <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
-            <div className={systemStyles.container} onBlur={onContainerBlur}>
+            <div className={systemStyles.container}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
@@ -144,7 +135,7 @@ export const Terminal: FC = () => {
                                 <div className={styles.promptPrefix}>
                                     {prefix}
                                 </div>
-                                <Textarea onKeyDown={onSubmit} ref={inputRef} name="command" cursorType="terminal" className={styles.promptInput} />
+                                <Textarea onKeyDown={onSubmit} id="terminal-input" ref={inputRef} name="command" cursorType="terminal" onFocus={() => story.goForwardHint("terminal-input")} onBlur={() => story.goBackwardHint("")} className={styles.promptInput} />
                             </form>
                         </div>
                     </div>

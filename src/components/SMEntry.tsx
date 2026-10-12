@@ -17,7 +17,7 @@ export const SMEntry: FC<ISMEntryProps> = (props) => {
     let navigate = useNavigate();
     const [pfp, setPfp] = useState<string | undefined>(undefined)
 
-    function onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    function onClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>|React.TouchEvent<HTMLDivElement>) {
         e.preventDefault();
         e.stopPropagation();
         if (props.onClick)
@@ -43,7 +43,7 @@ export const SMEntry: FC<ISMEntryProps> = (props) => {
 
     // const icon = props.isSelected ? <CheckCircleFill className={styles.icon} /> : <CheckCircle className={styles.icon} />
     return (
-        <div tabIndex={-1} onClick={onClick} className={`${styles.container} ${props.isSelected ? styles.selected : ""} ${props.className}`}>
+        <div tabIndex={-1} onClick={onClick} onTouchEnd={onClick} className={`${styles.container} ${props.isSelected ? styles.selected : ""} ${props.className}`}>
             {props.isSelected ? <CheckCircleFill className={styles.icon} /> : ""}
             <img src={getImageUrl(pfp ?? "placeholder.png")} className={styles.pfp} />
             <span className={styles.name}>{props.type == "user" ? "u/" : "f/"}{props.name}</span>

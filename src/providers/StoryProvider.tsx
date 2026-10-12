@@ -710,7 +710,7 @@ export function useStoryFuncs() {
             }
         }
         if (action.setTerminalCommandAction) {
-            hintFunc.setStoryHint(["terminal-input"], true);
+            hintFunc.setStoryHint(["terminal-input", ""]);
             terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
         }
         if (action.addTerminalHistoryAction) {
@@ -720,7 +720,7 @@ export function useStoryFuncs() {
             terminalFunc.setPromptVisibility(action.setPromptVisibilityAction.visible);
         }
         if (action.vimTypeAction) {
-            hintFunc.setStoryHint(["vim-input"], true);
+            hintFunc.setStoryHint(["vim-input", ""]);
             vimFunc.setVimType(action.vimTypeAction.content);
         }
         if (action.setTypingBoxContentAction) {
@@ -927,7 +927,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 104 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();

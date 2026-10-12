@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type FC, type FocusEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
@@ -9,6 +9,7 @@ import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
 import { commonPrefixLength, getContainerCharCapacity } from "../utils";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 
 export const Vim: FC = () => {
     const inputRef = useRef<IInputFieldHandle>(null);
@@ -27,6 +28,7 @@ export const Vim: FC = () => {
     const textToType = useRef<string>("")
     const [numeratedLines, setNumeratedLines] = useState<string[]>(["1"]);
     const [tildeCount, setTildeCount] = useState<number>(0);
+    const hintHolders = useHintHolders();
 
     function updateCounts(content: string) {
         setLineCount(content === "" ? 0 : content.split("\n").length);
@@ -41,7 +43,7 @@ export const Vim: FC = () => {
     function setTextToType(text: string) {
         if (text !== "") {
             const content = getTypingBoxes().get("buffer")?.getContent() ?? "";
-            textToType.current = content+text;
+            textToType.current = content + text;
             setHasTextToType(true);
         } else {
             const content = inputRef.current?.getInput() ?? "";
@@ -92,6 +94,7 @@ export const Vim: FC = () => {
         calculateNumeratedLines();
         if (inputRef.current?.isStringTyped()) {
             setTextToType("");
+            story.goBackwardHint("");
             story.resumeStoryFromHint("vim-input");
         }
     }
@@ -104,17 +107,10 @@ export const Vim: FC = () => {
         calculateNumeratedLines();
     }
 
-    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
-        const target = e.relatedTarget;
-        if ((target === null || !e.currentTarget.contains(target as Node)) && hasTextToType)
-            inputRef.current?.focus();
-    }
-
     useEffect(() => {
-        if (hasTextToType) {
+        if (hasTextToType)
             applyTextToType(textToType.current);
-            inputRef.current?.focus();
-        }
+        hintHolders.transferHints();
     }, [hasTextToType]);
 
     useEffect(() => {
@@ -136,7 +132,7 @@ export const Vim: FC = () => {
     return (
         <>
             <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
-            <div className={systemStyles.container} onBlur={onContainerBlur}>
+            <div className={systemStyles.container}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
@@ -157,7 +153,7 @@ export const Vim: FC = () => {
                                 ))}
                             </div>
                             <div ref={bufferRef} className={styles.bufferText}>
-                                <Textarea typeSpeed={10} ref={inputRef} scripted onChange={onInputChange} cursorType="terminal" name="command" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
+                                <Textarea typeSpeed={10} ref={inputRef} id="vim-input" scripted onChange={onInputChange} cursorType="terminal" name="command" onFocus={() => story.goForwardHint("vim-input")} onBlur={() => story.goBackwardHint("")} className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
                                 <TypingTextBox ref={setTypingBox("buffer")} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
                             </div>
 
@@ -174,6 +170,7 @@ export const Vim: FC = () => {
                     </div>
                 </div>
             </div>
+            <HintHolder id="vim-input" ref={hintHolders.setHintHolder("vim-input")} />
         </>
     );
 };

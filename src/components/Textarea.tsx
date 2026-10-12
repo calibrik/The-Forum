@@ -226,7 +226,7 @@ export const Textarea = forwardRef<IInputFieldHandle, ITextareaProps>((props, re
             <div style={props.style} className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
-                    <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
+                    <span ref={placeholder} className={styles.placeholder}>{props.placeholder}</span>
                     <textarea
                         onKeyDown={onKeyDown}
                         onKeyUp={onKeyUp}
