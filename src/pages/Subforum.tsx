@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import { bridge, getImageUrl, numberToText } from "../utils";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
@@ -18,6 +18,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const storyInit = useStoryInit();
     const userState = useUserState();
     const navigate = useNavigate();
+    const location = useLocation();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
@@ -28,7 +29,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
             navigate("/")
             return;
         }
-        const subforum = await db.subforums.where("name").equals(name??"").first();
+        const subforum = await db.subforumsBuffer.where("name").equals(name ?? "").first() ?? await db.subforums.where("name").equals(name ?? "").first();
         if (!subforum) {
             console.error(`No ${name} subforum found.`)
             navigate("/404", { replace: true })
@@ -43,7 +44,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     useEffect(() => {
         bridge.exec(storyInit,2, getTypingBoxes(), init);
-    }, [name])
+    }, [location.pathname])
 
     let menuOptions: IMenuOption[] = [
         {

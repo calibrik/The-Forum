@@ -26,7 +26,8 @@ interface IStoryHook {
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
     setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
-    toggleDemoting: () => void;
+    setDemoteTarget: (mods?: string[]) => void;
+    setTransferTarget: (user?: string) => void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
@@ -557,7 +558,8 @@ export function useVim() {
 }
 
 export interface ISubforumSettingsHandle {
-    toggleDemoting: () => void;
+    setDemoteTarget: (mods?: string[]) => void;
+    setTransferTarget: (user?: string) => void;
 }
 
 export function useSubforumSettings() {
@@ -567,11 +569,15 @@ export function useSubforumSettings() {
         subforumSettingsHandle.current = handle;
     }
 
-    function toggleDemoting() {
-        subforumSettingsHandle.current?.toggleDemoting();
+    function setDemoteTarget(mods?: string[]) {
+        subforumSettingsHandle.current?.setDemoteTarget(mods);
     }
 
-    return { setSubforumSettingsHandle, toggleDemoting };
+    function setTransferTarget(user?: string) {
+        subforumSettingsHandle.current?.setTransferTarget(user);
+    }
+
+    return { setSubforumSettingsHandle, setDemoteTarget, setTransferTarget };
 }
 
 export function useStoryFuncs() {
@@ -691,7 +697,16 @@ export function useStoryFuncs() {
             if (targetSubforum) {
                 await db.subforumsBuffer.put(targetSubforum);
                 hintFunc.setStoryHint(["demote-search", "", "demote-submit"]);
-                subforumSettingsFunc.toggleDemoting();
+                subforumSettingsFunc.setDemoteTarget(targetSubforum.mods);
+            }
+        }
+        if (action.setTransferTo) {
+            const targetSubforum = await db.subforumsBuffer.where("name").equals(action.setTransferTo.subforum).first()
+                ?? await db.subforums.where("name").equals(action.setTransferTo.subforum).first();
+            if (targetSubforum) {
+                await db.subforumsBuffer.put(targetSubforum);
+                hintFunc.setStoryHint(["transfer-search", "", "transfer-submit"]);
+                subforumSettingsFunc.setTransferTarget(action.setTransferTo.user);
             }
         }
         if (action.setTerminalCommandAction) {
@@ -912,7 +927,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 341 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 104 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1033,7 +1048,8 @@ export function useStoryFuncs() {
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
         setSubforumSettingsHandle: subforumSettingsFunc.setSubforumSettingsHandle,
-        toggleDemoting: subforumSettingsFunc.toggleDemoting,
+        setDemoteTarget: subforumSettingsFunc.setDemoteTarget,
+        setTransferTarget: subforumSettingsFunc.setTransferTarget,
         setTerminalHandle: terminalFunc.setTerminalHandle,
         setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,

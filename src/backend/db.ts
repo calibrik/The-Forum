@@ -108,6 +108,11 @@ export interface ISetModsToRemoveAction {
 	subforum: string,
 }
 
+export interface ISetTransferToAction {
+	subforum: string,
+	user: string,
+}
+
 export interface IHintAction {
 	ids: string[],
 }
@@ -183,6 +188,7 @@ export interface IAction {
 	addPasswordFor?: IAddPasswordForAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setModsToRemove?: ISetModsToRemoveAction,
+	setTransferTo?: ISetTransferToAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
 	setTypingBoxContentAction?: ISetTypingBoxContentAction,
@@ -246,7 +252,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(234).stores({
+db.version(239).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

@@ -1,60 +1,30 @@
-import { useEffect, useRef, useState, type FC } from "react";
+import { useEffect, type FC } from "react";
 import { Header } from "../components/Header";
 import { Outlet, ScrollRestoration } from "react-router";
 import styles from '../scss/layout.module.scss';
 import { SideMenu } from "../components/SideMenu";
 import { ModalsProvider } from "../providers/Modals";
 import { useStoryInit } from "../providers/StoryProvider";
-import { useUserState } from "../providers/UserAuth";
 import { bridge } from "../utils";
 interface ILayoutProps { };
 
 export const Layout: FC<ILayoutProps> = (_) => {
     const storyInit = useStoryInit();
-    const isLoggedInResolveRef = useRef<() => void>(undefined);
-    const isLoggedInPromiseRef = useRef<Promise<void>>(undefined);
-    const userState = useUserState();
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current !== "");
-
+    
     function init() {
-        bridge.exec(storyInit,0, new Map(), async () => {
-            await isLoggedInPromiseRef.current;
-        });
-    }
-
-    function onLogin() {
-        isLoggedInPromiseRef.current = waitForIsLoggedIn();
-        setIsLoggedIn(true);
-    }
-
-    function onLogout() {
-        isLoggedInPromiseRef.current = waitForIsLoggedIn();
-        setIsLoggedIn(false);
+        bridge.exec(storyInit,0, new Map());
     }
 
     useEffect(() => {
-        if (isLoggedInResolveRef.current)
-            isLoggedInResolveRef.current();
-    }, [isLoggedIn])
-
-    function waitForIsLoggedIn() {
-        return new Promise<void>((resolve) => isLoggedInResolveRef.current = resolve);
-    }
-
-    useEffect(() => {
-        window.addEventListener("loggedIn", onLogin);
-        window.addEventListener("loggedOut", onLogout);
         window.addEventListener("signalLevel0",init);
         return () => {
-            window.removeEventListener("loggedIn", onLogin);
-            window.removeEventListener("loggedOut", onLogout);
             window.removeEventListener("signalLevel0",init);
         }
     }, [])
 
     return (
         <div id="containerGlobal" className={styles.container}>
-            <Header isLoggedIn={isLoggedIn} />
+            <Header />
             <div className={styles.containerFullWindow}>
                 <SideMenu />
                 <ModalsProvider>

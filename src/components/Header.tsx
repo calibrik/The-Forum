@@ -5,8 +5,8 @@ import { useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { SearchField } from "./SearchField";
-interface IHeaderProps { 
-    isLoggedIn:boolean
+import { HintHolder, useHintHolders } from "./HintHolder";
+interface IHeaderProps {
 };
 
 interface IHeaderLoggedInProps { };
@@ -17,7 +17,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
     const div = useRef<HTMLDivElement>(null);
     const story = useStory();
-    const userState=useUserState();
+    const userState = useUserState();
 
     let navigate = useNavigate();
 
@@ -50,7 +50,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
             <div id="header-div" className={styles.container}>
                 {!isMobile ?
                     <div className={styles.inputDiv}>
-                        <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav/>
+                        <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav />
                     </div>
                     : ""}
                 <div ref={div} className={styles.headerContainer}>
@@ -61,7 +61,7 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
                     {isMobile ?
                         <div className={styles.inputDiv}>
                             <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
-                            <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav/>
+                            <SearchField ref={story.setHeaderSearch} id="header-search" className={styles.input} isSuggestionNav />
                         </div>
                         : ""}
                     <Person onClick={() => navigate(`/user/${userState.userLoggedIn.current}`)} id="user-icon-text" interactive className={`${styles.person} ${styles.icon}`} />
@@ -80,9 +80,38 @@ const HeaderLoggedOff: FC<IHeaderLoggedOffProps> = (_) => {
 }
 
 
-export const Header: FC<IHeaderProps> = (props) => {
-    
+export const Header: FC<IHeaderProps> = (_) => {
+    const userState = useUserState();
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(userState.userLoggedIn.current !== "");
+    const hintHolders = useHintHolders();
+
+    function onLogin() {
+        setIsLoggedIn(true);
+    }
+
+    function onLogout() {
+        setIsLoggedIn(false);
+    }
+
+    useEffect(() => {
+        window.addEventListener("loggedIn", onLogin);
+        window.addEventListener("loggedOut", onLogout);
+        return () => {
+            window.removeEventListener("loggedIn", onLogin);
+            window.removeEventListener("loggedOut", onLogout);
+        }
+    }, [])
+
+    useEffect(() => {
+        hintHolders.transferHints();
+    }, [isLoggedIn])
+
     return (
-        <>{props.isLoggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOff />}</>
+        <>
+            {isLoggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOff />}
+            <HintHolder id="menu-icon-text" ref={hintHolders.setHintHolder("menu-icon-text")} />
+            <HintHolder id="header-search" ref={hintHolders.setHintHolder("header-search")} />
+            <HintHolder id="user-icon-text" ref={hintHolders.setHintHolder("user-icon-text")} />
+        </>
     );
 }

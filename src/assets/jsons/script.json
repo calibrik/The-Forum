@@ -1931,6 +1931,24 @@
         "offset": "+=0.3"
     },
     {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
         "effect": {
             "name": "COLOR_OVERLAY",
             "options": {
@@ -4138,7 +4156,7 @@
     },
     {
         "storyline": {
-            "content": "I FORGOT TO CHANGE AN AUTHOR OF THE POST FROM PLACEHOLDER.",
+            "content": "I FORGOT TO CHANGE AN AUTHOR OF THE POST FROM THE PLACEHOLDER.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
@@ -4563,6 +4581,18 @@
         "offset": ">"
     },
     {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "12%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
         "storyline": {
             "content": "Now the fun part.",
             "speed": 50,
@@ -4576,7 +4606,8 @@
             "content": "I need to log out and log in as him and take over the sub.",
             "speed": 50,
             "delim": " ",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "clearAfter":"+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -4593,7 +4624,7 @@
         },
         "isActionAwait":true,
         "hint": "Log out and log in as sillygoose228",
-        "offset": "+=1"
+        "offset": ">"
     },
     {
         "action": {
@@ -4609,7 +4640,7 @@
     },
     {
         "storyline": {
-            "content": "Now I need to remove all the mods and transfer the ownership to my account.",
+            "content": "Now I need to remove all the mods from the zero subforum and transfer the ownership to my account.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
@@ -4629,7 +4660,7 @@
             }
         },
         "hint": "Open the f/zero subforum settings",
-        "offset": "+=1"
+        "offset": ">"
     },
     {
         "action": {
@@ -4688,13 +4719,40 @@
         "offset": ">"
     },
     {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero/members",
+                    "level": 3,
+                    "user": "Sillygoose228"
+                }
+            }
+        },
+        "isActionAwait":true,
+        "hint": "Open the f/zero members list",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "12%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
         "storyline": {
             "content": "And I'm done lol.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1"
         },
-        "offset": "+=1"
+        "offset": "+=2"
     },
     {
         "storyline": {
@@ -4732,7 +4790,7 @@
             }
         },
         "hint": "Log out and log in as #main_hero and open the 'cyberdivers' chat",
-        "offset": "+=1"
+        "offset": ">"
     },
     {
         "action": {
@@ -4773,7 +4831,7 @@
                 "timeToType": 2.5
             }
         },
-        "offset": ">"
+        "offset": "+=2"
     },
     {
         "action": {
@@ -4783,7 +4841,7 @@
                 "timeToType": 3.5
             }
         },
-        "offset": "+=2.5"
+        "offset": "+=3"
     },
     {
         "action": {
@@ -4794,7 +4852,7 @@
                 "isReplyDiff":-1
             }
         },
-        "offset": "+=3.5"
+        "offset": "+=4"
     },
     {
         "action": {
@@ -4804,24 +4862,26 @@
                 "timeToType": 2
             }
         },
-        "offset": "+=4"
+        "offset": "+=4.5"
     },
     {
         "action": {
-            "sendMessageAction": {
-                "from": "#main_hero",
+            "promptMessageAction": {
                 "content": "I hacked the zero sub"
             }
         },
-        "offset": ">"
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=2.5"
     },
     {
         "action": {
-            "sendMessageAction": {
-                "from": "#main_hero",
+            "promptMessageAction": {
                 "content": "check the admins"
             }
         },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
         "offset": ">"
     }
 ]

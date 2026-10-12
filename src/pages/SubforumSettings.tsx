@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FC, type ReactNode, type RefObject } from "react";
+import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import styles from "../scss/subforumSettingsPage.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
 import { SMEntry } from "../components/SMEntry";
@@ -16,20 +16,21 @@ interface ISubforumSettingsSectionProps {
     buttonText: string;
     buttonIcon: ReactNode;
     id?: string;
-    searchRef?: RefObject<ISearchFieldHandle | null>;
     filterFunction?: (suggestion: ISuggestion) => boolean;
     hintNames?: string[];
+    singleSelection?: boolean;
     onSubmit?: (names: string[]) => void;
 };
 
 const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set<string>());
     const story = useStory();
+    const searchRef=useRef<ISearchFieldHandle>(null);
 
     function updateHints(selected: Set<string>) {
         if (!props.hintNames)
             return;
-        props.searchRef?.current?.setSuggestionHint(props.hintNames.filter((name) => !selected.has(name)).map((name) => `u/${name}`));
+        searchRef?.current?.setSuggestionHint(props.hintNames.filter((name) => !selected.has(name)).map((name) => `u/${name}`));
     }
 
     function removeUser(name: string) {
@@ -44,8 +45,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
     }
 
     function addUser(name: string) {
-        let n = new Set(selectedUsers);
-        n.add(name);
+        const n = props.singleSelection ? new Set<string>([name]) : new Set(selectedUsers).add(name);
         setSelectedUsers(n);
         if (props.hintNames?.length && props.hintNames.every((hintName) => n.has(hintName))) {
             story.goForwardHint(`${props.id}-search`);
@@ -55,7 +55,6 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log(selectedUsers);
         props.onSubmit?.(Array.from(selectedUsers));
         setSelectedUsers(new Set<string>());
     }
@@ -66,7 +65,7 @@ const SubforumSettingsSection: FC<ISubforumSettingsSectionProps> = (props) => {
         <form className={styles.section} onSubmit={onSubmit}>
             <h1 className={styles.title}>{props.title}</h1>
             <div className={styles.inputDiv}>
-                <SearchField id={props.id ? `${props.id}-search` : undefined} ref={props.searchRef} onFocus={() => updateHints(selectedUsers)} onSuggestionClick={addUser} filterFunction={props.filterFunction} className={styles.input} />
+                <SearchField id={props.id ? `${props.id}-search` : undefined} ref={searchRef} onFocus={() => updateHints(selectedUsers)} onSuggestionClick={addUser} filterFunction={props.filterFunction} className={styles.input} />
             </div>
             {Array.from(selectedUsers).map((value, i) => (
                 <SMEntry type="user" onClick={removeUser} isSelected key={i} name={value} />
@@ -86,9 +85,9 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
     const storyInit = useStoryInit();
     const story = useStory();
     const { name } = useParams<{ name: string }>();
-    const demoteSearch = useRef<ISearchFieldHandle>(null);
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
-    const [isDemoting, setIsDemoting] = useState<boolean>(false);
+    const [demoteTarget, setDemoteTarget] = useState<string[] | undefined>(undefined);
+    const [transferTarget, setTransferTarget] = useState<string | undefined>(undefined);
 
     const filterMembers = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.members.includes(suggestion.name) ?? false);
     const filterMods = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.mods.includes(suggestion.name) ?? false);
@@ -97,23 +96,32 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
     async function init() {
         const target = await db.subforumsBuffer.where("name").equals(name ?? "").first() ?? await db.subforums.where("name").equals(name ?? "").first();
         setSubforum(target);
-        story.setSubforumSettingsHandle({
-            toggleDemoting() {
-                setIsDemoting((prev) => !prev);
-            }
-        });
+        story.setSubforumSettingsHandle({ setDemoteTarget, setTransferTarget });
     }
 
     async function onDemote(names: string[]) {
         if (!subforum)
             return;
         const mods = subforum.mods.filter((mod) => !names.includes(mod));
-        const updated = { ...subforum, mods };
+        const members = [...subforum.members, ...names.filter((name) => !subforum.members.includes(name))];
+        const updated = { ...subforum, mods, members };
         await db.subforumsBuffer.put(updated);
         setSubforum(updated);
-        if (mods.length == 0) {
-            story.toggleDemoting();
+        if (demoteTarget?.every((mod) => !mods.includes(mod))) {
+            story.setDemoteTarget();
             story.resumeStoryFromHint("demote-submit");
+        }
+    }
+
+    async function onTransfer(names: string[]) {
+        if (!subforum)
+            return;
+        const updated = { ...subforum, admin: names[0] };
+        await db.subforumsBuffer.put(updated);
+        setSubforum(updated);
+        if (updated.admin == transferTarget) {
+            story.setTransferTarget();
+            story.resumeStoryFromHint("transfer-submit");
         }
     }
 
@@ -121,15 +129,15 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
         bridge.exec(storyInit, 3, typingBoxes.getTypingBoxes(), init);
         return () => story.setSubforumSettingsHandle(undefined);
     }, [name])
-    console.log(subforum?.mods)
+    
     return (
         <>
-            <TypingTextBox ref={typingBoxes.setTypingBox("nar1")} id="nar1" type={"terminal"} />
+            <TypingTextBox ref={typingBoxes.setTypingBox("nar1")} type={"terminal"} />
             <div className={styles.container}>
                 <SubforumSettingsSection title="Kick Members" buttonText={"Kick"} buttonIcon={<X />} filterFunction={filterMembers} />
-                <SubforumSettingsSection title="Demote mods to users" buttonText={"Demote"} buttonIcon={<ChevronDoubleDown />} id="demote" searchRef={demoteSearch} hintNames={isDemoting ? subforum?.mods : undefined} filterFunction={filterMods} onSubmit={isDemoting ? onDemote : undefined} />
+                <SubforumSettingsSection title="Demote mods to users" buttonText={"Demote"} buttonIcon={<ChevronDoubleDown />} id="demote" hintNames={demoteTarget} filterFunction={filterMods} onSubmit={demoteTarget ? onDemote : undefined} />
                 <SubforumSettingsSection title="Promote users to mods" buttonText={"Promote"} buttonIcon={<ChevronDoubleUp />} filterFunction={filterMembers} />
-                <SubforumSettingsSection title="Transfer ownership" buttonText={"Transfer"} buttonIcon={<ArrowRightSquare />} filterFunction={filterUsers} />
+                <SubforumSettingsSection title="Transfer ownership" buttonText={"Transfer"} buttonIcon={<ArrowRightSquare />} id="transfer" hintNames={transferTarget ? [transferTarget] : undefined} filterFunction={filterUsers} onSubmit={transferTarget ? onTransfer : undefined} singleSelection />
             </div>
         </>
     );

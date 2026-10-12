@@ -1,6 +1,6 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { bridge, getImageUrl } from "../utils";
 import { Menu, type IMenuOption } from "../components/Menu";
 import { Dot, Message } from "../components/Icons";
@@ -74,6 +74,7 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
 
 export const User: FC<IUserPageProps> = (_) => {
     const story = useStory();
+    const location = useLocation();
     const { username } = useParams<{ username: string }>();
     const userState = useUserState();
     let navigate = useNavigate();
@@ -114,7 +115,7 @@ export const User: FC<IUserPageProps> = (_) => {
 
     useEffect(() => {
         bridge.exec(storyInit, 2, getTypingBoxes(), init);
-    }, [username])
+    }, [location.pathname])
 
     useEffect(() => {
         if (!user)

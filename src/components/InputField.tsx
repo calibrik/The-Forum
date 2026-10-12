@@ -120,6 +120,9 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setInput(value) {
             if (inputRef.current === null)
                 return;
+            if (placeholder.current && value.trim() == "") {
+                placeholder.current.style.display = "";
+            }
             inputRef.current.value = value;
             updateCaretPosition();
         },

@@ -53,13 +53,17 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
             suggestionHint.current=suggestionHint.current.filter((value)=>value!=fullName);
         if (props.onSuggestionClick)
             await props.onSuggestionClick(name);
+        inputRef.current?.setInput("");
         setIsFocused(false);
     }
 
-    function handleFocus() {
+    async function handleFocus() {
+        if (!inputRef.current)
+            return;
         props.onFocus?.();
         if (props.id)
             story.goForwardHint(props.id);
+        await onChange(inputRef.current?.getInput());
         setIsFocused(true);
     }
 
