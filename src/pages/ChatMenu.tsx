@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { addHashToUserNickname, bridge, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { bridge, formatTime, getImageUrl, resolveChatView } from "../utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
@@ -22,9 +22,8 @@ const Dialog: FC<IDialogProps> = (props) => {
         const user = await db.users.where("nickname").equals(userState.userLoggedIn.current).first();
         if (!user)
             return;
-        const buffer = story.getMessageBuffer();
-        const lm = buffer.length > 0 ? buffer[buffer.length - 1] : await db.storyMessages.where("chatId").equals(props.chat.id).last();
-        setLastMessage(lm);
+        const msgs = await story.getMessages(props.chat.id);
+        setLastMessage(msgs[msgs.length - 1]);
     }
 
     async function onClick() {
@@ -38,13 +37,15 @@ const Dialog: FC<IDialogProps> = (props) => {
 
     return (
         <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
-            <img src={getImageUrl(props.chat.imageName)} alt="" className={styles.pfp} />
+            <img src={getImageUrl(props.chat.imageName ?? "placeholder.png")} alt="" className={styles.pfp} />
             <div className={styles.info}>
                 <h3 className={styles.nickname}>{props.chat.name}</h3>
-                <div className={styles.lastMessageDiv}>
-                    {props.chat.isRead ? "" : <Dot className={styles.dot} />}
-                    <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from ?? ""}: </span>{lastMessage?.content ?? ""}</p>
-                </div>
+                {lastMessage ?
+                    <div className={styles.lastMessageDiv}>
+                        {props.chat.isRead ? "" : <Dot className={styles.dot} />}
+                        <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from ?? ""}: </span>{lastMessage?.content ?? ""}</p>
+                    </div>
+                    : ""}
             </div>
             <span className={`${styles.timeSent} ${props.chat.isRead ? styles.read : ""}`}>{formatTime(lastMessage?.timeSent ?? new Date())}</span>
         </div>
@@ -57,26 +58,28 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     const [chats, setChats] = useState<IChat[]>([]);
     const userState = useUserState();
     let navigate = useNavigate();
-    const { hintHolders, setHintHolder } = useHintHolders();
+    const { transferHints, setHintHolder } = useHintHolders();
 
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
             navigate("/")
             return;
         }
-        setChats(await sanitizeDbFetch(await db.chats.where("owner").equals(await addHashToUserNickname(userState.userLoggedIn.current ?? "")).toArray()));
+        const nickname = userState.userLoggedIn.current;
+        const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(nickname).toArray(), db.chats.where("owner").equals(nickname).toArray()]);
+        const chats = [...buffered, ...saved];
+        console.log(chats)
+        setChats(await Promise.all(chats.map((chat) => resolveChatView(chat, nickname))));
     }
 
     useEffect(() => {
-        bridge.exec(storyInit, 1, [], init);
+        bridge.exec(storyInit, 1, new Map(), init);
     }, [])
 
     useEffect(() => {
-        if (chats.length==0)
+        if (chats.length == 0)
             return;
-        const hint = hintHolders.current.get("cyberdivers")?.getHintClass();
-        if (hint)
-            document.getElementById("cyberdivers")?.classList.add(hint);
+        transferHints();
     }, [chats])
 
 
@@ -89,7 +92,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                 {chats.map((chat) => (
                     <Dialog key={chat.id} chat={chat} />
                 ))}
-                <HintHolder id="cyberdivers" ref={setHintHolder("cyberdivers")}/>
+                <HintHolder id="cyberdivers" ref={setHintHolder("cyberdivers")} />
             </div>
         </div>
     );

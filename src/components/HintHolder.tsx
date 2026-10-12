@@ -34,5 +34,15 @@ export function useHintHolders() {
             }
         }
     }
-    return { hintHolders, setHintHolder };
+
+    function transferHints() {
+        for (const [id, holder] of hintHolders.current) {
+            const hintClass = holder.getHintClass();
+            if (!hintClass)
+                continue;
+            document.querySelectorAll(`#${id}`).forEach((el) => el.classList.add(hintClass));
+        }
+    }
+
+    return { setHintHolder, transferHints };
 }

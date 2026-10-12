@@ -1,20 +1,19 @@
-import { useCallback, useEffect, useRef, useState, type FC, type FocusEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FC } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useNavigate, useSearchParams } from "react-router";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
 import { commonPrefixLength, getContainerCharCapacity } from "../utils";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 
 export const Vim: FC = () => {
-    const commandBox = useRef<ITypingTextBoxHandle>(null);
-    const narrationBox = useRef<ITypingTextBoxHandle>(null);
     const inputRef = useRef<IInputFieldHandle>(null);
-    const bufferTypingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const story = useStory();
     const navigate = useNavigate();
@@ -29,6 +28,7 @@ export const Vim: FC = () => {
     const textToType = useRef<string>("")
     const [numeratedLines, setNumeratedLines] = useState<string[]>(["1"]);
     const [tildeCount, setTildeCount] = useState<number>(0);
+    const hintHolders = useHintHolders();
 
     function updateCounts(content: string) {
         setLineCount(content === "" ? 0 : content.split("\n").length);
@@ -36,18 +36,18 @@ export const Vim: FC = () => {
     }
 
     function applyTextToType(text: string) {
-        const charsTyped = commonPrefixLength(bufferTypingBox.current?.getContent() ?? "", text);
+        const charsTyped = commonPrefixLength(getTypingBoxes().get("buffer")?.getContent() ?? "", text);
         inputRef.current?.setStringToType(text, charsTyped);
     }
 
     function setTextToType(text: string) {
         if (text !== "") {
-            const content = bufferTypingBox.current?.getContent() ?? "";
-            textToType.current = content+text;
+            const content = getTypingBoxes().get("buffer")?.getContent() ?? "";
+            textToType.current = content + text;
             setHasTextToType(true);
         } else {
             const content = inputRef.current?.getInput() ?? "";
-            bufferTypingBox.current?.setContent(content);
+            getTypingBoxes().get("buffer")?.setContent(content);
             updateCounts(content);
             setHasTextToType(false);
         }
@@ -60,7 +60,7 @@ export const Vim: FC = () => {
         if (hasTextToType)
             content = inputRef.current?.getInput() ?? "";
         else
-            content = bufferTypingBox.current?.getContent() ?? "";
+            content = getTypingBoxes().get("buffer")?.getContent() ?? "";
 
         const containerCapacity = getContainerCharCapacity(bufferRef.current)
         if (content == "") {
@@ -94,6 +94,7 @@ export const Vim: FC = () => {
         calculateNumeratedLines();
         if (inputRef.current?.isStringTyped()) {
             setTextToType("");
+            story.goBackwardHint("");
             story.resumeStoryFromHint("vim-input");
         }
     }
@@ -106,17 +107,10 @@ export const Vim: FC = () => {
         calculateNumeratedLines();
     }
 
-    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
-        const target = e.relatedTarget;
-        if ((target === null || !e.currentTarget.contains(target as Node)) && hasTextToType)
-            inputRef.current?.focus();
-    }
-
     useEffect(() => {
-        if (hasTextToType) {
+        if (hasTextToType)
             applyTextToType(textToType.current);
-            inputRef.current?.focus();
-        }
+        hintHolders.transferHints();
     }, [hasTextToType]);
 
     useEffect(() => {
@@ -128,7 +122,7 @@ export const Vim: FC = () => {
     }, [calculateNumeratedLines]);
 
     useEffect(() => {
-        storyInit(2, [commandBox, narrationBox, bufferTypingBox], init);
+        storyInit(2, getTypingBoxes(), init);
         story.setVimHandle({ setTextToType });
         return () => {
             story.setVimHandle(undefined);
@@ -137,8 +131,8 @@ export const Vim: FC = () => {
 
     return (
         <>
-            <TypingTextBox ref={narrationBox} type="terminal" />
-            <div className={systemStyles.container} onBlur={onContainerBlur}>
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
+            <div className={systemStyles.container}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
@@ -159,8 +153,8 @@ export const Vim: FC = () => {
                                 ))}
                             </div>
                             <div ref={bufferRef} className={styles.bufferText}>
-                                <Textarea typeSpeed={10} ref={inputRef} scripted onChange={onInputChange} cursorType="terminal" name="command" className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
-                                <TypingTextBox ref={bufferTypingBox} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
+                                <Textarea typeSpeed={10} ref={inputRef} id="vim-input" scripted onChange={onInputChange} cursorType="terminal" name="command" onFocus={() => story.goForwardHint("vim-input")} onBlur={() => story.goBackwardHint("")} className={`${styles.bufferInput} ${hasTextToType ? "" : styles.hidden}`} />
+                                <TypingTextBox ref={setTypingBox("buffer")} type="terminal" className={`${styles.bufferContent} ${hasTextToType ? styles.hidden : ""}`} onContentSet={onBufferContentSet} />
                             </div>
 
                         </div>
@@ -172,10 +166,11 @@ export const Vim: FC = () => {
                         <span>1,1  All</span>
                     </div>
                     <div className={styles.commandLineRow}>
-                        <TypingTextBox ref={commandBox} className={styles.commandLineBox} type={"terminal"} />
+                        <TypingTextBox ref={setTypingBox("command")} className={styles.commandLineBox} type={"terminal"} />
                     </div>
                 </div>
             </div>
+            <HintHolder id="vim-input" ref={hintHolders.setHintHolder("vim-input")} />
         </>
     );
 };

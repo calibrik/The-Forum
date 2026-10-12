@@ -18,7 +18,7 @@ interface IInputFieldProps {
     autocomplete?: boolean
     cursorType?: "normal" | "terminal"
     typeSpeed?: number
-    style?:CSSProperties
+    style?: CSSProperties
 };
 export interface IInputFieldHandle {
     setError: (msg: string) => void;
@@ -28,7 +28,7 @@ export interface IInputFieldHandle {
     blur: () => void;
     setStringToType: (string: string, charsTyped?: number) => void;
     isStringTyped: () => boolean;
-    setInput:(value:string)=>void
+    setInput: (value: string) => void
 }
 
 export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props, ref) => {
@@ -120,7 +120,10 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         setInput(value) {
             if (inputRef.current === null)
                 return;
-            inputRef.current.value=value;
+            if (placeholder.current && value.trim() == "") {
+                placeholder.current.style.display = "";
+            }
+            inputRef.current.value = value;
             updateCaretPosition();
         },
     }));
@@ -200,6 +203,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
         const expectedString = stringToType.current.substring(0, currTyped.current)
         setTimeout(() => {
             inputRef.current!.value = expectedString;
+            inputRef.current!.scrollLeft = inputRef.current!.scrollWidth;
             updateCaretPosition();
             if (props.onChange)
                 props.onChange(expectedString);
@@ -214,7 +218,7 @@ export const InputField = forwardRef<IInputFieldHandle, IInputFieldProps>((props
             <div style={props.style} className={className} data-istransition="true" id={props.id}>
                 {props.icon}
                 <div className={styles.input}>
-                    <span ref={placeholder} id={props.id} className={styles.placeholder}>{props.placeholder}</span>
+                    <span ref={placeholder} className={styles.placeholder}>{props.placeholder}</span>
                     <input
                         onKeyDown={onKeyDown}
                         onKeyUp={onKeyUp}

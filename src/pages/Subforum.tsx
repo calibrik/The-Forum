@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState, type FC } from "react";
-import { addHashToUserNickname, bridge, getImageUrl, numberToText, sanitizeDbFetch } from "../utils";
-import { Outlet, useNavigate, useParams } from "react-router";
+import { useEffect, useState, type FC } from "react";
+import { bridge, getImageUrl, numberToText } from "../utils";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
@@ -10,24 +10,26 @@ import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { db, type ISubforum } from "../backend/db";
 import { Spinner } from "../components/Spinner";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
     const storyInit = useStoryInit();
     const userState = useUserState();
     const navigate = useNavigate();
+    const location = useLocation();
     const { name } = useParams<{ name: string }>();
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
-    const typingBox1 = useRef<ITypingTextBoxHandle>(null);
-    const typingBox2 = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
+    const hintHolders=useHintHolders()
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
             navigate("/")
             return;
         }
-        const subforum = await sanitizeDbFetch(await db.subforums.where("name").equals(await addHashToUserNickname(name??"")).first());
+        const subforum = await db.subforumsBuffer.where("name").equals(name ?? "").first() ?? await db.subforums.where("name").equals(name ?? "").first();
         if (!subforum) {
             console.error(`No ${name} subforum found.`)
             navigate("/404", { replace: true })
@@ -36,9 +38,13 @@ export const Subforum: FC<ISubforumProps> = (_) => {
         setSubforum(subforum);
     }
 
+    useEffect(()=>{
+        hintHolders.transferHints();
+    },[subforum])
+
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox1], init);
-    }, [name])
+        bridge.exec(storyInit,2, getTypingBoxes(), init);
+    }, [location.pathname])
 
     let menuOptions: IMenuOption[] = [
         {
@@ -64,8 +70,8 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox1} type="terminal" />
-            <TypingTextBox ref={typingBox2} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
+            <TypingTextBox ref={setTypingBox("nar2")} type="terminal" />
             <div id="subforumContainer" className={styles.container}>
                 <img data-fall="true" src={getImageUrl(subforum?.imageName ?? "placeholder.png")} className={styles.pfpBg} />
                 <div data-fall="true" className={styles.subProfileContainer}>
@@ -86,9 +92,10 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                     </div>
                 </div>
                 <div data-fall="true" className={styles.contentContainer}>
-                    <Outlet context={[subforum, [typingBox1, typingBox2]]} />
+                    <Outlet context={[subforum, getTypingBoxes()]} />
                 </div>
             </div>
+            <HintHolder ref={hintHolders.setHintHolder("settings")} id="settings"/>
         </>
     );
 }

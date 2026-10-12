@@ -101,6 +101,26 @@
     font-size: clamp(0.9rem, 3.4cqw, 1.2rem);
 }
 
+.link {
+    color: colors.$link-color;
+    border-bottom: 1px solid;
+    padding: 0 1px;
+    text-decoration: none;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .link:hover {
+        color: #de0004;
+        cursor: pointer;
+    }
+}
+
+.link:active {
+    color: #de0004;
+    transform: scale(0.9);
+}
+
 .input-container {
     display: flex;
     margin-top: auto;
@@ -202,6 +222,47 @@
     display: flex;
     flex-direction: column;
     gap:2px;
+}
+
+.menu-wrapper {
+    position: relative;
+    margin-left: auto;
+}
+
+.menu-dots {
+    font-size: clamp(1rem, 3cqw, 1.5rem);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 10;
+    min-width: 120px;
+    margin-top: 6px;
+    padding: 4px;
+    background-color: colors.$card-bg;
+    border: 1px solid colors.$input-border;
+    border-radius: 8px;
+}
+
+.menu-option {
+    font-size: clamp(0.8rem, 2.6cqw, 1rem);
+    color: colors.$error-color;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: globals.$transition;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .menu-option:hover {
+        color: colors.$secondary-color;
+        cursor: pointer;
+    }
+}
+
+.menu-option:active {
+    color: colors.$secondary-color;
 }
 
 @keyframes pulse {

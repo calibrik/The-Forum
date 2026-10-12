@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { Cursor, type ICursorHandle } from "./Cursor";
 import { useGSAP } from "@gsap/react";
 import gsap from 'gsap';
@@ -24,8 +24,14 @@ export interface ITypingBoxArgs {
     style?: React.CSSProperties
 }
 
+export interface ITypingBoxDeleteArgs {
+    symbolsCount: number,
+    speed: number,
+}
+
 export interface ITypingTextBoxHandle {
-    getTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
+    getTypingTimeline: (args: ITypingBoxArgs) => gsap.core.Timeline
+    getDeleteTimeline: (args: ITypingBoxDeleteArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => gsap.core.Timeline
     applyStyle: (style: React.CSSProperties) => void
@@ -36,31 +42,33 @@ export interface ITypingTextBoxHandle {
 export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProps>((props, ref) => {
     const divRef = useRef<HTMLDivElement>(null);
     const { contextSafe } = useGSAP({ scope: divRef });
-    const contentRef = useRef<string>("");
     const cursorRef = useRef<ICursorHandle>(null);
     const typingTextRef = useRef<HTMLSpanElement>(null);
 
-    const getTimeline = contextSafe((args: ITypingBoxArgs) => {
+    const getTypingTimeline = contextSafe((args: ITypingBoxArgs) => {
         const tl = gsap.timeline();
-        tl.add(()=>console.log("exec typing",args.content,props.className));
         if (args.clearBefore)
             tl.add(reset());
-        const finContent = contentRef.current + (args.delim ?? "") + args.content;
-        contentRef.current = finContent;
+        const added = (args.delim ?? "") + args.content;
+        const counter = { i: 0 };
+        let written = 0;
         tl.set(divRef.current, {
             display: "block"
         });
         tl.set('#cursor', {
             visibility: 'visible'
         })
-            .to(`#typingText`, {
-                duration: ((args.content.length + (args.delim?.length ?? 0)) * args.speed) / 1000,
-                text: {
-                    value: finContent,
-                    type: "diff",
-                    preserveSpaces: true
-                },
-                ease: "none"
+            .to(counter, {
+                i: added.length,
+                duration: (added.length * args.speed) / 1000,
+                ease: "none",
+                onUpdate: () => {
+                    const count = Math.floor(counter.i);
+                    if (count > written) {
+                        typingTextRef.current!.textContent = (typingTextRef.current!.textContent ?? "") + added.slice(written, count);
+                        written = count;
+                    }
+                }
             });
         if (args.hideCursorAfter) {
             tl.set('#cursor', {
@@ -73,13 +81,36 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         return tl;
     });
 
+    const getDeleteTimeline = contextSafe((args: ITypingBoxDeleteArgs) => {
+        const tl = gsap.timeline();
+        const counter = { i: 0 };
+        let removed = 0;
+        tl.set(divRef.current, {
+            display: "block"
+        });
+        tl.set('#cursor', {
+            visibility: 'visible'
+        })
+            .to(counter, {
+                i: args.symbolsCount,
+                duration: (args.symbolsCount * args.speed) / 1000,
+                ease: "none",
+                onUpdate: () => {
+                    const count = Math.floor(counter.i);
+                    const toRemove = count - removed;
+                    if (toRemove > 0) {
+                        const text = typingTextRef.current!.textContent ?? "";
+                        typingTextRef.current!.textContent = text.slice(0, Math.max(text.length - toRemove, 0));
+                        removed = count;
+                    }
+                }
+            });
+        return tl;
+    });
+
     const reset = contextSafe(() => {
-        contentRef.current = "";
         return gsap.timeline()
-            .set("#typingText", {
-                text: "",
-            })
-            .add(() => { typingTextRef.current!.innerText = ""; })
+            .add(() => { typingTextRef.current!.textContent = ""; })
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
             })
@@ -91,7 +122,8 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     })
 
     useImperativeHandle(ref, () => ({
-        getTimeline,
+        getTypingTimeline,
+        getDeleteTimeline,
         setCursorType(type) {
             cursorRef.current?.setType(type);
         },
@@ -102,22 +134,14 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             }
         },
         setContent(content) {
-            contentRef.current = content;
             if (typingTextRef.current)
-                typingTextRef.current.innerText = content;
+                typingTextRef.current.textContent = content;
             props.onContentSet?.(content);
         },
         getContent() {
-            return contentRef.current;
+            return typingTextRef.current?.textContent ?? "";
         },
     }))
-
-    useEffect(() => {
-        contentRef.current = "";
-        return () => {
-            contentRef.current = "";
-        }
-    }, [])
 
     let className: string;
     if (props.addDefaultClass)
@@ -131,3 +155,25 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         </div>
     );
 });
+
+export function useTypingBoxes() {
+    const typingBoxes = useRef<Map<string, ITypingTextBoxHandle>>(new Map());
+
+    function setTypingBox(key: string) {
+        return (ref: ITypingTextBoxHandle | null) => {
+            if (ref) {
+                typingBoxes.current.set(key, ref);
+            }
+            else {
+                typingBoxes.current.delete(key);
+            }
+        }
+    }
+
+    function getTypingBoxes() {
+        return typingBoxes.current;
+    }
+
+    return { setTypingBox, getTypingBoxes };
+}
+

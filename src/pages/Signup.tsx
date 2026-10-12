@@ -2,7 +2,7 @@ import { useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { BaseButton } from "../components/BaseButton";
 import { db } from "../backend/db";
 import { useModals } from "../providers/Modals";
@@ -19,7 +19,6 @@ export const Signup: FC<ISignupProps> = (_) => {
     const nicknameInputRef = useRef<IInputFieldHandle>(null);
     const passwordInputRef = useRef<IInputFieldHandle>(null);
     const confirmPasswordInputRef = useRef<IInputFieldHandle>(null);
-    let navigate = useNavigate();
     const modals = useModals();
     const answerRef = useRef<boolean>(false);
     const story = useStory();
@@ -72,7 +71,7 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         }
         await story.createUser(data.nickname.trim(), data.password.trim());
-        navigate("/login")
+        story.logout();
     }
 
     function onPasswordChange(_: string) {

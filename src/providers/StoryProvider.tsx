@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, type IAction, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -9,7 +9,7 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { bridge, delay, sanitizeDbFetch } from "../utils";
+import { bridge, delay } from "../utils";
 interface IStoryProviderProps {
 };
 
@@ -18,60 +18,78 @@ interface IStoryHook {
     // initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
-    recoverStoryOnPage: (level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) => void
+    recoverStoryOnPage: (level: number, tbs: Map<string, ITypingTextBoxHandle>) => void
     createUser: (nickname: string, password: string) => Promise<void>
     goBackwardHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
     setHeaderSearch: (ref: ISearchFieldHandle | null) => void,
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
+    setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
+    setDemoteTarget: (mods?: string[]) => void;
+    setTransferTarget: (user?: string) => void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
-    getMessageBuffer(): IMessage[],
+    getMessages(chatId: string): Promise<IMessage[]>,
+    login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
+    logout: () => void,
+    quitGame: () => Promise<void>,
+    getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
 interface IStoryProvider extends IStoryHook {
     _getStoryHook: () => StoryFuncsType | undefined
 }
 
-const NAVIGATE_TO_PAGE: Record<string, (location: string[], targetLocation: string[], mismatchedLevel: number, searchField?: ISearchFieldHandle) => string[]> = {
-    "user": (location, targetLocation, mismatchedLevel) => {
-        if (location[1] == "post")
+interface INavHintContext {
+    location: string[];
+    targetLocation: string[];
+    mismatchedLevel: number;
+    userLoggedIn: string;
+    searchField?: ISearchFieldHandle;
+}
+
+const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
+    "user": (ctx) => {
+        if (ctx.location[1] == "post")
             return ["back-text"];
-        if (mismatchedLevel == 3) {
-            return [targetLocation[3] ?? "posts"];
+        if (ctx.mismatchedLevel == 3) {
+            return [ctx.targetLocation[3] ?? "posts"];
         }
-        return ["user-icon-text"];
-    },
-    "subforum": (location, targetLocation, mismatchedLevel, searchField) => {
-        if (location[1] == "post")
-            return ["back-text"];
-        if (mismatchedLevel == 3) {
-            return [targetLocation[3] ?? "posts"];
-        }
-        searchField?.setSuggestionHint(`f/${targetLocation[2]}`);
+        if (ctx.userLoggedIn == ctx.targetLocation[2])
+            return ["user-icon-text"];
+        ctx.searchField?.setSuggestionHint([`u/${ctx.targetLocation[2]}`]);
         return ["header-search", ""];
     },
-    "chat": (location, targetLocation, mismatchedLevel) => {
-        if (mismatchedLevel == 2) {
-            if (location.length >= 3)
+    "subforum": (ctx) => {
+        if (ctx.location[1] == "post")
+            return ["back-text"];
+        if (ctx.mismatchedLevel == 3) {
+            return [ctx.targetLocation[3] ?? "posts"];
+        }
+        ctx.searchField?.setSuggestionHint([`f/${ctx.targetLocation[2]}`]);
+        return ["header-search", ""];
+    },
+    "chat": (ctx) => {
+        if (ctx.mismatchedLevel == 2) {
+            if (ctx.location.length >= 3)
                 return ["back-text"];
-            return [targetLocation[2]];
+            return [ctx.targetLocation[2]];
         }
         return ["menu-icon-text", "chat-menu"];
     },
-    "post": (location, targetLocation, _mismatchedLevel) => {
-        if (location[1] == "post")
+    "post": (ctx) => {
+        if (ctx.location[1] == "post")
             return ["back-text"];
-        return [targetLocation[2]];
+        return [ctx.targetLocation[2]];
     },
 }
 
 const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page or quit game and log in again.";
 
 export interface IEffectsOptions {
-    typingBoxes?: RefObject<RefObject<ITypingTextBoxHandle | null>[]>,
+    typingBoxes?: RefObject<Map<string, ITypingTextBoxHandle>>,
     duration?: number,
     opacity?: number
     backgroundColor?: string
@@ -105,7 +123,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             .set("#contentDiv", {
                 overflowY: "visible"
             })
-            .add(() => (options?.typingBoxes?.current[0].current?.setCursorType("terminal")))
+            .add(() => (options?.typingBoxes?.current.get("nar1")?.setCursorType("terminal")))
             .set("#container", {
                 clearProps: "all"
             }, "+=0.6")
@@ -206,7 +224,7 @@ export function useElementHints() {
     const currStoryHint = useRef<string[]>([]);//current story hint used for caching the last story hint for recover on page function
     const headerSearch = useRef<ISearchFieldHandle>(null);
     const isStoryHint = useRef<boolean>(false);//is story hint currently hinting (for nav hint to trigger)
-    const isLegitStoryHint = useRef<boolean>(true)//is story hint produced from hint action or artificially planted
+    const userState = useUserState();
 
     function setHeaderSearch(ref: ISearchFieldHandle | null) {
         headerSearch.current = ref;
@@ -215,12 +233,13 @@ export function useElementHints() {
     function hint(id: string) {
         if (id == "")
             return;
-        let el = document.querySelector(`#${id}`);
-        if (!el) {
+        const els = document.querySelectorAll(`#${id}`);
+        if (els.length == 0) {
             console.error(`No element with id ${id}`)
             return;
         }
-        el.classList.add(id.includes("text") ? styles.hintText : styles.hint);
+        const hintClass = id.includes("text") ? styles.hintText : styles.hint;
+        els.forEach((el) => el.classList.add(hintClass));
     }
 
     function goForwardHint(clickedId: string) {
@@ -230,7 +249,7 @@ export function useElementHints() {
         }
     }
 
-    function setStoryHint(hints: string[], dontActivate?: boolean, isLegit?: boolean) {
+    function setStoryHint(hints: string[], dontActivate?: boolean) {
         currHint.current = hints;
         currStoryHint.current = hints;
         currIndex.current = 0;
@@ -238,7 +257,6 @@ export function useElementHints() {
             isStoryHint.current = true;
             hint(hints[0]);
         }
-        isLegitStoryHint.current = isLegit ?? true;
     }
 
     function resetStoryHint() {
@@ -258,7 +276,8 @@ export function useElementHints() {
         const id = currHint.current[currIndex.current];
         if (id == "")
             return;
-        document.querySelector(`#${id}`)?.classList.remove(id.includes("text") ? styles.hintText : styles.hint);
+        const hintClass = id.includes("text") ? styles.hintText : styles.hint;
+        document.querySelectorAll(`#${id}`).forEach((el) => el.classList.remove(hintClass));
     }
 
     function getCurrentStoryHint() {
@@ -267,15 +286,17 @@ export function useElementHints() {
         return currStoryHint.current[currIndex.current];
     }
 
-    function verifyStoryHint() {
-        return getCurrentStoryHint() !== "" && isLegitStoryHint.current;
-    }
-
     function hintNavPath(target?: IDestination) {
         if (!target || !isStoryHint.current && currHint.current.length != 0) {
             return;
         }
         isStoryHint.current = false;
+        if (target.user !== userState.userLoggedIn.current) {
+            currHint.current = ["menu-icon-text", "logout"];
+            currIndex.current = 0;
+            bridge.exec(hint, currHint.current[currIndex.current]);
+            return;
+        }
         const location = window.location.pathname.split('/').slice(0, target.level + 1);
         const targetLocation = target.where.split('/');
         let mismatchedLevel = 0;
@@ -291,7 +312,13 @@ export function useElementHints() {
             currHint.current = [];
             return;
         }
-        currHint.current = navFunc(location, targetLocation, mismatchedLevel, headerSearch.current ?? undefined);
+        currHint.current = navFunc({
+            location,
+            targetLocation,
+            mismatchedLevel,
+            userLoggedIn: userState.userLoggedIn.current,
+            searchField: headerSearch.current ?? undefined
+        });
         currIndex.current = 0;
         bridge.exec(hint, currHint.current[currIndex.current]);
     }
@@ -314,10 +341,9 @@ export function useElementHints() {
     const _getCurrHint = process.env.NODE_ENV == 'test' ? () => currHint : undefined;
     const _getCurrIndex = process.env.NODE_ENV == 'test' ? () => currIndex : undefined;
     const _getIsStoryHint = process.env.NODE_ENV == 'test' ? () => isStoryHint : undefined;
-    const _getisLegitStoryHint = process.env.NODE_ENV == 'test' ? () => isLegitStoryHint : undefined;
     const _hint = process.env.NODE_ENV == 'test' ? hint : undefined;
 
-    return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, verifyStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint, _getisLegitStoryHint };
+    return { hintNavPath, goBackwardHint, goForwardHint, resetHint, setHeaderSearch, setStoryHint, reactivateStoryHint, resetStoryHint, removeCurrHint, getCurrentStoryHint, _getCurrHint, _getCurrIndex, _hint, _getIsStoryHint };
 }
 
 export function useObjectiveHints() {
@@ -361,12 +387,55 @@ export interface IChatHandle {
     getId: () => string
 }
 
+export function useBuffers() {
+    const preserveBuffers = useRef<boolean>(false);
+
+    async function enablePreserveBuffers() {
+        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count(), db.subforumsBuffer.count()]);
+        if (counts.every((c) => c == 0))
+            return;
+        preserveBuffers.current = true;
+    }
+
+    async function resetBuffers() {
+        await Promise.all([db.postsBuffer.clear(), db.chatsBuffer.clear(), db.usersBuffer.clear(), db.storyMessagesBuffer.clear(), db.subforumsBuffer.clear()]);
+    }
+
+    async function sinkBuffers() {
+        await db.posts.bulkPut(await db.postsBuffer.toArray());
+        await db.chats.bulkPut(await db.chatsBuffer.toArray());
+        await db.users.bulkPut(await db.usersBuffer.toArray());
+        await db.storyMessages.bulkPut(await db.storyMessagesBuffer.toArray());
+        await db.subforums.bulkPut(await db.subforumsBuffer.toArray());
+        await resetBuffers();
+        preserveBuffers.current = false;
+    }
+
+    async function onNavigateAway() {
+        if (preserveBuffers.current)
+            return;
+        await resetBuffers();
+    }
+
+    return { enablePreserveBuffers, resetBuffers, sinkBuffers, onNavigateAway };
+}
+
 export function useChat() {
-    const messagesBuffer = useRef<IMessage[]>([]);
     const chatHandle = useRef<IChatHandle>(undefined);
     const userState = useUserState();
     const lastId = useRef<number>(0);
-    const preserveMessagesBuffer = useRef<boolean>(false);
+
+    async function addChat(id: string, owner: string[], type: IChat["type"]) {
+        const chat: IChat = {
+            id: id,
+            owner: owner,
+            type: type,
+            pregenMessages: [],
+            isRead: true,
+            initTimeDiff: 0,
+        }
+        await db.chatsBuffer.put(chat);
+    }
 
     async function addMessageFromUser(content: string) {
         const message: IMessage = {
@@ -376,7 +445,7 @@ export function useChat() {
             timeSent: new Date(),
             chatId: chatHandle.current?.getId() ?? ""
         }
-        messagesBuffer.current.push(message);
+        await db.storyMessagesBuffer.put(message);
         chatHandle.current?.addMessage(message);
     }
 
@@ -385,22 +454,17 @@ export function useChat() {
             id: lastId.current++,
             from: from,
             content: content,
-            timeSent: new Date(),
-            chatId: chatHandle.current?.getId() ?? ""
+            chatId: chatHandle.current?.getId() ?? "",
+            timeSent: new Date()
         }
         message.isReply = isReplyDiff ? message.id + isReplyDiff : undefined;
         chatHandle.current?.addTypingUser(message.from);
         if (timeToType)
             await delay(timeToType);
-        messagesBuffer.current.push(message);
+        message.timeSent = new Date();
+        await db.storyMessagesBuffer.put(message);
         chatHandle.current?.removeTypingUser(message.from);
         chatHandle.current?.addMessage(message);
-    }
-
-    async function sinkMessages() {
-        await db.storyMessages.bulkAdd(messagesBuffer.current);
-        preserveMessagesBuffer.current = false;
-        resetMessages();
     }
 
     async function addMessagesToDb(msgs: IMessage[]) {
@@ -409,34 +473,20 @@ export function useChat() {
 
     async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
-        lastId.current = await db.storyMessages.count() + messagesBuffer.current.length + 1;
+        lastId.current = await db.storyMessages.count() + await db.storyMessagesBuffer.count() + 1;
     }
 
-    function enablePreserveMessagesBuffer() {
-        if (messagesBuffer.current.length == 0)
-            return;
-        preserveMessagesBuffer.current = true;
-    }
-
-    function resetMessages() {
-        messagesBuffer.current = [];
-    }
-
-    function onNavigateAway() {
-        if (preserveMessagesBuffer.current)
-            return;
-        resetMessages();
+    async function getMessages(chatId: string) {
+        const messages = await db.storyMessages.where("chatId").equals(chatId).toArray();
+        const bufferedMessages = await db.storyMessagesBuffer.where("chatId").equals(chatId).toArray();
+        return [...messages, ...bufferedMessages];
     }
 
     function promptMessage(content: string) {
         chatHandle.current?.setStringToType(content);
     }
 
-    function getMessageBuffer() {
-        return messagesBuffer.current;
-    }
-
-    return { addMessageFromNPC, addMessageFromUser, sinkMessages, setChatHandle, addMessagesToDb, promptMessage, enablePreserveMessagesBuffer, onNavigateAway, getMessageBuffer }
+    return { addMessageFromNPC, addMessageFromUser, addChat, setChatHandle, addMessagesToDb, getMessages, promptMessage }
 }
 
 export interface ILoginHandle {
@@ -507,8 +557,31 @@ export function useVim() {
     return { setVimHandle, setVimType };
 }
 
+export interface ISubforumSettingsHandle {
+    setDemoteTarget: (mods?: string[]) => void;
+    setTransferTarget: (user?: string) => void;
+}
+
+export function useSubforumSettings() {
+    const subforumSettingsHandle = useRef<ISubforumSettingsHandle>(undefined);
+
+    function setSubforumSettingsHandle(handle?: ISubforumSettingsHandle) {
+        subforumSettingsHandle.current = handle;
+    }
+
+    function setDemoteTarget(mods?: string[]) {
+        subforumSettingsHandle.current?.setDemoteTarget(mods);
+    }
+
+    function setTransferTarget(user?: string) {
+        subforumSettingsHandle.current?.setTransferTarget(user);
+    }
+
+    return { setSubforumSettingsHandle, setDemoteTarget, setTransferTarget };
+}
+
 export function useStoryFuncs() {
-    const typingBoxes = useRef<RefObject<ITypingTextBoxHandle | null>[]>([]);//boxes for showing text
+    const typingBoxes = useRef<Map<string, ITypingTextBoxHandle>>(new Map());//boxes for showing text
     const isMounted = useRef<boolean>(true);//is provider mounted
     const { contextSafe } = useGSAP();
     const loopTicket = useRef<number>(0);//protection against strict mode
@@ -517,7 +590,7 @@ export function useStoryFuncs() {
     const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
-    const pageStoryId = useRef<number>(1);//points at next action after page navigation to recover on page from
+    const pageStoryId = useRef<number>(1);//points at next action after page navigation or save to recover on page from
     const locationRef = useRef<IDestination>(undefined);//current location for the story
     const location = useLocation();
     const userState = useUserState();
@@ -525,10 +598,12 @@ export function useStoryFuncs() {
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
     const hintFunc = useElementHints();
     const objectiveHints = useObjectiveHints();
+    const bufferFunc = useBuffers();
     const chatFunc = useChat();
     const loginFunc = useLogin();
     const terminalFunc = useTerminal();
     const vimFunc = useVim();
+    const subforumSettingsFunc = useSubforumSettings();
 
     function isStoryGoing() {
         return masterRef.current != undefined;
@@ -540,18 +615,17 @@ export function useStoryFuncs() {
         if (locationRef.current && isOnLocation(locationRef.current)) {
             return;
         }
-        chatFunc.onNavigateAway();
         hintFunc.resetHint();
         objectiveHints.showNavHint();
         if (isStoryRecovered.current) {
-            currStoryId.current = savedStoryId.current + 1;
+            currStoryId.current = pageStoryId.current;
             isStoryRecovered.current = false;
         }
         if (masterRef.current) {
             masterRef.current.kill();
             masterRef.current = undefined;
-            for (let tb of typingBoxes.current) {
-                await tb.current?.reset();
+            for (let tb of typingBoxes.current.values()) {
+                await tb.reset();
             }
         }
         const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
@@ -559,17 +633,18 @@ export function useStoryFuncs() {
         gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
-        typingBoxes.current = [];
+        typingBoxes.current = new Map();
+        await bufferFunc.onNavigateAway();
     });
 
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
+            await bufferFunc.enablePreserveBuffers();
             isStoryNavRef.current = true;
             isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
             objectiveHints.resetObjectiveHint();
-            chatFunc.enablePreserveMessagesBuffer();
             locationRef.current = action.navigateAction.dest;
             if (action.navigateAction.navigate) {
                 navigate(action.navigateAction.dest?.where ?? "");
@@ -587,26 +662,55 @@ export function useStoryFuncs() {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
             savedStoryId.current = storyId;
             pageStoryId.current = storyId + 1;
-            chatFunc.sinkMessages();
+            await bufferFunc.sinkBuffers();
         }
         if (action.hintAction) {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
-        if (action.setTextBoxStyleAction) {
-            typingBoxes.current[action.setTextBoxStyleAction.id].current?.applyStyle(action.setTextBoxStyleAction.style);
+        if (action.setTypingBoxStyleAction) {
+            typingBoxes.current.get(action.setTypingBoxStyleAction.id)?.applyStyle(action.setTypingBoxStyleAction.style);
         }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
+        if (action.addNewChat) {
+            await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
+        }
+        if (action.addPasswordFor) {
+            const { nickname, password } = action.addPasswordFor;
+            const user = await db.usersBuffer.where("nickname").equals(nickname).first()
+                ?? await db.users.where("nickname").equals(nickname).first();
+            if (user)
+                await db.usersBuffer.put({ ...user, password: password });
+        }
         if (action.promptMessageAction) {
-            hintFunc.setStoryHint(["chat-input", "chat-send"], false, false)
-            chatFunc.promptMessage(action.promptMessageAction.content);
+            hintFunc.setStoryHint(["chat-input", "chat-send"], false)
+            const { content, isLink } = action.promptMessageAction;
+            chatFunc.promptMessage(isLink ? window.location.origin + content : content);
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
         }
+        if (action.setModsToRemove) {
+            const targetSubforum = await db.subforumsBuffer.where("name").equals(action.setModsToRemove.subforum).first()
+                ?? await db.subforums.where("name").equals(action.setModsToRemove.subforum).first();
+            if (targetSubforum) {
+                await db.subforumsBuffer.put(targetSubforum);
+                hintFunc.setStoryHint(["demote-search", "", "demote-submit"]);
+                subforumSettingsFunc.setDemoteTarget(targetSubforum.mods);
+            }
+        }
+        if (action.setTransferTo) {
+            const targetSubforum = await db.subforumsBuffer.where("name").equals(action.setTransferTo.subforum).first()
+                ?? await db.subforums.where("name").equals(action.setTransferTo.subforum).first();
+            if (targetSubforum) {
+                await db.subforumsBuffer.put(targetSubforum);
+                hintFunc.setStoryHint(["transfer-search", "", "transfer-submit"]);
+                subforumSettingsFunc.setTransferTarget(action.setTransferTo.user);
+            }
+        }
         if (action.setTerminalCommandAction) {
-            hintFunc.setStoryHint(["terminal-input"], true, false);
+            hintFunc.setStoryHint(["terminal-input", ""]);
             terminalFunc.setTerminalCommand(action.setTerminalCommandAction.command, action.setTerminalCommandAction.output);
         }
         if (action.addTerminalHistoryAction) {
@@ -616,11 +720,11 @@ export function useStoryFuncs() {
             terminalFunc.setPromptVisibility(action.setPromptVisibilityAction.visible);
         }
         if (action.vimTypeAction) {
-            hintFunc.setStoryHint(["vim-input"], true, false);
+            hintFunc.setStoryHint(["vim-input", ""]);
             vimFunc.setVimType(action.vimTypeAction.content);
         }
         if (action.setTypingBoxContentAction) {
-            typingBoxes.current[action.setTypingBoxContentAction.typingBoxId]?.current?.setContent(action.setTypingBoxContentAction.content);
+            typingBoxes.current.get(action.setTypingBoxContentAction.typingBoxId)?.setContent(action.setTypingBoxContentAction.content);
         }
     }
 
@@ -633,19 +737,21 @@ export function useStoryFuncs() {
     }
 
     async function recoverCheckpoint(id: number) {
-        const scl = await sanitizeDbFetch(await db.story.get(id));
+        const scl = await db.story.get(id);
         if (!scl)
             return;
         savedStoryId.current = id;
         currStoryId.current = id + 1;
         pageStoryId.current = id + 1;
-        locationRef.current = scl.action?.saveAction?.dest;
-        if (scl.action?.saveAction?.hintActionPos) {
-            let hintScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.hintActionPos));
-            hintFunc.setStoryHint(hintScl?.action?.hintAction?.ids ?? [], true);
+        const dest = scl.action?.saveAction?.dest
+        if (!dest) {
+            console.error(dest, "This scriptline is not a save action.")
+            return;
         }
+        locationRef.current = dest;
+        userState.userLoggedIn.current = dest.user;
         if (scl.action?.saveAction?.lastNavPos != undefined) {
-            let navScl = await sanitizeDbFetch(await db.story.get(id + scl.action.saveAction.lastNavPos));
+            let navScl = await db.story.get(id + scl.action.saveAction.lastNavPos);
             objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
         }
         if (scl.hint != undefined)
@@ -661,6 +767,8 @@ export function useStoryFuncs() {
     }
 
     function isOnLocation(target: IDestination) {
+        if (target.user !== userState.userLoggedIn.current)
+            return false;
         if (target.level > 0) {
             const location = (window.location.pathname + window.location.search).split('/').slice(0, target.level + 1).join('/');
             const targetLocation = target.where.split('/').slice(0, target.level + 1).join('/');
@@ -669,7 +777,7 @@ export function useStoryFuncs() {
         return true;
     }
 
-    function recoverStoryOnPage(level: number, tbs: RefObject<ITypingTextBoxHandle | null>[]) {
+    function recoverStoryOnPage(level: number, tbs: Map<string, ITypingTextBoxHandle>) {
         if (!locationRef.current || !userState.isRealLoggedIn.current || isStoryRecovered.current)
             return;
         if (level != locationRef.current.level || !isOnLocation(locationRef.current)) {
@@ -684,61 +792,23 @@ export function useStoryFuncs() {
         objectiveHints.restoreObjectiveHint();
         isStoryRecovered.current = true;
         typingBoxes.current = tbs;
-        if (hintFunc.verifyStoryHint()) {
-            hintFunc.reactivateStoryHint();
-            return;
-        }
         bridge.exec(showStory, pageStoryId.current);
     }
 
     async function customizeStory(nickname: string) {
-        const users = await db.users.where("savedStoryId").aboveOrEqual(0).toArray();
-        const regex = new RegExp(`#${users[0].nickname}`, 'g');
-        nickname = `#${nickname}`
-        await db.story.toCollection().modify((scl) => {
-            const sclString = JSON.stringify(scl);
-            if (!regex.test(sclString)) {
-                return false;
-            }
-            Object.assign(scl, JSON.parse(sclString.replace(regex, nickname)));
-        });
-        await db.posts.toCollection().modify((post) => {
-            const postString = JSON.stringify(post);
-            if (!regex.test(postString)) {
-                return false;
-            }
-            Object.assign(post, JSON.parse(postString.replace(regex, nickname)));
-        });
-        await db.chats.toCollection().modify((chat) => {
-            const chatString = JSON.stringify(chat);
-            if (!regex.test(chatString)) {
-                return false;
-            }
-            Object.assign(chat, JSON.parse(chatString.replace(regex, nickname)));
-        });
-        await db.subforums.toCollection().modify((subforum) => {
-            const subforumString = JSON.stringify(subforum);
-            if (!regex.test(subforumString)) {
-                return false;
-            }
-            Object.assign(subforum, JSON.parse(subforumString.replace(regex, nickname)));
-        });
+        await seedTables(nickname);
     }
 
     function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
-        console.log("adding",scl);
+        console.log("adding", scl);
         if (scl.storyline) {
             const stl = scl.storyline;
-            if (stl.typingBoxId >= typingBoxes.current.length) {
-                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
-                return;
-            }
-            const box = typingBoxes.current[stl.typingBoxId].current;
+            const box = typingBoxes.current.get(stl.typingBoxId);
             if (!box) {
-                console.error(`No ref assigned for index ${stl.typingBoxId}.`)
+                console.error(`No ref assigned for id ${stl.typingBoxId}.`)
                 return;
             }
-            tl.add(box.getTimeline({
+            tl.add(box.getTypingTimeline({
                 content: stl.content,
                 speed: stl.speed,
                 delim: stl.delim,
@@ -781,12 +851,24 @@ export function useStoryFuncs() {
             }
         }
 
+        if (scl.deleteTextFromTypingBox) {
+            const box = typingBoxes.current.get(scl.deleteTextFromTypingBox.typingBoxId);
+            if (box)
+                tl.add(box.getDeleteTimeline({
+                    symbolsCount: scl.deleteTextFromTypingBox.symbolsCount,
+                    speed: scl.deleteTextFromTypingBox.speed
+                }), scl.offset);
+        }
+
         if (scl.clearTypingTextBoxes) {
+            const t = gsap.timeline();
             for (let id of scl.clearTypingTextBoxes.ids) {
-                if (!typingBoxes.current[id].current)
+                const box = typingBoxes.current.get(id);
+                if (!box)
                     continue;
-                tl.add(typingBoxes.current[id].current.reset(), scl.offset);
+                t.add(box.reset(), ">");
             }
+            tl.add(t, scl.offset);
         }
     }
 
@@ -799,7 +881,7 @@ export function useStoryFuncs() {
         let scl: IScriptLine | undefined = undefined;
         let master = gsap.timeline({ paused: true });
         let navPending = false;
-        let navHint:string|undefined = undefined;
+        let navHint: string | undefined = undefined;
         objectiveHints.dispatchHint("");
         while ((!scl || !scl.isActionAwait) && !scl?.action?.navigateAction?.navigate) {
             scl = await db.story.get(id);
@@ -808,7 +890,6 @@ export function useStoryFuncs() {
             id++;
             if (!scl)
                 break;
-            scl = await sanitizeDbFetch(scl);
             addScriptlineToTimeline(scl, master);
             if (scl.action?.navigateAction) {
                 navPending = true;
@@ -846,10 +927,10 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ nickname: nickname, password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
-        let chats = await sanitizeDbFetch(await db.chats.toArray());
+        let chats = await db.chats.toArray();
         for (let chat of chats) {
             const chatTime = new Date(createdAt);
             chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
@@ -868,6 +949,58 @@ export function useStoryFuncs() {
             }
             chatFunc.addMessagesToDb(msgs);
         }
+    }
+
+    async function login(nickname: string, password: string): Promise<{ nickname?: string; password?: string }> {
+        const errors: { nickname?: string; password?: string } = {};
+        nickname = nickname.trim();
+        password = password.trim();
+        if (nickname === "")
+            errors.nickname = "Field cannot be empty";
+        if (password === "")
+            errors.password = "Field cannot be empty";
+        if (errors.nickname || errors.password)
+            return errors;
+        const user = await db.users.where("nickname").equals(nickname).toArray();
+        if (user.length != 1 || user[0].savedStoryId == 0) {
+            errors.nickname = "Nickname is not found.";
+            return errors;
+        }
+        if (!user[0].password || user[0].password != password || !userState.isRealLoggedIn.current && user[0].savedStoryId === undefined) {
+            errors.password = "Incorrect password.";
+            return errors;
+        }
+        userState.userLoggedIn.current = nickname;
+        if (!userState.isRealLoggedIn.current) {
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+            window.dispatchEvent(new Event("loggedIn"));
+            userState.isRealLoggedIn.current = true;
+            await recoverCheckpoint(user[0].savedStoryId ?? 0);
+            await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+            return errors;
+        }
+        window.dispatchEvent(new Event("loggedIn"));
+        navigate(`/user/${nickname}`);
+        return errors;
+    }
+
+    function logout() {
+        userState.userLoggedIn.current = "";
+        window.dispatchEvent(new Event("loggedOut"));
+        navigate("/login");
+    }
+
+    const quitGame = contextSafe(async () => {
+        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+        userState.userLoggedIn.current = "";
+        userState.isRealLoggedIn.current = false;
+        window.dispatchEvent(new Event("loggedOut"));
+        navigate("/");
+        await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+    });
+
+    function getExpectedUser() {
+        return locationRef.current?.user;
     }
 
     useEffect(() => {
@@ -889,6 +1022,7 @@ export function useStoryFuncs() {
     const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
     const _getObjectiveHintsHook = process.env.NODE_ENV == 'test' ? () => objectiveHints : undefined;
     const _getChatHook = process.env.NODE_ENV == 'test' ? () => chatFunc : undefined;
+    const _getBuffersHook = process.env.NODE_ENV == 'test' ? () => bufferFunc : undefined;
     const _getIsStoryRecovered = process.env.NODE_ENV == 'test' ? () => isStoryRecovered : undefined;
     const _getCurrStoryId = process.env.NODE_ENV == 'test' ? () => currStoryId : undefined;
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
@@ -903,11 +1037,19 @@ export function useStoryFuncs() {
         resumeStoryFromHint,
         recoverCheckpoint,
         createUser,
+        login,
+        logout,
+        quitGame,
+        getExpectedUser,
         recoverStoryOnPage,
-        getMessageBuffer: chatFunc.getMessageBuffer,
+        getMessages: chatFunc.getMessages,
+        resetBuffers: bufferFunc.resetBuffers,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
+        setSubforumSettingsHandle: subforumSettingsFunc.setSubforumSettingsHandle,
+        setDemoteTarget: subforumSettingsFunc.setDemoteTarget,
+        setTransferTarget: subforumSettingsFunc.setTransferTarget,
         setTerminalHandle: terminalFunc.setTerminalHandle,
         setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,
@@ -920,6 +1062,7 @@ export function useStoryFuncs() {
         _getLastNavHint: objectiveHints._lastNavHint,
         _getTypingBoxes,
         _getChatHook,
+        _getBuffersHook,
         _getHintHook,
         _getObjectiveHintsHook,
         _getIsStoryRecovered,
@@ -937,6 +1080,10 @@ const StoryContext = createContext<IStoryProvider | undefined>(undefined);
 
 export const StoryProvider: FC<IStoryProviderProps> = (_) => {
     const storyFunc = useStoryFuncs();
+
+    useEffect(() => {
+        storyFunc.resetBuffers();
+    }, []);
 
     return (
         <StoryContext.Provider value={{
@@ -967,7 +1114,7 @@ export function useStoryInit() {
     const story = useStory();
     const loopTicket = useRef<number>(0);
 
-    async function storyInit(childLevel: number, typingBoxes: RefObject<ITypingTextBoxHandle | null>[], pageInit?: () => Promise<void> | void) {
+    async function storyInit(childLevel: number, typingBoxes: Map<string, ITypingTextBoxHandle>, pageInit?: () => Promise<void> | void) {
         loopTicket.current++;
         const ticket = loopTicket.current;
         if (pageInit)

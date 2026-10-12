@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, type CSSProperties, type FC, type FocusEvent } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type FC } from "react";
 import { Terminal as TerminalIcon } from "../components/Icons";
 import { Textarea } from "../components/Textarea";
 import { type IInputFieldHandle } from "../components/InputField";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
@@ -13,7 +13,7 @@ import styles from "../scss/terminal.module.scss";
 export const Terminal: FC = () => {
     const inputRef = useRef<IInputFieldHandle>(null);
     const outputRef = useRef<HTMLDivElement>(null);
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const story = useStory();
     const userState = useUserState();
@@ -38,7 +38,7 @@ export const Terminal: FC = () => {
     }
 
     useEffect(() => {
-        storyInit(1, [typingBox], init);
+        storyInit(1, getTypingBoxes(), init);
         story.setTerminalHandle({
             setExpectedCommand: function (command: string, output?: string): void {
                 expectedCommand.current = command;
@@ -67,16 +67,6 @@ export const Terminal: FC = () => {
     }, []);
 
     useEffect(() => {
-        inputRef.current?.focus();
-    }, []);
-
-    function onContainerBlur(e: FocusEvent<HTMLDivElement>) {
-        const target = e.relatedTarget;
-        if (target === null || !e.currentTarget.contains(target as Node))
-            inputRef.current?.focus();
-    }
-
-    useEffect(() => {
         outputRef.current?.scrollTo?.(0, outputRef.current.scrollHeight);
     }, [history]);
 
@@ -99,6 +89,7 @@ export const Terminal: FC = () => {
         }
         else if (expectedCmd !== "" && cmd === expectedCmd) {
             output = expectedOutput.current;
+            story.goBackwardHint("");
             story.resumeStoryFromHint("terminal-input");
         }
         else {
@@ -120,8 +111,8 @@ export const Terminal: FC = () => {
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type="terminal" />
-            <div className={systemStyles.container} onBlur={onContainerBlur}>
+            <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
+            <div className={systemStyles.container}>
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
@@ -144,7 +135,7 @@ export const Terminal: FC = () => {
                                 <div className={styles.promptPrefix}>
                                     {prefix}
                                 </div>
-                                <Textarea onKeyDown={onSubmit} ref={inputRef} name="command" cursorType="terminal" className={styles.promptInput} />
+                                <Textarea onKeyDown={onSubmit} id="terminal-input" ref={inputRef} name="command" cursorType="terminal" onFocus={() => story.goForwardHint("terminal-input")} onBlur={() => story.goBackwardHint("")} className={styles.promptInput} />
                             </form>
                         </div>
                     </div>

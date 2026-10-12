@@ -6,7 +6,7 @@ export interface IStoryLine {
 	content: string,
 	speed: number,
 	delim?: string,
-	typingBoxId: number,
+	typingBoxId: string,
 	clearAfter?: string
 	hideCursorAfter?: boolean
 	clearBefore?: boolean
@@ -36,11 +36,11 @@ export interface IPregenMessage {
 
 export interface IChat {
 	id: string,
-	imageName: string,
-	owner: string,
+	imageName?: string,
+	owner: string[],
 	type: "gc" | "dm",
-	membersAmount: number,
-	name: string,
+	membersAmount?: number,
+	name?: string,
 	pregenMessages: IPregenMessage[],
 	isRead: boolean,
 	initTimeDiff: number,//time diff to sign up time, in mins
@@ -88,12 +88,12 @@ export interface INavigateAction {
 
 export interface ISaveAction {
 	dest: IDestination
-	hintActionPos?: number
+	// hintActionPos?: number
 	lastNavPos?: number
 }
 
-export interface ISetTextBoxStyleAction {
-	id: number,
+export interface ISetTypingBoxStyleAction {
+	id: string,
 	style: React.CSSProperties
 }
 
@@ -104,12 +104,22 @@ export interface ISetShowPlaceholdersAction {
 	show: boolean,
 }
 
+export interface ISetModsToRemoveAction {
+	subforum: string,
+}
+
+export interface ISetTransferToAction {
+	subforum: string,
+	user: string,
+}
+
 export interface IHintAction {
 	ids: string[],
 }
 
 export interface IPromptMessage {
 	content: string,
+	isLink?:boolean
 }
 
 export interface ISendMessageAction {
@@ -117,6 +127,17 @@ export interface ISendMessageAction {
 	content: string,
 	isReplyDiff?: number,//relative id of the message
 	timeToType: number
+}
+
+export interface IAddNewChatAction {
+	id: string,
+	owner: string[],
+	type: "gc" | "dm",
+}
+
+export interface IAddPasswordForAction {
+	nickname: string,
+	password: string,
 }
 
 export interface ISetTerminalCommandAction {
@@ -130,7 +151,7 @@ export interface IVimTypeAction {
 
 export interface ISetTypingBoxContentAction {
 	content: string,
-	typingBoxId: number,
+	typingBoxId: string,
 }
 
 export interface IHistoryEntry {
@@ -146,18 +167,28 @@ export interface ISetPromptVisibilityAction {
 	visible: boolean,
 }
 
+export interface IDeleteTextFromTypingBoxAction {
+	symbolsCount: number,
+	speed: number,
+	typingBoxId: string,
+}
+
 export interface IClearTypingTextBoxes {
-	ids: number[]
+	ids: string[]
 }
 
 export interface IAction {
 	navigateAction?: INavigateAction,
 	saveAction?: ISaveAction
-	setTextBoxStyleAction?: ISetTextBoxStyleAction
+	setTypingBoxStyleAction?: ISetTypingBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
+	addNewChat?: IAddNewChatAction,
+	addPasswordFor?: IAddPasswordForAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
+	setModsToRemove?: ISetModsToRemoveAction,
+	setTransferTo?: ISetTransferToAction,
 	setTerminalCommandAction?: ISetTerminalCommandAction,
 	vimTypeAction?: IVimTypeAction,
 	setTypingBoxContentAction?: ISetTypingBoxContentAction,
@@ -172,6 +203,7 @@ export interface IScriptLine {
 	action?: IAction,
 	addParallelExec?: IAddParallelExec
 	clearTypingTextBoxes?: IClearTypingTextBoxes
+	deleteTextFromTypingBox?: IDeleteTextFromTypingBoxAction
 	hint?: string,//what the player is expected to do while the story waits on this scriptline (isActionAwait)
 	isActionAwait?: boolean,
 	offset: string,
@@ -189,6 +221,7 @@ export interface IUser {
 export interface IDestination {
 	where: string
 	level: number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
+	user: string //nickname of the user that is expected to be logged in at this destination
 	from?:IDestination
 }
 
@@ -212,77 +245,66 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
+	postsBuffer: EntityTable<IPost, "id">
+	chatsBuffer: EntityTable<IChat, "id">
+	usersBuffer: EntityTable<IUser, "id">
+	storyMessagesBuffer: EntityTable<IMessage, "id">
+	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(206).stores({
+db.version(239).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
-	chats: "id, owner",
-	storyMessages: "id,chatId"
+	chats: "id, *owner",
+	storyMessages: "id,chatId",
+	postsBuffer: "id, author, subforum",
+	chatsBuffer: "id, *owner",
+	usersBuffer: "++id, nickname, savedStoryId",
+	storyMessagesBuffer: "id,chatId",
+	subforumsBuffer: "++id, name"
 }).upgrade(async () => {
 	console.log("Upgrading database to new version");
 	if (process.env.NODE_ENV == 'test')
 		return;
-	await db.story.clear();
-	let response = await fetch(getJsonUrl("script.json"));
-	const newScript: IScriptLine[] = withLastNavPos(await response.json() as IScriptLine[]);
-	await db.story.bulkAdd(newScript);
-	// const users = await tx.table("users").where("savedStoryId").aboveOrEqual(1).toArray() as IUser[];
-	// if (users.length != 0) {
-	// 	const lastSave = await tx.table("story")
-	// 		.toCollection()
-	// 		.reverse()
-	// 		.filter(scl => scl.action?.name === "SAVE"&&scl.id<=(users[0].savedStoryId??0))
-	// 		.first() as IScriptLine;
-	// 	users[0].savedStoryId=lastSave.id;
-	// }
-	await db.users.clear();
-	response = await fetch(getJsonUrl("users.json"));
-	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
-	await db.users.bulkAdd(newUsers);
-	// if (users.length != 0) {
-	// 	await tx.table("users").where("savedStoryId").equals(0).modify(users[0]);
-	// }
-	await db.posts.clear();
-	response = await fetch(getJsonUrl("posts.json"));
-	const newPosts: IPost[] = (await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` }));
-	await db.posts.bulkAdd(newPosts);
-
-	await db.subforums.clear();
-	response = await fetch(getJsonUrl("subforums.json"));
-	const newSubforums: ISubforum[] = (await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 }));
-	await db.subforums.bulkAdd(newSubforums);
-
-	await db.chats.clear();
-	response = await fetch(getJsonUrl("chats.json"));
-	const newChats: IChat[] = (await response.json() as IChat[]);
-	await db.chats.bulkAdd(newChats);
-
-	await db.storyMessages.clear();
+	await Promise.all(db.tables.map((table) => table.clear()));
+	await seedUsers();
 })
 
-export async function seedNew() {
-	let response = await fetch(getJsonUrl("script.json"));
-	await db.story.bulkAdd(withLastNavPos(await response.json() as IScriptLine[]));
-	response = await fetch(getJsonUrl("users.json"));
+async function fetchSeed<T>(name: string, nickname?: string) {
+	const response = await fetch(getJsonUrl(name));
+	const json = JSON.stringify(await response.json());
+	return JSON.parse(nickname == undefined ? json : json.replace(/#main_hero/g, nickname)) as T;
+}
+
+function mapUsers(users: IUser[]): IUser[] {
 	let seed = 0;
-	const newUsers: IUser[] = (await response.json() as IUser[]).map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
-	await db.users.bulkAdd(newUsers);
-	response = await fetch(getJsonUrl("posts.json"));
-	await db.posts.bulkAdd((await response.json() as IPost[]).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
-	response = await fetch(getJsonUrl("subforums.json"));
-	await db.subforums.bulkAdd((await response.json() as ISubforum[]).map((v, i) => ({ ...v, id: i + 1 })));
-	response = await fetch(getJsonUrl("chats.json"));
-	await db.chats.bulkAdd(await response.json() as IChat[]);
+	return users.map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
+}
+
+export async function seedUsers() {
+	await db.users.clear();
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json")));
+}
+
+export async function seedTables(nickname: string) {
+	await db.story.clear();
+	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", nickname)));
+	await db.users.clear();
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", nickname)));
+	await db.posts.clear();
+	await db.posts.bulkAdd((await fetchSeed<IPost[]>("posts.json", nickname)).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
+	await db.subforums.clear();
+	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", nickname)).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.chats.clear();
+	await db.chats.bulkAdd(await fetchSeed<IChat[]>("chats.json", nickname));
 }
 
 db.on("populate", async () => {
 	if (process.env.NODE_ENV == 'test') 
 		return;
-	await seedNew();
+	await seedUsers();
 })
 
 await db.open()

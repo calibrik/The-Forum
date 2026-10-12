@@ -7,13 +7,13 @@ import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
-import { bridge, getImageUrl, sanitizeDbFetch } from "../utils";
+import { bridge, getImageUrl } from "../utils";
 import { useNavigate, useParams } from "react-router";
 import { Spinner } from "../components/Spinner";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost, type ISubforum } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 
 const FAKE_POST: IPost = {
     id: "fake",
@@ -41,7 +41,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
     const [post,setPost]=useState<IPost|undefined>(undefined);
     const [subforumPfp,setSubforumPfp]=useState<string|undefined>(undefined);
     const userState=useUserState();
-    const typingBox=useRef<ITypingTextBoxHandle>(null)
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const story = useStory();
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
@@ -64,19 +64,19 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             return;
         const post = isFake
             ? { ...FAKE_POST, author: userState.userLoggedIn.current }
-            : await sanitizeDbFetch(await db.posts.where("id").equals(id??"").first());
+            : await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})
             return;
         }
         setPost(post);
-        const sub = await sanitizeDbFetch(await db.subforums.where("id").equals(post.subforum).first());
+        const sub = await db.subforums.where("id").equals(post.subforum).first();
         setSubforum(sub);
         setSubforumPfp(sub?.imageName);
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox],init);
+        bridge.exec(storyInit,2, getTypingBoxes(),init);
     }, [])
 
     function onMenuToggle() {
@@ -116,7 +116,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
 
     return (
         <>
-        <TypingTextBox ref={typingBox} type={"terminal"}/>
+        <TypingTextBox ref={setTypingBox("nar1")} type={"terminal"}/>
         <div className={styles.container}>
             <div className={`${styles.postContainer} ${isDeleted?styles.deleted:""}`}>
                 <div className={styles.returnContainer}>

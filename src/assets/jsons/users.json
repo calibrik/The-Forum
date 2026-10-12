@@ -4,7 +4,7 @@
         "description": "Secret dev account for testing shit"
     },
     {
-        "nickname": "main_hero",
+        "nickname": "#main_hero",
         "savedStoryId": 0,
         "description": "Been frying squids longer than you lived",
         "imageName": "pfp2.png"

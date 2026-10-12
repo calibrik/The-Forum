@@ -62,6 +62,6 @@ afterEach(async () => {
 });
 
 // beforeEach(async () => {
-//     await seedNew();
+//     await seedUsers();
 // })
 

@@ -35,6 +35,10 @@ export const Menu: FC<IMenuProps> = (props) => {
         setActiveOption(index!=-1?index:0);
     }
 
+    useEffect(()=>{
+        determineActiveOption();
+    })
+
     useEffect(() => {
         determineActiveOption();
         window.addEventListener("popstate",determineActiveOption);

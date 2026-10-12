@@ -1,11 +1,11 @@
-import { useEffect, useState, type FC, type RefObject } from "react";
+import { useEffect, useState, type FC } from "react";
 import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost, type ISubforum } from "../backend/db";
 import { useOutletContext, useParams } from "react-router";
-import { addHashToUserNickname, bridge, sanitizeDbFetch } from "../utils";
+import { bridge } from "../utils";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
 interface ISubforumPostsProps { };
@@ -14,29 +14,21 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     const storyInit = useStoryInit();
     const { name } = useParams<{ name: string }>();
     const [posts, setPosts] = useState<IPost[]>([]);
-    const { hintHolders, setHintHolder } = useHintHolders();
-    const [, typingBoxes] = useOutletContext<[ISubforum | undefined, RefObject<ITypingTextBoxHandle | null>[]]>();
+    const { transferHints, setHintHolder } = useHintHolders();
+    const [, typingBoxes] = useOutletContext<[ISubforum | undefined, Map<string, ITypingTextBoxHandle>]>();
 
     async function init() {
-        setPosts(await sanitizeDbFetch(await db.posts.where("subforum").equals(await addHashToUserNickname(name ?? "")).toArray()));
+        setPosts(await db.posts.where("subforum").equals(name ?? "").toArray());
     }
 
     useEffect(() => {
         bridge.exec(storyInit, 3, typingBoxes, init);
-    }, [])
+    }, [name])
 
     useEffect(() => {
         if (posts.length == 0)
             return;
-        let hint = hintHolders.current.get("p4")?.getHintClass();
-        if (hint)
-            document.getElementById("p4")?.classList.add(hint);
-        hint = hintHolders.current.get("p5")?.getHintClass();
-        if (hint)
-            document.getElementById("p5")?.classList.add(hint);
-        hint = hintHolders.current.get("p6")?.getHintClass();
-        if (hint)
-            document.getElementById("p6")?.classList.add(hint);
+        transferHints();
     }, [posts]);
 
 

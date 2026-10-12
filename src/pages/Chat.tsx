@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
-import { Dot, Reply, SendIcon } from "../components/Icons";
-import { bridge, formatDay, formatTime, getImageUrl, sanitizeDbFetch } from "../utils";
+import { Dot, Reply, SendIcon, ThreeDots } from "../components/Icons";
+import { bridge, formatDay, formatTime, getImageUrl, resolveChatView } from "../utils";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -14,7 +14,7 @@ import { Divider } from "../components/Divider";
 import { db, type IChat, type IMessage } from "../backend/db";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate, useParams } from "react-router";
-import { type ITypingTextBoxHandle, TypingTextBox } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 
 interface IChatProps { };
 interface IMessageProps {
@@ -89,6 +89,7 @@ const Message: FC<IMessageProps> = (props) => {
     );
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
     const timeSent = formatTime(props.message.timeSent);
+    const isLink = props.message.content.startsWith(window.location.origin);
 
     async function init() {
         let user = await db.users.where("nickname").equals(props.message.from).first();
@@ -135,7 +136,11 @@ const Message: FC<IMessageProps> = (props) => {
                     </div>
                 </div>
                 : ""}
-            <p className={styles.message}>{content}</p>
+            <p className={styles.message}>
+                {isLink
+                    ? <span className={styles.link}>{props.message.content}</span>
+                    : content}
+            </p>
         </div>
     );
 }
@@ -144,14 +149,16 @@ export const Chat: FC<IChatProps> = () => {
     const [messages, setMessages] = useState<IMessage[]>([]);
     const [typing, setTyping] = useState<Set<string>>(new Set());
     const [chat, setChat] = useState<IChat>();
+    const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const chatContainerRef = useRef<HTMLDivElement>(null);
+    const menuWrapperRef = useRef<HTMLDivElement>(null);
     const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
     const { chatId } = useParams<{ chatId: string }>();
     const inputRef = useRef<IInputFieldHandle>(null);
     const story = useStory();
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -176,13 +183,23 @@ export const Chat: FC<IChatProps> = () => {
             story.goForwardHint("chat-input")
     }
 
+    function onMenuToggle() {
+        setIsMenuOpen(prev => !prev);
+    }
+
+    function onBlockOrLeave() {
+        setIsMenuOpen(false);
+        story.resumeStoryFromHint("block-user-text");
+    }
+
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
             navigate("/");
             return;
         }
-        const chat = await sanitizeDbFetch(await db.chats.where("id").equals(chatId ?? "").first());
-        if (!chat) {
+        const id = chatId ?? "";
+        const rawChat = await db.chatsBuffer.where("id").equals(id).first() ?? await db.chats.where("id").equals(id).first();
+        if (!rawChat) {
             navigate("/404");
             return;
         }
@@ -191,8 +208,9 @@ export const Chat: FC<IChatProps> = () => {
             navigate("/");
             return;
         }
+        const chat = await resolveChatView(rawChat, userState.userLoggedIn.current);
         setChat(chat);
-        const msgs = [...await db.storyMessages.where("chatId").equals(chat.id).toArray(),...story.getMessageBuffer()]
+        const msgs = await story.getMessages(chat.id);
         setMessages(msgs);
         await story.setChatHandle({
             setStringToType: function (string: string): void {
@@ -221,28 +239,60 @@ export const Chat: FC<IChatProps> = () => {
     }
 
     useEffect(() => {
-        bridge.exec(storyInit,2, [typingBox], init);
+        bridge.exec(storyInit,2, getTypingBoxes(), init);
         return ()=>{
             story.setChatHandle(undefined);
         }
     }, [])
 
+    useEffect(() => {
+        if (isMenuOpen)
+            story.goForwardHint("chat-menu-dots-text");
+        else
+            story.goBackwardHint("block-user")
+    }, [isMenuOpen])
+
+    useEffect(() => {
+        if (!isMenuOpen)
+            return;
+        function onClickOutside(e: MouseEvent) {
+            if (menuWrapperRef.current && !menuWrapperRef.current.contains(e.target as Node))
+                setIsMenuOpen(false);
+        }
+        document.addEventListener("mousedown", onClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", onClickOutside);
+        };
+    }, [isMenuOpen])
+
     const typingArray = Array.from(typing);
 
     return (
         <>
-            <TypingTextBox ref={typingBox} type={"terminal"} />
+            {Array.from({ length: 11 }, (_, i) => (
+                <TypingTextBox key={i} ref={setTypingBox(`nar${i}`)} type={"terminal"} />
+            ))}
             <div className={styles.container}>
                 <div className={styles.header}>
                     <BackButton id="back-text" />
-                    <img src={getImageUrl("placeholder.png")} className={styles.pfp} />
+                    <img src={getImageUrl(chat?.imageName ?? "placeholder.png")} className={styles.pfp} />
                     <div className={styles.chatDiv}>
                         <p className={styles.nickname}>{chat?.name}</p>
-                        <span className={styles.membersCount}>{chat?.membersAmount} members</span>
+                        {chat?.membersAmount != undefined && <span className={styles.membersCount}>{chat.membersAmount} members</span>}
                     </div>
+                    {chat ?
+                        <div ref={menuWrapperRef} className={styles.menuWrapper}>
+                            <ThreeDots id="chat-menu-dots-text" interactive onClick={onMenuToggle} className={styles.menuDots} />
+                            {isMenuOpen ?
+                                <div className={styles.dropdownMenu}>
+                                    <div id="block-user-text" className={styles.menuOption} onClick={onBlockOrLeave}>{chat.type === "gc" ? "Leave" : "Block"}</div>
+                                </div>
+                                : ""}
+                        </div>
+                        : ""}
                 </div>
                 <div ref={chatContainerRef} className={styles.chatContainer}>
-                    <Spinner />
+                    {chat?.pregenMessages.length!=0?<Spinner />:""}
                     {messages.map((msg, index) => {
                         let message = <Message key={index} message={msg} replyTo={msg.isReply ? messages.find((v) => v.id == msg.isReply) : undefined} />;
                         if (index == 0)

@@ -1,15 +1,15 @@
-import { useEffect, useRef, type FC } from "react";
+import { useEffect, type FC } from "react";
 import { Notepad as NotepadIcon } from "../components/Icons";
 import styles from "../scss/systemApp.module.scss";
 import { useStoryInit } from "../providers/StoryProvider";
-import { TypingTextBox, type ITypingTextBoxHandle } from "../components/TypingTextBox";
+import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
 
 interface INotepadProps { }
 
 export const Notepad: FC<INotepadProps> = () => {
-    const typingBox = useRef<ITypingTextBoxHandle>(null);
+    const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
@@ -23,7 +23,7 @@ export const Notepad: FC<INotepadProps> = () => {
     }
 
     useEffect(() => {
-        storyInit(1, [typingBox], init);
+        storyInit(1, getTypingBoxes(), init);
     }, [])
 
     return (
@@ -39,7 +39,7 @@ export const Notepad: FC<INotepadProps> = () => {
                     <span className={styles.action}>View</span>
                 </div>
                 <div id="contentDiv" className={styles.contentDiv}>
-                    <TypingTextBox id="textBox" ref={typingBox} className={styles.contentNotepad} type={"normal"} />
+                    <TypingTextBox id="textBox" ref={setTypingBox("nar1")} className={styles.contentNotepad} type={"normal"} />
                 </div>
             </div>
         </div>
