@@ -158,8 +158,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
                 backdropFilter: `blur(${options?.blurPx}px)`,
                 opacity: 0,
             })
-            .to(`#effectOverlayBlur`,
-                {
+            .to(`#effectOverlayBlur`, {
                     opacity: 1,
                     duration: options?.duration,
                 })
@@ -840,7 +839,7 @@ export function useStoryFuncs() {
         }
 
         if (scl.addParallelExec) {
-            tl.addLabel(scl.addParallelExec.name);
+            tl.addLabel(scl.addParallelExec.name,scl.offset);
             const branches = scl.addParallelExec.branches;
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
@@ -927,7 +926,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 354 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();

@@ -68,7 +68,6 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
         const nickname = userState.userLoggedIn.current;
         const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(nickname).toArray(), db.chats.where("owner").equals(nickname).toArray()]);
         const chats = [...buffered, ...saved];
-        console.log(chats)
         setChats(await Promise.all(chats.map((chat) => resolveChatView(chat, nickname))));
     }
 

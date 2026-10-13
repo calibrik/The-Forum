@@ -40,7 +40,8 @@ export const Signup: FC<ISignupProps> = (_) => {
     async function proccessSubmit(data: SignupData) {
         answerRef.current = true;
         let isGood: boolean = true;
-        if (data.nickname.trim() === "") {
+        const nickname = data.nickname.trim();
+        if (nickname === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
             isGood = false;
         }
@@ -57,7 +58,6 @@ export const Signup: FC<ISignupProps> = (_) => {
             setLoading(false);
             return;
         }
-        const nickname = data.nickname.trim();
         const nicknameRegex = /^[a-zA-Z0-9_]+$/
         if (!nicknameRegex.test(nickname)) {
             nicknameInputRef.current?.setError("Nickname should contain only letters, numbers and underscores");
@@ -65,12 +65,12 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         }
         const existingUser = await db.users.where("nickname").equals(nickname).toArray();
-        if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)) {
+        if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)||nickname=="banned") {
             nicknameInputRef.current?.setError("Nickname already exists");
             setLoading(false);
             return;
         }
-        await story.createUser(data.nickname.trim(), data.password.trim());
+        await story.createUser(nickname, data.password.trim());
         story.logout();
     }
 

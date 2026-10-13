@@ -3443,7 +3443,7 @@
                 }
             }
         },
-        "hint":"Go to the chat with Sillygoose228",
+        "hint": "Go to the chat with Sillygoose228",
         "offset": ">"
     },
     {
@@ -3978,7 +3978,7 @@
             "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "top":"40%",
+                    "top": "40%",
                     "width": "100cqw",
                     "padding": "0",
                     "background-color": "transparent",
@@ -4077,7 +4077,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=1"
     },
@@ -4105,7 +4105,7 @@
             "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
-                    "top":"40%",
+                    "top": "40%",
                     "width": "100cqw",
                     "padding": "0",
                     "background-color": "transparent",
@@ -4140,7 +4140,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=0.5"
+            "clearAfter": "+=0.5"
         },
         "offset": "+=0.3"
     },
@@ -4150,7 +4150,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=0.5"
+            "clearAfter": "+=0.5"
         },
         "offset": ">"
     },
@@ -4160,7 +4160,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -4191,7 +4191,7 @@
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -4288,7 +4288,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -4431,7 +4431,6 @@
         },
         "offset": ">"
     },
-    
     {
         "storyline": {
             "content": "Fuck, I might be burned here.",
@@ -4441,7 +4440,6 @@
         },
         "offset": "-=1"
     },
-    
     {
         "storyline": {
             "content": "What if he is gonna ask me about how did I find this post?",
@@ -4549,7 +4547,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=2.5"
     },
@@ -4561,7 +4559,7 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
-        "offset": ">" 
+        "offset": ">"
     },
     {
         "action": {
@@ -4607,7 +4605,7 @@
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -4622,7 +4620,7 @@
                 }
             }
         },
-        "isActionAwait":true,
+        "isActionAwait": true,
         "hint": "Log out and log in as sillygoose228",
         "offset": ">"
     },
@@ -4644,7 +4642,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -4672,7 +4670,7 @@
                 }
             }
         },
-        "isActionAwait":true,
+        "isActionAwait": true,
         "offset": ">"
     },
     {
@@ -4703,7 +4701,7 @@
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": ">"
     },
@@ -4729,7 +4727,7 @@
                 }
             }
         },
-        "isActionAwait":true,
+        "isActionAwait": true,
         "hint": "Open the f/zero members list",
         "offset": ">"
     },
@@ -4769,7 +4767,7 @@
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1",
-            "clearAfter":"+=1.5"
+            "clearAfter": "+=1.5"
         },
         "offset": "+=0.3"
     },
@@ -4849,7 +4847,7 @@
                 "from": "Sinius",
                 "content": "just stop giving attention to this clown ass",
                 "timeToType": 4,
-                "isReplyDiff":-1
+                "isReplyDiff": -1
             }
         },
         "offset": "+=4"
@@ -4882,6 +4880,1334 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "pinchIt",
+                "content": "what the fuck, it’s real",
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "MironYanch",
+                "content": "no fucking way",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "no way",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "musky_diver",
+                "content": "you’re crazy son of a bitch, you actually did it",
+                "timeToType": 3
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "what the fuck? How",
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "ink_and_iron",
+                "content": "fucking legend",
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=0.4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "DarkSolace",
+                "content": "how the fuck did u do that",
+                "timeToType": 2.8
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sinius",
+                "content": "lmao what",
+                "timeToType": 1.5
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "SmoothOperator",
+                "content": "of all people it’s @#main_hero who did that lmaooo",
+                "timeToType": 4
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "fuck yeah, it was me, just simple phishing and social engineering"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=4.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "let’s spam whatever we want on this sub, we can do it, cuz I have the keys now"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "42%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Fuck yeah, let’s burn this subforum to the ground.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=2.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "fuck yeah, let’s do it",
+                "timeToType": 2
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "ink_and_iron",
+                "content": "omw",
+                "timeToType": 1.2
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Sinius",
+                "content": "alr why not",
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "DarkSolace",
+                "content": "hell yeah lmao",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "42%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Let me check the zero sub now.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "addPosts": {
+                "posts": [
+                    {
+                        "author": "Statue_of_a_Trash_Bin",
+                        "subforum": "zero",
+                        "title": "This sub has been taken over. I'm not a mod anymore.",
+                        "content": "They demoted every single one of us and transferred the sub to some account from the cyberdivers chat. I can't do anything about it anymore.\n\nDon't engage with the raiders, just report everything and wait for The Forum admins to step in.",
+                        "likes": 812,
+                        "comments": 96,
+                        "views": 41233
+                    },
+                    {
+                        "author": "ghost_in_the_submarine",
+                        "subforum": "zero",
+                        "title": "What the fuck is happening here??",
+                        "content": "Why is the whole front page unreadable all of a sudden? Did someone get hacked? Where did all the mods go?",
+                        "likes": 344,
+                        "comments": 58,
+                        "views": 12890
+                    },
+                    {
+                        "author": "pinchIt",
+                        "subforum": "zero",
+                        "title": "squid gang was here",
+                        "content": "ratio + skill issue + get farmed",
+                        "likes": 12,
+                        "comments": 3,
+                        "views": 642
+                    },
+                    {
+                        "author": "MironYanch",
+                        "subforum": "zero",
+                        "title": "cyberdivers sends their regards",
+                        "content": "cope harder zero fans, enjoy the sub cuz it's ours now",
+                        "likes": 8,
+                        "comments": 1,
+                        "views": 511
+                    },
+                    {
+                        "author": "musky_diver",
+                        "subforum": "zero",
+                        "title": "this game is mid anyway",
+                        "content": "should've been playing cyberdivers instead of crying over a single player game",
+                        "likes": 5,
+                        "comments": 0,
+                        "views": 402
+                    },
+                    {
+                        "author": "do_not_the_dog",
+                        "subforum": "zero",
+                        "title": "mods are asleep, post garbage",
+                        "content": "there are no mods left lmaooo",
+                        "likes": 9,
+                        "comments": 2,
+                        "views": 388
+                    },
+                    {
+                        "author": "ink_and_iron",
+                        "subforum": "zero",
+                        "title": "lorem ipsum but it's a shitpost",
+                        "content": "zero is a walking simulator with a story you can find in any mediocre anime, and you all cried at it",
+                        "likes": 3,
+                        "comments": 4,
+                        "views": 355
+                    },
+                    {
+                        "author": "Sinius",
+                        "subforum": "zero",
+                        "title": "who even are you people",
+                        "content": "never seen this sub in my life, just came here to make it worse, mission accomplished",
+                        "likes": 6,
+                        "comments": 0,
+                        "views": 298
+                    },
+                    {
+                        "author": "clanker_oil_stain",
+                        "subforum": "zero",
+                        "title": "divers > zero",
+                        "content": "came all the way from cyberdivers to tell you the game you like is bad, u mad?",
+                        "likes": 4,
+                        "comments": 1,
+                        "views": 274
+                    },
+                    {
+                        "author": "Roman_Roy218",
+                        "subforum": "zero",
+                        "title": "fill this sub with slop",
+                        "content": "we can post whatever we want here now, so here's a post about nothing, deal with it",
+                        "likes": 2,
+                        "comments": 0,
+                        "views": 233
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Search for 'zero' in the header and open the subforum",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "42%",
+                    "left": "5%"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, look at this. I made it possible!",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I am so fucking goated ain’t I? And now people see it too.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Go back to the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "width": "auto",
+                    "top": "90%",
+                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "nah ts is instant cyberdivers classic",
+                "timeToType": 3
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "Ikr?"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "Im fucking legendary for ts, idc what y’all say"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "MironYanch",
+                "content": "lowk yeah",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "inducted in cyberdivers hall of fame",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "musky_diver",
+                "content": "can we make him a mod please mods?",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Roman_Roy218",
+                "content": "bruh, all he did is just vibe coded some slop and somehow tricked sillygoose228 into clicking on his bullshit",
+                "timeToType": 6.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Roman_Roy218",
+                "content": "and now he yaps around how it is his big accomplishment",
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=7"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Roman_Roy218",
+                "content": "fym mod, get a grip, and a life optionally",
+                "timeToType": 3.5,
+                "isReplyDiff": -3
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Three_Squids_In_A_Suit",
+                "content": "yeah, can we get a move on from this?",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "MironYanch",
+                "content": "dude he stole entire subreddit",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Three_Squids_In_A_Suit",
+                "content": "so what? I need to suck his dick for it?",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Three_Squids_In_A_Suit",
+                "content": "hacking was cringe back when I was 12",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "MironYanch",
+                "content": "big deal, u r like 13 now",
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Three_Squids_In_A_Suit",
+                "content": "eat shit",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "SmoothOperator",
+                "content": "yeah, it was fun, but it’s lowk cringe now",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "What the fuck?",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "go fuck yourselves. I singlehandedly hacked a subforum and what did you do?"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "absolutely fucking nothing, except bitching and moaning"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "u r just jealous of me because I actually managed to pull this off"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buzzzzz09",
+                "content": "oh wow, u hacked a subforum, so we can spam some bs on it",
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buzzzzz09",
+                "content": "big hooray",
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "buzzzzz09",
+                "content": "are we supposed to be impressed by this?",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "well yeah"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "bruh u r just an unemployed friendless cringe loser who couldn’t play cyberdivers to save his life, and then suddenly u hacked some subforum and everyone is supposed to kiss the ground underneath u",
+                "timeToType": 9
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "well guess what, it’s not happening",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=9.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "no matter what u do, u always will be cringe",
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "pinchIt",
+                "content": "gadayum bro",
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "MironYanch",
+                "content": "that was brutal",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "holy shit, bro got roasted so hard",
+                "timeToType": 3,
+                "isReplyDiff": -5
+            }
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Man, fuck him and all these cunts.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=2"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "fuck u"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "me?",
+                "timeToType": 1
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "fuck u, u delusional fuckwit",
+                "timeToType": 2.5
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "no fuck u, u fucking twat",
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "clanker_oil_stain",
+                "content": "u called me twat? I never felt less insulted",
+                "timeToType": 3
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "caffeine_up_the_ass",
+                "content": "bro wtf did I do?",
+                "timeToType": 2
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "do_not_the_dog",
+                "content": "fuck u",
+                "timeToType": 1
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "Roman_Roy218",
+                "content": "fuck u",
+                "timeToType": 1
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "fuck u"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=1.5"
+    },
+    {
+        "addParallelExec": {
+            "name": "fuckUBarrage",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 6,
+                                "opacity": 0.6,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": "+=8.5"
+                    },
+                    {
+                        "effect": {
+                            "name": "BLUR",
+                            "options": {
+                                "duration": 6,
+                                "blurPx": 6,
+                                "zIndex": 21
+                            }
+                        },
+                        "offset": "<"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Three_Squids_In_A_Suit",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Roman_Roy218",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "caffeine_up_the_ass",
+                                "content": "what is everyone saying fuck me for?",
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "clanker_oil_stain",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=3.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "MironYanch",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "caffeine_up_the_ass",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "musky_diver",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "do_not_the_dog",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "pinchIt",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "ink_and_iron",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Sinius",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "SmoothOperator",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "DarkSolace",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "buzzzzz09",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "buggedFeature",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "brundmartindle",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "clanker_oil_stain",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "Roman_Roy218",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 1,
+                "opacity": 1,
+                "overlayNumber": [
+                    "3"
+                ],
+                "backgroundColor": "white",
+                "zIndex": 21
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 1,
+                "overlayNumber": [
+                    "1",
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "10%",
+                    "width": "clamp(300px,87cqw,1000px)",
+                    "background-color": "transparent",
+                    "padding": "0",
+                    "z-index": 22,
+                    "color": "black"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Man, this shit is fucking stupid.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "The fuck am I even doing?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I’ve sunk 1000h sweating in cyberdivers, I’ve hacked sillygoose228 and zero sub even though they did nothing but show love for one another and why? Because I wanted fucking validation from my friends.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "My only “friends” who don’t even respect me, who confuse bullying with honesty and who are every bit as stupid as I am.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "And the only reason I’m trying to hang onto them is that I don’t have anyone else.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "I’ve spent hours and hours trying to convince everyone around me and myself, that I am skillful, smart and just the best person on earth and not just some useless forumer, although I probably am, just to get that power.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Power that makes me say what I want to say, whenever I want, however I want and be untouchable.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "But how much safety am I willing to trade for it?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Because it’s never gonna stop, I will try to poke people where it hurts and they will do the same to me, because everybody wants power and be on top, and before you know it, everyone is in that puddle of toxicity, being afraid to stick out.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "It’s a cycle that can’t be stopped.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Or can it?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "And when I saw an alternative, real healthy relationships, where respect and boundaries exist, all I wanted to do was burn them to the ground, based on the presumption that they are just weak and fake.",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "But let’s be real, I was the one who is weak.",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "It’s fucking stupid, isn’t it?",
+            "speed": 50,
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "effect": {
+            "name": "BLUR",
+            "options": {
+                "duration": 2,
+                "blurPx": 6,
+                "zIndex": 22
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "clearTypingTextBoxes": {
+            "ids": [
+                "nar1"
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "3",
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "width": "auto",
+                    "top": "90%",
+                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "from": "pinchIt",
+                "content": "yo @#main_hero, u do know that u can get urself banned for stealing other users accounts right?",
+                "timeToType": 6
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "content": "yeah of course I know"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "banUser": {
+                "nickname": "#main_hero"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "hint": "Go to your profile page",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxStyleAction": {
+                "id": "nar1",
+                "style": {
+                    "top": "40%",
+                    "width": "auto",
+                    "font-size": "clamp(1.3rem, 5.2cqw, 1.7rem);",
+                    "text-align": "center"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "oh wow.",
+            "speed": 50,
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=2"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/credits",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
         "offset": ">"
     }
 ]
