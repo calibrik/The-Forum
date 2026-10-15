@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ci": "vitest run",
-    "visual":"npx vite-bundle-visualizer"
+    "visual": "npx vite-bundle-visualizer"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

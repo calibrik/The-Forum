@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from "../scss/postPage.module.scss"
 import buttonStyles from "../scss/baseButton.module.scss";
-import { SendIcon, ThreeDots } from "../components/Icons";
+import { Deleted, SendIcon, ThreeDots } from "../components/Icons";
 import { Reactions } from "../components/Reactions";
 import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
@@ -144,6 +144,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                 </div>
                 {isDeleted ? (
                     <div className={styles.deletedContainer}>
+                        <Deleted className={styles.deletedIcon} />
                         <h1 className={styles.deletedTitle}>Post you are looking for does not exist.</h1>
                         <p className={styles.deletedMessage}>Perhaps, it has been deleted by moderators or author of the post.</p>
                     </div>

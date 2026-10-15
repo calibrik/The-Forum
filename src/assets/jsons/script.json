@@ -5758,16 +5758,6 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "caffeine_up_the_ass",
-                                "content": "fuck u",
-                                "timeToType": 1
-                            }
-                        },
-                        "offset": "+=1.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
                                 "from": "musky_diver",
                                 "content": "fuck u",
                                 "timeToType": 1
@@ -5839,6 +5829,16 @@
                         "action": {
                             "sendMessageAction": {
                                 "from": "buzzzzz09",
+                                "content": "fuck u",
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "from": "do_not_the_dog",
                                 "content": "fuck u",
                                 "timeToType": 1
                             }

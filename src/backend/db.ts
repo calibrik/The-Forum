@@ -145,6 +145,10 @@ export interface IAddPasswordForAction {
 	password: string,
 }
 
+export interface IBanUserAction {
+	nickname: string,
+}
+
 export interface ISetTerminalCommandAction {
 	command: string,
 	output?: string,
@@ -192,6 +196,7 @@ export interface IAction {
 	addNewChat?: IAddNewChatAction,
 	addPosts?: IAddPostsAction,
 	addPasswordFor?: IAddPasswordForAction,
+	banUser?: IBanUserAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setModsToRemove?: ISetModsToRemoveAction,
 	setTransferTo?: ISetTransferToAction,
@@ -222,6 +227,7 @@ export interface IUser {
 	savedStoryId?: number
 	description?: string
 	imageName?: string
+	isBanned?: boolean
 }
 
 export interface IDestination {
@@ -258,7 +264,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(249).stores({
+db.version(250).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

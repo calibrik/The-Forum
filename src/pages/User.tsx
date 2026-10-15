@@ -3,7 +3,7 @@ import styles from "../scss/sub-userPage.module.scss";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import { bridge, getImageUrl } from "../utils";
 import { Menu, type IMenuOption } from "../components/Menu";
-import { Dot, Message } from "../components/Icons";
+import { Dot, Hammer, Message } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IUser } from "../backend/db";
@@ -91,11 +91,11 @@ export const User: FC<IUserPageProps> = (_) => {
     }
 
     async function onMessageClick() {
-        if (!userState.isRealLoggedIn||userState.userLoggedIn.current==""||story.resumeStoryFromHint("send-message"))
+        if (!userState.isRealLoggedIn || userState.userLoggedIn.current == "" || story.resumeStoryFromHint("send-message"))
             return;
         const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(userState.userLoggedIn.current).toArray(), db.chats.where("owner").equals(userState.userLoggedIn.current).toArray()]);
         const chats = [...buffered, ...saved];
-        const chat=chats.find(c=>c.owner.find(u=>u==username));
+        const chat = chats.find(c => c.owner.find(u => u == username));
         if (chat)
             navigate(`/chat/${chat.id}`);
     }
@@ -105,7 +105,8 @@ export const User: FC<IUserPageProps> = (_) => {
             navigate("/")
             return;
         }
-        const user = await db.users.where("nickname").equals(username ?? "").first();
+        const user = await db.usersBuffer.where("nickname").equals(username ?? "").first()
+            ?? await db.users.where("nickname").equals(username ?? "").first();
         if (!user) {
             navigate("/404", { replace: true })
             return;
@@ -148,14 +149,14 @@ export const User: FC<IUserPageProps> = (_) => {
             <TypingTextBox ref={setTypingBox("nar1")} type="terminal" />
             <div className={styles.container}>
                 <img src={getImageUrl(user?.imageName ?? "pfp1.png")} className={styles.pfpBg} />
-                <div className={styles.subProfileContainer}>
-                    {user ?
+                <div className={`${styles.subProfileContainer} ${user?.isBanned ? styles.banned : ""}`}>
+                    {user && !user.isBanned ?
                         <div className={styles.headerContainer}>
                             <div className={styles.titleHeaderContainer}>
                                 <div className={styles.titleRow}>
                                     <h1 className={styles.title}>u/{user.nickname}</h1>
                                     {username == userState.userLoggedIn.current ? "" :
-                                        <BaseButton icon={<Message/>} type="button" id={"send-message"} onClick={onMessageClick} className={`${styles.messageButton} ${baseButtonStyles.primaryButton}`}>Message</BaseButton>
+                                        <BaseButton icon={<Message />} type="button" id={"send-message"} onClick={onMessageClick} className={`${styles.messageButton} ${baseButtonStyles.primaryButton}`}>Message</BaseButton>
                                     }
                                 </div>
                                 <div className={styles.onlineContainer}>
@@ -171,14 +172,22 @@ export const User: FC<IUserPageProps> = (_) => {
                                 </div>
                                 : ""}
                         </div>
-                        : <Spinner />}
+                        : user ?
+                            <div className={styles.bannedContainer}>
+                                <Hammer className={styles.bannedIcon} />
+                                <h1 className={styles.bannedTitle}>You have been banned</h1>
+                                <p className={styles.bannedMessage}>You have been banned for the violation of community rules. If you want to appeal, <span className={styles.bannedLink}>contact us</span></p>
+                            </div>
+                            : <Spinner />}
                     <HintHolder ref={setHintHolder("cd-profile-text")} id="cd-profile-text" />
                     <HintHolder ref={setHintHolder("send-message")} id={"send-message"} />
-                    <Menu options={menuOptions} />
+                    {!user?.isBanned && <Menu options={menuOptions} />}
                 </div>
-                <div className={styles.contentContainer}>
-                    <Outlet context={user} />
-                </div>
+                {!user?.isBanned ?
+                    <div className={styles.contentContainer}>
+                        <Outlet context={user} />
+                    </div>
+                    : ""}
             </div>
         </>
     );

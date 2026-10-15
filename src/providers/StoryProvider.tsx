@@ -710,6 +710,17 @@ export function useStoryFuncs() {
             if (user)
                 await db.usersBuffer.put({ ...user, password: password });
         }
+        if (action.banUser) {
+            const { nickname } = action.banUser;
+            const buffered = await db.usersBuffer.where("nickname").equals(nickname).first();
+            if (buffered)
+                await db.usersBuffer.put({ ...buffered, isBanned: true });
+            else {
+                const user = await db.users.where("nickname").equals(nickname).first();
+                if (user && !user.isBanned)
+                    await db.usersBuffer.put({ ...user, isBanned: true });
+            }
+        }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)
             const { content, isLink } = action.promptMessageAction;

@@ -44,7 +44,10 @@
     margin-top: 10.7vh;
     container-type: inline-size;
     z-index: 1;
-    // flex-grow: 1;
+}
+
+.sub-profile-container.banned{
+    flex-grow: 1;
 }
 
 .header-container {
@@ -97,6 +100,25 @@
     font-size: clamp(0.8rem, 3.1cqw, 1.3rem);
 }
 
+.banned-link {
+    color: colors.$secondary-color;
+    font-weight: bold;
+    transition: globals.$transition;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .banned-link:hover {
+        color: #c0c0c0;
+        cursor: pointer;
+    }
+}
+
+.banned-link:active {
+    transform: scale(0.9);
+    color: #c0c0c0;
+}
+
 .acc-link {
     color: colors.$link-color;
     font-size: clamp(0.8rem, 3.1cqw, 1.3rem);
@@ -116,6 +138,32 @@
 .acc-link:active {
     color: #de0004;
     transform: scale(0.9);
+}
+
+.banned-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3vh;
+    padding: 10cqw 2cqw;
+    text-align: center;
+}
+
+.banned-icon {
+    font-size: clamp(3rem, 14cqw, 7rem);
+    color: colors.$tertiary-color;
+}
+
+.banned-title {
+    font-size: clamp(1.25rem, 4.6cqw, 2rem);
+    color: colors.$secondary-color;
+}
+
+.banned-message {
+    font-size: clamp(0.9rem, 3.3cqw, 1.3rem);
+    color: colors.$tertiary-color;
+    max-width: 500px;
 }
 
 .create-post-container {
