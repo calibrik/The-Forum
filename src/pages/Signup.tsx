@@ -4,7 +4,7 @@ import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { Link } from "react-router";
 import { BaseButton } from "../components/BaseButton";
-import { db } from "../backend/db";
+import { db } from "../misc/db";
 import { useModals } from "../providers/Modals";
 import { useStory } from "../providers/StoryProvider";
 import { Spinner } from "../components/Icons";

@@ -3,7 +3,7 @@ import styles from "../scss/userCommentsPage.module.scss";
 import { Comment } from "../components/Comment";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
-import { bridge } from "../utils";
+import { bridge } from "../misc/utils";
 import { useParams } from "react-router";
 interface IUserCommentsProps { };
 

@@ -4,8 +4,8 @@ import { SMEntry } from "../components/SMEntry";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useOutletContext, useParams } from "react-router";
-import type { ISubforum } from "../backend/db";
-import { bridge } from "../utils";
+import type { ISubforum } from "../misc/db";
+import { bridge } from "../misc/utils";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 interface ISubforumMembersProps { };
 

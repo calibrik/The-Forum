@@ -1,5 +1,5 @@
 import { Dexie, type EntityTable } from "dexie"
-import { getJsonUrl, seededRandom } from "../utils";
+import { getJsonUrl, seededRandom } from "./utils";
 import type { IEffectsOptions } from "../providers/StoryProvider";
 
 export interface IStoryLine {

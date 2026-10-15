@@ -1,12 +1,12 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type FC } from "react";
 import styles from "../scss/sub-userPage.module.scss";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
-import { bridge, getImageUrl } from "../utils";
+import { bridge, getImageUrl } from "../misc/utils";
 import { Menu, type IMenuOption } from "../components/Menu";
 import { Dot, Hammer, Message } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { db, type IUser } from "../backend/db";
+import { db, type IUser } from "../misc/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";

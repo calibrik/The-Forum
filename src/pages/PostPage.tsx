@@ -7,11 +7,11 @@ import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
-import { bridge, getImageUrl } from "../utils";
+import { bridge, getImageUrl } from "../misc/utils";
 import { useNavigate, useParams } from "react-router";
 import { Spinner } from "../components/Spinner";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { db, type IPost, type ISubforum } from "../backend/db";
+import { db, type IPost, type ISubforum } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 

@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import { db, seedUsers } from '../backend/db';
+import { db, seedUsers } from '../misc/db';
 import { StoryProvider, useChat, useElementHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
@@ -7,7 +7,7 @@ import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
 import { UserProvider, useUserState } from '../providers/UserAuth';
-import { bridge } from '../utils';
+import { bridge } from '../misc/utils';
 import { ModalsProvider } from '../providers/Modals';
 import { Signup } from '../pages/Signup';
 import { createMemoryRouter, RouterProvider } from 'react-router';

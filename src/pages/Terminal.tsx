@@ -6,7 +6,7 @@ import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
-import type { IHistoryEntry } from "../backend/db";
+import type { IHistoryEntry } from "../misc/db";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/terminal.module.scss";
 

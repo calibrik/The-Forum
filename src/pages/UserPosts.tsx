@@ -4,8 +4,8 @@ import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useParams } from "react-router";
-import { db, type IPost } from "../backend/db";
-import { bridge } from "../utils";
+import { db, type IPost } from "../misc/db";
+import { bridge } from "../misc/utils";
 interface IUserPostsProps { };
 
 export const UserPosts: FC<IUserPostsProps> = (_) => {

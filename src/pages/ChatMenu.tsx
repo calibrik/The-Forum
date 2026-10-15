@@ -1,10 +1,10 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { bridge, formatTime, getImageUrl, resolveChatView } from "../utils";
+import { bridge, formatTime, getImageUrl, resolveChatView } from "../misc/utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { db, type IChat, type IMessage } from "../backend/db";
+import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface IChatMenuProps { };

@@ -3,9 +3,9 @@ import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
-import { db, type IPost, type ISubforum } from "../backend/db";
+import { db, type IPost, type ISubforum } from "../misc/db";
 import { useOutletContext, useParams } from "react-router";
-import { bridge } from "../utils";
+import { bridge } from "../misc/utils";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
 interface ISubforumPostsProps { };

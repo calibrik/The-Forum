@@ -1,4 +1,4 @@
-import { db, type IChat } from "./backend/db";
+import { db, type IChat } from "./db";
 
 export function getImageUrl(name: string): string {
     return new URL(`./assets/images/${name}`, import.meta.url).href;

@@ -6,10 +6,10 @@ import { ArrowRightSquare, ChevronDoubleDown, ChevronDoubleUp, X } from "../comp
 import { BaseButton } from "../components/BaseButton";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { SearchField, type ISearchFieldHandle, type ISuggestion } from "../components/SearchField";
-import { bridge } from "../utils";
+import { bridge } from "../misc/utils";
 import { useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
-import { db, type ISubforum } from "../backend/db";
+import { db, type ISubforum } from "../misc/db";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;

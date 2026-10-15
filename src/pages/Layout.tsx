@@ -5,7 +5,7 @@ import styles from '../scss/layout.module.scss';
 import { SideMenu } from "../components/SideMenu";
 import { ModalsProvider } from "../providers/Modals";
 import { useStoryInit } from "../providers/StoryProvider";
-import { bridge } from "../utils";
+import { bridge } from "../misc/utils";
 interface ILayoutProps { };
 
 export const Layout: FC<ILayoutProps> = (_) => {

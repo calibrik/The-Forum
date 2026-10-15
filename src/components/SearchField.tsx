@@ -4,7 +4,7 @@ import { Search } from "./Icons";
 import { SMEntry } from "./SMEntry";
 import styles from "../scss/searchField.module.scss";
 import hintStyle from '../scss/storyProvider.module.scss';
-import { db } from "../backend/db";
+import { db } from "../misc/db";
 import { useStory } from "../providers/StoryProvider";
 interface ISearchFieldProps {
     id?: string

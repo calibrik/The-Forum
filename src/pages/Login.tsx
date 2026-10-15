@@ -4,7 +4,7 @@ import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { Link, useSearchParams } from "react-router";
 import { BaseButton } from "../components/BaseButton";
-import { db } from "../backend/db";
+import { db } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";

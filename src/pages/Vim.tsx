@@ -8,7 +8,7 @@ import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/vim.module.scss";
 import { useUserState } from "../providers/UserAuth";
-import { commonPrefixLength, getContainerCharCapacity } from "../utils";
+import { commonPrefixLength, getContainerCharCapacity } from "../misc/utils";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 
 export const Vim: FC = () => {
