@@ -1272,7 +1272,7 @@ describe("useStoryFuncs", () => {
             await Promise.all([
                 db.story.put({ id: 9999, offset: ">" }),
                 db.users.put({ id: 9999, nickname: "ghost" }),
-                db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [] }),
+                db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [], dateCreated: new Date() }),
                 db.subforums.put({ id: 9999, name: "ghost", followers: 0, description: "ghost", imageName: "ghost", admin: "ghost", mods: [], members: ["ghost"] }),
                 db.chats.put({ id: "ghost", owner: ["ghost"], type: "gc", pregenMessages: [], isRead: false, initTimeDiff: 0 })
             ]);

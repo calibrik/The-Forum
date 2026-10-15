@@ -73,7 +73,12 @@ export interface IPost {
 	likes: number
 	comments: number
 	views: number,
-	commentsDetailed:IComment[]
+	commentsDetailed:IComment[],
+	dateCreated: Date
+}
+
+export interface IAddPostsAction {
+	posts: IPost[]
 }
 
 export interface IAddParallelExec {
@@ -185,6 +190,7 @@ export interface IAction {
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	addNewChat?: IAddNewChatAction,
+	addPosts?: IAddPostsAction,
 	addPasswordFor?: IAddPasswordForAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setModsToRemove?: ISetModsToRemoveAction,
@@ -252,7 +258,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(245).stores({
+db.version(249).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -288,13 +294,19 @@ export async function seedUsers() {
 	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json")));
 }
 
+export function mapPosts(posts: IPost[], startNumber = 1): IPost[] {
+	const now = Date.now();
+	let n = startNumber;
+	return posts.map((v, i) => ({ ...v, id: v.id ?? `p${n++}`, dateCreated: new Date(now - i) }));
+}
+
 export async function seedTables(nickname: string) {
 	await db.story.clear();
 	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", nickname)));
 	await db.users.clear();
 	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", nickname)));
 	await db.posts.clear();
-	await db.posts.bulkAdd((await fetchSeed<IPost[]>("posts.json", nickname)).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
+	await db.posts.bulkAdd(mapPosts(await fetchSeed<IPost[]>("posts.json", nickname)));
 	await db.subforums.clear();
 	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", nickname)).map((v, i) => ({ ...v, id: i + 1 })));
 	await db.chats.clear();

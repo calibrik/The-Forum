@@ -24,7 +24,8 @@ const FAKE_POST: IPost = {
     likes: 0,
     comments: 0,
     views: 3,
-    commentsDetailed: []
+    commentsDetailed: [],
+    dateCreated: new Date()
 };
 
 interface IPostPageProps { };
@@ -64,7 +65,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             return;
         const post = isFake
             ? { ...FAKE_POST, author: userState.userLoggedIn.current }
-            : await db.posts.where("id").equals(id??"").first();
+            : await db.postsBuffer.where("id").equals(id??"").first() ?? await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})
             return;

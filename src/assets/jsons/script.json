@@ -969,7 +969,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/p4",
+                    "where": "/post/dlc-moved",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 3,
@@ -987,7 +987,7 @@
         "action": {
             "saveAction": {
                 "dest": {
-                    "where": "/post/p4",
+                    "where": "/post/dlc-moved",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 3,
@@ -1129,7 +1129,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/p5",
+                    "where": "/post/vault",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 3,
@@ -1225,7 +1225,7 @@
             "navigateAction": {
                 "navigate": false,
                 "dest": {
-                    "where": "/post/p6",
+                    "where": "/post/spoilers",
                     "from": {
                         "where": "/subforum/zero",
                         "level": 3,
@@ -4985,7 +4985,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "let’s spam whatever we want on this sub, we can do it, cuz I have the keys now"
+                "content": "let’s spam whatever we want on this sub, we can do it now, there are no mods left"
             }
         },
         "isActionAwait": true,
@@ -5083,8 +5083,8 @@
                     {
                         "author": "Statue_of_a_Trash_Bin",
                         "subforum": "zero",
-                        "title": "This sub has been taken over. I'm not a mod anymore.",
-                        "content": "They demoted every single one of us and transferred the sub to some account from the cyberdivers chat. I can't do anything about it anymore.\n\nDon't engage with the raiders, just report everything and wait for The Forum admins to step in.",
+                        "title": "[ANNOUNCEMENT] This sub has been taken over.",
+                        "content": "They demoted every single one of us and stole the sub from u/Sillygoose228 by supposedly stealing his account. We are working with The Forum support right now to regain control of the sub.\n\nDon't engage with the raiders, just report everything and wait for The Forum admins to step in.",
                         "likes": 812,
                         "comments": 96,
                         "views": 41233
@@ -5093,7 +5093,7 @@
                         "author": "ghost_in_the_submarine",
                         "subforum": "zero",
                         "title": "What the fuck is happening here??",
-                        "content": "Why is the whole front page unreadable all of a sudden? Did someone get hacked? Where did all the mods go?",
+                        "content": "Why is the whole sub is filled with spam all of a sudden? Did someone get hacked? Where did all the mods go?",
                         "likes": 344,
                         "comments": 58,
                         "views": 12890
@@ -5101,8 +5101,8 @@
                     {
                         "author": "pinchIt",
                         "subforum": "zero",
-                        "title": "squid gang was here",
-                        "content": "ratio + skill issue + get farmed",
+                        "title": "suck my dick",
+                        "content": "zero sub is ours now",
                         "likes": 12,
                         "comments": 3,
                         "views": 642
@@ -5110,8 +5110,8 @@
                     {
                         "author": "MironYanch",
                         "subforum": "zero",
-                        "title": "cyberdivers sends their regards",
-                        "content": "cope harder zero fans, enjoy the sub cuz it's ours now",
+                        "title": "cyberdivers send their regards",
+                        "content": "zero is a trash game, shouldn't have existed to begin with.",
                         "likes": 8,
                         "comments": 1,
                         "views": 511
@@ -5119,8 +5119,8 @@
                     {
                         "author": "musky_diver",
                         "subforum": "zero",
-                        "title": "this game is mid anyway",
-                        "content": "should've been playing cyberdivers instead of crying over a single player game",
+                        "title": "zero suck balls",
+                        "content": "should've been playing cyberdivers",
                         "likes": 5,
                         "comments": 0,
                         "views": 402
@@ -5128,7 +5128,7 @@
                     {
                         "author": "do_not_the_dog",
                         "subforum": "zero",
-                        "title": "mods are asleep, post garbage",
+                        "title": "DICK DICK DICK DICK DICK DICK DICK DICK DICK",
                         "content": "there are no mods left lmaooo",
                         "likes": 9,
                         "comments": 2,
@@ -5137,8 +5137,8 @@
                     {
                         "author": "ink_and_iron",
                         "subforum": "zero",
-                        "title": "lorem ipsum but it's a shitpost",
-                        "content": "zero is a walking simulator with a story you can find in any mediocre anime, and you all cried at it",
+                        "title": "fuck zero, dogshit game, dogshit community, cyberdivers is so much better",
+                        "content": "zero is a walking simulator with a story you can find in any mid ass anime, and you all cried at it",
                         "likes": 3,
                         "comments": 4,
                         "views": 355
@@ -5146,8 +5146,8 @@
                     {
                         "author": "Sinius",
                         "subforum": "zero",
-                        "title": "who even are you people",
-                        "content": "never seen this sub in my life, just came here to make it worse, mission accomplished",
+                        "title": "ts is so funny",
+                        "content": "never seen this sub in my life, just came here to witness the chaos",
                         "likes": 6,
                         "comments": 0,
                         "views": 298
@@ -5156,17 +5156,17 @@
                         "author": "clanker_oil_stain",
                         "subforum": "zero",
                         "title": "divers > zero",
-                        "content": "came all the way from cyberdivers to tell you the game you like is bad, u mad?",
+                        "content": "change my mind",
                         "likes": 4,
                         "comments": 1,
                         "views": 274
                     },
                     {
-                        "author": "Roman_Roy218",
+                        "author": "DarkSolace",
                         "subforum": "zero",
-                        "title": "fill this sub with slop",
-                        "content": "we can post whatever we want here now, so here's a post about nothing, deal with it",
-                        "likes": 2,
+                        "title": "LMAO",
+                        "content": "I've never seen sub being destroyed like that, rip lol",
+                        "likes": 20,
                         "comments": 0,
                         "views": 233
                     }
@@ -5682,22 +5682,22 @@
                         "effect": {
                             "name": "COLOR_OVERLAY",
                             "options": {
-                                "duration": 6,
-                                "opacity": 0.6,
+                                "duration": 10,
+                                "opacity": 0.7,
                                 "overlayNumber": [
                                     "1"
                                 ],
                                 "backgroundColor": "red"
                             }
                         },
-                        "offset": "+=8.5"
+                        "offset": "+=9"
                     },
                     {
                         "effect": {
                             "name": "BLUR",
                             "options": {
-                                "duration": 6,
-                                "blurPx": 6,
+                                "duration": 10,
+                                "blurPx": 10,
                                 "zIndex": 21
                             }
                         },
@@ -5730,7 +5730,7 @@
                             "sendMessageAction": {
                                 "from": "caffeine_up_the_ass",
                                 "content": "what is everyone saying fuck me for?",
-                                "timeToType": 3
+                                "timeToType": 2
                             }
                         },
                         "offset": "+=1.5"
@@ -5743,7 +5743,7 @@
                                 "timeToType": 1
                             }
                         },
-                        "offset": "+=3.5"
+                        "offset": "+=2.5"
                     },
                     {
                         "action": {
@@ -5844,46 +5844,6 @@
                             }
                         },
                         "offset": "+=1.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "buggedFeature",
-                                "content": "fuck u",
-                                "timeToType": 1
-                            }
-                        },
-                        "offset": "+=1.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "brundmartindle",
-                                "content": "fuck u",
-                                "timeToType": 1
-                            }
-                        },
-                        "offset": "+=1.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "clanker_oil_stain",
-                                "content": "fuck u",
-                                "timeToType": 1
-                            }
-                        },
-                        "offset": "+=1.5"
-                    },
-                    {
-                        "action": {
-                            "sendMessageAction": {
-                                "from": "Roman_Roy218",
-                                "content": "fuck u",
-                                "timeToType": 1
-                            }
-                        },
-                        "offset": "+=1.5"
                     }
                 ]
             ]
@@ -5894,26 +5854,13 @@
         "effect": {
             "name": "COLOR_OVERLAY",
             "options": {
-                "duration": 1,
+                "duration": 0.5,
                 "opacity": 1,
                 "overlayNumber": [
                     "3"
                 ],
                 "backgroundColor": "white",
                 "zIndex": 21
-            }
-        },
-        "offset": "+=1.5"
-    },
-    {
-        "effect": {
-            "name": "REVERSE_OVERLAY",
-            "options": {
-                "duration": 1,
-                "overlayNumber": [
-                    "1",
-                    "Blur"
-                ]
             }
         },
         "offset": ">"
@@ -5941,7 +5888,7 @@
             "delim": "",
             "typingBoxId": "nar1"
         },
-        "offset": "+=1"
+        "offset": "+=2"
     },
     {
         "storyline": {
@@ -5954,7 +5901,16 @@
     },
     {
         "storyline": {
-            "content": "I’ve sunk 1000h sweating in cyberdivers, I’ve hacked sillygoose228 and zero sub even though they did nothing but show love for one another and why? Because I wanted fucking validation from my friends.",
+            "content": "I’ve sunk 1000h sweating in cyberdivers, I’ve hacked sillygoose228 and zero sub even though they did nothing but show love for one another and why?",
+            "speed": 50,
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "Because I wanted fucking validation from my friends.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5981,7 +5937,7 @@
     },
     {
         "storyline": {
-            "content": "I’ve spent hours and hours trying to convince everyone around me and myself, that I am skillful, smart and just the best person on earth and not just some useless forumer, although I probably am, just to get that power.",
+            "content": "I’ve spent hours and hours trying to convince everyone around me and myself, that I am more skillful than them, smarter than them and overall better than them, just to get that power.",
             "speed": 50,
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -6008,7 +5964,7 @@
     },
     {
         "storyline": {
-            "content": "Because it’s never gonna stop, I will try to poke people where it hurts and they will do the same to me, because everybody wants power and be on top, and before you know it, everyone is in that puddle of toxicity, being afraid to stick out.",
+            "content": "Because it’s never gonna stop, I will try to poke people where it hurts and they will do the same to me, because everybody wants power and to be on top, and before you know it, everyone is swimming in that puddle of toxicity, being afraid to stick out.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1"
@@ -6017,7 +5973,7 @@
     },
     {
         "storyline": {
-            "content": "It’s a cycle that can’t be stopped.",
+            "content": "It’s an ego-tripping cycle that can’t be stopped.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1"
@@ -6031,7 +5987,7 @@
             "delim": " ",
             "typingBoxId": "nar1"
         },
-        "offset": "+=0.3"
+        "offset": "+=1"
     },
     {
         "storyline": {
@@ -6064,9 +6020,9 @@
         "effect": {
             "name": "BLUR",
             "options": {
-                "duration": 2,
-                "blurPx": 6,
-                "zIndex": 22
+                "duration": 5,
+                "blurPx": 10,
+                "zIndex": 23
             }
         },
         "offset": "+=2"
@@ -6083,9 +6039,10 @@
         "effect": {
             "name": "REVERSE_OVERLAY",
             "options": {
-                "duration": 2,
+                "duration": 3,
                 "overlayNumber": [
                     "3",
+                    "1",
                     "Blur"
                 ]
             }
@@ -6094,26 +6051,13 @@
     },
     {
         "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "width": "auto",
-                    "top": "90%",
-                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
             "sendMessageAction": {
-                "from": "pinchIt",
+                "from": "john_cyberdiverO7",
                 "content": "yo @#main_hero, u do know that u can get urself banned for stealing other users accounts right?",
                 "timeToType": 6
             }
         },
-        "offset": ">"
+        "offset": "-=1"
     },
     {
         "action": {
@@ -6123,7 +6067,7 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
-        "offset": ">"
+        "offset": "+=6.5"
     },
     {
         "action": {
@@ -6131,7 +6075,7 @@
                 "nickname": "#main_hero"
             }
         },
-        "offset": "+=0.5"
+        "offset": ">"
     },
     {
         "action": {

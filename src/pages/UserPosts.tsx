@@ -14,7 +14,11 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
     const [posts,setPosts]=useState<IPost[]>([]);
 
     async function init(){
-        setPosts(await db.posts.where("author").equals(username??"").toArray());
+        const [buffered, saved] = await Promise.all([
+            db.postsBuffer.where("author").equals(username ?? "").toArray(),
+            db.posts.where("author").equals(username ?? "").toArray()
+        ]);
+        setPosts([...buffered, ...saved].sort((a, b) => b.dateCreated.getTime() - a.dateCreated.getTime()));
     }
 
     useEffect(()=>{

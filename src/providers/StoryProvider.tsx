@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, mapPosts, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -135,49 +135,73 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             })
     },
     "COLOR_OVERLAY": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
-                {
-                    zIndex: options?.zIndex,
-                    opacity: options?.fromOpacity ?? 0,
-                    backgroundColor: options?.backgroundColor
-                },
+        const tl = gsap.timeline();
+        if (options?.duration == 0)
+            tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
+                zIndex: options?.zIndex,
+                backgroundColor: options?.backgroundColor,
+                opacity: options?.opacity,
+            })
+        else
+            tl.fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
+                zIndex: options?.zIndex,
+                opacity: options?.fromOpacity ?? 0,
+                backgroundColor: options?.backgroundColor
+            },
                 {
                     duration: options?.duration,
                     opacity: options?.opacity,
                 })
-            .add(() => {
-                if (options?.persistOverNavigation)
-                    persistOverlayIds?.add(`effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
-            })
+
+        tl.add(() => {
+            if (options?.persistOverNavigation)
+                persistOverlayIds?.add(`effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
+        })
+        return tl;
     },
     "BLUR": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .set(`#effectOverlayBlur`, {
+        const tl = gsap.timeline();
+        if (options?.duration == 0)
+            tl.set(`#effectOverlayBlur`, {
+                zIndex: options?.zIndex,
+                backdropFilter: `blur(${options?.blurPx}px)`,
+                opacity: 1,
+            })
+        else
+            tl.fromTo(`#effectOverlayBlur`, {
                 zIndex: options?.zIndex,
                 backdropFilter: `blur(${options?.blurPx}px)`,
                 opacity: 0,
-            })
-            .to(`#effectOverlayBlur`, {
+            },
+                {
                     opacity: 1,
                     duration: options?.duration,
                 })
-            .add(() => {
-                if (options?.persistOverNavigation)
-                    persistOverlayIds?.add("effectOverlayBlur");
-            })
+
+        tl.add(() => {
+            if (options?.persistOverNavigation)
+                persistOverlayIds?.add("effectOverlayBlur");
+        })
+        return tl;
     },
     "REVERSE_OVERLAY": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .add(() => {
-                for (let v of options?.overlayNumber ?? [])
-                    persistOverlayIds?.delete(`effectOverlay${v}`);
-            }, 0)
-            .to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
+        const tl = gsap.timeline().add(() => {
+            for (let v of options?.overlayNumber ?? [])
+                persistOverlayIds?.delete(`effectOverlay${v}`);
+        }, 0)
+        if (options?.duration == 0)
+            tl.set(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
+                {
+                    backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
+                    opacity: 0,
+                });
+        else
+            tl.to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
                 backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
                 opacity: 0,
                 duration: options?.duration
             })
+        return tl;
     },
     "POSTS_FALL": () => {
         const elements = gsap.utils.toArray("#subforumContainer [data-fall]").reverse() as Element[];
@@ -675,6 +699,10 @@ export function useStoryFuncs() {
         if (action.addNewChat) {
             await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
         }
+        if (action.addPosts) {
+            const existing = [...(await db.postsBuffer.toArray()), ...(await db.posts.toArray())];
+            await db.postsBuffer.bulkPut(mapPosts(action.addPosts.posts, existing.length + 1));
+        }
         if (action.addPasswordFor) {
             const { nickname, password } = action.addPasswordFor;
             const user = await db.usersBuffer.where("nickname").equals(nickname).first()
@@ -744,7 +772,7 @@ export function useStoryFuncs() {
         pageStoryId.current = id + 1;
         const dest = scl.action?.saveAction?.dest
         if (!dest) {
-            console.error(dest, "This scriptline is not a save action.")
+            console.error(scl, "This scriptline is not a save action.")
             return;
         }
         locationRef.current = dest;
@@ -839,7 +867,7 @@ export function useStoryFuncs() {
         }
 
         if (scl.addParallelExec) {
-            tl.addLabel(scl.addParallelExec.name,scl.offset);
+            tl.addLabel(scl.addParallelExec.name, scl.offset);
             const branches = scl.addParallelExec.branches;
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
@@ -926,7 +954,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 354 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 387 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
