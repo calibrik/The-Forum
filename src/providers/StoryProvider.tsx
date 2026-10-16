@@ -19,6 +19,7 @@ interface IStoryHook {
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number, tbs: Map<string, ITypingTextBoxHandle>) => void
+    resetAnims: () => Promise<void>
     createUser: (nickname: string, password: string) => Promise<void>
     goBackwardHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
@@ -610,7 +611,6 @@ export function useStoryFuncs() {
     const loopTicket = useRef<number>(0);//protection against strict mode
     const navigate = useNavigate();
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
-    const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation or save to recover on page from
@@ -619,6 +619,7 @@ export function useStoryFuncs() {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
+    const lastExecutedPath = useRef<string>(undefined);//path resetAnims has already been executed for
     const hintFunc = useElementHints();
     const objectiveHints = useObjectiveHints();
     const bufferFunc = useBuffers();
@@ -633,11 +634,10 @@ export function useStoryFuncs() {
     }
 
     const resetAnims = contextSafe(async () => {
-        if (isStoryNavRef.current)
+        if (lastExecutedPath.current === location.pathname)
             return;
-        if (locationRef.current && isOnLocation(locationRef.current)) {
-            return;
-        }
+        console.log("reset")
+        lastExecutedPath.current = location.pathname;
         hintFunc.resetHint();
         objectiveHints.showNavHint();
         if (isStoryRecovered.current) {
@@ -650,20 +650,19 @@ export function useStoryFuncs() {
             for (let tb of typingBoxes.current.values()) {
                 await tb.reset();
             }
-        }
-        const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
-            .filter((sel) => !(sel.startsWith("#effectOverlay") && persistedOverlayIds.current.has(sel.slice(1))));
-        gsap.set(resetSelectors.join(","), {
-            clearProps: "all"
-        })
+        }    
         typingBoxes.current = new Map();
         await bufferFunc.onNavigateAway();
+        const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
+            .filter((sel) => !(sel.startsWith("#effectOverlay") && persistedOverlayIds.current.has(sel.slice(1))));
+        await gsap.set(resetSelectors.join(","), {
+            clearProps: "all"
+        })
     });
 
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
             await bufferFunc.enablePreserveBuffers();
-            isStoryNavRef.current = true;
             isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
@@ -679,7 +678,6 @@ export function useStoryFuncs() {
                     hintFunc.hintNavPath(action.navigateAction.dest.from);
                 hintFunc.hintNavPath(action.navigateAction.dest);
             }
-            isStoryNavRef.current = false;
         }
         if (action.saveAction) {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
@@ -1010,7 +1008,7 @@ export function useStoryFuncs() {
         }
         userState.userLoggedIn.current = nickname;
         if (!userState.isRealLoggedIn.current) {
-            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true });
             window.dispatchEvent(new Event("loggedIn"));
             userState.isRealLoggedIn.current = true;
             await recoverCheckpoint(user[0].savedStoryId ?? 0);
@@ -1029,7 +1027,7 @@ export function useStoryFuncs() {
     }
 
     const quitGame = contextSafe(async () => {
-        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true });
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
@@ -1048,13 +1046,8 @@ export function useStoryFuncs() {
         }
     }, [])
 
-    useEffect(() => {
-        resetAnims();
-    }, [location.pathname])
 
-    const _resetAnims = process.env.NODE_ENV == 'test' ? resetAnims : undefined;
     const _processAction = process.env.NODE_ENV == 'test' ? processAction : undefined;
-    const _getIsStoryNavRef = process.env.NODE_ENV == 'test' ? () => isStoryNavRef : undefined;
     const _getLocationRef = process.env.NODE_ENV == 'test' ? () => locationRef : undefined;
     const _getTypingBoxes = process.env.NODE_ENV == 'test' ? () => typingBoxes : undefined;
     const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
@@ -1080,6 +1073,7 @@ export function useStoryFuncs() {
         quitGame,
         getExpectedUser,
         recoverStoryOnPage,
+        resetAnims,
         getMessages: chatFunc.getMessages,
         resetBuffers: bufferFunc.resetBuffers,
         addMessageFromUser: chatFunc.addMessageFromUser,
@@ -1093,9 +1087,7 @@ export function useStoryFuncs() {
         goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
-        _resetAnims,
         _processAction,
-        _getIsStoryNavRef,
         _getLocationRef,
         _getLastNavHint: objectiveHints._lastNavHint,
         _getTypingBoxes,
@@ -1155,6 +1147,7 @@ export function useStoryInit() {
     async function storyInit(childLevel: number, typingBoxes: Map<string, ITypingTextBoxHandle>, pageInit?: () => Promise<void> | void) {
         loopTicket.current++;
         const ticket = loopTicket.current;
+        await story.resetAnims();
         if (pageInit)
             await pageInit();
         if (ticket != loopTicket.current)

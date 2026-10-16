@@ -115,7 +115,8 @@
                 "opacity": 1,
                 "overlayNumber": [
                     "1"
-                ]
+                ],
+                "persistOverNavigation": true
             }
         },
         "offset": "+=2"
@@ -1957,7 +1958,8 @@
                 "opacity": 1,
                 "overlayNumber": [
                     "1"
-                ]
+                ],
+                "persistOverNavigation": true
             }
         },
         "offset": ">"
@@ -2368,7 +2370,8 @@
                 "opacity": 1,
                 "overlayNumber": [
                     "1"
-                ]
+                ],
+                "persistOverNavigation": true
             }
         },
         "offset": ">"
@@ -3282,7 +3285,8 @@
                 "opacity": 1,
                 "overlayNumber": [
                     "1"
-                ]
+                ],
+                "persistOverNavigation": true
             }
         },
         "offset": "+=2"

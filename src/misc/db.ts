@@ -264,7 +264,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<ISubforum, "id">
 }
 
-db.version(250).stores({
+db.version(251).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
