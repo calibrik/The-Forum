@@ -21,7 +21,6 @@ export interface ITypingBoxArgs {
     clearAfter?: string
     hideCursorAfter?: boolean
     clearBefore?: boolean
-    style?: React.CSSProperties
 }
 
 export interface ITypingBoxDeleteArgs {

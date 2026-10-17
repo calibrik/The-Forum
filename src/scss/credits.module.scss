@@ -1,0 +1,62 @@
+@use './colors.scss' as colors;
+
+.container {
+    width: 100%;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+    container-type: inline-size;
+}
+
+.track {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.intro {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8cqw;
+    box-sizing: border-box;
+}
+
+.title {
+    margin: 0;
+    color: colors.$secondary-color;
+    font-size: clamp(1.75rem, 6cqw, 3.5rem);
+    font-weight: bold;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10dvh;
+    padding: 0 8cqw 15dvh;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.text {
+    font-family: 'Courier Prime';
+    max-width: 640px;
+    font-size: clamp(1rem, 2.5cqw, 1.35rem);
+    line-height: 1.5;
+}
+
+.author {
+    font-weight: bold;
+    font-size: clamp(1.1rem, 3cqw, 1.6rem);
+}
+
+.logo {
+    width: clamp(160px, 40cqw, 340px);
+    height: auto;
+    aspect-ratio: 1.5029;
+}

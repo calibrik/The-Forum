@@ -14,8 +14,6 @@ interface IStoryProviderProps {
 };
 
 interface IStoryHook {
-    getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
-    // initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number, tbs: Map<string, ITypingTextBoxHandle>) => void
@@ -141,7 +139,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
                 zIndex: options?.zIndex,
                 backgroundColor: options?.backgroundColor,
-                opacity: options?.opacity,
+                opacity: options?.opacity??1,
             })
         else
             tl.fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
@@ -151,12 +149,12 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             },
                 {
                     duration: options?.duration,
-                    opacity: options?.opacity,
+                    opacity: options?.opacity??1,
                 })
 
         tl.add(() => {
             if (options?.persistOverNavigation)
-                persistOverlayIds?.add(`effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
+                persistOverlayIds?.add(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
         })
         return tl;
     },
@@ -181,24 +179,24 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
 
         tl.add(() => {
             if (options?.persistOverNavigation)
-                persistOverlayIds?.add("effectOverlayBlur");
+                persistOverlayIds?.add("#effectOverlayBlur");
         })
         return tl;
     },
     "REVERSE_OVERLAY": (options, persistOverlayIds) => {
         const tl = gsap.timeline().add(() => {
             for (let v of options?.overlayNumber ?? [])
-                persistOverlayIds?.delete(`effectOverlay${v}`);
+                persistOverlayIds?.delete(`#effectOverlay${v}`);
         }, 0)
         if (options?.duration == 0)
             tl.set(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
                 {
-                    backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
+                    backgroundColor: options?.backgroundColor,//for manual fade ins
                     opacity: 0,
                 });
         else
             tl.to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
-                backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
+                backgroundColor: options?.backgroundColor,//for manual fade ins
                 opacity: 0,
                 duration: options?.duration
             })
@@ -636,7 +634,7 @@ export function useStoryFuncs() {
     const resetAnims = contextSafe(async () => {
         if (lastExecutedPath.current === location.pathname)
             return;
-        console.log("reset")
+        console.log("reset",location.pathname)
         lastExecutedPath.current = location.pathname;
         hintFunc.resetHint();
         objectiveHints.showNavHint();
@@ -654,7 +652,7 @@ export function useStoryFuncs() {
         typingBoxes.current = new Map();
         await bufferFunc.onNavigateAway();
         const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
-            .filter((sel) => !(sel.startsWith("#effectOverlay") && persistedOverlayIds.current.has(sel.slice(1))));
+            .filter((sel) => !persistedOverlayIds.current.has(sel));
         await gsap.set(resetSelectors.join(","), {
             clearProps: "all"
         })
@@ -1008,7 +1006,7 @@ export function useStoryFuncs() {
         }
         userState.userLoggedIn.current = nickname;
         if (!userState.isRealLoggedIn.current) {
-            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true });
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
             window.dispatchEvent(new Event("loggedIn"));
             userState.isRealLoggedIn.current = true;
             await recoverCheckpoint(user[0].savedStoryId ?? 0);
@@ -1027,7 +1025,7 @@ export function useStoryFuncs() {
     }
 
     const quitGame = contextSafe(async () => {
-        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true });
+        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
@@ -1046,6 +1044,10 @@ export function useStoryFuncs() {
         }
     }, [])
 
+    useEffect(()=>{
+        resetAnims();
+    },[location.pathname])
+
 
     const _processAction = process.env.NODE_ENV == 'test' ? processAction : undefined;
     const _getLocationRef = process.env.NODE_ENV == 'test' ? () => locationRef : undefined;
@@ -1059,6 +1061,7 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
+    const _getLastExecutedPath = process.env.NODE_ENV == 'test' ? () => lastExecutedPath : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
@@ -1100,6 +1103,7 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
+        _getLastExecutedPath,
         _showStory,
         _customizeStory,
         _isOnLocation

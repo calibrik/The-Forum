@@ -5,7 +5,7 @@ interface IEmptyLayoutProps {};
 
 export const EmptyLayout: FC<IEmptyLayoutProps> = (_) => {
     return (
-       <div className={styles.container}>
+       <div className={styles.emptyContainer}>
             <div className={styles.containerMain}>
                 <Outlet />
                 <ScrollRestoration />

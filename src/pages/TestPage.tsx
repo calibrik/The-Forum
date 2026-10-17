@@ -1,14 +1,14 @@
 import { useGSAP } from "@gsap/react";
 import { useEffect, type FC, type ReactNode } from "react";
 import gsap from 'gsap';
-import { useStory } from "../providers/StoryProvider";
+import { useStoryFuncs } from "../providers/StoryProvider";
 
 interface ITestPageProps {
     children?: ReactNode;
 }
 
 export const TestPage: FC<ITestPageProps> = (_) => {
-    const story=useStory();
+    const story=useStoryFuncs();
     useGSAP(() => {
         const container = document.querySelector('#containerGlobal') as HTMLDivElement
         const clone = container.cloneNode(true) as HTMLDivElement;
