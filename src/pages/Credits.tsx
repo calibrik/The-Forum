@@ -27,18 +27,18 @@ export const Credits: FC = () => {
                 },
                 duration: 12,
                 ease: "none",
-            }, "+=1.5")
+            }, ">")
             .add(typingBoxes.getTypingBoxes().get("text")!.getTypingTimeline({
                 content: "I've spent an entire year putting effort into making this, so I hope you enjoyed it.",
                 speed: 50,
                 hideCursorAfter: true
-            }), "<")
+            }), "<+=1")
             .add(typingBoxes.getTypingBoxes().get("author")!.getTypingTimeline({
                 content: "Made by SirCalibrik",
                 speed: 70,
                 hideCursorAfter: true
             }), ">+=1")
-            .to(containerRef.current,{ opacity: 0, duration: 3, ease: "power2.inOut" },"-=2")
+            .to(containerRef.current,{ opacity: 0, duration: 3, ease: "power2.inOut" },"-=3")
             .add(()=>{navigate("/");},">");
     }, []);
 

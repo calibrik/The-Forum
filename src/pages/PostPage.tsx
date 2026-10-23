@@ -152,7 +152,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                     <>
                         <h1 className={styles.postTitle}>{post?.title}</h1>
                         <p className={styles.content}>{post?.content}</p>
-                        <img src={getImageUrl(post?.imageName??"placeholder.png")} alt="" className={styles.picture} />
+                        {post&&post.imageName?<img src={getImageUrl(post.imageName)} alt="" className={styles.picture} />:""}
                         <Reactions likes={post?.likes??0} comments={post?.comments??0} views={post?.views??0} />
                     </>
                 )}
