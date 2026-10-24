@@ -3881,7 +3881,7 @@
     },
     {
         "storyline": {
-            "content": "Shit, he is probably reporting me already",
+            "content": "Shit, he is probably reporting me already.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar3"
@@ -3926,7 +3926,7 @@
     },
     {
         "storyline": {
-            "content": "He is probably calling police on me already, shit",
+            "content": "He is probably put admins on me already, shit.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar8"
@@ -4482,7 +4482,7 @@
     },
     {
         "storyline": {
-            "content": "Maaan why the fuck did i start it all fuuuck",
+            "content": "Maaan why the fuck did i start it all fuuuck.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar8"
@@ -4491,7 +4491,7 @@
     },
     {
         "storyline": {
-            "content": "He knows, he knows, he knows",
+            "content": "He knows, he knows, he knows.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar9"
@@ -4500,7 +4500,7 @@
     },
     {
         "storyline": {
-            "content": "He is gonna fucking ban me",
+            "content": "He is gonna fucking ban me.",
             "speed": 50,
             "delim": "",
             "typingBoxId": "nar10"
