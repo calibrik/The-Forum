@@ -64,7 +64,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         if (isDeleted)
             return;
         const post = isFake
-            ? { ...FAKE_POST, author: userState.userLoggedIn.current }
+            ? FAKE_POST
             : await db.postsBuffer.where("id").equals(id??"").first() ?? await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})

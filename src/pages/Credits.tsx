@@ -38,8 +38,8 @@ export const Credits: FC = () => {
                 speed: 70,
                 hideCursorAfter: true
             }), ">+=1")
-            .to(containerRef.current,{ opacity: 0, duration: 3, ease: "power2.inOut" },"-=3")
-            .add(()=>{navigate("/");},">");
+            .to(containerRef.current, { opacity: 0, duration: 3, ease: "power2.inOut" }, "-=3")
+            .add(() => { navigate("/"); }, ">");
     }, []);
 
     return (

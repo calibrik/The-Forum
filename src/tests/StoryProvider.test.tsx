@@ -1187,10 +1187,10 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 16)?.action?.saveAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
+            expect(scriptlinesAfter.find(s => s.storyline?.content === `I am ${newNick}.`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.action?.navigateAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.action?.saveAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.addParallelExec?.name === "zeroNews")?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
             const usersAfter = await db.users.toArray();
             expect(usersAfter.find(u => u.savedStoryId != undefined)?.nickname).toBe(newNick);
@@ -1217,8 +1217,8 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
-            expect(scriptlinesAfter.find(s => s.id === 9)?.storyline?.content).toBe("I am a gamer with 10+ years experience, especially in the game called Cyberdivers.");
+            expect(scriptlinesAfter.find(s => s.storyline?.content === `I am ${newNick}.`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.storyline?.content === "I am a gamer with 10+ years of experience, especially in Cyberdivers.")).toBeDefined();
         });
         test("shouldn't replace the keys", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -1228,7 +1228,7 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
+            expect(scriptlinesAfter.find(s => s.action?.navigateAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
         });
         test("should wipe the tables before adding new ones", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
