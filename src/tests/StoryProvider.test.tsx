@@ -487,7 +487,7 @@ describe("useStoryFuncs", () => {
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
             result.current._getLastExecutedPath!().current = undefined;
             await result.current.resetAnims();
-            expect(await db.storyMessagesBuffer.count()).toBe(1);
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
         });
         test("reset anims keeps the buffers after a navigate true step", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -500,7 +500,23 @@ describe("useStoryFuncs", () => {
             await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current!._showStory!(1);
             await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis"));
-            expect(await db.storyMessagesBuffer.count()).toBe(1);
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+        });
+        test("reset anims keeps only the buffers preserved by the navigate action", async () => {
+            const { result } = renderHook(() => useStoryFuncs(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+            await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
+            await result.current._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, user: "" }, navigate: false } }, 10);
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+            await db.storyMessagesBuffer.put({ id: 2, from: "npc", content: "bye", timeSent: new Date(), chatId: "cyberdivers" });
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, content: "hello", isPreserved: true })]);
+            await result.current._getBuffersHook!().resetBuffers();
+            expect(await db.storyMessagesBuffer.count()).toBe(0);
         });
     });
 
@@ -1305,7 +1321,7 @@ describe("storyInit", () => {
         const callsSpy = vi.spyOn(bridge, "exec");
         result.current!.userState!.isRealLoggedIn.current = true;
         result.current!.userState!.userLoggedIn.current = "main_hero";
-        exposedMockRouter?.navigate("/credits");
+        exposedMockRouter?.navigate("/login");
         await waitFor(() => {
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
             expect(gsapSetSpy.mock.calls.filter((c) => String(c[0]).includes("#effectOverlay")).length).toBe(1);

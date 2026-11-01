@@ -92,6 +92,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                     <Dialog key={chat.id} chat={chat} />
                 ))}
                 <HintHolder id="cyberdivers" ref={setHintHolder("cyberdivers")} />
+                <HintHolder id="c14a5155-a221-447c-98ed-21b138f468d7" ref={setHintHolder("c14a5155-a221-447c-98ed-21b138f468d7")} />
             </div>
         </div>
     );

@@ -250,6 +250,10 @@ function withLastNavPos(script: IScriptLine[]): IScriptLine[] {
 	});
 }
 
+export type IBufferItem<T> = T & {
+	isPreserved?: boolean
+}
+
 const db = new Dexie("TheForumDB") as Dexie & {
 	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
@@ -257,14 +261,14 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
-	postsBuffer: EntityTable<IPost, "id">
-	chatsBuffer: EntityTable<IChat, "id">
-	usersBuffer: EntityTable<IUser, "id">
-	storyMessagesBuffer: EntityTable<IMessage, "id">
-	subforumsBuffer: EntityTable<ISubforum, "id">
+	postsBuffer: EntityTable<IBufferItem<IPost>, "id">
+	chatsBuffer: EntityTable<IBufferItem<IChat>, "id">
+	usersBuffer: EntityTable<IBufferItem<IUser>, "id">
+	storyMessagesBuffer: EntityTable<IBufferItem<IMessage>, "id">
+	subforumsBuffer: EntityTable<IBufferItem<ISubforum>, "id">
 }
 
-db.version(251).stores({
+db.version(254).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

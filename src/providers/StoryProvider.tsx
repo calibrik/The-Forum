@@ -409,14 +409,20 @@ export interface IChatHandle {
     getId: () => string
 }
 
-export function useBuffers() {
-    const preserveBuffers = useRef<boolean>(false);
+function stripPreserve<T extends { isPreserved?: boolean }>(items: T[]): T[] {
+    items.forEach((item) => { delete item.isPreserved });
+    return items;
+}
 
+export function useBuffers() {
     async function enablePreserveBuffers() {
-        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count(), db.subforumsBuffer.count()]);
-        if (counts.every((c) => c == 0))
-            return;
-        preserveBuffers.current = true;
+        await Promise.all([
+            db.postsBuffer.toCollection().modify((p) => { p.isPreserved = true }),
+            db.chatsBuffer.toCollection().modify((c) => { c.isPreserved = true }),
+            db.usersBuffer.toCollection().modify((u) => { u.isPreserved = true }),
+            db.storyMessagesBuffer.toCollection().modify((m) => { m.isPreserved = true }),
+            db.subforumsBuffer.toCollection().modify((s) => { s.isPreserved = true }),
+        ]);
     }
 
     async function resetBuffers() {
@@ -424,19 +430,22 @@ export function useBuffers() {
     }
 
     async function sinkBuffers() {
-        await db.posts.bulkPut(await db.postsBuffer.toArray());
-        await db.chats.bulkPut(await db.chatsBuffer.toArray());
-        await db.users.bulkPut(await db.usersBuffer.toArray());
-        await db.storyMessages.bulkPut(await db.storyMessagesBuffer.toArray());
-        await db.subforums.bulkPut(await db.subforumsBuffer.toArray());
+        await db.posts.bulkPut(stripPreserve(await db.postsBuffer.toArray()));
+        await db.chats.bulkPut(stripPreserve(await db.chatsBuffer.toArray()));
+        await db.users.bulkPut(stripPreserve(await db.usersBuffer.toArray()));
+        await db.storyMessages.bulkPut(stripPreserve(await db.storyMessagesBuffer.toArray()));
+        await db.subforums.bulkPut(stripPreserve(await db.subforumsBuffer.toArray()));
         await resetBuffers();
-        preserveBuffers.current = false;
     }
 
     async function onNavigateAway() {
-        if (preserveBuffers.current)
-            return;
-        await resetBuffers();
+        await Promise.all([
+            db.postsBuffer.filter((p) => !p.isPreserved).delete(),
+            db.chatsBuffer.filter((c) => !c.isPreserved).delete(),
+            db.usersBuffer.filter((u) => !u.isPreserved).delete(),
+            db.storyMessagesBuffer.filter((m) => !m.isPreserved).delete(),
+            db.subforumsBuffer.filter((s) => !s.isPreserved).delete(),
+        ]);
     }
 
     return { enablePreserveBuffers, resetBuffers, sinkBuffers, onNavigateAway };
@@ -634,7 +643,6 @@ export function useStoryFuncs() {
     const resetAnims = contextSafe(async () => {
         if (lastExecutedPath.current === location.pathname)
             return;
-        console.log("reset",location.pathname)
         lastExecutedPath.current = location.pathname;
         hintFunc.resetHint();
         objectiveHints.showNavHint();
@@ -961,7 +969,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 406 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 229 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1030,6 +1038,7 @@ export function useStoryFuncs() {
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/");
+        await bufferFunc.resetBuffers();
         await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
     });
 

@@ -3676,23 +3676,6 @@
     },
     {
         "action": {
-            "saveAction": {
-                "dest": {
-                    "from": {
-                        "level": 1,
-                        "user": "#main_hero",
-                        "where": "/chat"
-                    },
-                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
-                    "level": 2,
-                    "user": "#main_hero"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
             "setTypingBoxStyleAction": {
                 "id": "nar1",
                 "style": {
@@ -4325,7 +4308,7 @@
             "sendMessageAction": {
                 "from": "Sillygoose228",
                 "content": "yeah, I deleted the post, but something weird is going on, I can't even find someone named \"fartsniffer69\" on The Forum to ban him from the sub",
-                "timeToType": 8
+                "timeToType": 6
             }
         },
         "offset": ">"
@@ -4418,7 +4401,7 @@
             "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
-        "offset": ">"
+        "offset": "+=0.5"
     },
     {
         "action": {
@@ -4457,7 +4440,7 @@
             "delim": "",
             "typingBoxId": "nar1"
         },
-        "offset": ">"
+        "offset": "+=0.5"
     },
     {
         "storyline": {
@@ -6308,7 +6291,7 @@
     },
     {
         "storyline": {
-            "content": "But other people want to be on top too, so they will poke back, and before you know it, everyone is covered in these stab wounds, trying to hide themselves to avoid the next poke.",
+            "content": "But other people want to be on top too, so they will poke back, and before you know it, you are surrounded with wounded egos that are trying to hide themselves to avoid the next poke.",
             "speed": 50,
             "delim": " ",
             "typingBoxId": "nar1"
