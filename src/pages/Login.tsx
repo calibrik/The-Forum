@@ -82,7 +82,7 @@ export const Login: FC<ILoginProps> = (_) => {
         }
         const tl = getTypingBoxes().get("forgotPassword")?.getTypingTimeline({
             content: content,
-            speed: 50,
+            speed: "fast",
             clearAfter:"+=5"
         });
         passwordTl.current = tl;

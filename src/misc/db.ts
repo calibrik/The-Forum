@@ -1,10 +1,11 @@
 import { Dexie, type EntityTable } from "dexie"
 import { getJsonUrl, seededRandom } from "./utils";
 import type { IEffectsOptions } from "../providers/StoryProvider";
+import type { TTypingSpeed } from "../components/TypingTextBox";
 
 export interface IStoryLine {
 	content: string,
-	speed: number,
+	speed: TTypingSpeed,
 	delim?: string,
 	typingBoxId: string,
 	clearAfter?: string
@@ -268,7 +269,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<IBufferItem<ISubforum>, "id">
 }
 
-db.version(254).stores({
+db.version(256).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",

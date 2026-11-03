@@ -564,9 +564,9 @@ describe("useStoryFuncs", () => {
             result.current.storyFuncs!._getTypingBoxes!().current = new Map([["nar1", mockBox]]);
 
             await db.story.bulkAdd([
-                { id: 1, storyline: { content: "you conclude your business on this page", speed: 50, typingBoxId: "nar1" }, offset: ">" },
+                { id: 1, storyline: { content: "you conclude your business on this page", speed: "fast", typingBoxId: "nar1" }, offset: ">" },
                 { id: 2, action: { navigateAction: { dest: { where: "/chat", level: 1, user: "main_hero" }, navigate: true } }, offset: ">" },
-                { id: 3, storyline: { content: "pick a chat to continue", speed: 50, typingBoxId: "nar1" }, isActionAwait: true, hint: "open a chat", offset: ">" },
+                { id: 3, storyline: { content: "pick a chat to continue", speed: "fast", typingBoxId: "nar1" }, isActionAwait: true, hint: "open a chat", offset: ">" },
             ]);
 
             const setNavHintSpy = vi.spyOn(result.current.storyFuncs!._getObjectiveHintsHook!(), "setNavHint");

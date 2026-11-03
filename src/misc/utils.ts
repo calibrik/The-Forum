@@ -8,6 +8,10 @@ export function getJsonUrl(name: string): string {
     return new URL(`../assets/jsons/${name}`, import.meta.url).href;
 };
 
+export function getSoundUrl(name: string): string {
+    return new URL(`../assets/sounds/${name}`, import.meta.url).href;
+};
+
 export async function delay(s: number) {
     return new Promise(resolve => setTimeout(resolve, s * 1000));
 }
