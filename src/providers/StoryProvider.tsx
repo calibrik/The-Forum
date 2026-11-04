@@ -33,7 +33,7 @@ interface IStoryHook {
     getMessages(chatId: string): Promise<IMessage[]>,
     login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
     logout: () => void,
-    quitGame: () => Promise<void>,
+    quitGame: (isAnim?:boolean) => Promise<void>,
     getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
@@ -139,7 +139,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
                 zIndex: options?.zIndex,
                 backgroundColor: options?.backgroundColor,
-                opacity: options?.opacity??1,
+                opacity: options?.opacity ?? 1,
             })
         else
             tl.fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
@@ -149,7 +149,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             },
                 {
                     duration: options?.duration,
-                    opacity: options?.opacity??1,
+                    opacity: options?.opacity ?? 1,
                 })
 
         tl.add(() => {
@@ -191,15 +191,15 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
         if (options?.duration == 0)
             tl.set(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
                 {
-                    backgroundColor: options?.backgroundColor,//for manual fade ins
                     opacity: 0,
                 });
         else
-            tl.to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
-                backgroundColor: options?.backgroundColor,//for manual fade ins
-                opacity: 0,
-                duration: options?.duration
-            })
+            tl.to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
+                {
+                    backgroundColor: options?.backgroundColor, //for manual fade ins
+                    opacity: 0,
+                    duration: options?.duration
+                })
         return tl;
     },
     "POSTS_FALL": () => {
@@ -656,7 +656,7 @@ export function useStoryFuncs() {
             for (let tb of typingBoxes.current.values()) {
                 await tb.reset();
             }
-        }    
+        }
         typingBoxes.current = new Map();
         await bufferFunc.onNavigateAway();
         const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
@@ -1032,14 +1032,16 @@ export function useStoryFuncs() {
         navigate("/login");
     }
 
-    const quitGame = contextSafe(async () => {
-        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+    const quitGame = contextSafe(async (isAnim=true) => {
+        if (isAnim)
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
         navigate("/");
         await bufferFunc.resetBuffers();
-        await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+        if (isAnim)
+            await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
     });
 
     function getExpectedUser() {
@@ -1053,9 +1055,9 @@ export function useStoryFuncs() {
         }
     }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         resetAnims();
-    },[location.pathname])
+    }, [location.pathname])
 
 
     const _processAction = process.env.NODE_ENV == 'test' ? processAction : undefined;

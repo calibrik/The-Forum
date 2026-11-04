@@ -24,7 +24,6 @@ import { Vim } from './pages/Vim';
 import { Credits } from './pages/Credits';
 import { UserProvider } from './providers/UserAuth';
 import { StoryProvider } from './providers/StoryProvider';
-import { AudioProvider } from './providers/AudioPlayer';
 import type { FC, ReactNode } from 'react';
 
 gsap.registerPlugin(useGSAP);
@@ -84,9 +83,7 @@ const router = createBrowserRouter(appRoutes);
 function App() {
 	return (
 		<UserProvider>
-			<AudioProvider>
-				<RouterProvider router={router} />
-			</AudioProvider>
+			<RouterProvider router={router} />
 		</UserProvider>
 	);
 }
@@ -119,9 +116,7 @@ export const AllTheProvidersForMock: FC<IAllTheProvidersForMockProps> = (props) 
 
 	return (
 		<UserProvider>
-			<AudioProvider>
-				<RouterProvider router={router} />
-			</AudioProvider>
+			<RouterProvider router={router} />
 		</UserProvider>
 	);
 }

@@ -3,12 +3,12 @@ import { Cursor, type ICursorHandle } from "./Cursor";
 import { useGSAP } from "@gsap/react";
 import gsap from 'gsap';
 import styles from "../scss/typingTextBox.module.scss";
-import { useAudioPlayer, type TSoundName } from "../providers/AudioPlayer";
+import { audioPlayer, type TSoundName } from "../misc/AudioPlayer";
 
 export const TYPING_SPEEDS = {
     fast: { msPerChar: 60, sfx: "typingFast" },
     slow: { msPerChar: 100, sfx: "typingSlow" },
-    superSlow: { msPerChar: 600, sfx: "typingSuperSlow" },
+    superSlow: { msPerChar: 670, sfx: "typingSuperSlow" },
 } as const satisfies Record<string, { msPerChar: number, sfx: TSoundName }>;
 
 export type TTypingSpeed = keyof typeof TYPING_SPEEDS;
@@ -53,7 +53,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     const cursorRef = useRef<ICursorHandle>(null);
     const typingTextRef = useRef<HTMLSpanElement>(null);
     const typingSfx = useRef<HTMLAudioElement>(undefined);
-    const audio = useAudioPlayer();
 
     function stopTypingSfx() {
         typingSfx.current?.pause();
@@ -79,8 +78,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
                 duration: (added.length * msPerChar) / 1000,
                 ease: "none",
                 onStart: () => {
-                    stopTypingSfx();
-                    typingSfx.current = audio.playSfx(sfx, 0.5, true);
+                    typingSfx.current = audioPlayer.playSfx(sfx, 0.5, true);
                 },
                 onComplete: stopTypingSfx,
                 onInterrupt: stopTypingSfx,

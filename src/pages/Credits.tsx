@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import styles from "../scss/credits.module.scss";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { useStory } from "../providers/StoryProvider";
 
 export const Credits: FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +12,7 @@ export const Credits: FC = () => {
     const logoRef = useRef<HTMLImageElement>(null);
     const navigate = useNavigate();
     const typingBoxes = useTypingBoxes();
+    const story=useStory()
 
     useGSAP(() => {
         const tl = gsap.timeline();
@@ -39,7 +41,7 @@ export const Credits: FC = () => {
                 hideCursorAfter: true
             }), ">+=1")
             .to(containerRef.current, { opacity: 0, duration: 3, ease: "power2.inOut" }, "-=3")
-            .add(() => { navigate("/"); }, ">");
+            .add(() => {story.quitGame(false), navigate("/"); }, ">");
     }, []);
 
     return (
