@@ -7,7 +7,7 @@ import { audioPlayer, type TSoundName } from "../misc/AudioPlayer";
 
 export const TYPING_SPEEDS = {
     fast: { msPerChar: 60, sfx: "typingFast" },
-    slow: { msPerChar: 100, sfx: "typingSlow" },
+    slow: { msPerChar: 140, sfx: "typingSlow" },
     superSlow: { msPerChar: 670, sfx: "typingSuperSlow" },
 } as const satisfies Record<string, { msPerChar: number, sfx: TSoundName }>;
 

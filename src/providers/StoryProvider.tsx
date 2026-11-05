@@ -969,7 +969,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 229 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1003,12 +1003,12 @@ export function useStoryFuncs() {
             errors.password = "Field cannot be empty";
         if (errors.nickname || errors.password)
             return errors;
-        const user = await db.users.where("nickname").equals(nickname).toArray();
-        if (user.length != 1 || user[0].savedStoryId == 0) {
+        const user = await db.usersBuffer.where("nickname").equals(nickname).first()??await db.users.where("nickname").equals(nickname).first();
+        if (!user || user.savedStoryId == 0) {
             errors.nickname = "Nickname is not found.";
             return errors;
         }
-        if (!user[0].password || user[0].password != password || !userState.isRealLoggedIn.current && user[0].savedStoryId === undefined) {
+        if (!user.password || user.password != password || !userState.isRealLoggedIn.current && user.savedStoryId === undefined) {
             errors.password = "Incorrect password.";
             return errors;
         }
@@ -1017,7 +1017,7 @@ export function useStoryFuncs() {
             await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
             window.dispatchEvent(new Event("loggedIn"));
             userState.isRealLoggedIn.current = true;
-            await recoverCheckpoint(user[0].savedStoryId ?? 0);
+            await recoverCheckpoint(user.savedStoryId ?? 0);
             await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
             return errors;
         }
