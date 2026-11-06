@@ -17,7 +17,6 @@ const mockTypingBox = {
     getDeleteTimeline: () => gsap.timeline(),
     setCursorType: () => { },
     reset: () => gsap.timeline(),
-    applyStyle: () => { },
     setContent: () => { },
     getContent: () => "",
 } as unknown as ITypingTextBoxHandle;
@@ -705,16 +704,6 @@ describe("useStoryFuncs", () => {
             const hintHook = result.current!._getHintHook!();
             expect(hintHook._getIsStoryHint!().current).toEqual(true);
             expect(hintHook._getCurrHint!().current).toEqual(["test-id"]);
-        });
-        test("setTextBoxStyle action", async () => {
-            const { result } = renderHook(() => useStory()._getStoryHook!(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const applyStyleSpy = vi.fn();
-            const mockRef = { applyStyle: applyStyleSpy } as unknown as ITypingTextBoxHandle;
-            result.current!._getTypingBoxes!().current = new Map([["nar1", mockRef]]);
-            await result.current!._processAction!({ setTypingBoxStyleAction: { id: "nar1", style: { color: "red" } } }, 10);
-            expect(applyStyleSpy).toHaveBeenCalledWith({ color: "red" });
         });
         test("sendMessage action", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {

@@ -30,6 +30,7 @@ export interface ITypingBoxArgs {
     clearAfter?: string
     hideCursorAfter?: boolean
     clearBefore?: boolean
+    style?: React.CSSProperties
 }
 
 export interface ITypingBoxDeleteArgs {
@@ -42,7 +43,6 @@ export interface ITypingTextBoxHandle {
     getDeleteTimeline: (args: ITypingBoxDeleteArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => gsap.core.Timeline
-    applyStyle: (style: React.CSSProperties) => void
     setContent: (content: string) => void
     getContent: () => string
 };
@@ -59,10 +59,20 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
         typingSfx.current = undefined;
     }
 
+    function applyStyle(style: React.CSSProperties) {
+        if (divRef.current) {
+            divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
+        }
+    }
+
     const getTypingTimeline = contextSafe((args: ITypingBoxArgs) => {
         const tl = gsap.timeline();
         if (args.clearBefore)
             tl.add(reset());
+        if (args.style) {
+            const style = args.style;
+            tl.add(() => applyStyle(style));
+        }
         const added = (args.delim ?? "") + args.content;
         const { msPerChar, sfx } = TYPING_SPEEDS[args.speed];
         const counter = { i: 0 };
@@ -151,11 +161,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             cursorRef.current?.setType(type);
         },
         reset,
-        applyStyle(style) {
-            if (divRef.current) {
-                divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
-            }
-        },
         setContent(content) {
             if (typingTextRef.current)
                 typingTextRef.current.textContent = content;

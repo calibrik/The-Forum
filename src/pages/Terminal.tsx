@@ -25,7 +25,7 @@ export const Terminal: FC = () => {
     const expectedOutput = useRef<string>("");
 
     const username = userState.userLoggedIn.current || "guest";
-    const userPart = `${username}@the-forum`;
+    const userPart = `${username.toLowerCase()}@the-forum`;
     const pathPart = ":~";
     const dollarPart = "$";
 

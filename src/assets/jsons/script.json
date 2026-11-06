@@ -44,7 +44,7 @@
             "delim": " ",
             "typingBoxId": "nar1"
         },
-        "offset": "+=0.3"
+        "offset": "+=2"
     },
     {
         "storyline": {
@@ -75,7 +75,7 @@
     },
     {
         "storyline": {
-            "content": "So, uhhh where do I start?",
+            "content": "So anyway, uhhh where do I start?",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -181,24 +181,16 @@
         "hint": "Click 'My Cyberdivers profile' on your profile page"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "right": "6%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "...",
             "speed": "superSlow",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "6%"
+            }
         },
-        "offset": ">"
+        "offset": "+=2"
     },
     {
         "storyline": {
@@ -232,7 +224,8 @@
             "content": "Also, the game is a bug-ridden mess.",
             "speed": "fast",
             "delim": " ",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
         },
         "offset": "+=2.5"
     },
@@ -240,8 +233,12 @@
         "storyline": {
             "content": "But usually, I play a lot better than this.",
             "speed": "fast",
-            "delim": "\n\n",
-            "typingBoxId": "nar1"
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "6%"
+            }
         },
         "offset": "+=1"
     },
@@ -256,23 +253,15 @@
         "offset": "+=0.3"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "28%",
-                    "left": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Anyway, I'm well respected in the cyberdivers community.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "8%"
+            }
         },
         "offset": ">"
     },
@@ -300,7 +289,11 @@
             "content": "Search for the cyberdivers subforum.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "8%"
+            }
         },
         "offset": ">"
     },
@@ -320,23 +313,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "30%",
-                    "right": "10%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "I kinda forgot to explain what kind of game this is.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "30%",
+                "right": "10%"
+            }
         },
         "offset": "+=1"
     },
@@ -364,7 +349,11 @@
             "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "10%"
+            }
         },
         "offset": ">"
     },
@@ -406,23 +395,15 @@
         "offset": "+=1"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "24%",
-                    "right": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "My friends from here once challenged me to play a game with them, and I absolutely destroyed them.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "24%",
+                "right": "7%"
+            }
         },
         "offset": ">"
     },
@@ -468,7 +449,11 @@
             "content": "Hold on, lemme hit them up in the chat, my mates will love to see me.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -644,23 +629,15 @@
                         "offset": "+=5.5"
                     },
                     {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "top": "50%",
-                                    "right": "5%"
-                                }
-                            }
-                        },
-                        "offset": "+=2"
-                    },
-                    {
                         "storyline": {
                             "content": "They love me.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "50%",
+                                "right": "5%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -688,7 +665,11 @@
                             "content": "They know I’m good at the game, they are just fucking with me.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "16%",
+                                "left": "5%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -708,21 +689,7 @@
                                 "nar1"
                             ]
                         },
-                        "offset": "+=10"
-                    },
-                    {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "width": "auto",
-                                    "top": "78%",
-                                    "left": "6%",
-                                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
-                                }
-                            }
-                        },
-                        "offset": ">"
+                        "offset": "+=6"
                     },
                     {
                         "storyline": {
@@ -730,7 +697,12 @@
                             "speed": "slow",
                             "delim": "",
                             "typingBoxId": "nar1",
-                            "clearAfter": "+=3"
+                            "clearAfter": "+=3",
+                            "style": {
+                                "width": "auto",
+                                "top": "78%",
+                                "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                            }
                         },
                         "offset": ">"
                     }
@@ -921,23 +893,15 @@
                         "offset": ">"
                     },
                     {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "top": "10%",
-                                    "right": "5%"
-                                }
-                            }
-                        },
-                        "offset": ">"
-                    },
-                    {
                         "storyline": {
                             "content": "Ah yes, Zero.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "10%",
+                                "right": "5%"
+                            }
                         },
                         "offset": "+=18.8"
                     },
@@ -975,23 +939,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "20%",
-                    "left": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "You know what, I wanna check how they're doing in their sub.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -1029,7 +985,7 @@
                 }
             }
         },
-        "hint": "Open the 'DLC is delayed' post in the f/zero subforum",
+        "hint": "Open the 'DLC is delayed' post in the f/zero subforum and read the post and comments",
         "offset": ">"
     },
     {
@@ -1051,25 +1007,17 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "42%",
-                    "right": "5%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Bruh what?",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "42%",
+                "right": "5%"
+            }
         },
-        "offset": "+=3"
+        "offset": "+=10"
     },
     {
         "storyline": {
@@ -1133,24 +1081,16 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "48%",
-                    "left": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Look at these posts bruh.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=3"
+            "clearAfter": "+=3",
+            "style": {
+                "top": "48%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -1159,7 +1099,11 @@
             "content": "So spineless, like \"our dlc got delayed? It's ok, better late than never\" tf is this.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
         },
         "offset": ">"
     },
@@ -1243,23 +1187,15 @@
                 ],
                 [
                     {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "top": "24%",
-                                    "right": "7%"
-                                }
-                            }
-                        },
-                        "offset": ">"
-                    },
-                    {
                         "storyline": {
                             "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like don't u see the vent in there?",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "24%",
+                                "right": "7%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -1274,7 +1210,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "This is why noobs should be mocked for their stupidity; they'll learn how to think for themselves.",
+                            "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think for themselves.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1340,23 +1276,15 @@
                 ],
                 [
                     {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "top": "18%",
-                                    "right": "15%"
-                                }
-                            }
-                        },
-                        "offset": ">"
-                    },
-                    {
                         "storyline": {
                             "content": "Oh boy, look how nice everyone here is bruh.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "18%",
+                                "right": "15%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -1432,23 +1360,14 @@
                 ],
                 [
                     {
-                        "action": {
-                            "setTypingBoxStyleAction": {
-                                "id": "nar1",
-                                "style": {
-                                    "top": "26%",
-                                    "right": "8%"
-                                }
-                            }
-                        },
-                        "offset": ">"
-                    },
-                    {
                         "storyline": {
                             "content": "Nah, this sub is phony as fuck.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "26%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -1482,11 +1401,11 @@
                                             "name": "BLUR",
                                             "options": {
                                                 "duration": 5,
-                                                "blurPx": 6,
+                                                "blurPx": 10,
                                                 "zIndex": 21
                                             }
                                         },
-                                        "offset": "+=3"
+                                        "offset": "+=4"
                                     },
                                     {
                                         "effect": {
@@ -1504,27 +1423,19 @@
                                         "offset": "-=2"
                                     },
                                     {
-                                        "action": {
-                                            "setTypingBoxStyleAction": {
-                                                "id": "nar2",
-                                                "style": {
-                                                    "width": "auto",
-                                                    "top": "50%",
-                                                    "left": "50%",
-                                                    "transform": "translateX(-50%)",
-                                                    "z-index": 22,
-                                                    "text-align": "center"
-                                                }
-                                            }
-                                        },
-                                        "offset": ">"
-                                    },
-                                    {
                                         "storyline": {
                                             "content": "Some time later...",
-                                            "speed": "fast",
+                                            "speed": "slow",
                                             "delim": "",
-                                            "typingBoxId": "nar2"
+                                            "typingBoxId": "nar2",
+                                            "style": {
+                                                "width": "auto",
+                                                "top": "50%",
+                                                "left": "50%",
+                                                "transform": "translateX(-50%)",
+                                                "z-index": 22,
+                                                "text-align": "center"
+                                            }
                                         },
                                         "offset": "+=1"
                                     }
@@ -1539,7 +1450,7 @@
                                 "nar2"
                             ]
                         },
-                        "offset": "+=2"
+                        "offset": ">"
                     },
                     {
                         "effect": {
@@ -2050,25 +1961,17 @@
         "offset": "+=0.3"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "50%",
-                    "right": "5%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "No no, I know what it is, it's a language",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "50%",
+                "right": "5%"
+            }
         },
-        "offset": "+=6"
+        "offset": "+=8"
     },
     {
         "storyline": {
@@ -2113,7 +2016,11 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "left": "5%"
+            }
         },
         "offset": "+=0.3"
     },
@@ -2164,27 +2071,18 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "12%",
-                    "left": "6%",
-                    "width": "clamp(300px,87cqw,1000px)",
-                    "background-color": "transparent",
-                    "padding": "0",
-                    "z-index": 20
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Alright, I need a plan.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "12%",
+                "width": "clamp(300px,87cqw,1000px)",
+                "background-color": "transparent",
+                "padding": "0",
+                "z-index": 20
+            }
         },
         "offset": ">"
     },
@@ -2334,7 +2232,7 @@
     },
     {
         "storyline": {
-            "content": "You can't phish even your grandma with this.",
+            "content": "You won't be able to phish even your grandma with this.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2412,24 +2310,16 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "22%",
-                    "right": "6%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Then he'll try to delete it.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "22%",
+                "right": "6%"
+            }
         },
         "offset": ">"
     },
@@ -2463,23 +2353,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "right": "6%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "And suddenly it takes him to a fake login screen with a message like ur session is expired, sign in again.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "6%"
+            }
         },
         "offset": ">"
     },
@@ -2545,23 +2427,15 @@
         "offset": "+=1"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "24%",
-                    "left": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
-            "content": "Admin will log in again to finally delete this post, and boom, his creds are mine.",
+            "content": "And boom, his creds are mine.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "24%",
+                "left": "8%"
+            }
         },
         "offset": ">"
     },
@@ -2613,27 +2487,18 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "22%",
-                    "left": "6%",
-                    "width": "clamp(300px,87cqw,1000px)",
-                    "background-color": "transparent",
-                    "padding": "0",
-                    "z-index": 20
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "I'm a genius!",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "22%",
+                "width": "clamp(300px,87cqw,1000px)",
+                "background-color": "transparent",
+                "padding": "0",
+                "z-index": 20
+            }
         },
         "offset": ">"
     },
@@ -2713,23 +2578,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "right": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "So uhhhhh, how do I create a page?",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
         },
         "offset": "+=0.5"
     },
@@ -2758,7 +2615,11 @@
             "content": "Ok, I actually forgot everything.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "7%"
+            }
         },
         "offset": "+=1.5"
     },
@@ -2777,7 +2638,11 @@
             "content": "Anyway, I think I'll just ask AI.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "7%"
+            }
         },
         "offset": "+=0.3"
     },
@@ -2841,7 +2706,11 @@
             "content": "Aight",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "46%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -2906,18 +2775,10 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "60%",
-                    "left": "20%"
-                }
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "right": "7%"
             }
         },
         "offset": ">"
@@ -3005,7 +2866,11 @@
                             "content": "Ok, how do I...?",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "65%",
+                                "left": "30%"
+                            }
                         },
                         "offset": ">"
                     },
@@ -3114,23 +2979,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "22%",
-                    "right": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Not too hard huh?",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "22%",
+                "right": "8%"
+            }
         },
         "offset": ">"
     },
@@ -3355,7 +3212,11 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "left": "8%"
+            }
         },
         "offset": "+=0.3"
     },
@@ -3486,7 +3347,11 @@
             "content": "Aaaand im done!",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "8%"
+            }
         },
         "offset": "+=3"
     },
@@ -3513,7 +3378,7 @@
                 "persistOverNavigation": true
             }
         },
-        "offset": "+=2"
+        "offset": ">"
     },
     {
         "action": {
@@ -3568,23 +3433,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "14%",
-                    "right": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "God, even his name is stupid.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "14%",
+                "right": "7%"
+            }
         },
         "offset": "+=0.5"
     },
@@ -3631,7 +3488,11 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -3675,23 +3536,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "left": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Ok, so, it'll go like that, uhhh",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -3775,7 +3628,16 @@
     },
     {
         "storyline": {
-            "content": "Nooo, why \"dear\"? We haven't even met yet.",
+            "content": "Nooo, why \"dear\"?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3"
+    },
+    {
+        "storyline": {
+            "content": "We haven't even met yet.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3854,7 +3716,11 @@
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "right": "7%"
+            }
         },
         "offset": "+=2.5"
     },
@@ -3893,7 +3759,11 @@
             "content": "Yeah, I think I saved it.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "7%"
+            }
         },
         "offset": "+=0.5"
     },
@@ -3923,7 +3793,11 @@
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "46%",
+                "right": "7%"
+            }
         },
         "offset": "+=3.5"
     },
@@ -3933,7 +3807,11 @@
             "speed": "superSlow",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": ">"
+            "clearAfter": ">",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
         },
         "offset": "+=1"
     },
@@ -3943,137 +3821,10 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar2",
-                "style": {
-                    "top": "10%",
-                    "left": "4%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar3",
-                "style": {
-                    "top": "16%",
-                    "right": "5%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar4",
-                "style": {
-                    "top": "30%",
-                    "left": "10%",
-                    "width": "clamp(150px,26cqw,300px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar5",
-                "style": {
-                    "top": "34%",
-                    "right": "14%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar6",
-                "style": {
-                    "top": "48%",
-                    "left": "22%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar7",
-                "style": {
-                    "top": "64%",
-                    "left": "4%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar8",
-                "style": {
-                    "top": "62%",
-                    "right": "6%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar9",
-                "style": {
-                    "top": "80%",
-                    "right": "20%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar10",
-                "style": {
-                    "top": "74%",
-                    "left": "12%",
-                    "width": "clamp(150px,26cqw,300px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "42%",
-                    "left": "50%",
-                    "transform": "translateX(-50%)",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "right": "7%"
             }
         },
         "offset": ">"
@@ -4084,7 +3835,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar2",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "10%",
+                "left": "4%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": ">"
     },
@@ -4094,9 +3850,14 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar3",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "16%",
+                "right": "5%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
-        "offset": "-=1.5"
+        "offset": "-=2"
     },
     {
         "storyline": {
@@ -4104,9 +3865,14 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar4",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "30%",
+                "left": "10%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
         },
-        "offset": "-=0.5"
+        "offset": "-=1"
     },
     {
         "storyline": {
@@ -4114,7 +3880,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar5",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "34%",
+                "right": "14%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=0.5"
     },
@@ -4124,7 +3895,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar6",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "48%",
+                "left": "22%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.2"
     },
@@ -4134,7 +3910,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar7",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "64%",
+                "left": "4%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.1"
     },
@@ -4144,7 +3925,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar8",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "62%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.6"
     },
@@ -4154,7 +3940,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar9",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "80%",
+                "right": "20%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.9"
     },
@@ -4164,7 +3955,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar10",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "74%",
+                "left": "12%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
         },
         "offset": "-=1.2"
     },
@@ -4174,7 +3970,13 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=0.5"
     },
@@ -4196,29 +3998,21 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "40%",
-                    "left": "0",
-                    "width": "100cqw",
-                    "padding": "0",
-                    "background-color": "transparent",
-                    "font-size": "clamp(2rem,7cqw,6rem)",
-                    "text-align": "center"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "I SHOULD BLOCK HIM.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "40%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,6rem)",
+                "text-align": "center"
+            }
         },
         "offset": ">"
     },
@@ -4241,7 +4035,16 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1"
+            "clearAfter": "+=1",
+            "style": {
+                "top": "16%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,6rem)",
+                "text-align": "center"
+            }
         },
         "offset": ">"
     },
@@ -4251,18 +4054,15 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "18%",
-                    "left": "7%"
-                }
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,6rem)",
+                "text-align": "center"
             }
         },
         "offset": ">"
@@ -4272,7 +4072,11 @@
             "content": "He logged in on my fake page!",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "18%",
+                "left": "7%"
+            }
         },
         "offset": "+=0.3"
     },
@@ -4324,28 +4128,20 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "40%",
-                    "left": "0",
-                    "width": "100cqw",
-                    "padding": "0",
-                    "background-color": "transparent",
-                    "font-size": "clamp(2rem,7cqw,6rem)",
-                    "text-align": "center"
-                }
-            }
-        },
-        "offset": "+=11.5"
-    },
-    {
         "storyline": {
             "content": "FUCK.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "40%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,6rem)",
+                "text-align": "center"
+            }
         },
         "offset": ">"
     },
@@ -4374,7 +4170,16 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=0.5"
+            "clearAfter": "+=0.5",
+            "style": {
+                "top": "16%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,6rem)",
+                "text-align": "center"
+            }
         },
         "offset": ">"
     },
@@ -4392,24 +4197,16 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "20%",
-                    "right": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "I forgot to change the author of the fake post from placeholder to someone real.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=3"
+            "clearAfter": "+=3",
+            "style": {
+                "top": "20%",
+                "right": "7%"
+            }
         },
         "offset": "+=0.5"
     },
@@ -4429,18 +4226,7 @@
                 }
             }
         },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "left": "7%"
-                }
-            }
-        },
+        "hint": "Go to the chat with Sillygoose228",
         "offset": ">"
     },
     {
@@ -4448,7 +4234,11 @@
             "content": "Even tho I got his creds already, he might realize what's going on and change his password.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
         },
         "offset": "+=0.5"
     },
@@ -4517,7 +4307,11 @@
             "content": "Fucking clanker gave me shit code.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "right": "7%"
+            }
         },
         "offset": "+=5.5"
     },
@@ -4545,7 +4339,7 @@
             "sendMessageAction": {
                 "from": "Sillygoose228",
                 "content": "yeah, it's probably nothing",
-                "timeToType": 23
+                "timeToType": 26
             }
         },
         "offset": ">"
@@ -4555,7 +4349,11 @@
             "content": "....",
             "speed": "superSlow",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "7%"
+            }
         },
         "offset": "+=6"
     },
@@ -4570,143 +4368,17 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar2",
-                "style": {
-                    "top": "10%",
-                    "right": "6%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar3",
-                "style": {
-                    "top": "26%",
-                    "left": "8%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar4",
-                "style": {
-                    "top": "42%",
-                    "right": "14%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar5",
-                "style": {
-                    "top": "64%",
-                    "left": "6%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar6",
-                "style": {
-                    "top": "78%",
-                    "right": "20%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar7",
-                "style": {
-                    "top": "62%",
-                    "left": "30%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar8",
-                "style": {
-                    "top": "12%",
-                    "left": "28%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar9",
-                "style": {
-                    "top": "30%",
-                    "right": "6%",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar10",
-                "style": {
-                    "top": "82%",
-                    "left": "32%",
-                    "width": "clamp(150px,26cqw,300px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "42%",
-                    "left": "50%",
-                    "transform": "translateX(-50%)",
-                    "width": "clamp(180px,32cqw,360px)"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "No way he's suspecting something, right?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar2",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "10%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": ">"
     },
@@ -4716,7 +4388,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar3",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "26%",
+                "left": "8%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1"
     },
@@ -4726,7 +4403,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar4",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "right": "14%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.3"
     },
@@ -4736,7 +4418,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar5",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "64%",
+                "left": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.5"
     },
@@ -4746,7 +4433,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar6",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "78%",
+                "right": "20%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.6"
     },
@@ -4756,7 +4448,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar7",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "62%",
+                "left": "30%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.4"
     },
@@ -4766,7 +4463,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar8",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "12%",
+                "left": "28%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.4"
     },
@@ -4776,7 +4478,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar9",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "30%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.6"
     },
@@ -4786,7 +4493,12 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar10",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "82%",
+                "left": "32%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
         },
         "offset": "-=1.3"
     },
@@ -4796,7 +4508,13 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "hideCursorAfter":true
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+                "width": "clamp(180px,32cqw,360px)"
+            }
         },
         "offset": "-=1.2"
     },
@@ -4818,26 +4536,27 @@
         "offset": "+=3"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "20%",
-                    "left": "7%"
-                }
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
             }
         },
-        "offset": ">"
+        "offset": "+=3"
     },
     {
         "storyline": {
-            "content": "...jesus bro, I was losing my shit here and he was just taking his time to write THIS?",
+            "content": "jesus bro, I was losing my shit here and he was just taking his time to write THIS?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
             "clearAfter": "+=1.5"
         },
-        "offset": "+=2.5"
+        "offset": ">"
     },
     {
         "action": {
@@ -4867,23 +4586,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "16%",
-                    "right": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Now the fun part.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
         },
         "offset": "+=1"
     },
@@ -4913,24 +4624,16 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "18%",
-                    "left": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Now I need to remove all the mods from the zero subforum and transfer the ownership to my account.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "18%",
+                "left": "8%"
+            }
         },
         "offset": ">"
     },
@@ -4972,24 +4675,16 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "26%",
-                    "right": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "And now transfer ownership to me.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "26%",
+                "right": "8%"
+            }
         },
         "offset": ">"
     },
@@ -5020,23 +4715,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "20%",
-                    "left": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "And I'm done lol.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
+            }
         },
         "offset": "+=2"
     },
@@ -5094,20 +4781,6 @@
             }
         },
         "isActionAwait": true,
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "width": "auto",
-                    "top": "78%",
-                    "left": "6%",
-                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
-                }
-            }
-        },
         "offset": ">"
     },
     {
@@ -5292,24 +4965,16 @@
         "offset": "+=0.5"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "38%",
-                    "left": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Fuck yeah, let’s burn this subforum to the ground.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=2.5"
+            "clearAfter": "+=2.5",
+            "style": {
+                "top": "38%",
+                "left": "8%"
+            }
         },
         "offset": ">"
     },
@@ -5354,24 +5019,16 @@
         "offset": "+=0.5"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "46%",
-                    "right": "8%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Let me check the zero sub now.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "46%",
+                "right": "8%"
+            }
         },
         "offset": "+=2.5"
     },
@@ -5490,23 +5147,15 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "34%",
-                    "left": "7%"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Yeah, fucking look at this.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "34%",
+                "left": "7%"
+            }
         },
         "offset": ">"
     },
@@ -5582,20 +5231,6 @@
             }
         },
         "isActionAwait": true,
-        "offset": ">"
-    },
-    {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "width": "auto",
-                    "top": "78%",
-                    "right": "6%",
-                    "font-size": "clamp(0.5rem,2cqw,0.75rem)"
-                }
-            }
-        },
         "offset": ">"
     },
     {
@@ -5772,10 +5407,15 @@
     {
         "storyline": {
             "content": "What the fuck?",
-            "speed": "fast",
+            "speed": "slow",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "width": "auto",
+                "top": "78%",
+                "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+            }
         },
         "offset": "+=4"
     },
@@ -5913,10 +5553,16 @@
     {
         "storyline": {
             "content": "Man, fuck him and all these cunts.",
-            "speed": "fast",
+            "speed": "slow",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=2"
+            "clearAfter": "+=2",
+            "style": {
+                "width": "auto",
+                "top": "62%",
+                "font-size": "clamp(0.5rem,2cqw,0.75rem)",
+                "left": "6%"
+            }
         },
         "offset": "+=1.5"
     },
@@ -6203,28 +5849,20 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "10%",
-                    "left": "5%",
-                    "width": "clamp(300px,87cqw,1000px)",
-                    "background-color": "transparent",
-                    "padding": "0",
-                    "z-index": 22,
-                    "color": "black"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "Man, this shit is fucking stupid.",
             "speed": "fast",
             "delim": "",
-            "typingBoxId": "nar1"
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "10%",
+                "left": "5%",
+                "width": "clamp(300px,87cqw,1000px)",
+                "background-color": "transparent",
+                "padding": "0",
+                "z-index": 22,
+                "color": "black"
+            }
         },
         "offset": "+=2"
     },
@@ -6347,7 +5985,7 @@
     },
     {
         "storyline": {
-            "content": "I’ve grown so used to these power games that I’m always waiting for the other shoe to drop, and if it doesn’t, I drop it myself.",
+            "content": "I’ve grown so used to these power games that I always wait for the other shoe to drop, and if it doesn’t, I drop it myself.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -6469,28 +6107,20 @@
         "offset": ">"
     },
     {
-        "action": {
-            "setTypingBoxStyleAction": {
-                "id": "nar1",
-                "style": {
-                    "top": "40%",
-                    "left": "50%",
-                    "transform": "translateX(-50%)",
-                    "width": "auto",
-                    "font-size": "clamp(1.3rem,5.2cqw,1.7rem)",
-                    "text-align": "center"
-                }
-            }
-        },
-        "offset": ">"
-    },
-    {
         "storyline": {
             "content": "oh wow.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5"
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "40%",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+                "width": "auto",
+                "font-size": "clamp(1.3rem,5.2cqw,1.7rem)",
+                "text-align": "center"
+            }
         },
         "offset": "+=2"
     },

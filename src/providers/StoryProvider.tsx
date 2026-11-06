@@ -694,9 +694,6 @@ export function useStoryFuncs() {
         if (action.hintAction) {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
-        if (action.setTypingBoxStyleAction) {
-            typingBoxes.current.get(action.setTypingBoxStyleAction.id)?.applyStyle(action.setTypingBoxStyleAction.style);
-        }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
@@ -852,6 +849,7 @@ export function useStoryFuncs() {
             }
             tl.add(box.getTypingTimeline({
                 content: stl.content,
+                style: stl.style,
                 speed: stl.speed,
                 delim: stl.delim,
                 clearAfter: stl.clearAfter,

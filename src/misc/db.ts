@@ -8,6 +8,7 @@ export interface IStoryLine {
 	speed: TTypingSpeed,
 	delim?: string,
 	typingBoxId: string,
+	style?: React.CSSProperties
 	clearAfter?: string
 	hideCursorAfter?: boolean
 	clearBefore?: boolean
@@ -98,11 +99,6 @@ export interface ISaveAction {
 	lastNavPos?: number
 }
 
-export interface ISetTypingBoxStyleAction {
-	id: string,
-	style: React.CSSProperties
-}
-
 export type IShowPlaceholderField = "nickname" | "password";
 
 export interface ISetShowPlaceholdersAction {
@@ -190,7 +186,6 @@ export interface IClearTypingTextBoxes {
 export interface IAction {
 	navigateAction?: INavigateAction,
 	saveAction?: ISaveAction
-	setTypingBoxStyleAction?: ISetTypingBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
