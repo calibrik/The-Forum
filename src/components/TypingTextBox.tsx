@@ -81,7 +81,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             display: "block"
         });
         tl.set('#cursor', {
-            visibility: 'visible'
+            display: 'inline'
         })
             .to(counter, {
                 i: added.length,
@@ -102,7 +102,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             });
         if (args.hideCursorAfter) {
             tl.set('#cursor', {
-                visibility: 'hidden'
+                display: 'none'
             });
         }
         if (args.clearAfter) {

@@ -25,8 +25,6 @@ interface IStoryHook {
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
     setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
-    setDemoteTarget: (mods?: string[]) => void;
-    setTransferTarget: (user?: string) => void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
@@ -967,7 +965,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 356 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1092,8 +1090,6 @@ export function useStoryFuncs() {
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
         setSubforumSettingsHandle: subforumSettingsFunc.setSubforumSettingsHandle,
-        setDemoteTarget: subforumSettingsFunc.setDemoteTarget,
-        setTransferTarget: subforumSettingsFunc.setTransferTarget,
         setTerminalHandle: terminalFunc.setTerminalHandle,
         setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,

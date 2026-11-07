@@ -33,10 +33,16 @@ export const TestPage: FC<ITestPageProps> = (_) => {
                 color: "red !important"
             }, "+=1")
             .add(typingBoxes.getTypingBoxes().get("test")!.getTypingTimeline({
-                content: "..............",
-                speed: "superSlow",
-                hideCursorAfter: true
+                content: "FUCK.",
+                speed: "fast",
+                // hideCursorAfter: true,
             }), ">")
+            .add(typingBoxes.getTypingBoxes().get("test")!.getTypingTimeline({
+                content: "SHIT.FUCK.",
+                speed: "fast",
+                delim: "",
+                hideCursorAfter: true,
+            }), "+=0.5")
             .add(() => { clone.remove(); }, "+=20")
         return () => {
             clone.remove();
@@ -53,9 +59,25 @@ export const TestPage: FC<ITestPageProps> = (_) => {
         test();
     }, [])
     return (
-        <div>
+        <>
+            <TypingTextBox style={{
+                display: "block",
+                "top": "10%",
+                "padding":"0 10px",
+                boxSizing:"border-box",
+                maxWidth:"1000px",
+                "width": "100%",
+                "backgroundColor": "transparent",
+                "zIndex": 22,
+                "maxHeight":"85%",
+                "overflowY":"auto",
+                "scrollbarColor":"black transparent",
+                "pointerEvents":"all"
+            }} content="fuck" type="terminal" />
             <TypingTextBox ref={typingBoxes.setTypingBox("test")} type="terminal" />
-            <h1>Test</h1>
-        </div>
+            <div>
+                <h1>Test</h1>
+            </div>
+        </>
     );
 };

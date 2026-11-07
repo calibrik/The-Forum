@@ -50,6 +50,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         }
         else {
             story.goBackwardHint("chat-menu");
+            story.goBackwardHint("logout");
         }
     }, [isOpen])
 

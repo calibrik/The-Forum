@@ -39,7 +39,7 @@ export const SMEntry: FC<ISMEntryProps> = (props) => {
 
     useEffect(() => {
         init();
-    }, [])
+    }, [props.name])
 
     // const icon = props.isSelected ? <CheckCircleFill className={styles.icon} /> : <CheckCircle className={styles.icon} />
     return (
