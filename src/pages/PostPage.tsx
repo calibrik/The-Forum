@@ -17,7 +17,7 @@ import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 
 const FAKE_POST: IPost = {
     id: "fake",
-    author: "fartsniffer69",
+    author: "fake_op",
     subforum: "zero",
     title: "zero is the worst game oat",
     content: "zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.",
