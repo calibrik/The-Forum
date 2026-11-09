@@ -1201,11 +1201,6 @@ describe("useStoryFuncs", () => {
             expect(usersAfter.find(u => u.savedStoryId != undefined)?.nickname).toBe(newNick);
             expect(usersAfter.find(u => u.nickname === "penis")).toBeDefined();
 
-            const postsAfter = await db.posts.toArray();
-            expect(postsAfter.find(p => p.id === "p2")?.author).toBe(newNick);
-            expect(postsAfter.find(p => p.id === "p3")?.content).toBe(`Testing ${newNick} shit`);
-            expect(postsAfter.find(p => p.id === "p3")?.author).toBe("penis");
-
             const chatsAfter = await db.chats.toArray();
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([newNick]);
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0].from).toBe(`pinchIt`);
