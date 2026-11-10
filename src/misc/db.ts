@@ -264,7 +264,7 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	subforumsBuffer: EntityTable<IBufferItem<ISubforum>, "id">
 }
 
-db.version(259).stores({
+db.version(265).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -291,7 +291,7 @@ async function fetchSeed<T>(name: string, nickname?: string) {
 }
 
 function mapUsers(users: IUser[]): IUser[] {
-	let seed = 0;
+	let seed = 3;
 	return users.map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 }
 

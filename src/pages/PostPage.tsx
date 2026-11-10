@@ -71,7 +71,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             return;
         }
         setPost(post);
-        const sub = await db.subforums.where("id").equals(post.subforum).first();
+        const sub = await db.subforumsBuffer.where("name").equals(post.subforum).first()??await db.subforums.where("name").equals(post.subforum).first();
         setSubforum(sub);
         setSubforumPfp(sub?.imageName);
     }

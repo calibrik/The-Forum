@@ -240,7 +240,7 @@
                 "left": "6%"
             }
         },
-        "offset": "+=1"
+        "offset": ">"
     },
     {
         "storyline": {
@@ -700,7 +700,7 @@
                             "clearAfter": "+=3",
                             "style": {
                                 "width": "auto",
-                                "top": "78%",
+                                "top": "86%",
                                 "font-size": "clamp(0.5rem,2cqw,0.75rem)"
                             }
                         },
@@ -1405,13 +1405,13 @@
                                                 "zIndex": 21
                                             }
                                         },
-                                        "offset": "+=4"
+                                        "offset": "+=7.5"
                                     },
                                     {
                                         "effect": {
                                             "name": "COLOR_OVERLAY",
                                             "options": {
-                                                "duration": 2,
+                                                "duration": 1,
                                                 "overlayNumber": [
                                                     "2"
                                                 ],
@@ -1420,7 +1420,7 @@
                                                 "zIndex": 21
                                             }
                                         },
-                                        "offset": "-=2"
+                                        "offset": "-=1"
                                     },
                                     {
                                         "storyline": {
@@ -1820,7 +1820,7 @@
                                 "backgroundColor": "red"
                             }
                         },
-                        "offset": "+=2.6"
+                        "offset": "+=4"
                     }
                 ],
                 [
@@ -5486,7 +5486,7 @@
             "clearAfter": "+=1.5",
             "style": {
                 "width": "auto",
-                "top": "78%",
+                "top": "86%",
                 "font-size": "clamp(0.5rem,2cqw,0.75rem)"
             }
         },

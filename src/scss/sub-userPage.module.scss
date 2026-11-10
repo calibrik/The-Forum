@@ -28,7 +28,7 @@
     z-index: 0;
     object-fit: cover;
     object-position: center;
-    height: 12vh;
+    height: 15vh;
 
     @container main (min-width:calc(#{globals.$desktop-content-size} + 1px)) {
         border-radius: 6px 6px 0 0;
@@ -41,7 +41,7 @@
     flex-direction: column;
     background-color: colors.$card-bg;
     border-radius: 6px 6px 0 0;
-    margin-top: 10.7vh;
+    margin-top: 13.7vh;
     container-type: inline-size;
     z-index: 1;
 }

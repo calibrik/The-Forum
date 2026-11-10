@@ -31,7 +31,7 @@ interface IStoryHook {
     getMessages(chatId: string): Promise<IMessage[]>,
     login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
     logout: () => void,
-    quitGame: (isAnim?:boolean) => Promise<void>,
+    quitGame: (isAnim?:boolean,nav?:boolean) => Promise<void>,
     getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
@@ -878,15 +878,17 @@ export function useStoryFuncs() {
         }
 
         if (scl.addParallelExec) {
-            tl.addLabel(scl.addParallelExec.name, scl.offset);
+            // tl.addLabel(scl.addParallelExec.name, scl.offset);
+            const parallelExecTl=gsap.timeline();
             const branches = scl.addParallelExec.branches;
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
                 for (let action of branches[i]) {
                     addScriptlineToTimeline(action, branch);
                 }
-                tl.add(branch, `${scl.addParallelExec.name}+=0`);
+                parallelExecTl.add(branch, 0);
             }
+            tl.add(parallelExecTl,scl.offset)
         }
 
         if (scl.deleteTextFromTypingBox) {
@@ -965,7 +967,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 352 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 56 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1028,15 +1030,16 @@ export function useStoryFuncs() {
         navigate("/login");
     }
 
-    const quitGame = contextSafe(async (isAnim=true) => {
-        if (isAnim)
+    const quitGame = contextSafe(async (playAnim=true,nav=true) => {
+        if (playAnim)
             await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
-        navigate("/");
+        if (nav)
+            navigate("/");
         await bufferFunc.resetBuffers();
-        if (isAnim)
+        if (playAnim)
             await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
     });
 

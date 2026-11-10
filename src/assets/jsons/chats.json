@@ -4,7 +4,7 @@
         "owner": ["#main_hero"],
         "membersAmount": 215,
         "type": "gc",
-        "imageName":"placeholder.png",
+        "imageName":"cyberdiversPfp.png",
         "name": "Cyberdivers | Official Group Chat",
         "initTimeDiff":-5,
         "pregenMessages": [
@@ -25,7 +25,7 @@
             },
             {
                 "from": "caffeine_up_the_ass",
-                "content": "just bring ak 4.7.0 with reactive boost, it’s not that hard",
+                "content": "just bring metasploit 4 with reactive boost, it’s not that hard",
                 "isReply":1,
                 "timeDiff": 1
             },
@@ -36,7 +36,7 @@
             },
             {
                 "from": "pinchIt",
-                "content": "I need level 75 to unlock ak 4.7.0, im like 42",
+                "content": "I need level 75 to unlock metasploit 4, im like 42",
                 "isReply":4,
                 "timeDiff": 2
             },
