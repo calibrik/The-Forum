@@ -319,7 +319,7 @@
             "delim": "",
             "typingBoxId": "nar1",
             "style": {
-                "top": "30%",
+                "top": "20%",
                 "right": "10%"
             }
         },
@@ -327,7 +327,7 @@
     },
     {
         "storyline": {
-            "content": "So, it’s a horde shooter where there are different applications like websites and whatnot that need to be protected from different threats, so companies hire cyberdivers, freelance cybersecurity mercs, to deal with them.",
+            "content": "So, it’s a horde shooter where there are different applications like websites and whatnot that need to be protected from different threats, so companies hire cyberdivers, freelance cybersecurity agents, to deal with them.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -667,7 +667,7 @@
                             "delim": "",
                             "typingBoxId": "nar1",
                             "style": {
-                                "top": "16%",
+                                "top": "65%",
                                 "left": "5%"
                             }
                         },
@@ -689,7 +689,7 @@
                                 "nar1"
                             ]
                         },
-                        "offset": "+=6"
+                        "offset": "+=7"
                     },
                     {
                         "storyline": {
@@ -1366,7 +1366,7 @@
                             "delim": "",
                             "typingBoxId": "nar1",
                             "style": {
-                                "top": "26%"
+                                "top": "20%"
                             }
                         },
                         "offset": ">"
@@ -1476,18 +1476,19 @@
                             "content": "Brutal, but honest.",
                             "speed": "fast",
                             "delim": " ",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
                         },
                         "offset": "+=0.5"
                     },
                     {
                         "storyline": {
-                            "content": "Yes, we won't mince our words and grill your ass to the crust, but you will learn from it and be better.",
+                            "content": "Yes, we won't mince our words and we will grill your ass to the crust, but you will learn from it and be better.",
                             "speed": "fast",
-                            "delim": " ",
+                            "delim": "",
                             "typingBoxId": "nar1"
                         },
-                        "offset": "+=0.5"
+                        "offset": ">"
                     },
                     {
                         "storyline": {
@@ -1505,7 +1506,7 @@
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
-                            "clearAfter": "+=1.5"
+                            "clearAfter": "+=2"
                         },
                         "offset": ">"
                     }
@@ -1616,7 +1617,8 @@
                             "content": "there is a way.",
                             "speed": "fast",
                             "delim": "",
-                            "typingBoxId": "nar1"
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
                         },
                         "offset": ">"
                     },
@@ -1624,10 +1626,10 @@
                         "storyline": {
                             "content": "I remember back in school I took some programming classes and I learned smth about webdev and some cybersecurity stuff, like phishing.",
                             "speed": "fast",
-                            "delim": " ",
+                            "delim": "",
                             "typingBoxId": "nar1"
                         },
-                        "offset": "+=0.5"
+                        "offset": ">"
                     },
                     {
                         "storyline": {
@@ -1927,7 +1929,7 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
-        "offset": "+=3.5"
+        "offset": "+=1.2"
     },
     {
         "action": {
@@ -1985,7 +1987,7 @@
         "action": {
             "sendMessageAction": {
                 "from": "clanker_oil_stain",
-                "content": "bro is a poser lmao, proly don't even know what sqli is lol",
+                "content": "bro is a poser lmao, proly doesn't even know what sqli is lol",
                 "timeToType": 5,
                 "isReplyDiff": -6
             }
@@ -2003,7 +2005,7 @@
                 "right": "5%"
             }
         },
-        "offset": ">"
+        "offset": "+=7"
     },
     {
         "storyline": {
@@ -2454,7 +2456,7 @@
     },
     {
         "storyline": {
-            "content": "•••••••••••••••••••••••••••",
+            "content": "•••••••••••••",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "password",
@@ -2658,7 +2660,7 @@
     {
         "action": {
             "vimTypeAction": {
-                "content": "include { useState } from \"react\";\ninclude { useNavigate } from \"react-router\";\n\nexport const PostPage = () => {\n    const navigate = useNavigate();\n    const [isMenuOpen, setIsMenuOpen] = useState(false);\n\n    return (\n        <box class=\"postContainer\">\n            <box class=\"returnContainer\">\n                <button onclick={() => navigate(-1)}>← back</button>\n            </box>\n            <box class=\"authorContainer\">\n                <text class=\"username\">f/zero</text>\n                <text class=\"subforumName\">u/fartsniffer69</text>\n            </box>\n            <box class=\"menuWrapper\">\n                <button onclick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {!isMenuOpen ? (\n                    <button onclick={navigate(\"/login?expired=true\")}>Delete</button>\n                ) : null}\n            </box>\n            <h1 class=\"postTitle\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</h1>\n            <paragraph class=\"postContent\">zero is the worst game oat</paragraph>\n            <box class=\"reactions\">\n                <text>3 likes</text>\n                <text>0 comments</text>\n                <text>0 views</text>\n            </box>\n        </box>\n    );\n};"
+                "content": "include { useState } from \"react\";\ninclude { useNavigate } from \"react-router\";\n\nexport const PostPage = () => {\n    const navigate = useNavigate();\n    const [isMenuOpen, setIsMenuOpen] = useState(false);\n\n    return (\n        <box class=\"postContainer\">\n            <box class=\"returnContainer\">\n                <button onclick={() => navigate(-1)}>← back</button>\n            </box>\n            <box class=\"authorContainer\">\n                <text class=\"username\">f/zero</text>\n                <text class=\"subforumName\">u/fake_op</text>\n            </box>\n            <box class=\"menuWrapper\">\n                <button onclick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {!isMenuOpen ? (\n                    <button onclick={navigate(\"/login?expired=true\")}>Delete</button>\n                ) : null}\n            </box>\n            <h1 class=\"postTitle\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</h1>\n            <paragraph class=\"postContent\">zero is the worst game oat</paragraph>\n            <box class=\"reactions\">\n                <text>3 likes</text>\n                <text>0 comments</text>\n                <text>0 views</text>\n            </box>\n        </box>\n    );\n};"
             }
         },
         "isActionAwait": true,
@@ -2861,7 +2863,7 @@
                                 "typingBoxId": "command"
                             }
                         },
-                        "offset": "+=2"
+                        "offset": "+=1"
                     },
                     {
                         "storyline": {
@@ -2872,7 +2874,7 @@
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
-                        "offset": "+=2"
+                        "offset": "+=2.5"
                     },
                     {
                         "action": {
@@ -2881,7 +2883,7 @@
                                 "typingBoxId": "command"
                             }
                         },
-                        "offset": "+=2"
+                        "offset": "+=1"
                     },
                     {
                         "storyline": {
@@ -2892,7 +2894,7 @@
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
-                        "offset": "+=2"
+                        "offset": "+=2.5"
                     },
                     {
                         "action": {
@@ -2901,7 +2903,7 @@
                                 "typingBoxId": "command"
                             }
                         },
-                        "offset": "+=2"
+                        "offset": "+=1"
                     },
                     {
                         "storyline": {
@@ -2912,19 +2914,19 @@
                             "clearBefore": true,
                             "hideCursorAfter": true
                         },
-                        "offset": "+=2"
+                        "offset": "+=2.5"
                     }
                 ],
                 [
                     {
                         "storyline": {
-                            "content": "Ok, how do I...?",
+                            "content": "Ok, how do I quit vim?",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
                             "style": {
-                                "top": "65%",
-                                "left": "30%"
+                                "top": "70%",
+                                "left": "5%"
                             }
                         },
                         "offset": ">"
@@ -3769,7 +3771,7 @@
         "storyline": {
             "content": "Shit, he knows, I'm done for.",
             "speed": "fast",
-            "delim": " ",
+            "delim": "",
             "typingBoxId": "nar1",
             "clearAfter": "+=1.5",
             "style": {
@@ -3846,7 +3848,7 @@
         "storyline": {
             "content": "So now we wait.",
             "speed": "fast",
-            "delim": " ",
+            "delim": "",
             "typingBoxId": "nar1",
             "clearAfter": "+=1.5",
             "style": {
@@ -3927,7 +3929,7 @@
                 "width": "clamp(150px,26cqw,300px)"
             }
         },
-        "offset": "-=1"
+        "offset": "-=2"
     },
     {
         "storyline": {
@@ -4017,7 +4019,7 @@
                 "width": "clamp(150px,26cqw,300px)"
             }
         },
-        "offset": "-=1.2"
+        "offset": "-=1.7"
     },
     {
         "storyline": {
@@ -4033,7 +4035,7 @@
                 "width": "clamp(180px,32cqw,360px)"
             }
         },
-        "offset": "-=0.5"
+        "offset": "-=0.7"
     },
     {
         "clearTypingTextBoxes": {
@@ -4148,7 +4150,7 @@
         "storyline": {
             "content": "His password is ilovecats822?",
             "speed": "fast",
-            "delim": "",
+            "delim": " ",
             "typingBoxId": "nar1"
         },
         "offset": "+=0.5"
@@ -4216,7 +4218,7 @@
                 "text-align": "center"
             }
         },
-        "offset": ">"
+        "offset": "+=8"
     },
     {
         "storyline": {
@@ -4243,16 +4245,7 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=0.5",
-            "style": {
-                "top": "16%",
-                "left": "0",
-                "width": "100cqw",
-                "padding": "0",
-                "background-color": "transparent",
-                "font-size": "clamp(2rem,7cqw,6rem)",
-                "text-align": "center"
-            }
+            "clearAfter": "+=0.5"
         },
         "offset": ">"
     },
@@ -4412,7 +4405,7 @@
             "sendMessageAction": {
                 "from": "Sillygoose228",
                 "content": "yeah, it's probably nothing",
-                "timeToType": 26
+                "timeToType": 27
             }
         },
         "offset": ">"
@@ -4880,7 +4873,7 @@
         "action": {
             "sendMessageAction": {
                 "from": "Sinius",
-                "content": "just stop giving attention to this clown ass",
+                "content": "just stop giving attention to his clown ass",
                 "timeToType": 4,
                 "isReplyDiff": -1
             }
@@ -5239,7 +5232,7 @@
             "delim": " ",
             "typingBoxId": "nar1"
         },
-        "offset": "+=0.5"
+        "offset": "+=3"
     },
     {
         "storyline": {
@@ -5252,12 +5245,12 @@
     },
     {
         "storyline": {
-            "content": "I’m probably the best man alive right now.",
+            "content": "I feel like the coolest man alive right now.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
         },
-        "offset": "+=0.5"
+        "offset": "+=1.5"
     },
     {
         "storyline": {
@@ -5267,7 +5260,7 @@
             "typingBoxId": "nar1",
             "clearAfter": "+=3"
         },
-        "offset": "+=0.5"
+        "offset": "+=1"
     },
     {
         "action": {
@@ -5732,7 +5725,7 @@
                         "effect": {
                             "name": "COLOR_OVERLAY",
                             "options": {
-                                "duration": 10,
+                                "duration": 11,
                                 "opacity": 0.7,
                                 "overlayNumber": [
                                     "1"
@@ -5746,7 +5739,7 @@
                         "effect": {
                             "name": "BLUR",
                             "options": {
-                                "duration": 10,
+                                "duration": 11,
                                 "blurPx": 10,
                                 "zIndex": 21
                             }
@@ -6075,7 +6068,7 @@
     },
     {
         "storyline": {
-            "content": "But let’s be real, I was the one who was weak.",
+            "content": "But let’s be real, I am the one who is weak.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -6132,7 +6125,7 @@
                 "timeToType": 6
             }
         },
-        "offset": "-=1"
+        "offset": "<"
     },
     {
         "action": {
@@ -6142,7 +6135,7 @@
         },
         "isActionAwait": true,
         "hint": "Type in the chat and press Send",
-        "offset": "+=6.5"
+        "offset": ">+=6.5"
     },
     {
         "action": {
@@ -6184,7 +6177,8 @@
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
-            "clearAfter": "+=1.5",
+            "clearAfter": "+=3",
+            "hideCursorAfter": true,
             "style": {
                 "top": "40%",
                 "width": "auto",

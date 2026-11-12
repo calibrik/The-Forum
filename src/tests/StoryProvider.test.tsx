@@ -1334,6 +1334,7 @@ describe("storyInit", () => {
         })
     });
     test("resets the anims once per path before recovering the page", async () => {
+        const mountResetSpy = vi.spyOn(gsap, "set");
         const { result } = renderHook(() => {
             const story = useStory();
             const userState = useUserState();
@@ -1341,6 +1342,8 @@ describe("storyInit", () => {
         }, {
             wrapper: AllTheProvidersForMock
         });
+        await waitFor(() => expect(mountResetSpy.mock.calls.some((c) => String(c[0]).includes("#effectOverlay"))).toBe(true));
+        mountResetSpy.mockRestore();
         await db.users.add({ nickname: "main_hero" });
         result.current!.userState!.isRealLoggedIn.current = true;
         result.current!.userState!.userLoggedIn.current = "main_hero";

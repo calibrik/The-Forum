@@ -166,7 +166,7 @@ export const Vim: FC = () => {
                         <span>1,1  All</span>
                     </div>
                     <div className={styles.commandLineRow}>
-                        <TypingTextBox ref={setTypingBox("command")} className={styles.commandLineBox} type={"terminal"} />
+                        <TypingTextBox ref={setTypingBox("command")} content=" " className={styles.commandLineBox} type={"terminal"} />
                     </div>
                 </div>
             </div>

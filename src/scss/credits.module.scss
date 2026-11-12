@@ -48,11 +48,13 @@
     max-width: 640px;
     font-size: clamp(1rem, 2.5cqw, 1.35rem);
     line-height: 1.5;
+    min-height: 2lh;
 }
 
 .author {
     font-weight: bold;
     font-size: clamp(1.1rem, 3cqw, 1.6rem);
+    min-height: 1lh;
 }
 
 .logo {

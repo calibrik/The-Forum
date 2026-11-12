@@ -14,24 +14,8 @@ export const TestPage: FC<ITestPageProps> = (_) => {
     const typingBoxes = useTypingBoxes();
 
     useGSAP(() => {
-        const container = document.querySelector('#containerGlobal') as HTMLDivElement
-        const clone = container.cloneNode(true) as HTMLDivElement;
-        clone.style.position = "absolute";
-        clone.style.left = "0";
-        clone.style.top = "0";
-        clone.style.pointerEvents = "none";
-        // clone.style.backgroundColor="red";
-        // clone.style.backgroundImage="none";
-        clone.style.opacity = "0.1";
-        document.body.appendChild(clone);
         gsap.timeline()
-            .set(clone, {
-                x: "3vw",
-                y: "10vw",
-                backgroundImage: "none",
-                backgroundColor: "red",
-                color: "red !important"
-            }, "+=1")
+            .add(story.getAnim("COLOR_OVERLAY", { duration: 2, backgroundColor: "red", opacity: 1, overlayNumber: ["1"] })!, ">")
             .add(typingBoxes.getTypingBoxes().get("test")!.getTypingTimeline({
                 content: "FUCK.",
                 speed: "fast",
@@ -39,15 +23,20 @@ export const TestPage: FC<ITestPageProps> = (_) => {
             }), ">")
             .add(typingBoxes.getTypingBoxes().get("test")!.getTypingTimeline({
                 content: "SHIT.FUCK.",
-                speed: "fast",
+                speed: "slow",
                 delim: "",
                 hideCursorAfter: true,
             }), "+=0.5")
-            .add(() => { clone.remove(); }, "+=20")
-        return () => {
-            clone.remove();
-        }
+            .add(story.getAnim("REVERSE_OVERLAY", { duration: 2, overlayNumber: ["1"] })!, "-=1")
+            .add(() => { messageSim() }, "<")
+            .add(() => console.log("message response sim"), ">+=2.5")
     }, [])
+
+    async function messageSim() {
+        console.log("message type sim");
+        await delay(2);
+        console.log("message sent");
+    }
 
     async function test() {
         await delay(5);
@@ -63,16 +52,16 @@ export const TestPage: FC<ITestPageProps> = (_) => {
             <TypingTextBox style={{
                 display: "block",
                 "top": "10%",
-                "padding":"0 10px",
-                boxSizing:"border-box",
-                maxWidth:"1000px",
+                "padding": "0 10px",
+                boxSizing: "border-box",
+                maxWidth: "1000px",
                 "width": "100%",
                 "backgroundColor": "transparent",
                 "zIndex": 22,
-                "maxHeight":"85%",
-                "overflowY":"auto",
-                "scrollbarColor":"black transparent",
-                "pointerEvents":"all"
+                "maxHeight": "85%",
+                "overflowY": "auto",
+                "scrollbarColor": "black transparent",
+                "pointerEvents": "all"
             }} content="fuck" type="terminal" />
             <TypingTextBox ref={typingBoxes.setTypingBox("test")} type="terminal" />
             <div>

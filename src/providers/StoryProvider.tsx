@@ -31,7 +31,7 @@ interface IStoryHook {
     getMessages(chatId: string): Promise<IMessage[]>,
     login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
     logout: () => void,
-    quitGame: (isAnim?:boolean,nav?:boolean) => Promise<void>,
+    quitGame: (isAnim?: boolean, nav?: boolean) => Promise<void>,
     getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
@@ -140,15 +140,18 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
                 opacity: options?.opacity ?? 1,
             })
         else
-            tl.fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
-                zIndex: options?.zIndex,
-                opacity: options?.fromOpacity ?? 0,
-                backgroundColor: options?.backgroundColor
-            },
+            tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
                 {
-                    duration: options?.duration,
-                    opacity: options?.opacity ?? 1,
+                    zIndex: options?.zIndex,
+                    opacity: options?.fromOpacity ?? 0,
+                    backgroundColor: options?.backgroundColor
                 })
+                .to(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
+                    {
+                        backgroundColor: options?.backgroundColor,
+                        duration: options?.duration,
+                        opacity: options?.opacity ?? 1,
+                    })
 
         tl.add(() => {
             if (options?.persistOverNavigation)
@@ -878,8 +881,8 @@ export function useStoryFuncs() {
         }
 
         if (scl.addParallelExec) {
-            // tl.addLabel(scl.addParallelExec.name, scl.offset);
-            const parallelExecTl=gsap.timeline();
+            const parallelExecTl = gsap.timeline();
+            console.log("adding parallel", scl.addParallelExec.name)
             const branches = scl.addParallelExec.branches;
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
@@ -888,7 +891,8 @@ export function useStoryFuncs() {
                 }
                 parallelExecTl.add(branch, 0);
             }
-            tl.add(parallelExecTl,scl.offset)
+            console.log("added parallel", scl.addParallelExec.name)
+            tl.add(parallelExecTl, scl.offset)
         }
 
         if (scl.deleteTextFromTypingBox) {
@@ -967,7 +971,7 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 56 });//1 is orig
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
         await db.storyMessages.clear();
         const createdAt = new Date();
         let chats = await db.chats.toArray();
@@ -1001,7 +1005,7 @@ export function useStoryFuncs() {
             errors.password = "Field cannot be empty";
         if (errors.nickname || errors.password)
             return errors;
-        const user = await db.usersBuffer.where("nickname").equals(nickname).first()??await db.users.where("nickname").equals(nickname).first();
+        const user = await db.usersBuffer.where("nickname").equals(nickname).first() ?? await db.users.where("nickname").equals(nickname).first();
         if (!user || user.savedStoryId == 0) {
             errors.nickname = "Nickname is not found.";
             return errors;
@@ -1030,7 +1034,7 @@ export function useStoryFuncs() {
         navigate("/login");
     }
 
-    const quitGame = contextSafe(async (playAnim=true,nav=true) => {
+    const quitGame = contextSafe(async (playAnim = true, nav = true) => {
         if (playAnim)
             await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
         userState.userLoggedIn.current = "";
