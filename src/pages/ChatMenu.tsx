@@ -1,10 +1,10 @@
 import { useEffect, useState, type FC } from "react";
 import styles from "../scss/chatMenu.module.scss";
-import { bridge, formatTime, getImageUrl, resolveChatView } from "../utils";
+import { bridge, formatTime, getImageUrl, resolveChatView } from "../misc/utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { db, type IChat, type IMessage } from "../backend/db";
+import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 interface IChatMenuProps { };
@@ -68,7 +68,6 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
         const nickname = userState.userLoggedIn.current;
         const [buffered, saved] = await Promise.all([db.chatsBuffer.where("owner").equals(nickname).toArray(), db.chats.where("owner").equals(nickname).toArray()]);
         const chats = [...buffered, ...saved];
-        console.log(chats)
         setChats(await Promise.all(chats.map((chat) => resolveChatView(chat, nickname))));
     }
 
@@ -93,6 +92,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
                     <Dialog key={chat.id} chat={chat} />
                 ))}
                 <HintHolder id="cyberdivers" ref={setHintHolder("cyberdivers")} />
+                <HintHolder id="c14a5155-a221-447c-98ed-21b138f468d7" ref={setHintHolder("c14a5155-a221-447c-98ed-21b138f468d7")} />
             </div>
         </div>
     );

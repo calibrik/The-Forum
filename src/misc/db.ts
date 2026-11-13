@@ -1,12 +1,14 @@
 import { Dexie, type EntityTable } from "dexie"
-import { getJsonUrl, seededRandom } from "../utils";
+import { getJsonUrl, seededRandom } from "./utils";
 import type { IEffectsOptions } from "../providers/StoryProvider";
+import type { TTypingSpeed } from "../components/TypingTextBox";
 
 export interface IStoryLine {
 	content: string,
-	speed: number,
+	speed: TTypingSpeed,
 	delim?: string,
 	typingBoxId: string,
+	style?: React.CSSProperties
 	clearAfter?: string
 	hideCursorAfter?: boolean
 	clearBefore?: boolean
@@ -73,7 +75,12 @@ export interface IPost {
 	likes: number
 	comments: number
 	views: number,
-	commentsDetailed:IComment[]
+	commentsDetailed:IComment[],
+	dateCreated: Date
+}
+
+export interface IAddPostsAction {
+	posts: IPost[]
 }
 
 export interface IAddParallelExec {
@@ -90,11 +97,6 @@ export interface ISaveAction {
 	dest: IDestination
 	// hintActionPos?: number
 	lastNavPos?: number
-}
-
-export interface ISetTypingBoxStyleAction {
-	id: string,
-	style: React.CSSProperties
 }
 
 export type IShowPlaceholderField = "nickname" | "password";
@@ -140,6 +142,10 @@ export interface IAddPasswordForAction {
 	password: string,
 }
 
+export interface IBanUserAction {
+	nickname: string,
+}
+
 export interface ISetTerminalCommandAction {
 	command: string,
 	output?: string,
@@ -180,12 +186,13 @@ export interface IClearTypingTextBoxes {
 export interface IAction {
 	navigateAction?: INavigateAction,
 	saveAction?: ISaveAction
-	setTypingBoxStyleAction?: ISetTypingBoxStyleAction
 	hintAction?: IHintAction
 	sendMessageAction?: ISendMessageAction,
 	promptMessageAction?: IPromptMessage,
 	addNewChat?: IAddNewChatAction,
+	addPosts?: IAddPostsAction,
 	addPasswordFor?: IAddPasswordForAction,
+	banUser?: IBanUserAction,
 	setShowPlaceholdersAction?: ISetShowPlaceholdersAction,
 	setModsToRemove?: ISetModsToRemoveAction,
 	setTransferTo?: ISetTransferToAction,
@@ -216,6 +223,7 @@ export interface IUser {
 	savedStoryId?: number
 	description?: string
 	imageName?: string
+	isBanned?: boolean
 }
 
 export interface IDestination {
@@ -238,6 +246,10 @@ function withLastNavPos(script: IScriptLine[]): IScriptLine[] {
 	});
 }
 
+export type IBufferItem<T> = T & {
+	isPreserved?: boolean
+}
+
 const db = new Dexie("TheForumDB") as Dexie & {
 	subforums: EntityTable<ISubforum, "id">
 	story: EntityTable<IScriptLine, "id">
@@ -245,14 +257,14 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
 	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
-	postsBuffer: EntityTable<IPost, "id">
-	chatsBuffer: EntityTable<IChat, "id">
-	usersBuffer: EntityTable<IUser, "id">
-	storyMessagesBuffer: EntityTable<IMessage, "id">
-	subforumsBuffer: EntityTable<ISubforum, "id">
+	postsBuffer: EntityTable<IBufferItem<IPost>, "id">
+	chatsBuffer: EntityTable<IBufferItem<IChat>, "id">
+	usersBuffer: EntityTable<IBufferItem<IUser>, "id">
+	storyMessagesBuffer: EntityTable<IBufferItem<IMessage>, "id">
+	subforumsBuffer: EntityTable<IBufferItem<ISubforum>, "id">
 }
 
-db.version(239).stores({
+db.version(273).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
@@ -279,7 +291,7 @@ async function fetchSeed<T>(name: string, nickname?: string) {
 }
 
 function mapUsers(users: IUser[]): IUser[] {
-	let seed = 0;
+	let seed = 3;
 	return users.map((v, i) => ({ ...v, id: i + 1, imageName: v.imageName ?? `pfp${Math.floor(seededRandom(seed++) * 9.9)}.png` }));
 }
 
@@ -288,13 +300,19 @@ export async function seedUsers() {
 	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json")));
 }
 
+export function mapPosts(posts: IPost[], startNumber = 1): IPost[] {
+	const now = Date.now();
+	let n = startNumber;
+	return posts.map((v, i) => ({ ...v, id: v.id ?? `p${n++}`, dateCreated: new Date(now - i) }));
+}
+
 export async function seedTables(nickname: string) {
 	await db.story.clear();
 	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", nickname)));
 	await db.users.clear();
 	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", nickname)));
 	await db.posts.clear();
-	await db.posts.bulkAdd((await fetchSeed<IPost[]>("posts.json", nickname)).map((v, i) => ({ ...v, id: v.id ?? `p${i + 1}` })));
+	await db.posts.bulkAdd(mapPosts(await fetchSeed<IPost[]>("posts.json", nickname)));
 	await db.subforums.clear();
 	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", nickname)).map((v, i) => ({ ...v, id: i + 1 })));
 	await db.chats.clear();

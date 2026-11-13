@@ -1,10 +1,10 @@
 import { type FC } from "react";
 import styles from "../scss/post.module.scss";
-import { getImageUrl } from "../utils";
+import { getImageUrl } from "../misc/utils";
 import { SMEntry } from "./SMEntry";
 import { Reactions } from "./Reactions";
 import { useNavigate } from "react-router";
-import type { IPost } from "../backend/db";
+import type { IPost } from "../misc/db";
 
 interface IPostProps {
     id?:string

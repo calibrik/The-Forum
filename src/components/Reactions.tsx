@@ -2,7 +2,7 @@ import { useState, type FC } from "react";
 import { BaseButton } from "./BaseButton";
 import { HeartFill, Heart, CommentIcon } from "./Icons";
 import styles from "../scss/reactions.module.scss";
-import { numberToText } from "../utils";
+import { numberToText } from "../misc/utils";
 interface IReactionsProps {
     likes:number
     comments:number

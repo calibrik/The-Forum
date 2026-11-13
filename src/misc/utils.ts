@@ -1,11 +1,15 @@
-import { db, type IChat } from "./backend/db";
+import { db, type IChat } from "./db";
 
 export function getImageUrl(name: string): string {
-    return new URL(`./assets/images/${name}`, import.meta.url).href;
+    return new URL(`../assets/images/${name}`, import.meta.url).href;
 };
 
 export function getJsonUrl(name: string): string {
-    return new URL(`./assets/jsons/${name}`, import.meta.url).href;
+    return new URL(`../assets/jsons/${name}`, import.meta.url).href;
+};
+
+export function getSoundUrl(name: string): string {
+    return new URL(`../assets/sounds/${name}`, import.meta.url).href;
 };
 
 export async function delay(s: number) {

@@ -3,6 +3,15 @@ import { Cursor, type ICursorHandle } from "./Cursor";
 import { useGSAP } from "@gsap/react";
 import gsap from 'gsap';
 import styles from "../scss/typingTextBox.module.scss";
+import { audioPlayer, type TSoundName } from "../misc/AudioPlayer";
+
+export const TYPING_SPEEDS = {
+    fast: { msPerChar: 60, sfx: "typingFast" },
+    slow: { msPerChar: 140, sfx: "typingSlow" },
+    superSlow: { msPerChar: 670, sfx: "typingSuperSlow" },
+} as const satisfies Record<string, { msPerChar: number, sfx: TSoundName }>;
+
+export type TTypingSpeed = keyof typeof TYPING_SPEEDS;
 
 interface ITypingTextBoxProps {
     type: "terminal" | "normal",
@@ -16,7 +25,7 @@ interface ITypingTextBoxProps {
 
 export interface ITypingBoxArgs {
     content: string,
-    speed: number,
+    speed: TTypingSpeed,
     delim?: string,
     clearAfter?: string
     hideCursorAfter?: boolean
@@ -34,7 +43,6 @@ export interface ITypingTextBoxHandle {
     getDeleteTimeline: (args: ITypingBoxDeleteArgs) => gsap.core.Timeline
     setCursorType: (type: "terminal" | "normal") => void
     reset: () => gsap.core.Timeline
-    applyStyle: (style: React.CSSProperties) => void
     setContent: (content: string) => void
     getContent: () => string
 };
@@ -44,24 +52,46 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
     const { contextSafe } = useGSAP({ scope: divRef });
     const cursorRef = useRef<ICursorHandle>(null);
     const typingTextRef = useRef<HTMLSpanElement>(null);
+    const typingSfx = useRef<HTMLAudioElement>(undefined);
+
+    function stopTypingSfx() {
+        typingSfx.current?.pause();
+        typingSfx.current = undefined;
+    }
+
+    function applyStyle(style: React.CSSProperties) {
+        if (divRef.current) {
+            divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
+        }
+    }
 
     const getTypingTimeline = contextSafe((args: ITypingBoxArgs) => {
         const tl = gsap.timeline();
         if (args.clearBefore)
             tl.add(reset());
+        if (args.style) {
+            const style = args.style;
+            tl.add(() => applyStyle(style));
+        }
         const added = (args.delim ?? "") + args.content;
+        const { msPerChar, sfx } = TYPING_SPEEDS[args.speed];
         const counter = { i: 0 };
         let written = 0;
         tl.set(divRef.current, {
             display: "block"
         });
         tl.set('#cursor', {
-            visibility: 'visible'
+            display: 'inline'
         })
             .to(counter, {
                 i: added.length,
-                duration: (added.length * args.speed) / 1000,
+                duration: (added.length * msPerChar) / 1000,
                 ease: "none",
+                onStart: () => {
+                    typingSfx.current = audioPlayer.playSfx(sfx, 0.5, true);
+                },
+                onComplete: stopTypingSfx,
+                onInterrupt: stopTypingSfx,
                 onUpdate: () => {
                     const count = Math.floor(counter.i);
                     if (count > written) {
@@ -72,7 +102,7 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             });
         if (args.hideCursorAfter) {
             tl.set('#cursor', {
-                visibility: 'hidden'
+                display: 'none'
             });
         }
         if (args.clearAfter) {
@@ -110,7 +140,10 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
 
     const reset = contextSafe(() => {
         return gsap.timeline()
-            .add(() => { typingTextRef.current!.textContent = ""; })
+            .add(() => {
+                stopTypingSfx();
+                typingTextRef.current!.textContent = "";
+            })
             .set(`#cursor, #typingText`, {
                 clearProps: "all",
             })
@@ -128,11 +161,6 @@ export const TypingTextBox = forwardRef<ITypingTextBoxHandle, ITypingTextBoxProp
             cursorRef.current?.setType(type);
         },
         reset,
-        applyStyle(style) {
-            if (divRef.current) {
-                divRef.current.style.cssText = Object.entries(style).map(([key, value]) => `${key}: ${value}`).join(';');
-            }
-        },
         setContent(content) {
             if (typingTextRef.current)
                 typingTextRef.current.textContent = content;

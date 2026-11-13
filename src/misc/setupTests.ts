@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom';
 import "fake-indexeddb/auto";
 // import { indexedDB, IDBKeyRange } from 'fake-indexeddb';
-import mockUsers from "./assets/jsons/users.json";
-import mockChats from "./assets/jsons/chats.json";
-import mockPosts from "./assets/jsons/posts.json";
-import mockScript from "./assets/jsons/script.json";
-import mockSubforums from "./assets/jsons/subforums.json";
+import mockUsers from "../assets/jsons/users.json";
+import mockChats from "../assets/jsons/chats.json";
+import mockPosts from "../assets/jsons/posts.json";
+import mockScript from "../assets/jsons/script.json";
+import mockSubforums from "../assets/jsons/subforums.json";
 import { afterEach, vi } from 'vitest';
-import { db } from './backend/db.ts';
+import { db } from './db.ts';
 
 vi.mock('./utils.ts', async (importOriginal) => {
     const original = await importOriginal<typeof import('./utils.ts')>();

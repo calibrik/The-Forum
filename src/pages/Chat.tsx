@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FC, type ReactNode } from "react";
 import { Dot, Reply, SendIcon, ThreeDots } from "../components/Icons";
-import { bridge, formatDay, formatTime, getImageUrl, resolveChatView } from "../utils";
+import { bridge, formatDay, formatTime, getImageUrl, resolveChatView } from "../misc/utils";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import styles from "../scss/chat.module.scss";
@@ -11,7 +11,7 @@ import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { Divider } from "../components/Divider";
-import { db, type IChat, type IMessage } from "../backend/db";
+import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate, useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";

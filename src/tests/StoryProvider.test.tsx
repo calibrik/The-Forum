@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import { db, seedUsers } from '../backend/db';
+import { db, seedUsers } from '../misc/db';
 import { StoryProvider, useChat, useElementHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
@@ -7,7 +7,7 @@ import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
 import { UserProvider, useUserState } from '../providers/UserAuth';
-import { bridge } from '../utils';
+import { bridge } from '../misc/utils';
 import { ModalsProvider } from '../providers/Modals';
 import { Signup } from '../pages/Signup';
 import { createMemoryRouter, RouterProvider } from 'react-router';
@@ -17,7 +17,6 @@ const mockTypingBox = {
     getDeleteTimeline: () => gsap.timeline(),
     setCursorType: () => { },
     reset: () => gsap.timeline(),
-    applyStyle: () => { },
     setContent: () => { },
     getContent: () => "",
 } as unknown as ITypingTextBoxHandle;
@@ -89,7 +88,7 @@ describe("useChat", () => {
             const { result } = renderHook(() => useChat(), {
                 wrapper: AllTheProvidersForMock
             });
-            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout','Date'] });
+            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
             const content = 'Hello, world!';
             result.current.addMessageFromNPC("user1", content, 2);
             result.current.addMessageFromNPC("user2", content, 1);
@@ -97,7 +96,7 @@ describe("useChat", () => {
             let messagesBuffer = await db.storyMessagesBuffer.toArray();
             expect(messagesBuffer.length).toBe(0);
             await vi.advanceTimersByTimeAsync(3000);
-            messagesBuffer = (await db.storyMessagesBuffer.toArray()).sort((a,b)=>a.timeSent.getTime()-b.timeSent.getTime());
+            messagesBuffer = (await db.storyMessagesBuffer.toArray()).sort((a, b) => a.timeSent.getTime() - b.timeSent.getTime());
             expect(messagesBuffer.length).toBe(3);
             expect(messagesBuffer[0].from).toBe("user3");
             expect(messagesBuffer[1].from).toBe("user2");
@@ -356,44 +355,6 @@ describe("useHints", () => {
 
 describe("useStoryFuncs", () => {
     describe("resetAnims", () => {
-        test("no reset anims on story navigation", async () => {
-            const { result } = renderHook(() => useStoryFuncs(), {
-                wrapper: AllTheProvidersForMock
-            });
-            result.current._getIsStoryNavRef!().current = true;
-            const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
-            const lastNavHintRef = result.current._getLastNavHint?.();
-            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
-            const hintDetails: string[] = [];
-            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
-            window.addEventListener("storyHintText", onHintText);
-            const tbs = result.current._getTypingBoxes!();
-            tbs.current = mockTypingBoxes();
-            await result.current._resetAnims?.();
-            expect(hintDetails).toEqual([]);
-            window.removeEventListener("storyHintText", onHintText);
-            expect(result.current._getTypingBoxes?.().current.size).toEqual(1);
-        });
-        test("no reset anims if on target location on sufficient level", async () => {
-            const { result } = renderHook(() => useStoryFuncs(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"));
-            const locationRef = result.current._getLocationRef?.();
-            locationRef!.current = { where: "/user/main_hero", level: 2, user: "" };
-            const lastNavHintRef = result.current._getLastNavHint?.();
-            lastNavHintRef!.current = "Go to the 'cyberdivers' chat";
-            const hintDetails: string[] = [];
-            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
-            window.addEventListener("storyHintText", onHintText);
-            const tbs = result.current._getTypingBoxes!();
-            tbs.current = mockTypingBoxes();
-            await result.current._resetAnims?.();
-            expect(hintDetails).toEqual([]);
-            window.removeEventListener("storyHintText", onHintText);
-            expect(result.current._getTypingBoxes?.().current.size).toEqual(1);
-        });
         test("reset anims (no active anim, no left from target)", async () => {
             const { result } = renderHook(() => useStoryFuncs(), {
                 wrapper: AllTheProvidersForMock
@@ -410,12 +371,13 @@ describe("useStoryFuncs", () => {
             const hintResetSpy = vi.spyOn(result.current._getHintHook!(), "resetHint");
             const tbs = result.current._getTypingBoxes!();
             tbs.current = mockTypingBoxes();
-            await result.current._resetAnims?.();
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
             expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
-            window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.size).toEqual(0);
             expect(bufferResetSpy).toHaveBeenCalledTimes(1);
             expect(hintResetSpy).toHaveBeenCalledTimes(1);
+            window.removeEventListener("storyHintText", onHintText);
         });
         test("reset anims (no active anim, left from target)", async () => {
             const { result } = renderHook(() => useStoryFuncs(), {
@@ -435,7 +397,8 @@ describe("useStoryFuncs", () => {
             result.current._getIsStoryRecovered!().current = true;
             const tbs = result.current._getTypingBoxes!();
             tbs.current = mockTypingBoxes();
-            await result.current._resetAnims?.();
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
             expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
             window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.size).toEqual(0);
@@ -461,7 +424,8 @@ describe("useStoryFuncs", () => {
             masterRef.current = gsap.timeline({ paused: true });
             const tbs = result.current._getTypingBoxes!();
             tbs.current = mockTypingBoxes();
-            await result.current._resetAnims?.();
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
             expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
             window.removeEventListener("storyHintText", onHintText);
             expect(result.current._getTypingBoxes?.().current.size).toEqual(0);
@@ -484,7 +448,8 @@ describe("useStoryFuncs", () => {
             const tl = result.current.getAnim("COLOR_OVERLAY", { duration: 0.05, backgroundColor: "black", opacity: 1, overlayNumber: ["1"], persistOverNavigation: true })!;
             tl.progress(1);
             const gsapSetSpy = vi.spyOn(gsap, "set");
-            await result.current._resetAnims?.();
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
             expect(hintDetails).toEqual(["Go to the 'cyberdivers' chat"]);
             window.removeEventListener("storyHintText", onHintText);
             const calls = gsapSetSpy.mock.calls.filter((c) => String(c[0]).includes("#effectOverlay"));
@@ -503,7 +468,8 @@ describe("useStoryFuncs", () => {
             await result.current._showStory!(1);
             await waitFor(async () => expect(await db.storyMessagesBuffer.count()).toBe(1));
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"));
-            await result.current._resetAnims?.();
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
             expect(await db.storyMessagesBuffer.count()).toBe(0);
         });
         test("reset anims keeps the buffers after a navigate false step", async () => {
@@ -518,8 +484,9 @@ describe("useStoryFuncs", () => {
             await result.current._showStory!(1);
             await waitFor(() => expect(result.current._getLocationRef!().current).toBeDefined());
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
-            await result.current._resetAnims?.();
-            expect(await db.storyMessagesBuffer.count()).toBe(1);
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
         });
         test("reset anims keeps the buffers after a navigate true step", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -532,7 +499,23 @@ describe("useStoryFuncs", () => {
             await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current!._showStory!(1);
             await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis"));
-            expect(await db.storyMessagesBuffer.count()).toBe(1);
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+        });
+        test("reset anims keeps only the buffers preserved by the navigate action", async () => {
+            const { result } = renderHook(() => useStoryFuncs(), {
+                wrapper: AllTheProvidersForMock
+            });
+            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+            await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
+            await result.current._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, user: "" }, navigate: false } }, 10);
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+            await db.storyMessagesBuffer.put({ id: 2, from: "npc", content: "bye", timeSent: new Date(), chatId: "cyberdivers" });
+            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
+            result.current._getLastExecutedPath!().current = undefined;
+            await result.current.resetAnims();
+            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, content: "hello", isPreserved: true })]);
+            await result.current._getBuffersHook!().resetBuffers();
+            expect(await db.storyMessagesBuffer.count()).toBe(0);
         });
     });
 
@@ -546,8 +529,8 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             await db.users.add({ nickname: "penis" });
-            const isStoryRecovered=result.current.storyFuncs!._getIsStoryRecovered!();
-            isStoryRecovered.current=true;
+            const isStoryRecovered = result.current.storyFuncs!._getIsStoryRecovered!();
+            isStoryRecovered.current = true;
             result.current.userState.isRealLoggedIn.current = true;
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
@@ -580,9 +563,9 @@ describe("useStoryFuncs", () => {
             result.current.storyFuncs!._getTypingBoxes!().current = new Map([["nar1", mockBox]]);
 
             await db.story.bulkAdd([
-                { id: 1, storyline: { content: "you conclude your business on this page", speed: 50, typingBoxId: "nar1" }, offset: ">" },
+                { id: 1, storyline: { content: "you conclude your business on this page", speed: "fast", typingBoxId: "nar1" }, offset: ">" },
                 { id: 2, action: { navigateAction: { dest: { where: "/chat", level: 1, user: "main_hero" }, navigate: true } }, offset: ">" },
-                { id: 3, storyline: { content: "pick a chat to continue", speed: 50, typingBoxId: "nar1" }, isActionAwait: true, hint: "open a chat", offset: ">" },
+                { id: 3, storyline: { content: "pick a chat to continue", speed: "fast", typingBoxId: "nar1" }, isActionAwait: true, hint: "open a chat", offset: ">" },
             ]);
 
             const setNavHintSpy = vi.spyOn(result.current.storyFuncs!._getObjectiveHintsHook!(), "setNavHint");
@@ -624,8 +607,8 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             await db.users.add({ nickname: "penis" });
-            const isStoryRecovered=result.current.storyFuncs!._getIsStoryRecovered!();
-            isStoryRecovered.current=true;
+            const isStoryRecovered = result.current.storyFuncs!._getIsStoryRecovered!();
+            isStoryRecovered.current = true;
             result.current.userState.isRealLoggedIn.current = true;
             const bufferPreserveSpy = vi.spyOn(result.current.storyFuncs!._getBuffersHook!(), "enablePreserveBuffers");
             const storyHintResetSpy = vi.spyOn(result.current.storyFuncs!._getHintHook!(), "resetStoryHint");
@@ -721,16 +704,6 @@ describe("useStoryFuncs", () => {
             const hintHook = result.current!._getHintHook!();
             expect(hintHook._getIsStoryHint!().current).toEqual(true);
             expect(hintHook._getCurrHint!().current).toEqual(["test-id"]);
-        });
-        test("setTextBoxStyle action", async () => {
-            const { result } = renderHook(() => useStory()._getStoryHook!(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const applyStyleSpy = vi.fn();
-            const mockRef = { applyStyle: applyStyleSpy } as unknown as ITypingTextBoxHandle;
-            result.current!._getTypingBoxes!().current = new Map([["nar1", mockRef]]);
-            await result.current!._processAction!({ setTypingBoxStyleAction: { id: "nar1", style: { color: "red" } } }, 10);
-            expect(applyStyleSpy).toHaveBeenCalledWith({ color: "red" });
         });
         test("sendMessage action", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -1219,19 +1192,14 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 16)?.action?.saveAction?.dest?.where).toBe(`/user/${newNick}`);
-            expect(scriptlinesAfter.find(s => s.id === 51)?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
+            expect(scriptlinesAfter.find(s => s.storyline?.content === `I am ${newNick}.`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.action?.navigateAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.action?.saveAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.addParallelExec?.name === "zeroNews")?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
 
             const usersAfter = await db.users.toArray();
             expect(usersAfter.find(u => u.savedStoryId != undefined)?.nickname).toBe(newNick);
             expect(usersAfter.find(u => u.nickname === "penis")).toBeDefined();
-
-            const postsAfter = await db.posts.toArray();
-            expect(postsAfter.find(p => p.id === "p2")?.author).toBe(newNick);
-            expect(postsAfter.find(p => p.id === "p3")?.content).toBe(`Testing ${newNick} shit`);
-            expect(postsAfter.find(p => p.id === "p3")?.author).toBe("penis");
 
             const chatsAfter = await db.chats.toArray();
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([newNick]);
@@ -1249,8 +1217,8 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 3)?.storyline?.content).toBe(`I am ${newNick}.`);
-            expect(scriptlinesAfter.find(s => s.id === 9)?.storyline?.content).toBe("I am a gamer with 10+ years experience, especially in the game called Cyberdivers.");
+            expect(scriptlinesAfter.find(s => s.storyline?.content === `I am ${newNick}.`)).toBeDefined();
+            expect(scriptlinesAfter.find(s => s.storyline?.content === "I am a gamer with 10+ years of experience, especially in Cyberdivers.")).toBeDefined();
         });
         test("shouldn't replace the keys", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -1260,7 +1228,7 @@ describe("useStoryFuncs", () => {
             await result.current!._customizeStory!(newNick);
 
             const scriptlinesAfter = await db.story.toArray();
-            expect(scriptlinesAfter.find(s => s.id === 14)?.action?.navigateAction?.dest?.where).toBe(`/user/${newNick}`);
+            expect(scriptlinesAfter.find(s => s.action?.navigateAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
         });
         test("should wipe the tables before adding new ones", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -1272,7 +1240,7 @@ describe("useStoryFuncs", () => {
             await Promise.all([
                 db.story.put({ id: 9999, offset: ">" }),
                 db.users.put({ id: 9999, nickname: "ghost" }),
-                db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [] }),
+                db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [], dateCreated: new Date() }),
                 db.subforums.put({ id: 9999, name: "ghost", followers: 0, description: "ghost", imageName: "ghost", admin: "ghost", mods: [], members: ["ghost"] }),
                 db.chats.put({ id: "ghost", owner: ["ghost"], type: "gc", pregenMessages: [], isRead: false, initTimeDiff: 0 })
             ]);
@@ -1323,6 +1291,7 @@ describe("useStoryFuncs", () => {
 
 describe("storyInit", () => {
     test("regular flow", async () => {
+        const mountResetSpy = vi.spyOn(gsap, "set");
         const { result } = renderHook(() => {
             const story = useStory();
             const userState = useUserState();
@@ -1330,15 +1299,18 @@ describe("storyInit", () => {
         }, {
             wrapper: AllTheProvidersForMock
         });
+        await waitFor(() => expect(mountResetSpy.mock.calls.some((c) => String(c[0]).includes("#effectOverlay"))).toBe(true));
+        mountResetSpy.mockRestore();
+        const gsapSetSpy = vi.spyOn(gsap, "set");
         const callsSpy = vi.spyOn(bridge, "exec");
         result.current!.userState!.isRealLoggedIn.current = true;
         result.current!.userState!.userLoggedIn.current = "main_hero";
-        exposedMockRouter?.navigate("/chat");
+        exposedMockRouter?.navigate("/login");
         await waitFor(() => {
-            // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.setTypingBoxes.name)).not.toBeUndefined();
-            // expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.initReady.name)).not.toBeUndefined();
             expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
+            expect(gsapSetSpy.mock.calls.filter((c) => String(c[0]).includes("#effectOverlay")).length).toBe(1);
         })
+        
     });
     test("check order", async () => {
         const { result } = renderHook(() => {
@@ -1360,6 +1332,38 @@ describe("storyInit", () => {
             expect(level2).not.toBe(-1);
             expect(level3).toBeLessThan(level2);
         })
+    });
+    test("resets the anims once per path before recovering the page", async () => {
+        const mountResetSpy = vi.spyOn(gsap, "set");
+        const { result } = renderHook(() => {
+            const story = useStory();
+            const userState = useUserState();
+            return { story, userState }
+        }, {
+            wrapper: AllTheProvidersForMock
+        });
+        await waitFor(() => expect(mountResetSpy.mock.calls.some((c) => String(c[0]).includes("#effectOverlay"))).toBe(true));
+        mountResetSpy.mockRestore();
+        await db.users.add({ nickname: "main_hero" });
+        result.current!.userState!.isRealLoggedIn.current = true;
+        result.current!.userState!.userLoggedIn.current = "main_hero";
+        const seq: string[] = [];
+        const realExec = bridge.exec as unknown as (...args: unknown[]) => unknown;
+        const realSet = gsap.set as unknown as (...args: unknown[]) => unknown;
+        vi.spyOn(bridge, "exec").mockImplementation((async (fn: (...a: unknown[]) => unknown, ...args: unknown[]) => {
+            if (fn.name === result.current!.story.recoverStoryOnPage.name)
+                seq.push("recover");
+            return realExec(fn, ...args);
+        }) as unknown as typeof bridge.exec);
+        vi.spyOn(gsap, "set").mockImplementation(((targets: unknown, ...args: unknown[]) => {
+            if (String(targets).includes("#effectOverlay"))
+                seq.push("reset");
+            return realSet(targets, ...args);
+        }) as unknown as typeof gsap.set);
+        exposedMockRouter?.navigate("/user/main_hero/comments");
+        await waitFor(() => expect(seq.filter((v) => v === "recover").length).toBe(2));
+        expect(seq.filter((v) => v === "reset").length).toBe(1);
+        expect(seq.indexOf("reset")).toBeLessThan(seq.indexOf("recover"));
     });
 });
 describe("isOnLocation", () => {

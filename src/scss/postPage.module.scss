@@ -85,6 +85,11 @@
     text-align: center;
 }
 
+.deleted-icon {
+    font-size: clamp(3rem, 14cqw, 7rem);
+    color: colors.$tertiary-color;
+}
+
 .deleted-title {
     font-size: clamp(1.25rem, 4.6cqw, 2rem);
     color: colors.$secondary-color;

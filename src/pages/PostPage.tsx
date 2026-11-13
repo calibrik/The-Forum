@@ -1,30 +1,31 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from "../scss/postPage.module.scss"
 import buttonStyles from "../scss/baseButton.module.scss";
-import { SendIcon, ThreeDots } from "../components/Icons";
+import { Deleted, SendIcon, ThreeDots } from "../components/Icons";
 import { Reactions } from "../components/Reactions";
 import { InputField } from "../components/InputField";
 import { BaseButton } from "../components/BaseButton";
 import { Comment } from "../components/Comment";
 import { BackButton } from "../components/BackButton";
-import { bridge, getImageUrl } from "../utils";
+import { bridge, getImageUrl } from "../misc/utils";
 import { useNavigate, useParams } from "react-router";
 import { Spinner } from "../components/Spinner";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { db, type IPost, type ISubforum } from "../backend/db";
+import { db, type IPost, type ISubforum } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 
 const FAKE_POST: IPost = {
     id: "fake",
-    author: "fartsniffer69",
+    author: "fake_op",
     subforum: "zero",
     title: "zero is the worst game oat",
     content: "zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.",
     likes: 0,
     comments: 0,
     views: 3,
-    commentsDetailed: []
+    commentsDetailed: [],
+    dateCreated: new Date()
 };
 
 interface IPostPageProps { };
@@ -63,14 +64,14 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         if (isDeleted)
             return;
         const post = isFake
-            ? { ...FAKE_POST, author: userState.userLoggedIn.current }
-            : await db.posts.where("id").equals(id??"").first();
+            ? FAKE_POST
+            : await db.postsBuffer.where("id").equals(id??"").first() ?? await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})
             return;
         }
         setPost(post);
-        const sub = await db.subforums.where("id").equals(post.subforum).first();
+        const sub = await db.subforumsBuffer.where("name").equals(post.subforum).first()??await db.subforums.where("name").equals(post.subforum).first();
         setSubforum(sub);
         setSubforumPfp(sub?.imageName);
     }
@@ -143,6 +144,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                 </div>
                 {isDeleted ? (
                     <div className={styles.deletedContainer}>
+                        <Deleted className={styles.deletedIcon} />
                         <h1 className={styles.deletedTitle}>Post you are looking for does not exist.</h1>
                         <p className={styles.deletedMessage}>Perhaps, it has been deleted by moderators or author of the post.</p>
                     </div>
@@ -150,7 +152,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                     <>
                         <h1 className={styles.postTitle}>{post?.title}</h1>
                         <p className={styles.content}>{post?.content}</p>
-                        <img src={getImageUrl(post?.imageName??"placeholder.png")} alt="" className={styles.picture} />
+                        {post&&post.imageName?<img src={getImageUrl(post.imageName)} alt="" className={styles.picture} />:""}
                         <Reactions likes={post?.likes??0} comments={post?.comments??0} views={post?.views??0} />
                     </>
                 )}

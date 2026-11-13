@@ -3,9 +3,9 @@ import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
-import { db, type IPost, type ISubforum } from "../backend/db";
+import { db, type IPost, type ISubforum } from "../misc/db";
 import { useOutletContext, useParams } from "react-router";
-import { bridge } from "../utils";
+import { bridge } from "../misc/utils";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
 interface ISubforumPostsProps { };
@@ -18,7 +18,11 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
     const [, typingBoxes] = useOutletContext<[ISubforum | undefined, Map<string, ITypingTextBoxHandle>]>();
 
     async function init() {
-        setPosts(await db.posts.where("subforum").equals(name ?? "").toArray());
+        const [buffered, saved] = await Promise.all([
+            db.postsBuffer.where("subforum").equals(name ?? "").toArray(),
+            db.posts.where("subforum").equals(name ?? "").toArray()
+        ]);
+        setPosts([...buffered, ...saved].sort((a, b) => b.dateCreated.getTime() - a.dateCreated.getTime()));
     }
 
     useEffect(() => {
@@ -40,9 +44,9 @@ export const SubforumPosts: FC<ISubforumPostsProps> = (_) => {
                         <Post showAuthor={"user"} id={v.id} post={v} />
                     </div>
                 ))}
-                <HintHolder id="p4" ref={setHintHolder("p4")} />
-                <HintHolder id="p5" ref={setHintHolder("p5")} />
-                <HintHolder id="p6" ref={setHintHolder("p6")} />
+                <HintHolder id="dlc-moved" ref={setHintHolder("dlc-moved")} />
+                <HintHolder id="vault" ref={setHintHolder("vault")} />
+                <HintHolder id="spoilers" ref={setHintHolder("spoilers")} />
                 <Spinner />
             </div>
         </>

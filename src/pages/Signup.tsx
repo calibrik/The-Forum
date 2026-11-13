@@ -2,9 +2,9 @@ import { useRef, useState, type FC } from "react";
 import styles from '../scss/loginSignupPage.module.scss';
 import baseButtonStyles from "../scss/baseButton.module.scss";
 import { InputField, type IInputFieldHandle } from "../components/InputField";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { BaseButton } from "../components/BaseButton";
-import { db } from "../backend/db";
+import { db } from "../misc/db";
 import { useModals } from "../providers/Modals";
 import { useStory } from "../providers/StoryProvider";
 import { Spinner } from "../components/Icons";
@@ -22,6 +22,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     const modals = useModals();
     const answerRef = useRef<boolean>(false);
     const story = useStory();
+    let navigate=useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -40,7 +41,8 @@ export const Signup: FC<ISignupProps> = (_) => {
     async function proccessSubmit(data: SignupData) {
         answerRef.current = true;
         let isGood: boolean = true;
-        if (data.nickname.trim() === "") {
+        const nickname = data.nickname.trim();
+        if (nickname === "") {
             nicknameInputRef.current?.setError("Field cannot be empty");
             isGood = false;
         }
@@ -57,7 +59,6 @@ export const Signup: FC<ISignupProps> = (_) => {
             setLoading(false);
             return;
         }
-        const nickname = data.nickname.trim();
         const nicknameRegex = /^[a-zA-Z0-9_]+$/
         if (!nicknameRegex.test(nickname)) {
             nicknameInputRef.current?.setError("Nickname should contain only letters, numbers and underscores");
@@ -65,13 +66,14 @@ export const Signup: FC<ISignupProps> = (_) => {
             return;
         }
         const existingUser = await db.users.where("nickname").equals(nickname).toArray();
-        if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)) {
+        if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)||nickname=="banned") {
             nicknameInputRef.current?.setError("Nickname already exists");
             setLoading(false);
             return;
         }
-        await story.createUser(data.nickname.trim(), data.password.trim());
-        story.logout();
+        await story.createUser(nickname, data.password.trim());
+        await story.quitGame(false,false);
+        navigate("/login");
     }
 
     function onPasswordChange(_: string) {

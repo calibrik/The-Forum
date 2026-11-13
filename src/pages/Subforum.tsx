@@ -1,5 +1,5 @@
 import { useEffect, useState, type FC } from "react";
-import { bridge, getImageUrl, numberToText } from "../utils";
+import { bridge, getImageUrl, numberToText } from "../misc/utils";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import styles from "../scss/sub-userPage.module.scss";
 import baseButtonStyles from "../scss/baseButton.module.scss";
@@ -8,7 +8,7 @@ import { Plus } from "../components/Icons";
 import { Menu, type IMenuOption } from "../components/Menu";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
-import { db, type ISubforum } from "../backend/db";
+import { db, type ISubforum } from "../misc/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";

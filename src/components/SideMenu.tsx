@@ -18,7 +18,6 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         if (!dest)
             return;
         setIsOpen(false);
-        // story.goForwardHintNavPath("chat-menu");
         navigate(dest);
     }
 
@@ -28,10 +27,10 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         story.logout();
     }
 
-    function onRealLogout(e: React.MouseEvent) {
+    async function onRealLogout(e: React.MouseEvent) {
         e.preventDefault();
         setIsOpen(false);
-        story.quitGame();
+        await story.quitGame();
     }
 
     const toggleOpen = useCallback(() => {
@@ -51,6 +50,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         }
         else {
             story.goBackwardHint("chat-menu");
+            story.goBackwardHint("logout");
         }
     }, [isOpen])
 

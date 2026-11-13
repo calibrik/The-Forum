@@ -1,10 +1,21 @@
 # Description
 
-This is a visual novel that offers you to take role of your average online forum dweller and dive into his thoughts and experiences. 
+This is a small linear visual novel on a simulated social network called The Forum that offers you to take role of your average terminally online forumer and dive into his thoughts, experiences and relationships with other forumers on the platform.
 
-The application simulates entire platform, from different posts and subforums to messages.
+With this project I wanted to push the boundaries of what websites usually offer, from something that is purely functional to the form of entertainment, that uses same tools like HTML, CSS and JavaScript to tell a story.
 
-Do NOT use your real passwords to create an account here, they are stored locally, but not in a secure way lmao.
+I've spent a year developing this and, while it's my first time writing a plot, I'm pretty proud with what came out of it.
+
+Do NOT use your real passwords to create an account here, accounts here are stored locally, but not in a secure way.
+
+**AI use disclosure:** Until August 2026 I was developing this project by hand only, but then I started using AI tools to generate code to speed up development, since it was taking me way longer than I expected to complete this project and I kinda always wanted to try AI in development. I still made all the decisions myself and I understand 100% of the codebase and can explain every line of code in it.
+
+# Future plans
+- Background music
+- Different sound effects
+- Introduce more visual effects
+- Do a Feed page that changes depending on what happened in the story so far
+- Add more posts, comments and other subforums to make The Forum more alive as a platform
 
 # Live Link
 

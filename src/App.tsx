@@ -21,6 +21,7 @@ import { Notepad } from './pages/Notepad';
 import { EmptyLayout } from './pages/EmptyLayout';
 import { Terminal } from './pages/Terminal';
 import { Vim } from './pages/Vim';
+import { Credits } from './pages/Credits';
 import { UserProvider } from './providers/UserAuth';
 import { StoryProvider } from './providers/StoryProvider';
 import type { FC, ReactNode } from 'react';
@@ -70,6 +71,7 @@ export const appRoutes: RouteObject[] = [
 					{ path: "/start", Component: Notepad },
 					{ path: "/terminal", Component: Terminal },
 					{ path: "/terminal/vim", Component: Vim },
+					{ path: "/credits", Component: Credits },
 				]
 			},
 		]

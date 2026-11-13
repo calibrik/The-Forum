@@ -4,8 +4,8 @@ import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
 import { useStoryInit } from "../providers/StoryProvider";
 import { useParams } from "react-router";
-import { db, type IPost } from "../backend/db";
-import { bridge } from "../utils";
+import { db, type IPost } from "../misc/db";
+import { bridge } from "../misc/utils";
 interface IUserPostsProps { };
 
 export const UserPosts: FC<IUserPostsProps> = (_) => {
@@ -14,7 +14,11 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
     const [posts,setPosts]=useState<IPost[]>([]);
 
     async function init(){
-        setPosts(await db.posts.where("author").equals(username??"").toArray());
+        const [buffered, saved] = await Promise.all([
+            db.postsBuffer.where("author").equals(username ?? "").toArray(),
+            db.posts.where("author").equals(username ?? "").toArray()
+        ]);
+        setPosts([...buffered, ...saved].sort((a, b) => b.dateCreated.getTime() - a.dateCreated.getTime()));
     }
 
     useEffect(()=>{

@@ -16,7 +16,7 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
-		setupFiles: './src/setupTests.ts',
+		setupFiles: './src/misc/setupTests.ts',
 	},
 	build: {
 		assetsInlineLimit: 0,
@@ -27,7 +27,7 @@ export default defineConfig({
 						if (id.includes('/gsap/') || id.includes('/@gsap/react/')) {
 							return 'gsap';
 						}
-						
+
 						if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router/') || id.includes('/scheduler/')) {
 							return 'react';
 						}

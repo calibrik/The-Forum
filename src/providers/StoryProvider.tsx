@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useRef, useEffect, type RefObject, createContext, useContext } from "react";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../backend/db";
+import { db, mapPosts, seedTables, type IAction, type IChat, type IDestination, type IHistoryEntry, type IMessage, type IScriptLine, type IShowPlaceholderField } from "../misc/db";
 import gsap from 'gsap';
 import { Outlet, useLocation, useNavigate } from "react-router";
 import type { FC } from "react";
@@ -9,16 +9,15 @@ import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
 import type { ISearchFieldHandle } from "../components/SearchField";
-import { bridge, delay } from "../utils";
+import { bridge, delay } from "../misc/utils";
 interface IStoryProviderProps {
 };
 
 interface IStoryHook {
-    getAnim: (anim: string, options?: IEffectsOptions) => gsap.core.Timeline | undefined
-    // initReady: (level: number) => void
     resumeStoryFromHint: (clickedId: string) => boolean
     recoverCheckpoint: (id: number, scl?: IScriptLine) => Promise<void>
     recoverStoryOnPage: (level: number, tbs: Map<string, ITypingTextBoxHandle>) => void
+    resetAnims: () => Promise<void>
     createUser: (nickname: string, password: string) => Promise<void>
     goBackwardHint: (clickedId: string) => void,
     goForwardHint: (clickedId: string) => void,
@@ -26,15 +25,13 @@ interface IStoryHook {
     setChatHandle(ch: IChatHandle | undefined): Promise<void>;
     setLoginHandle(h: ILoginHandle | undefined): void;
     setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
-    setDemoteTarget: (mods?: string[]) => void;
-    setTransferTarget: (user?: string) => void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
     addMessageFromUser(content: string): Promise<void>
     getMessages(chatId: string): Promise<IMessage[]>,
     login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
     logout: () => void,
-    quitGame: () => Promise<void>,
+    quitGame: (isAnim?: boolean, nav?: boolean) => Promise<void>,
     getExpectedUser: () => string | undefined,
 }
 type StoryFuncsType = ReturnType<typeof useStoryFuncs>;
@@ -135,50 +132,76 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             })
     },
     "COLOR_OVERLAY": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .fromTo(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
+        const tl = gsap.timeline();
+        if (options?.duration == 0)
+            tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`, {
+                zIndex: options?.zIndex,
+                backgroundColor: options?.backgroundColor,
+                opacity: options?.opacity ?? 1,
+            })
+        else
+            tl.set(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
                 {
                     zIndex: options?.zIndex,
                     opacity: options?.fromOpacity ?? 0,
                     backgroundColor: options?.backgroundColor
-                },
-                {
-                    duration: options?.duration,
-                    opacity: options?.opacity,
                 })
-            .add(() => {
-                if (options?.persistOverNavigation)
-                    persistOverlayIds?.add(`effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
-            })
+                .to(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`,
+                    {
+                        backgroundColor: options?.backgroundColor,
+                        duration: options?.duration,
+                        opacity: options?.opacity ?? 1,
+                    })
+
+        tl.add(() => {
+            if (options?.persistOverNavigation)
+                persistOverlayIds?.add(`#effectOverlay${options?.overlayNumber?.[0] ?? "1"}`);
+        })
+        return tl;
     },
     "BLUR": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .set(`#effectOverlayBlur`, {
+        const tl = gsap.timeline();
+        if (options?.duration == 0)
+            tl.set(`#effectOverlayBlur`, {
+                zIndex: options?.zIndex,
+                backdropFilter: `blur(${options?.blurPx}px)`,
+                opacity: 1,
+            })
+        else
+            tl.fromTo(`#effectOverlayBlur`, {
                 zIndex: options?.zIndex,
                 backdropFilter: `blur(${options?.blurPx}px)`,
                 opacity: 0,
-            })
-            .to(`#effectOverlayBlur`,
+            },
                 {
                     opacity: 1,
                     duration: options?.duration,
                 })
-            .add(() => {
-                if (options?.persistOverNavigation)
-                    persistOverlayIds?.add("effectOverlayBlur");
-            })
+
+        tl.add(() => {
+            if (options?.persistOverNavigation)
+                persistOverlayIds?.add("#effectOverlayBlur");
+        })
+        return tl;
     },
     "REVERSE_OVERLAY": (options, persistOverlayIds) => {
-        return gsap.timeline()
-            .add(() => {
-                for (let v of options?.overlayNumber ?? [])
-                    persistOverlayIds?.delete(`effectOverlay${v}`);
-            }, 0)
-            .to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "", {
-                backgroundColor: options?.backgroundColor,//for fade ins after login/logout, for some reason overlay loses color without it
-                opacity: 0,
-                duration: options?.duration
-            })
+        const tl = gsap.timeline().add(() => {
+            for (let v of options?.overlayNumber ?? [])
+                persistOverlayIds?.delete(`#effectOverlay${v}`);
+        }, 0)
+        if (options?.duration == 0)
+            tl.set(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
+                {
+                    opacity: 0,
+                });
+        else
+            tl.to(options?.overlayNumber?.map((v) => `#effectOverlay${v}`).join(", ") ?? "",
+                {
+                    backgroundColor: options?.backgroundColor, //for manual fade ins
+                    opacity: 0,
+                    duration: options?.duration
+                })
+        return tl;
     },
     "POSTS_FALL": () => {
         const elements = gsap.utils.toArray("#subforumContainer [data-fall]").reverse() as Element[];
@@ -387,14 +410,20 @@ export interface IChatHandle {
     getId: () => string
 }
 
-export function useBuffers() {
-    const preserveBuffers = useRef<boolean>(false);
+function stripPreserve<T extends { isPreserved?: boolean }>(items: T[]): T[] {
+    items.forEach((item) => { delete item.isPreserved });
+    return items;
+}
 
+export function useBuffers() {
     async function enablePreserveBuffers() {
-        const counts = await Promise.all([db.postsBuffer.count(), db.chatsBuffer.count(), db.usersBuffer.count(), db.storyMessagesBuffer.count(), db.subforumsBuffer.count()]);
-        if (counts.every((c) => c == 0))
-            return;
-        preserveBuffers.current = true;
+        await Promise.all([
+            db.postsBuffer.toCollection().modify((p) => { p.isPreserved = true }),
+            db.chatsBuffer.toCollection().modify((c) => { c.isPreserved = true }),
+            db.usersBuffer.toCollection().modify((u) => { u.isPreserved = true }),
+            db.storyMessagesBuffer.toCollection().modify((m) => { m.isPreserved = true }),
+            db.subforumsBuffer.toCollection().modify((s) => { s.isPreserved = true }),
+        ]);
     }
 
     async function resetBuffers() {
@@ -402,19 +431,22 @@ export function useBuffers() {
     }
 
     async function sinkBuffers() {
-        await db.posts.bulkPut(await db.postsBuffer.toArray());
-        await db.chats.bulkPut(await db.chatsBuffer.toArray());
-        await db.users.bulkPut(await db.usersBuffer.toArray());
-        await db.storyMessages.bulkPut(await db.storyMessagesBuffer.toArray());
-        await db.subforums.bulkPut(await db.subforumsBuffer.toArray());
+        await db.posts.bulkPut(stripPreserve(await db.postsBuffer.toArray()));
+        await db.chats.bulkPut(stripPreserve(await db.chatsBuffer.toArray()));
+        await db.users.bulkPut(stripPreserve(await db.usersBuffer.toArray()));
+        await db.storyMessages.bulkPut(stripPreserve(await db.storyMessagesBuffer.toArray()));
+        await db.subforums.bulkPut(stripPreserve(await db.subforumsBuffer.toArray()));
         await resetBuffers();
-        preserveBuffers.current = false;
     }
 
     async function onNavigateAway() {
-        if (preserveBuffers.current)
-            return;
-        await resetBuffers();
+        await Promise.all([
+            db.postsBuffer.filter((p) => !p.isPreserved).delete(),
+            db.chatsBuffer.filter((c) => !c.isPreserved).delete(),
+            db.usersBuffer.filter((u) => !u.isPreserved).delete(),
+            db.storyMessagesBuffer.filter((m) => !m.isPreserved).delete(),
+            db.subforumsBuffer.filter((s) => !s.isPreserved).delete(),
+        ]);
     }
 
     return { enablePreserveBuffers, resetBuffers, sinkBuffers, onNavigateAway };
@@ -587,7 +619,6 @@ export function useStoryFuncs() {
     const loopTicket = useRef<number>(0);//protection against strict mode
     const navigate = useNavigate();
     const masterRef = useRef<gsap.core.Timeline>(undefined);//timeline with the story (undefined if nothing is being played at the moment)
-    const isStoryNavRef = useRef<boolean>(false);//flag for story navigation to protect from animation reset if navigation is made by the story and not user
     const currStoryId = useRef<number>(1);//points at next action to continue after user pressed story hint
     const savedStoryId = useRef<number>(1);//points at save action to recover story from
     const pageStoryId = useRef<number>(1);//points at next action after page navigation or save to recover on page from
@@ -596,6 +627,7 @@ export function useStoryFuncs() {
     const userState = useUserState();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
+    const lastExecutedPath = useRef<string>(undefined);//path resetAnims has already been executed for
     const hintFunc = useElementHints();
     const objectiveHints = useObjectiveHints();
     const bufferFunc = useBuffers();
@@ -610,11 +642,9 @@ export function useStoryFuncs() {
     }
 
     const resetAnims = contextSafe(async () => {
-        if (isStoryNavRef.current)
+        if (lastExecutedPath.current === location.pathname)
             return;
-        if (locationRef.current && isOnLocation(locationRef.current)) {
-            return;
-        }
+        lastExecutedPath.current = location.pathname;
         hintFunc.resetHint();
         objectiveHints.showNavHint();
         if (isStoryRecovered.current) {
@@ -628,19 +658,18 @@ export function useStoryFuncs() {
                 await tb.reset();
             }
         }
-        const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
-            .filter((sel) => !(sel.startsWith("#effectOverlay") && persistedOverlayIds.current.has(sel.slice(1))));
-        gsap.set(resetSelectors.join(","), {
-            clearProps: "all"
-        })
         typingBoxes.current = new Map();
         await bufferFunc.onNavigateAway();
+        const resetSelectors = ["#container", "#textBox", "[data-istransition='true']", "#effectOverlay1", "#effectOverlay2", "#effectOverlay3", "#effectOverlayBlur", "#dissapear", "#appContainer", "#contentDiv"]
+            .filter((sel) => !persistedOverlayIds.current.has(sel));
+        await gsap.set(resetSelectors.join(","), {
+            clearProps: "all"
+        })
     });
 
     async function processAction(action: IAction, storyId: number) {
         if (action.navigateAction) {
             await bufferFunc.enablePreserveBuffers();
-            isStoryNavRef.current = true;
             isStoryRecovered.current = false;
             pageStoryId.current = storyId + 1;
             hintFunc.resetStoryHint();
@@ -656,7 +685,6 @@ export function useStoryFuncs() {
                     hintFunc.hintNavPath(action.navigateAction.dest.from);
                 hintFunc.hintNavPath(action.navigateAction.dest);
             }
-            isStoryNavRef.current = false;
         }
         if (action.saveAction) {
             await db.users.where("savedStoryId").aboveOrEqual(1).modify({ savedStoryId: storyId });
@@ -667,14 +695,15 @@ export function useStoryFuncs() {
         if (action.hintAction) {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
-        if (action.setTypingBoxStyleAction) {
-            typingBoxes.current.get(action.setTypingBoxStyleAction.id)?.applyStyle(action.setTypingBoxStyleAction.style);
-        }
         if (action.sendMessageAction) {
             chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
         }
         if (action.addNewChat) {
             await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
+        }
+        if (action.addPosts) {
+            const existing = [...(await db.postsBuffer.toArray()), ...(await db.posts.toArray())];
+            await db.postsBuffer.bulkPut(mapPosts(action.addPosts.posts, existing.length + 1));
         }
         if (action.addPasswordFor) {
             const { nickname, password } = action.addPasswordFor;
@@ -682,6 +711,17 @@ export function useStoryFuncs() {
                 ?? await db.users.where("nickname").equals(nickname).first();
             if (user)
                 await db.usersBuffer.put({ ...user, password: password });
+        }
+        if (action.banUser) {
+            const { nickname } = action.banUser;
+            const buffered = await db.usersBuffer.where("nickname").equals(nickname).first();
+            if (buffered)
+                await db.usersBuffer.put({ ...buffered, isBanned: true });
+            else {
+                const user = await db.users.where("nickname").equals(nickname).first();
+                if (user && !user.isBanned)
+                    await db.usersBuffer.put({ ...user, isBanned: true });
+            }
         }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)
@@ -745,7 +785,7 @@ export function useStoryFuncs() {
         pageStoryId.current = id + 1;
         const dest = scl.action?.saveAction?.dest
         if (!dest) {
-            console.error(dest, "This scriptline is not a save action.")
+            console.error(scl, "This scriptline is not a save action.")
             return;
         }
         locationRef.current = dest;
@@ -810,6 +850,7 @@ export function useStoryFuncs() {
             }
             tl.add(box.getTypingTimeline({
                 content: stl.content,
+                style: stl.style,
                 speed: stl.speed,
                 delim: stl.delim,
                 clearAfter: stl.clearAfter,
@@ -840,15 +881,18 @@ export function useStoryFuncs() {
         }
 
         if (scl.addParallelExec) {
-            tl.addLabel(scl.addParallelExec.name);
+            const parallelExecTl = gsap.timeline();
+            console.log("adding parallel", scl.addParallelExec.name)
             const branches = scl.addParallelExec.branches;
             for (let i = 0; i < branches.length; i++) {
                 const branch = gsap.timeline();
                 for (let action of branches[i]) {
                     addScriptlineToTimeline(action, branch);
                 }
-                tl.add(branch, `${scl.addParallelExec.name}+=0`);
+                parallelExecTl.add(branch, 0);
             }
+            console.log("added parallel", scl.addParallelExec.name)
+            tl.add(parallelExecTl, scl.offset)
         }
 
         if (scl.deleteTextFromTypingBox) {
@@ -961,21 +1005,21 @@ export function useStoryFuncs() {
             errors.password = "Field cannot be empty";
         if (errors.nickname || errors.password)
             return errors;
-        const user = await db.users.where("nickname").equals(nickname).toArray();
-        if (user.length != 1 || user[0].savedStoryId == 0) {
+        const user = await db.usersBuffer.where("nickname").equals(nickname).first() ?? await db.users.where("nickname").equals(nickname).first();
+        if (!user || user.savedStoryId == 0) {
             errors.nickname = "Nickname is not found.";
             return errors;
         }
-        if (!user[0].password || user[0].password != password || !userState.isRealLoggedIn.current && user[0].savedStoryId === undefined) {
+        if (!user.password || user.password != password || !userState.isRealLoggedIn.current && user.savedStoryId === undefined) {
             errors.password = "Incorrect password.";
             return errors;
         }
         userState.userLoggedIn.current = nickname;
         if (!userState.isRealLoggedIn.current) {
-            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
             window.dispatchEvent(new Event("loggedIn"));
             userState.isRealLoggedIn.current = true;
-            await recoverCheckpoint(user[0].savedStoryId ?? 0);
+            await recoverCheckpoint(user.savedStoryId ?? 0);
             await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
             return errors;
         }
@@ -990,13 +1034,17 @@ export function useStoryFuncs() {
         navigate("/login");
     }
 
-    const quitGame = contextSafe(async () => {
-        await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", opacity: 1, overlayNumber: ["1"] });
+    const quitGame = contextSafe(async (playAnim = true, nav = true) => {
+        if (playAnim)
+            await bridge.exec(getAnim, "COLOR_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
         userState.userLoggedIn.current = "";
         userState.isRealLoggedIn.current = false;
         window.dispatchEvent(new Event("loggedOut"));
-        navigate("/");
-        await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
+        if (nav)
+            navigate("/");
+        await bufferFunc.resetBuffers();
+        if (playAnim)
+            await bridge.exec(getAnim, "REVERSE_OVERLAY", { duration: 2, backgroundColor: "black", overlayNumber: ["1"] });
     });
 
     function getExpectedUser() {
@@ -1014,9 +1062,8 @@ export function useStoryFuncs() {
         resetAnims();
     }, [location.pathname])
 
-    const _resetAnims = process.env.NODE_ENV == 'test' ? resetAnims : undefined;
+
     const _processAction = process.env.NODE_ENV == 'test' ? processAction : undefined;
-    const _getIsStoryNavRef = process.env.NODE_ENV == 'test' ? () => isStoryNavRef : undefined;
     const _getLocationRef = process.env.NODE_ENV == 'test' ? () => locationRef : undefined;
     const _getTypingBoxes = process.env.NODE_ENV == 'test' ? () => typingBoxes : undefined;
     const _getHintHook = process.env.NODE_ENV == 'test' ? () => hintFunc : undefined;
@@ -1028,6 +1075,7 @@ export function useStoryFuncs() {
     const _getSavedStoryId = process.env.NODE_ENV == 'test' ? () => savedStoryId : undefined;
     const _getMasterRef = process.env.NODE_ENV == 'test' ? () => masterRef : undefined;
     const _getPageStoryIdRef = process.env.NODE_ENV == 'test' ? () => pageStoryId : undefined;
+    const _getLastExecutedPath = process.env.NODE_ENV == 'test' ? () => lastExecutedPath : undefined;
     const _showStory = process.env.NODE_ENV == 'test' ? showStory : undefined;
     const _customizeStory = process.env.NODE_ENV == 'test' ? customizeStory : undefined;
     const _isOnLocation = process.env.NODE_ENV == 'test' ? isOnLocation : undefined;
@@ -1042,22 +1090,19 @@ export function useStoryFuncs() {
         quitGame,
         getExpectedUser,
         recoverStoryOnPage,
+        resetAnims,
         getMessages: chatFunc.getMessages,
         resetBuffers: bufferFunc.resetBuffers,
         addMessageFromUser: chatFunc.addMessageFromUser,
         setChatHandle: chatFunc.setChatHandle,
         setLoginHandle: loginFunc.setLoginHandle,
         setSubforumSettingsHandle: subforumSettingsFunc.setSubforumSettingsHandle,
-        setDemoteTarget: subforumSettingsFunc.setDemoteTarget,
-        setTransferTarget: subforumSettingsFunc.setTransferTarget,
         setTerminalHandle: terminalFunc.setTerminalHandle,
         setVimHandle: vimFunc.setVimHandle,
         goBackwardHint: hintFunc.goBackwardHint,
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
-        _resetAnims,
         _processAction,
-        _getIsStoryNavRef,
         _getLocationRef,
         _getLastNavHint: objectiveHints._lastNavHint,
         _getTypingBoxes,
@@ -1070,6 +1115,7 @@ export function useStoryFuncs() {
         _getSavedStoryId,
         _getMasterRef,
         _getPageStoryIdRef,
+        _getLastExecutedPath,
         _showStory,
         _customizeStory,
         _isOnLocation
@@ -1117,6 +1163,7 @@ export function useStoryInit() {
     async function storyInit(childLevel: number, typingBoxes: Map<string, ITypingTextBoxHandle>, pageInit?: () => Promise<void> | void) {
         loopTicket.current++;
         const ticket = loopTicket.current;
+        await story.resetAnims();
         if (pageInit)
             await pageInit();
         if (ticket != loopTicket.current)
