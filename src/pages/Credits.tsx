@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import styles from "../scss/credits.module.scss";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useStory } from "../providers/StoryProvider";
+import { useLocale } from "../providers/Locale";
 
 export const Credits: FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -13,6 +14,7 @@ export const Credits: FC = () => {
     const navigate = useNavigate();
     const typingBoxes = useTypingBoxes();
     const story=useStory()
+    const { t } = useLocale();
 
     useGSAP(() => {
         const tl = gsap.timeline();
@@ -31,12 +33,12 @@ export const Credits: FC = () => {
                 ease: "none",
             }, ">")
             .add(typingBoxes.getTypingBoxes().get("text")!.getTypingTimeline({
-                content: "I've spent an entire year putting effort into making this, so I hope you enjoyed it.",
+                content: t("credits.text"),
                 speed: "fast",
                 hideCursorAfter: true
             }), "<+=1")
             .add(typingBoxes.getTypingBoxes().get("author")!.getTypingTimeline({
-                content: "Made by SirCalibrik",
+                content: t("credits.author"),
                 speed: "slow",
                 hideCursorAfter: true
             }), ">+=1")
@@ -48,12 +50,12 @@ export const Credits: FC = () => {
         <div ref={containerRef} className={styles.container}>
             <div ref={trackRef} className={styles.track}>
                 <div className={styles.intro}>
-                    <h1 className={styles.title}>Thanks for playing The<span className="highlight">Forum</span></h1>
+                    <h1 className={styles.title}>{t("credits.thanks")}The<span className="highlight">Forum</span></h1>
                 </div>
                 <div className={styles.content}>
                     <TypingTextBox className={styles.text} ref={typingBoxes.setTypingBox("text")} type="terminal" />
                     <TypingTextBox className={styles.author} ref={typingBoxes.setTypingBox("author")} type="normal" />
-                    <img ref={logoRef} className={styles.logo} src="/logo.svg" alt="The Forum logo" />
+                    <img ref={logoRef} className={styles.logo} src="/logo.svg" alt={t("credits.logoAlt")} />
                 </div>
             </div>
         </div>

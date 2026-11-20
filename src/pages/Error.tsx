@@ -1,10 +1,13 @@
 import type { FC } from "react";
+import { useLocale } from "../providers/Locale";
 interface IErrorProps {};
 
 export const Error: FC<IErrorProps> = (_) => {
+    const { t } = useLocale();
+
     return (
         <div>
-            <h1>404 Page not found</h1>
+            <h1>{t("error.notFound")}</h1>
         </div>
     );
 }

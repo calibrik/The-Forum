@@ -1,6 +1,8 @@
 import { useEffect, useRef, type FC, type RefObject } from "react";
 import styles from '../scss/binaryAnimation.module.scss';
 
+let terminalFontFamily: string | undefined;
+
 interface IBinaryAnimationProps {
     className?: string;
     isFlash: RefObject<boolean>;
@@ -43,7 +45,8 @@ export const BinaryAnimation: FC<IBinaryAnimationProps> = (props) => {
         } else {
             ctx.fillStyle = 'rgba(255, 255, 255, 1)';
         }
-        ctx.font = `${binaryAnimFontSize.current}px Courier Prime`;
+        terminalFontFamily ??= getComputedStyle(document.documentElement).getPropertyValue("--terminal-font").trim() || '"PT Mono", monospace';
+        ctx.font = `${binaryAnimFontSize.current}px ${terminalFontFamily}`;
         let startX = 0;
         // const totalSize=(binaryAnimFontSize + offsetX) * drops.length-offsetX;
         // startX=(canvasRef.current.width - totalSize)/2;

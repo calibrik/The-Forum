@@ -1,4 +1,3 @@
-@use 'fonts.scss';
 @use 'colors.scss' as colors;
 
 .box {
@@ -44,7 +43,7 @@
   height: 26.7%;
   width: 21.1%;
   margin: 0;
-  font-family: 'Courier Prime';
+  font-family: var(--terminal-font);
   line-height: normal;
 
 }

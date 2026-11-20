@@ -1,7 +1,7 @@
 @use "./colors.scss" as colors;
 
 %terminalText {
-    font-family: "Courier Prime", monospace;
+    font-family: var(--terminal-font);
     font-size: clamp(1rem, 3.8cqw, 1.2rem);
     line-height: 1.4;
     color: colors.$secondary-color;

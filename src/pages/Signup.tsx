@@ -7,6 +7,7 @@ import { BaseButton } from "../components/BaseButton";
 import { db } from "../misc/db";
 import { useModals } from "../providers/Modals";
 import { useStory } from "../providers/StoryProvider";
+import { useLocale } from "../providers/Locale";
 import { Spinner } from "../components/Icons";
 interface ISignupProps { };
 type SignupData = {
@@ -24,6 +25,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     const story = useStory();
     let navigate=useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
+    const { t } = useLocale();
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -35,7 +37,7 @@ export const Signup: FC<ISignupProps> = (_) => {
         if (answerRef.current)
             proccessSubmit(data);
         else
-            modals.invincibleModal.current?.showQuestion("Are you sure?", "Registering new account will overwrite your current progress, if you had any.", () => proccessSubmit(data), () => setLoading(false));
+            modals.invincibleModal.current?.showQuestion(t("signup.modalTitle"), t("signup.modalDesc"), () => proccessSubmit(data), () => setLoading(false));
     }
 
     async function proccessSubmit(data: SignupData) {
@@ -43,16 +45,16 @@ export const Signup: FC<ISignupProps> = (_) => {
         let isGood: boolean = true;
         const nickname = data.nickname.trim();
         if (nickname === "") {
-            nicknameInputRef.current?.setError("Field cannot be empty");
+            nicknameInputRef.current?.setError(t("login.error.empty"));
             isGood = false;
         }
         if (data.password.trim() === "") {
-            passwordInputRef.current?.setError("Field cannot be empty");
+            passwordInputRef.current?.setError(t("login.error.empty"));
             isGood = false;
         }
 
         if (data.confirmPassword.trim() === "") {
-            confirmPasswordInputRef.current?.setError("Field cannot be empty");
+            confirmPasswordInputRef.current?.setError(t("login.error.empty"));
             isGood = false;
         }
         if (!isGood) {
@@ -61,13 +63,13 @@ export const Signup: FC<ISignupProps> = (_) => {
         }
         const nicknameRegex = /^[a-zA-Z0-9_]+$/
         if (!nicknameRegex.test(nickname)) {
-            nicknameInputRef.current?.setError("Nickname should contain only letters, numbers and underscores");
+            nicknameInputRef.current?.setError(t("signup.error.nicknameFormat"));
             setLoading(false);
             return;
         }
         const existingUser = await db.users.where("nickname").equals(nickname).toArray();
         if (existingUser.length > 0 && !(existingUser.length == 1 && existingUser[0].savedStoryId)||nickname=="banned") {
-            nicknameInputRef.current?.setError("Nickname already exists");
+            nicknameInputRef.current?.setError(t("signup.error.nicknameExists"));
             setLoading(false);
             return;
         }
@@ -78,7 +80,7 @@ export const Signup: FC<ISignupProps> = (_) => {
 
     function onPasswordChange(_: string) {
         if (passwordInputRef.current?.getInput().trim() !== confirmPasswordInputRef.current?.getInput().trim()) {
-            confirmPasswordInputRef.current?.setError("Passwords don't match!");
+            confirmPasswordInputRef.current?.setError(t("signup.error.passwordsMismatch"));
         }
         else {
             confirmPasswordInputRef.current?.setError("");
@@ -88,16 +90,16 @@ export const Signup: FC<ISignupProps> = (_) => {
     return (
         <div className={styles.loginSignupContainer}>
             <form className={styles.card} onSubmit={onSubmit}>
-                <h1 className={styles.title}>Sign Up</h1>
+                <h1 className={styles.title}>{t("signup.title")}</h1>
                 <div className={styles.inputsContainer}>
-                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder="Nickname" className={styles.input} />
-                    <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder="Password" className={styles.input} />
-                    <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder="Confirm Password" className={styles.input} />
+                    <InputField ref={nicknameInputRef} type="text" name="nickname" placeholder={t("login.nickname")} className={styles.input} />
+                    <InputField ref={passwordInputRef} onChange={onPasswordChange} type="password" name="password" placeholder={t("login.password")} className={styles.input} />
+                    <InputField ref={confirmPasswordInputRef} onChange={onPasswordChange} type="password" name="confirmPassword" placeholder={t("signup.confirmPassword")} className={styles.input} />
                 </div>
-                <BaseButton type={"submit"} icon={loading ? <Spinner spin /> : undefined} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>{loading ? "" : "Sign Up"}</BaseButton>
-                <p className={styles.hint}>Already have an account? <Link className={styles.link} to="/login">Login</Link></p>
+                <BaseButton type={"submit"} icon={loading ? <Spinner spin /> : undefined} className={`${baseButtonStyles.secondaryButton} ${styles.signupButton}`}>{loading ? "" : t("common.signupAction")}</BaseButton>
+                <p className={styles.hint}>{t("signup.alreadyHave")}<Link className={styles.link} to="/login">{t("signup.loginLink")}</Link></p>
             </form>
-            <p className={styles.disclaimer}>Account is not real and saved locally without encryption, so don't use your real passwords</p>
+            <p className={styles.disclaimer}>{t("signup.disclaimer")}</p>
         </div>
     );
 }

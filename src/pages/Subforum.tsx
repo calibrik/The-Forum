@@ -12,6 +12,7 @@ import { db, type ISubforum } from "../misc/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
+import { useLocale } from "../providers/Locale";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
@@ -23,6 +24,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const hintHolders=useHintHolders()
+    const { t } = useLocale();
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {
@@ -48,13 +50,13 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     let menuOptions: IMenuOption[] = [
         {
-            name: "Posts",
+            name: t("common.posts"),
             destination: "",
             id: "posts"
 
         },
         {
-            name: "Members",
+            name: t("common.members"),
             destination: "members",
             id: "members"
         },
@@ -62,7 +64,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
 
     if (subforum && subforum.admin == userState.userLoggedIn.current) {
         menuOptions.push({
-            name: "Settings",
+            name: t("common.settings"),
             destination: "settings",
             id: "settings"
         });
@@ -79,7 +81,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                         <div data-fall="true" className={styles.headerContainer}>
                             <div className={styles.titleHeaderContainer}>
                                 <h1 className={styles.title}>f/{subforum.name}</h1>
-                                <span className={styles.followerCount}>{numberToText(subforum.followers)} followers</span>
+                                <span className={styles.followerCount}>{t("common.followers", { count: numberToText(subforum.followers) })}</span>
                             </div>
                             <p className={styles.description}>{subforum.description}</p>
                         </div>
@@ -88,7 +90,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
                         <Menu options={menuOptions} />
                     </div>
                     <div data-fall="true" className={styles.createPostContainer}>
-                        <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>Create Post</BaseButton>
+                        <BaseButton icon={<Plus />} iconPos="start" className={`${styles.createPost} ${baseButtonStyles.primaryButton}`}>{t("common.createPost")}</BaseButton>
                     </div>
                 </div>
                 <div data-fall="true" className={styles.contentContainer}>

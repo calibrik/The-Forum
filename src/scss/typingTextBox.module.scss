@@ -1,7 +1,7 @@
 @use "./colors.scss" as colors;
 
 .default{
-    font-family: "Courier Prime";
+    font-family: var(--terminal-font);
     white-space: pre-wrap; 
     word-break: break-word;
     position: fixed;

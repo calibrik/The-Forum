@@ -3,6 +3,7 @@ import styles from "../scss/modals.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
 import { X } from "../components/Icons";
+import { useLocale } from "./Locale";
 
 interface IInvincibleModalProps { };
 interface IInvincibleModalHandle {
@@ -15,6 +16,7 @@ const InvincibleModal = forwardRef<IInvincibleModalHandle, IInvincibleModalProps
     const onCancelRef=useRef<()=>void>(undefined);
     const [title,setTitle]=useState<string>("");
     const [description,setDescription]=useState<string>("");
+    const { t } = useLocale();
 
 
     useImperativeHandle(ref, () => ({
@@ -48,8 +50,8 @@ const InvincibleModal = forwardRef<IInvincibleModalHandle, IInvincibleModalProps
                 <BaseButton type="button" icon={<X />} onClick={onClose} className={`${buttonStyles.secondaryButton} ${styles.closeButton}`} />
                 <p className={styles.description}>{description}</p>
                 <div className={styles.actionsDiv}>
-                    <BaseButton type="button" onClick={onClose} className={`${buttonStyles.secondaryButton} ${styles.actionButton}`} >Cancel</BaseButton>
-                    <BaseButton type="button" onClick={onConfirm} className={`${buttonStyles.primaryButton} ${styles.actionButton}`} >Confirm</BaseButton>
+                    <BaseButton type="button" onClick={onClose} className={`${buttonStyles.secondaryButton} ${styles.actionButton}`} >{t("common.cancel")}</BaseButton>
+                    <BaseButton type="button" onClick={onConfirm} className={`${buttonStyles.primaryButton} ${styles.actionButton}`} >{t("common.confirm")}</BaseButton>
                 </div>
             </div>
         </div>

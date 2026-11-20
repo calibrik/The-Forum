@@ -3,6 +3,7 @@ import { BaseButton } from "./BaseButton";
 import { HeartFill, Heart, CommentIcon } from "./Icons";
 import styles from "../scss/reactions.module.scss";
 import { numberToText } from "../misc/utils";
+import { useLocale } from "../providers/Locale";
 interface IReactionsProps {
     likes:number
     comments:number
@@ -25,11 +26,13 @@ export const LikeButton: FC<ILikeButtonProps> = (props) => {
     );
 }
 export const Reactions: FC<IReactionsProps> = (props) => {
+    const { t } = useLocale();
+
     return (
         <div className={styles.reactionsContainer}>
             <LikeButton likes={props.likes}/>
             <BaseButton icon={<CommentIcon />} iconPos="start" className={styles.reactionButton}>{numberToText(props.comments)}</BaseButton>
-            <span className={styles.views}>{numberToText(props.views)} views</span>
+            <span className={styles.views}>{t("common.views", { count: numberToText(props.views) })}</span>
         </div>
     );
 }

@@ -44,7 +44,7 @@
 }
 
 .text {
-    font-family: 'Courier Prime';
+    font-family: var(--terminal-font);
     max-width: 640px;
     font-size: clamp(1rem, 2.5cqw, 1.35rem);
     line-height: 1.5;

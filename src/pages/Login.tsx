@@ -9,6 +9,7 @@ import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
 import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useLocale } from "../providers/Locale";
 
 interface ILoginProps { };
 
@@ -31,6 +32,7 @@ export const Login: FC<ILoginProps> = (_) => {
     const isExpired = searchParams.get("expired") === "true";
     const [showNicknamePlaceholder, setShowNicknamePlaceholder] = useState(true);
     const [showPasswordPlaceholder, setShowPasswordPlaceholder] = useState(true);
+    const { t } = useLocale();
 
     useEffect(() => {
         storyInit(1, getTypingBoxes());
@@ -74,11 +76,11 @@ export const Login: FC<ILoginProps> = (_) => {
         const expectedUser = expected ? await db.users.where("nickname").equals(expected).first() : undefined;
         let content: string;
         if (expectedUser) {
-            content = `I need to login as ${expectedUser.nickname} and password is uhhhhhhhh ${expectedUser.password} ...I think?`;
+            content = t("login.forgot.expected", { nickname: expectedUser.nickname, password: expectedUser.password ?? "" });
         } else {
             const user = await db.users.where("savedStoryId").aboveOrEqual(1).first();
-            content = !user ? "You don't even have the account yet, you can't forget what you didn't know, idiot." :
-                `Bro, seriously? How fucking hard is it to remember this? Your nickname is ${user.nickname}, password is ${user.password}\n\nFucking moron.`;
+            content = !user ? t("login.forgot.noAccount") :
+                t("login.forgot.found", { nickname: user.nickname, password: user.password ?? "" });
         }
         const tl = getTypingBoxes().get("forgotPassword")?.getTypingTimeline({
             content: content,
@@ -95,23 +97,23 @@ export const Login: FC<ILoginProps> = (_) => {
             <TypingTextBox className={styles.passwordForgetBox} addDefaultClass ref={setTypingBox("forgotPassword")} type={"terminal"} />
             <div className={styles.loginSignupContainer}>
                 <form className={styles.card} onSubmit={onSubmit}>
-                    <h1 className={styles.title}>Login</h1>
-                    {isExpired ? <p className={styles.expiredMessage}>Your session has expired, please login again</p> : ""}
+                    <h1 className={styles.title}>{t("login.title")}</h1>
+                    {isExpired ? <p className={styles.expiredMessage}>{t("login.expired")}</p> : ""}
                     <div className={styles.inputsContainer}>
                         <div className={styles.inputTypingWrapper}>
-                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={showNicknamePlaceholder?"Nickname":""} className={styles.input} />
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={nicknameInputRef} type="text" name="nickname" placeholder={showNicknamePlaceholder?t("login.nickname"):""} className={styles.input} />
                             <TypingTextBox ref={setTypingBox("nickname")} className={styles.inputTypingBox} type="normal" />
                         </div>
                         <div className={styles.inputTypingWrapper}>
-                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={showPasswordPlaceholder?"Password":""} className={styles.input} />
+                            <InputField autocomplete disabled={isExpired} onChange={onChange} ref={passwordInputRef} type="password" name="password" placeholder={showPasswordPlaceholder?t("login.password"):""} className={styles.input} />
                             <TypingTextBox ref={setTypingBox("password")} className={styles.inputTypingBox} type="normal" />
                         </div>
                     </div>
                     <div className={styles.forgotPasswordContainer}>
-                        <a className={styles.link} onClick={onPasswordForgot}>Forgot password or nickname?</a>
+                        <a className={styles.link} onClick={onPasswordForgot}>{t("login.forgotLink")}</a>
                     </div>
-                    <BaseButton type={"submit"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>Login</BaseButton>
-                    <p className={styles.hint}>Don’t have an account yet? <Link className={styles.link} to="/signup">Sign up</Link></p>
+                    <BaseButton type={"submit"} className={`${styles.loginButton} ${baseButtonStyles.primaryButton}`}>{t("common.loginAction")}</BaseButton>
+                    <p className={styles.hint}>{t("login.noAccount")}<Link className={styles.link} to="/signup">{t("login.signupLink")}</Link></p>
                 </form>
             </div>
         </>

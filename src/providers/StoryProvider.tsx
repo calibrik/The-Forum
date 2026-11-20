@@ -8,6 +8,7 @@ import type { FC } from "react";
 import { EffectOverlay } from "../components/EffectOverlay";
 import styles from "../scss/storyProvider.module.scss";
 import { useUserState } from "./UserAuth";
+import { useLocale } from "./Locale";
 import type { ISearchFieldHandle } from "../components/SearchField";
 import { bridge, delay } from "../misc/utils";
 interface IStoryProviderProps {
@@ -83,8 +84,6 @@ const NAVIGATE_TO_PAGE: Record<string, (ctx: INavHintContext) => string[]> = {
     },
 }
 
-const NAV_HINT_FALLBACK = "You can't get back to the story flow, you will have to reload the page or quit game and log in again.";
-
 export interface IEffectsOptions {
     typingBoxes?: RefObject<Map<string, ITypingTextBoxHandle>>,
     duration?: number,
@@ -115,7 +114,7 @@ const EFFECTS_MAP: Record<string, (options?: IEffectsOptions, persistOverlayIds?
             })
             .set("#textBox", {
                 color: "black",
-                fontFamily: "Courier Prime"
+                fontFamily: 'var(--terminal-font)'
             })
             .set("#contentDiv", {
                 overflowY: "visible"
@@ -625,6 +624,7 @@ export function useStoryFuncs() {
     const locationRef = useRef<IDestination>(undefined);//current location for the story
     const location = useLocation();
     const userState = useUserState();
+    const { t } = useLocale();
     const isStoryRecovered = useRef<boolean>(false);//has story been recovered from target page yet  
     const persistedOverlayIds = useRef<Set<string>>(new Set());//overlays that survive navigation until REVERSE_OVERLAY
     const lastExecutedPath = useRef<string>(undefined);//path resetAnims has already been executed for
@@ -792,7 +792,7 @@ export function useStoryFuncs() {
         userState.userLoggedIn.current = dest.user;
         if (scl.action?.saveAction?.lastNavPos != undefined) {
             let navScl = await db.story.get(id + scl.action.saveAction.lastNavPos);
-            objectiveHints.setNavHint(navScl?.hint ?? NAV_HINT_FALLBACK);
+            objectiveHints.setNavHint(navScl?.hint ?? t("story.navHintFallback"));
         }
         if (scl.hint != undefined)
             objectiveHints.setObjectiveHint(scl.hint);
@@ -953,7 +953,7 @@ export function useStoryFuncs() {
         currStoryId.current = id;
         masterRef.current = undefined;
         if (navPending) {
-            objectiveHints.setNavHint(navHint ?? NAV_HINT_FALLBACK);
+            objectiveHints.setNavHint(navHint ?? t("story.navHintFallback"));
             objectiveHints.showNavHint();
         } else {
             objectiveHints.setObjectiveHint(scl?.hint ?? "");
@@ -1000,18 +1000,18 @@ export function useStoryFuncs() {
         nickname = nickname.trim();
         password = password.trim();
         if (nickname === "")
-            errors.nickname = "Field cannot be empty";
+            errors.nickname = t("login.error.empty");
         if (password === "")
-            errors.password = "Field cannot be empty";
+            errors.password = t("login.error.empty");
         if (errors.nickname || errors.password)
             return errors;
         const user = await db.usersBuffer.where("nickname").equals(nickname).first() ?? await db.users.where("nickname").equals(nickname).first();
         if (!user || user.savedStoryId == 0) {
-            errors.nickname = "Nickname is not found.";
+            errors.nickname = t("story.error.nicknameNotFound");
             return errors;
         }
         if (!user.password || user.password != password || !userState.isRealLoggedIn.current && user.savedStoryId === undefined) {
-            errors.password = "Incorrect password.";
+            errors.password = t("story.error.wrongPassword");
             return errors;
         }
         userState.userLoggedIn.current = nickname;

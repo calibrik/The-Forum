@@ -5,6 +5,7 @@ import { useStoryInit } from "../providers/StoryProvider";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
+import { useLocale } from "../providers/Locale";
 
 interface INotepadProps { }
 
@@ -13,6 +14,7 @@ export const Notepad: FC<INotepadProps> = () => {
     const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
+    const { t } = useLocale();
 
 
     function init() {
@@ -31,12 +33,12 @@ export const Notepad: FC<INotepadProps> = () => {
             <div id="appContainer" className={styles.appContainer}>
                 <div id="dissapear" className={styles.headerDiv}>
                     <NotepadIcon className={styles.icon} />
-                    <span className={styles.appLabel}>Notepad</span>
+                    <span className={styles.appLabel}>{t("notepad.title")}</span>
                 </div>
                 <div id="dissapear" className={styles.actionsDiv}>
-                    <span className={styles.action}>File</span>
-                    <span className={styles.action}>Edit</span>
-                    <span className={styles.action}>View</span>
+                    <span className={styles.action}>{t("notepad.file")}</span>
+                    <span className={styles.action}>{t("notepad.edit")}</span>
+                    <span className={styles.action}>{t("notepad.view")}</span>
                 </div>
                 <div id="contentDiv" className={styles.contentDiv}>
                     <TypingTextBox id="textBox" ref={setTypingBox("nar1")} className={styles.contentNotepad} type={"normal"} />

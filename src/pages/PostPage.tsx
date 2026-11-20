@@ -14,13 +14,12 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IPost, type ISubforum } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { useLocale } from "../providers/Locale";
 
-const FAKE_POST: IPost = {
+const FAKE_POST_BASE: Omit<IPost, "title" | "content"> = {
     id: "fake",
     author: "fake_op",
     subforum: "zero",
-    title: "zero is the worst game oat",
-    content: "zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.",
     likes: 0,
     comments: 0,
     views: 3,
@@ -47,6 +46,8 @@ export const PostPage: FC<IPostPageProps> = (_) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
     const menuWrapperRef = useRef<HTMLDivElement>(null);
+    const { t } = useLocale();
+    const fakePost: IPost = { ...FAKE_POST_BASE, title: t("postPage.fake.title"), content: t("postPage.fake.content") };
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -64,7 +65,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         if (isDeleted)
             return;
         const post = isFake
-            ? FAKE_POST
+            ? fakePost
             : await db.postsBuffer.where("id").equals(id??"").first() ?? await db.posts.where("id").equals(id??"").first();
         if (!post) {
             navigate("/404",{replace:true})
@@ -136,7 +137,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                             <ThreeDots id="post-menu-dots-text" interactive onClick={onMenuToggle} className={styles.menuDots} />
                             {isMenuOpen ?
                                 <div className={styles.dropdownMenu}>
-                                    <div id="delete-post-button-text" className={styles.deleteOption} onClick={onDelete}>Delete</div>
+                                    <div id="delete-post-button-text" className={styles.deleteOption} onClick={onDelete}>{t("common.delete")}</div>
                                 </div>
                                 : ""}
                         </div>
@@ -145,8 +146,8 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                 {isDeleted ? (
                     <div className={styles.deletedContainer}>
                         <Deleted className={styles.deletedIcon} />
-                        <h1 className={styles.deletedTitle}>Post you are looking for does not exist.</h1>
-                        <p className={styles.deletedMessage}>Perhaps, it has been deleted by moderators or author of the post.</p>
+                        <h1 className={styles.deletedTitle}>{t("postPage.deletedTitle")}</h1>
+                        <p className={styles.deletedMessage}>{t("postPage.deletedMessage")}</p>
                     </div>
                 ) : (
                     <>
@@ -160,7 +161,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
             {!isDeleted ? (
                 <>
                     <div className={styles.commentsListContainer}>
-                        {post?.comments == 0 ? <span className={styles.noComments}>No comments yet.</span> :
+                        {post?.comments == 0 ? <span className={styles.noComments}>{t("postPage.noComments")}</span> :
                             post?.commentsDetailed?.map((v,i)=>(
                                 <Comment {...v} key={i}/>
                             ))
@@ -168,7 +169,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
                         {(post?.comments??0)>(post?.commentsDetailed?.length??0)?<Spinner />:""}
                     </div>
                     <form className={styles.inputContainer} onSubmit={onSubmit}>
-                        <InputField name="comment" className={styles.input} placeholder="Add comment" type="text" />
+                        <InputField name="comment" className={styles.input} placeholder={t("common.addComment")} type="text" />
                         <BaseButton type="submit" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
                     </form>
                 </>

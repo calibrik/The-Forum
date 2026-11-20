@@ -7,6 +7,7 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
 import type { IHistoryEntry } from "../misc/db";
+import { useLocale } from "../providers/Locale";
 import systemStyles from "../scss/systemApp.module.scss";
 import styles from "../scss/terminal.module.scss";
 
@@ -23,6 +24,7 @@ export const Terminal: FC = () => {
     const [isPromptVisible, setIsPromptVisible] = useState<boolean>(true);
     const expectedCommand = useRef<string>("");
     const expectedOutput = useRef<string>("");
+    const { t } = useLocale();
 
     const username = userState.userLoggedIn.current || "guest";
     const userPart = `${username.toLowerCase()}@the-forum`;
@@ -84,8 +86,8 @@ export const Terminal: FC = () => {
         let output: string;
         if (cmd === "help") {
             output = objectiveHint !== ""
-                ? `Current objective: ${objectiveHint}`
-                : "No current objective.";
+                ? t("terminal.currentObjective", { hint: objectiveHint })
+                : t("terminal.noObjective");
         }
         else if (expectedCmd !== "" && cmd === expectedCmd) {
             output = expectedOutput.current;
@@ -93,7 +95,7 @@ export const Terminal: FC = () => {
             story.resumeStoryFromHint("terminal-input");
         }
         else {
-            output = `bash: ${cmd}: command not found`;
+            output = t("terminal.commandNotFound", { cmd });
         }
         setHistory(h => output !== ""
             ? [...h, { type: "cmd", text: cmd }, { type: "out", text: output }]
@@ -116,11 +118,11 @@ export const Terminal: FC = () => {
                 <div className={systemStyles.appContainer}>
                     <div className={systemStyles.headerDiv}>
                         <TerminalIcon className={systemStyles.icon} />
-                        <span className={systemStyles.appLabel}>Terminal</span>
+                        <span className={systemStyles.appLabel}>{t("terminal.title")}</span>
                     </div>
                     <div className={styles.body}>
                         <div ref={outputRef} className={styles.output}>
-                            <div className={styles.outputLine}>Type "help" to find out the current objective.</div>
+                            <div className={styles.outputLine}>{t("terminal.help")}</div>
                             {history.map((entry, index) => (
                                 entry.type === "cmd" ? (
                                     <div key={index} className={styles.outputLine}>

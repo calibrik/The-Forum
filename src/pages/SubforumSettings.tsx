@@ -10,6 +10,7 @@ import { bridge } from "../misc/utils";
 import { useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { db, type ISubforum } from "../misc/db";
+import { useLocale } from "../providers/Locale";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;
@@ -82,6 +83,7 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
     const [demoteTarget, setDemoteTarget] = useState<string[] | undefined>(undefined);
     const [transferTarget, setTransferTarget] = useState<string | undefined>(undefined);
+    const { t } = useLocale();
 
     const filterMembers = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.members.includes(suggestion.name) ?? false);
     const filterMods = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.mods.includes(suggestion.name) ?? false);
@@ -130,10 +132,10 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
         <>
             <TypingTextBox ref={typingBoxes.setTypingBox("nar1")} type={"terminal"} />
             <div className={styles.container}>
-                <SubforumSettingsSection title="Kick Members" buttonText={"Kick"} buttonIcon={<X />} filterFunction={filterMembers} />
-                <SubforumSettingsSection title="Demote mods to users" buttonText={"Demote"} buttonIcon={<ChevronDoubleDown />} id="demote" hintNames={demoteTarget} filterFunction={filterMods} onSubmit={demoteTarget ? onDemote : undefined} />
-                <SubforumSettingsSection title="Promote users to mods" buttonText={"Promote"} buttonIcon={<ChevronDoubleUp />} filterFunction={filterMembers} />
-                <SubforumSettingsSection title="Transfer ownership" buttonText={"Transfer"} buttonIcon={<ArrowRightSquare />} id="transfer" hintNames={transferTarget ? [transferTarget] : undefined} filterFunction={filterUsers} onSubmit={transferTarget ? onTransfer : undefined} />
+                <SubforumSettingsSection title={t("subforumSettings.kickTitle")} buttonText={t("subforumSettings.kick")} buttonIcon={<X />} filterFunction={filterMembers} />
+                <SubforumSettingsSection title={t("subforumSettings.demoteTitle")} buttonText={t("subforumSettings.demote")} buttonIcon={<ChevronDoubleDown />} id="demote" hintNames={demoteTarget} filterFunction={filterMods} onSubmit={demoteTarget ? onDemote : undefined} />
+                <SubforumSettingsSection title={t("subforumSettings.promoteTitle")} buttonText={t("subforumSettings.promote")} buttonIcon={<ChevronDoubleUp />} filterFunction={filterMembers} />
+                <SubforumSettingsSection title={t("subforumSettings.transferTitle")} buttonText={t("subforumSettings.transfer")} buttonIcon={<ArrowRightSquare />} id="transfer" hintNames={transferTarget ? [transferTarget] : undefined} filterFunction={filterUsers} onSubmit={transferTarget ? onTransfer : undefined} />
             </div>
         </>
     );

@@ -7,6 +7,7 @@ import { useOutletContext, useParams } from "react-router";
 import type { ISubforum } from "../misc/db";
 import { bridge } from "../misc/utils";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { useLocale } from "../providers/Locale";
 interface ISubforumMembersProps { };
 
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
@@ -14,6 +15,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const [subforum] = useOutletContext<[ISubforum | undefined, unknown]>();
     const { name } = useParams<{ name: string }>();
     const typingBoxes = useTypingBoxes();
+    const { t } = useLocale();
 
     useEffect(() => {
         bridge.exec(storyInit, 3, typingBoxes.getTypingBoxes());
@@ -26,13 +28,13 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
                 {subforum ?
                     <>
                         <div className={styles.section}>
-                            <h1 className={styles.title}>Admin</h1>
+                            <h1 className={styles.title}>{t("subforumMembers.admin")}</h1>
                             <div className={styles.userList}>
                                 <SMEntry isNav name={subforum.admin} type={"user"} />
                             </div>
                         </div>
                         <div className={styles.section}>
-                            <h1 className={styles.title}>Mods</h1>
+                            <h1 className={styles.title}>{t("subforumMembers.mods")}</h1>
                             <div className={styles.userList}>
                                 {subforum.mods.map((v) => (
                                     <SMEntry isNav key={v} name={v} type={"user"} />
@@ -40,7 +42,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
                             </div>
                         </div>
                         <div className={styles.section}>
-                            <h1 className={styles.title}>Members</h1>
+                            <h1 className={styles.title}>{t("common.members")}</h1>
                             <div className={styles.userList}>
                                 {subforum.members.map((v) => (
                                     <SMEntry isNav key={v} name={v} type={"user"} />

@@ -1,8 +1,11 @@
-// @use './scss/fonts.scss';
 @use './scss/colors.scss' as colors;
 
 :root {
-	font-family: Roboto;
+	--default-font: Roboto;
+	--terminal-font: "PT Mono", monospace;
+	--system-app-font: Ubuntu;
+
+	font-family: var(--default-font);
 	font-weight: 400;
 	color: colors.$secondary-color;
 
@@ -10,7 +13,7 @@
 	background-color: black;
 	will-change: transform;
 
-	font-synthesis: none;
+	font-synthesis: weight style;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;

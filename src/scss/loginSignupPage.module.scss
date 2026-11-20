@@ -142,7 +142,7 @@
     word-break: break-word;
     pointer-events: none;
     box-sizing: border-box;
-    font-family: Roboto;
+    font-family: var(--default-font);
     font-size: clamp(0.75rem, 3.9cqw, 1.2rem);
     color: colors.$input-text-color;
     background-color: transparent;

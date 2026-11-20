@@ -15,6 +15,7 @@ import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate, useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
+import { useLocale } from "../providers/Locale";
 
 interface IChatProps { };
 interface IMessageProps {
@@ -30,6 +31,7 @@ interface ITextingIndicatorProps {
 
 const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
     const indicatorRef = useRef<HTMLDivElement>(null);
+    const { t } = useLocale();
 
     useGSAP(() => {
         const icons: Element[] = gsap.utils.toArray(`.${styles.indicatorIcon}`);
@@ -58,9 +60,11 @@ const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
         });
     }, [indicatorRef]);
 
-    let names = `${props.names.join(", ")} typing...`;
-    if (props.names.length > 2)
-        names = `${props.names.length} people typing...`;
+    const names = props.names.length == 1
+        ? t("chat.typingOne", { name: props.names[0] })
+        : props.names.length > 2
+            ? t("chat.typingMany", { count: props.names.length })
+            : t("chat.typingFew", { names: props.names.join(", ") });
 
     return (
         <div className={`${styles.indicatorDiv} ${props.names.length > 0 ? styles.active : styles.disabled}`}>
@@ -159,6 +163,7 @@ export const Chat: FC<IChatProps> = () => {
     const inputRef = useRef<IInputFieldHandle>(null);
     const story = useStory();
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
+    const { t } = useLocale();
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });
@@ -278,14 +283,14 @@ export const Chat: FC<IChatProps> = () => {
                     <img src={getImageUrl(chat?.imageName ?? "placeholder.png")} className={styles.pfp} />
                     <div className={styles.chatDiv}>
                         <p className={styles.nickname}>{chat?.name}</p>
-                        {chat?.membersAmount != undefined && <span className={styles.membersCount}>{chat.membersAmount} members</span>}
+                        {chat?.membersAmount != undefined && <span className={styles.membersCount}>{t("common.membersCount", { count: chat.membersAmount })}</span>}
                     </div>
                     {chat ?
                         <div ref={menuWrapperRef} className={styles.menuWrapper}>
                             <ThreeDots id="chat-menu-dots-text" interactive onClick={onMenuToggle} className={styles.menuDots} />
                             {isMenuOpen ?
                                 <div className={styles.dropdownMenu}>
-                                    <div id="block-user-text" className={styles.menuOption} onClick={onBlockOrLeave}>{chat.type === "gc" ? "Leave" : "Block"}</div>
+                                    <div id="block-user-text" className={styles.menuOption} onClick={onBlockOrLeave}>{chat.type === "gc" ? t("chat.leave") : t("chat.block")}</div>
                                 </div>
                                 : ""}
                         </div>
@@ -305,7 +310,7 @@ export const Chat: FC<IChatProps> = () => {
                     <TypingIndicator names={typingArray} />
                 </div>
                 <form onSubmit={onSendMessage} className={styles.inputContainer}>
-                    <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder="Message" className={styles.input} type={"text"} />
+                    <InputField onChange={onInputChange} ref={inputRef} scripted id="chat-input" name="message" placeholder={t("common.message")} className={styles.input} type={"text"} />
                     <BaseButton type="submit" id="chat-send" className={`${buttonStyles.primaryButton} ${styles.sendButton}`} icon={<SendIcon />} />
                 </form>
             </div>

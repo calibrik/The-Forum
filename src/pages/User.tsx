@@ -12,6 +12,7 @@ import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import { BaseButton } from "../components/BaseButton";
 import baseButtonStyles from "../scss/baseButton.module.scss";
+import { useLocale } from "../providers/Locale";
 
 interface IUserPageProps { };
 export interface IUserOutlet {
@@ -24,9 +25,23 @@ interface IAccInfoHandle {
     toggle: () => void
 };
 
+const RECENT_GAMES = [
+    { time: "5:12", win: false },
+    { time: "10:14", win: false },
+    { time: "8:48", win: false },
+    { time: "15:01", win: false },
+    { time: "40:16", win: false },
+    { time: "8:34", win: false },
+    { time: "6:25", win: false },
+    { time: "29:30", win: false },
+    { time: "35:04", win: true },
+    { time: "13:16", win: false },
+];
+
 export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const divRef = useRef<HTMLDivElement>(null);
+    const { t } = useLocale();
 
     function onBlur(e: React.FocusEvent) {
         if (!e.currentTarget.contains(e.relatedTarget) && !e.relatedTarget?.classList.contains(styles.accLink)) {
@@ -50,21 +65,16 @@ export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) =>
         <div ref={divRef} tabIndex={-1} onBlur={onBlur} className={`${styles.accToolTipContainer} ${isOpen ? styles.open : styles.close}`}>
             <div className={styles.accSection}>
                 <span className={styles.playerName}>{props.nickname}</span>
-                <span className={styles.rank}>Level 117</span>
+                <span className={styles.rank}>{t("user.level")}</span>
             </div>
             <div className={styles.accSection}>
-                <span className={styles.lastGames}>Recent Contracts:</span>
+                <span className={styles.lastGames}>{t("user.recentContracts")}</span>
                 <ul className={styles.lastGamesList}>
-                    <li className={styles.loseGame}>Failed extraction 5:12</li>
-                    <li className={styles.loseGame}>Failed extraction 10:14</li>
-                    <li className={styles.loseGame}>Failed extraction 8:48</li>
-                    <li className={styles.loseGame}>Failed extraction 15:01</li>
-                    <li className={styles.loseGame}>Failed extraction 40:16</li>
-                    <li className={styles.loseGame}>Failed extraction 8:34</li>
-                    <li className={styles.loseGame}>Failed extraction 6:25</li>
-                    <li className={styles.loseGame}>Failed extraction 29:30</li>
-                    <li className={styles.winGame}>Successful extraction 35:04</li>
-                    <li className={styles.loseGame}>Failed extraction 13:16</li>
+                    {RECENT_GAMES.map((game) => (
+                        <li key={game.time} className={game.win ? styles.winGame : styles.loseGame}>
+                            {t(game.win ? "user.successfulExtraction" : "user.failedExtraction", { time: game.time })}
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
@@ -83,6 +93,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const accInfoRef = useRef<IAccInfoHandle>(null);
     const { transferHints, setHintHolder } = useHintHolders();
+    const { t } = useLocale();
 
     function onAccLinkClick(e: React.MouseEvent) {
         e.preventDefault();
@@ -126,12 +137,12 @@ export const User: FC<IUserPageProps> = (_) => {
 
     let menuOptions: IMenuOption[] = [
         {
-            name: "Posts",
+            name: t("common.posts"),
             destination: "",
             id: "posts"
         },
         {
-            name: "Comments",
+            name: t("common.comments"),
             destination: "comments",
             id: "comments"
         },
@@ -139,7 +150,7 @@ export const User: FC<IUserPageProps> = (_) => {
 
     if (user && user.nickname == userState.userLoggedIn.current) {
         menuOptions.push({
-            name: "Settings",
+            name: t("common.settings"),
             id: "settings"
         });
     }
@@ -156,18 +167,18 @@ export const User: FC<IUserPageProps> = (_) => {
                                 <div className={styles.titleRow}>
                                     <h1 className={styles.title}>u/{user.nickname}</h1>
                                     {username == userState.userLoggedIn.current ? "" :
-                                        <BaseButton icon={<Message />} type="button" id={"send-message"} onClick={onMessageClick} className={`${styles.messageButton} ${baseButtonStyles.primaryButton}`}>Message</BaseButton>
+                                        <BaseButton icon={<Message />} type="button" id={"send-message"} onClick={onMessageClick} className={`${styles.messageButton} ${baseButtonStyles.primaryButton}`}>{t("common.message")}</BaseButton>
                                     }
                                 </div>
                                 <div className={styles.onlineContainer}>
                                     <Dot className={styles.onlineIcon} />
-                                    <span className={styles.followerCount}>Online</span>
+                                    <span className={styles.followerCount}>{t("common.online")}</span>
                                 </div>
                             </div>
                             <p className={styles.description}>{user.description}</p>
                             {user.savedStoryId ?
                                 <div className={styles.accDiv}>
-                                    <span tabIndex={-1} onClick={onAccLinkClick} id="cd-profile-text" className={styles.accLink}>My Cyberdivers profile</span>
+                                    <span tabIndex={-1} onClick={onAccLinkClick} id="cd-profile-text" className={styles.accLink}>{t("user.cyberdiversProfile")}</span>
                                     <AccInfo ref={accInfoRef} nickname={user.nickname} />
                                 </div>
                                 : ""}
@@ -175,8 +186,8 @@ export const User: FC<IUserPageProps> = (_) => {
                         : user ?
                             <div className={styles.bannedContainer}>
                                 <Hammer className={styles.bannedIcon} />
-                                <h1 className={styles.bannedTitle}>You have been banned</h1>
-                                <p className={styles.bannedMessage}>You have been banned for the violation of community rules. If you want to appeal, <span className={styles.bannedLink}>contact us</span></p>
+                                <h1 className={styles.bannedTitle}>{t("user.bannedTitle")}</h1>
+                                <p className={styles.bannedMessage}>{t("user.bannedMessage")}<span className={styles.bannedLink}>{t("user.contactUs")}</span></p>
                             </div>
                             : <Spinner />}
                     <HintHolder ref={setHintHolder("cd-profile-text")} id="cd-profile-text" />

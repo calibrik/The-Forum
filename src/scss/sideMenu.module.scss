@@ -77,7 +77,7 @@
     padding: clamp(10px, 5cqw, 15px);
     margin-top: auto;
     color: colors.$hint-color;
-    font-family: "Courier Prime";
+    font-family: var(--terminal-font);
     box-sizing: border-box;
 }
 

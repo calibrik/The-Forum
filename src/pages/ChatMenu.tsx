@@ -7,6 +7,7 @@ import { useStory, useStoryInit } from "../providers/StoryProvider";
 import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
+import { useLocale } from "../providers/Locale";
 interface IChatMenuProps { };
 interface IDialogProps {
     chat: IChat
@@ -59,6 +60,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     const userState = useUserState();
     let navigate = useNavigate();
     const { transferHints, setHintHolder } = useHintHolders();
+    const { t } = useLocale();
 
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {
@@ -85,7 +87,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     return (
         <div className={styles.container}>
             <div className={styles.headerContainer}>
-                <h1 className={styles.header}>Chats</h1>
+                <h1 className={styles.header}>{t("chat.title")}</h1>
             </div>
             <div className={styles.dialogsContainer}>
                 {chats.map((chat) => (

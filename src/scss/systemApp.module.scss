@@ -91,9 +91,9 @@
 }
 
 .content-notepad {
-    font-family: Ubuntu;
+    font-family: var(--system-app-font);
 }
 
 .content-terminal {
-    font-family: "Courier Prime";
+    font-family: var(--terminal-font);
 }
