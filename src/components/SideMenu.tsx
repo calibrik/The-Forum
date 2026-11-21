@@ -3,6 +3,7 @@ import { Home, Chat, Gear, Leave, QuestionHint } from "./Icons";
 import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
+import { useUserState } from "../providers/UserAuth";
 import { useLocale } from "../providers/Locale";
 
 interface ISideMenuProps { };
@@ -13,7 +14,8 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     let navigate = useNavigate();
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const story = useStory();
-    const { locale, setLocale, t } = useLocale();
+    const userState = useUserState();
+    const { t } = useLocale();
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
         e.preventDefault();
@@ -33,11 +35,6 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
         e.preventDefault();
         setIsOpen(false);
         await story.quitGame();
-    }
-
-    function onLanguageToggle(e: React.MouseEvent<HTMLDivElement>) {
-        e.preventDefault();
-        setLocale(locale === "en" ? "ru" : "en");
     }
 
     const toggleOpen = useCallback(() => {
@@ -88,13 +85,9 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
                 <Chat className={styles.icon} />
                 <span className={styles.itemName}>{t("sideMenu.chats")}</span>
             </div>
-            <div onClick={(e) => onNavigate(e)} className={styles.itemDiv}>
+            <div onClick={(e) => onNavigate(e, `/user/${userState.userLoggedIn.current}/settings`)} className={styles.itemDiv}>
                 <Gear className={styles.icon} />
                 <span className={styles.itemName}>{t("common.settings")}</span>
-            </div>
-            <div onClick={onLanguageToggle} className={styles.itemDiv}>
-                <span className={styles.icon}>{locale === "en" ? "RU" : "EN"}</span>
-                <span className={styles.itemName}>{t("sideMenu.switchLanguage")}</span>
             </div>
             {hintText ?
                 <div className={styles.hintDiv}>

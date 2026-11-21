@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type FC, type ReactNode } from "react";
+import { createContext, useContext, useState, type FC, type ReactNode } from "react";
 import { LOCALES, translate, type TLocale, type TTranslationKey, type TTranslationVars } from "../misc/locales";
 
 interface ILocaleProviderProps {
@@ -32,10 +32,6 @@ export const LocaleProvider: FC<ILocaleProviderProps> = (props) => {
     function t(key: TTranslationKey, vars?: TTranslationVars) {
         return translate(locale, key, vars);
     }
-
-    useEffect(()=>{
-        setLocale("ru");
-    },[])
 
     return (
         <LocaleContext.Provider value={{ locale, setLocale, t }}>

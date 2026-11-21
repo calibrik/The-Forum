@@ -1,0 +1,44 @@
+@use './colors.scss' as colors;
+@use './globals.scss' as globals;
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    container-type: inline-size;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.label {
+    font-size: clamp(0.9rem, 3.2cqw, 1.3rem);
+}
+
+.select {
+    background-color: colors.$input-bg;
+    border: 1px solid colors.$input-border;
+    border-radius: 6px;
+    color: colors.$input-text-color;
+    font-family: inherit;
+    font-size: clamp(0.8rem, 3cqw, 1rem);
+    padding: 6px 8px;
+    outline: none;
+    transition: globals.$transition;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.select:hover {
+    background-color: #262626;
+}
+
+.select:focus {
+    border-color: colors.$primary-color;
+    box-shadow: 0 0 7px colors.$primary-color;
+}
+
+.select option {
+    background-color: colors.$card-bg;
+    color: colors.$input-text-color;
+}

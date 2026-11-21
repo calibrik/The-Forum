@@ -21,7 +21,7 @@ const en = {
     "sideMenu.currentObjective": "Current objective:",
     "sideMenu.logOut": "Log Out",
     "sideMenu.quitGame": "Quit game",
-    "sideMenu.switchLanguage": "Русский",
+    "settings.localization": "Localization",
     "welcome.title": "Welcome to",
     "welcome.tagline": "A web visual novel, that tells a story of a regular forum dweller.",
     "login.title": "Login",
@@ -118,7 +118,7 @@ const ru: Record<TTranslationKey, string> = {
     "sideMenu.currentObjective": "Текущая цель:",
     "sideMenu.logOut": "Выйти из аккаунта",
     "sideMenu.quitGame": "Выйти из игры",
-    "sideMenu.switchLanguage": "English",
+    "settings.localization": "Локализация",
     "welcome.title": "Добро пожаловать в",
     "welcome.tagline": "Это визуальная новелла, рассказывающая историю обычного задрота из форума.",
     "login.title": "Вход",
@@ -192,6 +192,8 @@ const ru: Record<TTranslationKey, string> = {
 
 export type TLocale = "en" | "ru";
 export type TTranslationVars = Record<string, string | number>;
+
+export const LOCALE_NAMES: Record<TLocale, string> = { en: "English", ru: "Русский" };
 
 export const LOCALES: Record<TLocale, Record<TTranslationKey, string>> = { en, ru };
 

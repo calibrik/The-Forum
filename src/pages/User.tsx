@@ -151,6 +151,7 @@ export const User: FC<IUserPageProps> = (_) => {
     if (user && user.nickname == userState.userLoggedIn.current) {
         menuOptions.push({
             name: t("common.settings"),
+            destination: "settings",
             id: "settings"
         });
     }

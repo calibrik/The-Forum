@@ -15,6 +15,8 @@ import { UserPosts } from './pages/UserPosts';
 import { UserComments } from './pages/UserComments';
 import { ChatMenu } from './pages/ChatMenu';
 import { Chat } from './pages/Chat';
+import { Settings } from './pages/Settings';
+import { UserSettings } from './pages/UserSettings';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Notepad } from './pages/Notepad';
@@ -46,12 +48,14 @@ export const appRoutes: RouteObject[] = [
 					{ path: "/post/:id", Component: PostPage },
 					{ path: "/chat", Component: ChatMenu },
 					{ path: "/chat/:chatId", Component: Chat },
+					{ path: "/settings", Component: Settings },
 					{
 						path: "/user/:username",
 						Component: User,
 						children: [
 							{ path: "", Component: UserPosts },
 							{ path: "comments", Component: UserComments },
+							{ path: "settings", Component: UserSettings },
 						]
 					},
 					{

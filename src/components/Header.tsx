@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FC } from "react";
 import styles from '../scss/header.module.scss';
-import { Menu, Person } from "./Icons";
-import { useNavigate } from "react-router";
+import { Gear, Menu, Person } from "./Icons";
+import { useLocation, useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
 import { SearchField } from "./SearchField";
@@ -72,9 +72,21 @@ const HeaderLoggedIn: FC<IHeaderLoggedInProps> = (_) => {
 }
 
 const HeaderLoggedOff: FC<IHeaderLoggedOffProps> = (_) => {
+    const navigate = useNavigate();
+    const location=useLocation();
+
+    function onClick(){
+        if (location.pathname=="/settings"){
+            navigate(-1);
+            return;
+        }
+        navigate("/settings");
+    }
+
     return (
         <div id="header-div" className={styles.container}>
             <span id="header-text" className={styles.title}>The<span id="header-text" className="highlight">Forum</span></span>
+            <Gear onClick={onClick} interactive className={styles.settings} />
         </div>
     );
 }
