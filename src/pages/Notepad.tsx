@@ -1,11 +1,11 @@
 import { useEffect, type FC } from "react";
 import { Notepad as NotepadIcon } from "../components/Icons";
 import styles from "../scss/systemApp.module.scss";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate } from "react-router";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 
 interface INotepadProps { }
 
@@ -14,7 +14,7 @@ export const Notepad: FC<INotepadProps> = () => {
     const storyInit = useStoryInit();
     const userState = useUserState();
     let navigate = useNavigate();
-    const { t } = useLocale();
+    const { t } = useStory();
 
 
     function init() {

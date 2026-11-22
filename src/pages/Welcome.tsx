@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BaseButton } from "../components/BaseButton";
 import { useNavigate } from "react-router";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 interface IWelcomeProps { };
 
 export const Welcome: FC<IWelcomeProps> = (_) => {
@@ -14,7 +14,7 @@ export const Welcome: FC<IWelcomeProps> = (_) => {
     const isFlash = useRef<boolean>(false);
     const tl = useRef<gsap.core.Timeline>(undefined)
     let navigate = useNavigate();
-    const { t } = useLocale();
+    const { t } = useStory();
 
     useGSAP((_, contextSafe) => {
         if (!contextSafe)

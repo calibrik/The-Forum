@@ -6,7 +6,6 @@ import styles from "../scss/searchField.module.scss";
 import hintStyle from '../scss/storyProvider.module.scss';
 import { db } from "../misc/db";
 import { useStory } from "../providers/StoryProvider";
-import { useLocale } from "../providers/Locale";
 interface ISearchFieldProps {
     id?: string
     onSuggestionClick?: (name: string) => void | Promise<void>;
@@ -31,7 +30,7 @@ export const SearchField= forwardRef<ISearchFieldHandle,ISearchFieldProps>((prop
     const [isFocused, setIsFocused] = useState<boolean>(false);
     const suggestionHint = useRef<string[]>([]);
     const story=useStory();
-    const { t } = useLocale();
+    const { t } = story;
 
     async function onChange(value: string) {
         if (value.trim() === "")

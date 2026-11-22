@@ -8,8 +8,8 @@ import { db } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useGSAP } from "@gsap/react";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 
 interface ILoginProps { };
 
@@ -32,7 +32,7 @@ export const Login: FC<ILoginProps> = (_) => {
     const isExpired = searchParams.get("expired") === "true";
     const [showNicknamePlaceholder, setShowNicknamePlaceholder] = useState(true);
     const [showPasswordPlaceholder, setShowPasswordPlaceholder] = useState(true);
-    const { t } = useLocale();
+    const { t } = story;
 
     useEffect(() => {
         storyInit(1, getTypingBoxes());

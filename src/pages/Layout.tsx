@@ -4,7 +4,7 @@ import { Outlet, ScrollRestoration } from "react-router";
 import styles from '../scss/layout.module.scss';
 import { SideMenu } from "../components/SideMenu";
 import { ModalsProvider } from "../providers/Modals";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { bridge } from "../misc/utils";
 interface ILayoutProps { };
 

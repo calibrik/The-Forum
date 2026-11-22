@@ -2,10 +2,10 @@ import type { FC } from "react";
 import styles from "../scss/settingsPage.module.scss";
 import { BackButton } from "../components/BackButton";
 import { LocalizationSetting } from "../components/LocalizationSetting";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 
 export const Settings: FC = () => {
-    const { t } = useLocale();
+    const { t } = useStory();
 
     return (
         <div className={styles.container}>

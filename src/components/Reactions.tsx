@@ -3,7 +3,7 @@ import { BaseButton } from "./BaseButton";
 import { HeartFill, Heart, CommentIcon } from "./Icons";
 import styles from "../scss/reactions.module.scss";
 import { numberToText } from "../misc/utils";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 interface IReactionsProps {
     likes:number
     comments:number
@@ -26,7 +26,7 @@ export const LikeButton: FC<ILikeButtonProps> = (props) => {
     );
 }
 export const Reactions: FC<IReactionsProps> = (props) => {
-    const { t } = useLocale();
+    const { t } = useStory();
 
     return (
         <div className={styles.reactionsContainer}>

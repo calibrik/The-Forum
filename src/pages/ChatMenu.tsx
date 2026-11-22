@@ -3,11 +3,11 @@ import styles from "../scss/chatMenu.module.scss";
 import { bridge, formatTime, getImageUrl, resolveChatView } from "../misc/utils";
 import { Dot } from "../components/Icons";
 import { useNavigate } from "react-router";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
-import { useLocale } from "../providers/Locale";
 interface IChatMenuProps { };
 interface IDialogProps {
     chat: IChat
@@ -60,7 +60,7 @@ export const ChatMenu: FC<IChatMenuProps> = () => {
     const userState = useUserState();
     let navigate = useNavigate();
     const { transferHints, setHintHolder } = useHintHolders();
-    const { t } = useLocale();
+    const { t } = useStory();
 
     async function init() {
         if (!userState.isRealLoggedIn.current || userState.userLoggedIn.current === "") {

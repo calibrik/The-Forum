@@ -5,7 +5,6 @@ import { useGSAP } from "@gsap/react";
 import styles from "../scss/credits.module.scss";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { useStory } from "../providers/StoryProvider";
-import { useLocale } from "../providers/Locale";
 
 export const Credits: FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -14,7 +13,7 @@ export const Credits: FC = () => {
     const navigate = useNavigate();
     const typingBoxes = useTypingBoxes();
     const story=useStory()
-    const { t } = useLocale();
+    const { t } = story;
 
     useGSAP(() => {
         const tl = gsap.timeline();

@@ -4,13 +4,13 @@ import buttonStyles from "../scss/baseButton.module.scss";
 import { SMEntry } from "../components/SMEntry";
 import { ArrowRightSquare, ChevronDoubleDown, ChevronDoubleUp, X } from "../components/Icons";
 import { BaseButton } from "../components/BaseButton";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { SearchField, type ISearchFieldHandle, type ISuggestion } from "../components/SearchField";
 import { bridge } from "../misc/utils";
 import { useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { db, type ISubforum } from "../misc/db";
-import { useLocale } from "../providers/Locale";
 interface ISubforumSettingsProps { };
 interface ISubforumSettingsSectionProps {
     title: string;
@@ -83,7 +83,7 @@ export const SubforumSettings: FC<ISubforumSettingsProps> = (_) => {
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
     const [demoteTarget, setDemoteTarget] = useState<string[] | undefined>(undefined);
     const [transferTarget, setTransferTarget] = useState<string | undefined>(undefined);
-    const { t } = useLocale();
+    const { t } = story;
 
     const filterMembers = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.members.includes(suggestion.name) ?? false);
     const filterMods = (suggestion: ISuggestion) => suggestion.type == "user" && (subforum?.mods.includes(suggestion.name) ?? false);

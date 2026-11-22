@@ -7,7 +7,6 @@ import { BaseButton } from "../components/BaseButton";
 import { db } from "../misc/db";
 import { useModals } from "../providers/Modals";
 import { useStory } from "../providers/StoryProvider";
-import { useLocale } from "../providers/Locale";
 import { Spinner } from "../components/Icons";
 interface ISignupProps { };
 type SignupData = {
@@ -25,7 +24,7 @@ export const Signup: FC<ISignupProps> = (_) => {
     const story = useStory();
     let navigate=useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
-    const { t } = useLocale();
+    const { t } = story;
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();

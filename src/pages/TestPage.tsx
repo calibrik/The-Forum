@@ -1,7 +1,7 @@
 import { useGSAP } from "@gsap/react";
 import { useEffect, type FC, type ReactNode } from "react";
 import gsap from 'gsap';
-import { useStoryFuncs } from "../providers/StoryProvider";
+import { useStoryFuncs } from "../hooks/useStoryFuncs";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { delay } from "../misc/utils";
 

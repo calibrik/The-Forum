@@ -5,14 +5,14 @@ import { bridge, getImageUrl } from "../misc/utils";
 import { Menu, type IMenuOption } from "../components/Menu";
 import { Dot, Hammer, Message } from "../components/Icons";
 import { useUserState } from "../providers/UserAuth";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { db, type IUser } from "../misc/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
 import { BaseButton } from "../components/BaseButton";
 import baseButtonStyles from "../scss/baseButton.module.scss";
-import { useLocale } from "../providers/Locale";
 
 interface IUserPageProps { };
 export interface IUserOutlet {
@@ -41,7 +41,7 @@ const RECENT_GAMES = [
 export const AccInfo = forwardRef<IAccInfoHandle, IAccInfoProps>((props, ref) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const divRef = useRef<HTMLDivElement>(null);
-    const { t } = useLocale();
+    const { t } = useStory();
 
     function onBlur(e: React.FocusEvent) {
         if (!e.currentTarget.contains(e.relatedTarget) && !e.relatedTarget?.classList.contains(styles.accLink)) {
@@ -93,7 +93,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const accInfoRef = useRef<IAccInfoHandle>(null);
     const { transferHints, setHintHolder } = useHintHolders();
-    const { t } = useLocale();
+    const { t } = story;
 
     function onAccLinkClick(e: React.MouseEvent) {
         e.preventDefault();

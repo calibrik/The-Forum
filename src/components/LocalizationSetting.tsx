@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import styles from "../scss/localizationSetting.module.scss";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 import { LOCALE_NAMES, type TLocale } from "../misc/locales";
 
 interface ILocalizationSettingProps {
@@ -8,7 +8,7 @@ interface ILocalizationSettingProps {
 }
 
 export const LocalizationSetting: FC<ILocalizationSettingProps> = (props) => {
-    const { locale, setLocale, t } = useLocale();
+    const { locale, setLocale, t } = useStory();
     const showLabel = props.showLabel ?? true;
 
     return (

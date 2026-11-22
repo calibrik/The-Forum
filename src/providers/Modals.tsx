@@ -3,7 +3,7 @@ import styles from "../scss/modals.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
 import { X } from "../components/Icons";
-import { useLocale } from "./Locale";
+import { useStory } from "./StoryProvider";
 
 interface IInvincibleModalProps { };
 interface IInvincibleModalHandle {
@@ -16,7 +16,7 @@ const InvincibleModal = forwardRef<IInvincibleModalHandle, IInvincibleModalProps
     const onCancelRef=useRef<()=>void>(undefined);
     const [title,setTitle]=useState<string>("");
     const [description,setDescription]=useState<string>("");
-    const { t } = useLocale();
+    const { t } = useStory();
 
 
     useImperativeHandle(ref, () => ({

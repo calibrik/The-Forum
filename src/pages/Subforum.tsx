@@ -6,13 +6,13 @@ import baseButtonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
 import { Plus } from "../components/Icons";
 import { Menu, type IMenuOption } from "../components/Menu";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { useUserState } from "../providers/UserAuth";
 import { db, type ISubforum } from "../misc/db";
 import { Spinner } from "../components/Spinner";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
 import { HintHolder, useHintHolders } from "../components/HintHolder";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 interface ISubforumProps { };
 
 export const Subforum: FC<ISubforumProps> = (_) => {
@@ -24,7 +24,7 @@ export const Subforum: FC<ISubforumProps> = (_) => {
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined)
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const hintHolders=useHintHolders()
-    const { t } = useLocale();
+    const { t } = useStory();
 
     async function init() {
         if (!userState.isRealLoggedIn.current) {

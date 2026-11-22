@@ -2,12 +2,12 @@ import { useEffect, type FC } from "react";
 import styles from "../scss/subforumMembersPage.module.scss";
 import { SMEntry } from "../components/SMEntry";
 import { Spinner } from "../components/Spinner";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { useOutletContext, useParams } from "react-router";
 import type { ISubforum } from "../misc/db";
 import { bridge } from "../misc/utils";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 interface ISubforumMembersProps { };
 
 export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
@@ -15,7 +15,7 @@ export const SubforumMembers: FC<ISubforumMembersProps> = (_) => {
     const [subforum] = useOutletContext<[ISubforum | undefined, unknown]>();
     const { name } = useParams<{ name: string }>();
     const typingBoxes = useTypingBoxes();
-    const { t } = useLocale();
+    const { t } = useStory();
 
     useEffect(() => {
         bridge.exec(storyInit, 3, typingBoxes.getTypingBoxes());

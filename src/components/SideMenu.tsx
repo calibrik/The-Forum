@@ -4,7 +4,6 @@ import styles from "../scss/sideMenu.module.scss";
 import { useNavigate } from "react-router";
 import { useStory } from "../providers/StoryProvider";
 import { useUserState } from "../providers/UserAuth";
-import { useLocale } from "../providers/Locale";
 
 interface ISideMenuProps { };
 
@@ -15,7 +14,7 @@ export const SideMenu: FC<ISideMenuProps> = (_) => {
     const sideMenuRef = useRef<HTMLDivElement>(null);
     const story = useStory();
     const userState = useUserState();
-    const { t } = useLocale();
+    const { t } = story;
 
     function onNavigate(e: React.MouseEvent<HTMLDivElement>, dest?: string) {
         e.preventDefault();

@@ -9,13 +9,13 @@ import gsap from 'gsap';
 import { useGSAP } from "@gsap/react";
 import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { Divider } from "../components/Divider";
 import { db, type IChat, type IMessage } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { useNavigate, useParams } from "react-router";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
-import { useLocale } from "../providers/Locale";
 
 interface IChatProps { };
 interface IMessageProps {
@@ -31,7 +31,7 @@ interface ITextingIndicatorProps {
 
 const TypingIndicator: FC<ITextingIndicatorProps> = (props) => {
     const indicatorRef = useRef<HTMLDivElement>(null);
-    const { t } = useLocale();
+    const { t } = useStory();
 
     useGSAP(() => {
         const icons: Element[] = gsap.utils.toArray(`.${styles.indicatorIcon}`);
@@ -163,7 +163,7 @@ export const Chat: FC<IChatProps> = () => {
     const inputRef = useRef<IInputFieldHandle>(null);
     const story = useStory();
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
-    const { t } = useLocale();
+    const { t } = story;
 
     useEffect(() => {
         chatContainerRef.current?.scrollTo({ behavior: "smooth", top: chatContainerRef.current.scrollHeight });

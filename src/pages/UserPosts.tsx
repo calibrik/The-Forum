@@ -2,7 +2,7 @@ import { useEffect, useState, type FC } from "react";
 import styles from "../scss/sub-userPostsPage.module.scss"
 import { Post } from "../components/Post";
 import { Spinner } from "../components/Spinner";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { useParams } from "react-router";
 import { db, type IPost } from "../misc/db";
 import { bridge } from "../misc/utils";

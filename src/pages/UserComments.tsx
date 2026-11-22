@@ -2,7 +2,7 @@ import { useEffect, useState, type FC } from "react";
 import styles from "../scss/userCommentsPage.module.scss";
 import { Comment } from "../components/Comment";
 import { Spinner } from "../components/Spinner";
-import { useStoryInit } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { bridge } from "../misc/utils";
 import { useParams } from "react-router";
 import { db, type IComment, type IPost } from "../misc/db";

@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import { useLocale } from "../providers/Locale";
+import { useStory } from "../providers/StoryProvider";
 interface IErrorProps {};
 
 export const Error: FC<IErrorProps> = (_) => {
-    const { t } = useLocale();
+    const { t } = useStory();
 
     return (
         <div>

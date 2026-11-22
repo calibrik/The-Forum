@@ -1,9 +1,9 @@
-import { beforeAll, describe, expect, test, vi } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { db, seedUsers } from '../misc/db';
-import { StoryProvider, useChat, useElementHints, useStory, useStoryFuncs, useStoryInit } from '../providers/StoryProvider';
+import { StoryProvider, useStory } from '../providers/StoryProvider';
+import { useStoryFuncs } from '../hooks/useStoryFuncs';
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
-import hintStyles from "../scss/storyProvider.module.scss";
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
 import { UserProvider, useUserState } from '../providers/UserAuth';
@@ -31,327 +31,6 @@ function stubGetAnim(getAnim: (...args: never[]) => unknown) {
         fn === getAnim ? Promise.resolve(gsap.timeline()) : realExec(fn, ...args)
     ) as unknown as typeof bridge.exec);
 }
-
-
-describe("test of testing", () => {
-    beforeAll(async () => {
-        await seedUsers();
-    })
-
-    test("test 1", async () => {
-        expect(await db.users.where("nickname").equals("penis").first()).toMatchObject({ nickname: "penis", description: "Secret dev account for testing shit" });
-    })
-})
-
-describe("useChat", () => {
-    describe("addMessageFromUser", () => {
-        test('addMessageFromUser', async () => {
-            const { result } = renderHook(() => useChat(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const content = 'Hello, world!';
-            await result.current.addMessageFromUser(content);
-            const messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(1);
-            expect(messagesBuffer[0].content).toBe(content);
-        });
-    });
-
-    describe("addMessageFromNPC", () => {
-        test('addMessageFromNPC (no time to type)', async () => {
-            const { result } = renderHook(() => useChat(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const content = 'Hello, world!';
-            await result.current.addMessageFromNPC("user1", content);
-            const messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(1);
-            expect(messagesBuffer[0].content).toBe(content);
-        });
-
-        test('addMessageFromNPC (single with time)', async () => {
-            const { result } = renderHook(() => useChat(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
-            const content = 'Hello, world!';
-            result.current.addMessageFromNPC("user1", content, 1);
-            let messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(0);
-            await vi.advanceTimersByTimeAsync(1000);
-            messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(1);
-            expect(messagesBuffer[0].content).toBe(content);
-        });
-
-        test('addMessageFromNPC (multiple)', async () => {
-            const { result } = renderHook(() => useChat(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
-            const content = 'Hello, world!';
-            result.current.addMessageFromNPC("user1", content, 2);
-            result.current.addMessageFromNPC("user2", content, 1);
-            result.current.addMessageFromNPC("user3", content, 0.5);
-            let messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(0);
-            await vi.advanceTimersByTimeAsync(3000);
-            messagesBuffer = (await db.storyMessagesBuffer.toArray()).sort((a, b) => a.timeSent.getTime() - b.timeSent.getTime());
-            expect(messagesBuffer.length).toBe(3);
-            expect(messagesBuffer[0].from).toBe("user3");
-            expect(messagesBuffer[1].from).toBe("user2");
-            expect(messagesBuffer[2].from).toBe("user1");
-        });
-
-        test('addMessageFromNPC (multiple, with replies)', async () => {
-            const { result } = renderHook(() => useChat(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
-            const content = 'Hello, world!';
-            result.current.addMessageFromNPC("user1", content, 2);
-            result.current.addMessageFromNPC("user2", content, 1);
-            result.current.addMessageFromNPC("user3", content, 0.5, -2);
-            result.current.addMessageFromNPC("user4", content, 3.5, -3);
-            let messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(0);
-            await vi.advanceTimersByTimeAsync(3500);
-            messagesBuffer = await db.storyMessagesBuffer.toArray();
-            expect(messagesBuffer.length).toBe(4);
-            expect(messagesBuffer.find(m => m.from == "user4")?.isReply).toEqual(messagesBuffer.find(m => m.from == "user1")?.id);
-            expect(messagesBuffer.find(m => m.from == "user3")?.isReply).toEqual(messagesBuffer.find(m => m.from == "user1")?.id);
-        });
-    });
-});
-
-describe("useHints", () => {
-    describe("hintNavPath", () => {
-        test("hintNavPath (/user/main_hero level 2 from /chat, logged in as main_hero)", async () => {
-            const { result } = renderHook(() => {
-                const hints = useElementHints();
-                const userState = useUserState();
-                return { hints, userState };
-            }, {
-                wrapper: AllTheProvidersForMock
-            });
-            result.current.userState.userLoggedIn.current = "main_hero";
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, user: "main_hero", where: "/user/main_hero" });
-            expect(result.current.hints._getCurrHint?.().current).toEqual(["user-icon-text"]);
-        });
-
-        test("hintNavPath (/user/someone level 2 from /chat, logged in as main_hero)", async () => {
-            const { result } = renderHook(() => {
-                const hints = useElementHints();
-                const userState = useUserState();
-                return { hints, userState };
-            }, {
-                wrapper: AllTheProvidersForMock
-            });
-            result.current.userState.userLoggedIn.current = "main_hero";
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, user: "main_hero", where: "/user/someone" });
-            expect(result.current.hints._getCurrHint?.().current).toEqual(["header-search", ""]);
-        });
-
-        test("hintNavPath (/user/main_hero/comments level 3 from /user/main_hero)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 3, user: "", where: "/user/main_hero/comments" });
-            expect(result.current._getCurrHint?.().current).toEqual(["comments"]);
-        });
-
-        test("hintNavPath (/user/main_hero level 3 from /user/main_hero/comments)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
-            result.current.hintNavPath({ level: 3, user: "", where: "/user/main_hero" });
-            expect(result.current._getCurrHint?.().current).toEqual(["posts"]);
-        });
-
-        test("hintNavPath (/subforum/test/comments level 3 from /subforum/test)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"))
-            result.current.hintNavPath({ level: 3, user: "", where: "/subforum/test/comments" });
-            expect(result.current._getCurrHint?.().current).toEqual(["comments"]);
-        });
-
-        test("hintNavPath (/subforum/test level 2 from /subforum/test2)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test2"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test" });
-            expect(result.current._getCurrHint?.().current).toEqual(["header-search", ""]);
-        });
-
-        test("hintNavPath (/chat/test level 2 from /chat/test2)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat/test2"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/chat/test" });
-            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
-        });
-
-        test("hintNavPath (/chat/test level 2 from /chat)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/chat/test" });
-            expect(result.current._getCurrHint?.().current).toEqual(["test"]);
-        });
-
-        test("hintNavPath (/chat level 1 from /user/main_hero)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
-            expect(result.current._getCurrHint?.().current).toEqual(["menu-icon-text", "chat-menu"]);
-        });
-
-        test("hintNavPath (/user/main_hero level 2 from /user/main_hero/comments)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero/comments"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/user/main_hero" });
-            expect(result.current._getCurrHint?.().current).toEqual([]);
-        });
-
-        test("hintNavPath (/post/p5 level 2 from /user/main_hero)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/post/p5" });
-            expect(result.current._getCurrHint?.().current).toEqual(["p5"]);
-        });
-
-        test("hintNavPath (/user/main_hero level 2 from /post/p5)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/user/main_hero" });
-            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
-        });
-
-        test("hintNavPath (/subforum/test level 2 from /post/p5)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test" });
-            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
-        });
-
-        test("hintNavPath (/chat level 1 from /post/p5)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
-            expect(result.current._getCurrHint?.().current).toEqual(["menu-icon-text", "chat-menu"]);
-        });
-
-        test("hintNavPath (/post/p4 level 2 from /post/p5)", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"))
-            result.current.hintNavPath({ level: 2, user: "", where: "/post/p4" });
-            expect(result.current._getCurrHint?.().current).toEqual(["back-text"]);
-        });
-
-        test("no nav path overrides from higher levels", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const hintSpy = vi.spyOn(bridge, "exec");
-            vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test/comments"))
-            result.current.hintNavPath({ level: 3, user: "", where: "/subforum/test" });
-            result.current.hintNavPath({ level: 2, user: "", where: "/subforum/test2" });
-            expect(hintSpy).toHaveBeenCalledTimes(1);
-            const args = hintSpy.mock.calls[0]
-            expect(args[0]).toBe(result.current._hint);
-            expect(args[1]).toBe("posts");
-        });
-
-        test("hintNavPath hints the logout button when the logged in user is wrong", async () => {
-            const { result } = renderHook(() => {
-                const hints = useElementHints();
-                const userState = useUserState();
-                return { hints, userState };
-            }, {
-                wrapper: AllTheProvidersForMock
-            });
-            result.current.userState.userLoggedIn.current = "main_hero";
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, user: "sillygoose228", where: "/user/sillygoose228" });
-            expect(result.current.hints._getCurrHint?.().current).toEqual(["menu-icon-text", "logout"]);
-        });
-
-        test("hintNavPath uses the normal path hint when the logged in user matches", async () => {
-            const { result } = renderHook(() => {
-                const hints = useElementHints();
-                const userState = useUserState();
-                return { hints, userState };
-            }, {
-                wrapper: AllTheProvidersForMock
-            });
-            result.current.userState.userLoggedIn.current = "sillygoose228";
-            vi.stubGlobal("location", new URL("http://localhost:3000/chat"))
-            result.current.hints.hintNavPath({ level: 2, user: "sillygoose228", where: "/user/sillygoose228" });
-            expect(result.current.hints._getCurrHint?.().current).toEqual(["user-icon-text"]);
-        });
-    });
-
-    describe("hint", () => {
-        test("hinting", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const { container } = render(
-                <>
-                    <div id="test"></div>
-                    <div id="test-text"></div>
-                </>
-            );
-            result.current._hint?.("test");
-            let div = container.getElementsByClassName(hintStyles.hint);
-            expect(div).not.toBe(undefined);
-            result.current._hint?.("test-text");
-            div = container.getElementsByClassName(hintStyles.hintText);
-            expect(div).not.toBe(undefined);
-            const consoleSpy = vi.spyOn(console, 'error');
-            result.current._hint?.("wrong_id")
-            expect(consoleSpy).toHaveBeenCalledTimes(1);
-        });
-    });
-
-    describe("goBackHint and goForwardHint", () => {
-        test("basic go back and forward on navpath", async () => {
-            const { result } = renderHook(() => useElementHints(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"))
-            result.current.hintNavPath({ level: 1, user: "", where: "/chat" });
-            expect(result.current._getCurrIndex?.().current).toEqual(0);
-            result.current.goForwardHint("menu-icon-text");
-            expect(result.current._getCurrIndex?.().current).toEqual(1);
-            result.current.goBackwardHint("chat-menu");
-            expect(result.current._getCurrIndex?.().current).toEqual(0);
-        });
-    });
-});
 
 describe("useStoryFuncs", () => {
     describe("resetAnims", () => {
@@ -576,11 +255,11 @@ describe("useStoryFuncs", () => {
             // drive the playhead exactly onto the navigate action
             const navigateAt = masterRef.current?.getChildren()[0]?.endTime() ?? 0;
             masterRef.current?.totalTime(navigateAt);
-            // the memory router doesn't touch window.location — simulate the browser's location change
+            // the memory router doesn't touch window.location â€” simulate the browser's location change
             vi.stubGlobal("location", new URL("http://localhost:3000/chat"));
 
-            // page A's showStory resolves only after its continuation ran (tl.progress(1) → `await master`),
-            // which happens in microtasks — before React mounts the new page (a macrotask), so recovery
+            // page A's showStory resolves only after its continuation ran (tl.progress(1) â†’ `await master`),
+            // which happens in microtasks â€” before React mounts the new page (a macrotask), so recovery
             // cannot have fired yet.
             await p;
             expect(setNavHintSpy).toHaveBeenCalled();
@@ -589,7 +268,7 @@ describe("useStoryFuncs", () => {
 
             await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toEqual("/chat"));
 
-            // the real /chat page mounts → storyInit → recoverStoryOnPage → showStory(3).
+            // the real /chat page mounts â†’ storyInit â†’ recoverStoryOnPage â†’ showStory(3).
             await waitFor(() => {
                 const master = masterRef.current;
                 if (master)
@@ -1288,84 +967,6 @@ describe("useStoryFuncs", () => {
         });
     });
 });
-
-describe("storyInit", () => {
-    test("regular flow", async () => {
-        const mountResetSpy = vi.spyOn(gsap, "set");
-        const { result } = renderHook(() => {
-            const story = useStory();
-            const userState = useUserState();
-            return { story, userState }
-        }, {
-            wrapper: AllTheProvidersForMock
-        });
-        await waitFor(() => expect(mountResetSpy.mock.calls.some((c) => String(c[0]).includes("#effectOverlay"))).toBe(true));
-        mountResetSpy.mockRestore();
-        const gsapSetSpy = vi.spyOn(gsap, "set");
-        const callsSpy = vi.spyOn(bridge, "exec");
-        result.current!.userState!.isRealLoggedIn.current = true;
-        result.current!.userState!.userLoggedIn.current = "main_hero";
-        exposedMockRouter?.navigate("/login");
-        await waitFor(() => {
-            expect(callsSpy.mock.calls.find((v) => v[0].name === result.current.story.recoverStoryOnPage.name)).not.toBeUndefined();
-            expect(gsapSetSpy.mock.calls.filter((c) => String(c[0]).includes("#effectOverlay")).length).toBe(1);
-        })
-        
-    });
-    test("check order", async () => {
-        const { result } = renderHook(() => {
-            const storyInit = useStoryInit();
-            const userState = useUserState();
-            return { storyInit, userState }
-        }, {
-            wrapper: AllTheProvidersForMock
-        });
-        const callsSpy = vi.spyOn(bridge, "exec");
-        await db.users.add({ nickname: "main_hero" });
-        result.current!.userState!.isRealLoggedIn.current = true;
-        result.current!.userState!.userLoggedIn.current = "main_hero";
-        exposedMockRouter?.navigate("/user/main_hero/comments");
-        await waitFor(() => {
-            const level3 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 3);
-            const level2 = callsSpy.mock.calls.findIndex((v) => v[0].name === result.current.storyInit.name && v[1] == 2);
-            expect(level3).not.toBe(-1);
-            expect(level2).not.toBe(-1);
-            expect(level3).toBeLessThan(level2);
-        })
-    });
-    test("resets the anims once per path before recovering the page", async () => {
-        const mountResetSpy = vi.spyOn(gsap, "set");
-        const { result } = renderHook(() => {
-            const story = useStory();
-            const userState = useUserState();
-            return { story, userState }
-        }, {
-            wrapper: AllTheProvidersForMock
-        });
-        await waitFor(() => expect(mountResetSpy.mock.calls.some((c) => String(c[0]).includes("#effectOverlay"))).toBe(true));
-        mountResetSpy.mockRestore();
-        await db.users.add({ nickname: "main_hero" });
-        result.current!.userState!.isRealLoggedIn.current = true;
-        result.current!.userState!.userLoggedIn.current = "main_hero";
-        const seq: string[] = [];
-        const realExec = bridge.exec as unknown as (...args: unknown[]) => unknown;
-        const realSet = gsap.set as unknown as (...args: unknown[]) => unknown;
-        vi.spyOn(bridge, "exec").mockImplementation((async (fn: (...a: unknown[]) => unknown, ...args: unknown[]) => {
-            if (fn.name === result.current!.story.recoverStoryOnPage.name)
-                seq.push("recover");
-            return realExec(fn, ...args);
-        }) as unknown as typeof bridge.exec);
-        vi.spyOn(gsap, "set").mockImplementation(((targets: unknown, ...args: unknown[]) => {
-            if (String(targets).includes("#effectOverlay"))
-                seq.push("reset");
-            return realSet(targets, ...args);
-        }) as unknown as typeof gsap.set);
-        exposedMockRouter?.navigate("/user/main_hero/comments");
-        await waitFor(() => expect(seq.filter((v) => v === "recover").length).toBe(2));
-        expect(seq.filter((v) => v === "reset").length).toBe(1);
-        expect(seq.indexOf("reset")).toBeLessThan(seq.indexOf("recover"));
-    });
-});
 describe("isOnLocation", () => {
     test("returns true for level 0", async () => {
         const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -1477,15 +1078,13 @@ describe("taken nickname", () => {
                 path: "/",
                 Component: StoryProvider,
                 children: [
-                    { path: "/", Component: Signup }
+                    { path: "/", element: <ModalsProvider><Signup /></ModalsProvider> }
                 ]
             }
         ], { initialEntries: ["/"] });
         const { container } = render(
             <UserProvider>
-                <ModalsProvider>
-                    <RouterProvider router={router} />
-                </ModalsProvider>
+                <RouterProvider router={router} />
             </UserProvider>
         );
         fireEvent.change(container.querySelector("input[name='nickname']")!, { target: { value: "penis" } });

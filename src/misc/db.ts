@@ -1,7 +1,7 @@
 import { Dexie, type EntityTable } from "dexie"
+import type { RefObject } from "react";
 import { getJsonUrl, seededRandom } from "./utils";
-import type { IEffectsOptions } from "../providers/StoryProvider";
-import type { TTypingSpeed } from "../components/TypingTextBox";
+import type { ITypingTextBoxHandle, TTypingSpeed } from "../components/TypingTextBox";
 
 export interface IStoryLine {
 	content: string,
@@ -12,6 +12,18 @@ export interface IStoryLine {
 	clearAfter?: string
 	hideCursorAfter?: boolean
 	clearBefore?: boolean
+}
+
+export interface IEffectsOptions {
+	typingBoxes?: RefObject<Map<string, ITypingTextBoxHandle>>,
+	duration?: number,
+	opacity?: number
+	backgroundColor?: string
+	overlayNumber?: string[]
+	fromOpacity?: number,
+	blurPx?: number
+	zIndex?: number
+	persistOverNavigation?: boolean
 }
 
 export interface IEffect {

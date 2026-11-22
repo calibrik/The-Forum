@@ -10,11 +10,11 @@ import { BackButton } from "../components/BackButton";
 import { bridge, getImageUrl } from "../misc/utils";
 import { useNavigate, useParams } from "react-router";
 import { Spinner } from "../components/Spinner";
-import { useStory, useStoryInit } from "../providers/StoryProvider";
+import { useStory } from "../providers/StoryProvider";
+import { useStoryInit } from "../hooks/useStoryInit";
 import { db, type IPost, type ISubforum } from "../misc/db";
 import { useUserState } from "../providers/UserAuth";
 import { TypingTextBox, useTypingBoxes } from "../components/TypingTextBox";
-import { useLocale } from "../providers/Locale";
 
 const FAKE_POST_BASE: Omit<IPost, "title" | "content"> = {
     id: "fake",
@@ -46,7 +46,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const [subforum, setSubforum] = useState<ISubforum | undefined>(undefined);
     const menuWrapperRef = useRef<HTMLDivElement>(null);
-    const { t } = useLocale();
+    const { t } = story;
     const fakePost: IPost = { ...FAKE_POST_BASE, title: t("postPage.fake.title"), content: t("postPage.fake.content") };
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
