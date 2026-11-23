@@ -2,6 +2,7 @@ import { Dexie, type EntityTable } from "dexie"
 import type { RefObject } from "react";
 import { getJsonUrl, seededRandom } from "./utils";
 import type { ITypingTextBoxHandle, TTypingSpeed } from "../components/TypingTextBox";
+import type { TLocale } from "./locales";
 
 export interface IStoryLine {
 	content: string,
@@ -37,15 +38,14 @@ export interface IMessage {
 	content: string,
 	isReply?: number,//id of message to which reply
 	timeSent: Date
-	chatId: string
+	chatId: string,
+	isVisible?: boolean,
+	isLink?: boolean
 }
 
 export interface IPregenMessage {
-	id: number,
-	from: string,
-	content: string,
+	messageRef: number,
 	timeDiff: number//time diff to init time diff in mins
-	isReply?: number,//relative pos of the reply to message
 }
 
 export interface IChat {
@@ -71,10 +71,10 @@ export interface ISubforum {
 	members: string[],
 }
 
-export interface IComment{
+export interface IComment {
 	author: string,
 	content: string,
-	likes:number
+	likes: number
 }
 
 export interface IPost {
@@ -87,12 +87,13 @@ export interface IPost {
 	likes: number
 	comments: number
 	views: number,
-	commentsDetailed:IComment[],
-	dateCreated: Date
+	commentsDetailed: IComment[],
+	dateCreated: Date,
+	isVisible?: boolean
 }
 
 export interface IAddPostsAction {
-	posts: IPost[]
+	postRefs: string[]
 }
 
 export interface IAddParallelExec {
@@ -132,14 +133,11 @@ export interface IHintAction {
 }
 
 export interface IPromptMessage {
-	content: string,
-	isLink?:boolean
+	messageRef: number
 }
 
 export interface ISendMessageAction {
-	from: string,
-	content: string,
-	isReplyDiff?: number,//relative id of the message
+	messageRef: number,
 	timeToType: number
 }
 
@@ -242,7 +240,7 @@ export interface IDestination {
 	where: string
 	level: number //i.e. 1 means match at least /user, 2 means match /user/comments etc.
 	user: string //nickname of the user that is expected to be logged in at this destination
-	from?:IDestination
+	from?: IDestination
 }
 
 function withLastNavPos(script: IScriptLine[]): IScriptLine[] {
@@ -268,25 +266,25 @@ const db = new Dexie("TheForumDB") as Dexie & {
 	users: EntityTable<IUser, "id"> //doesn't store user nickname with #
 	posts: EntityTable<IPost, "id">
 	chats: EntityTable<IChat, "id">
-	storyMessages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
+	messages: EntityTable<IMessage, "id"> //doesn't store user nickname with #
 	postsBuffer: EntityTable<IBufferItem<IPost>, "id">
 	chatsBuffer: EntityTable<IBufferItem<IChat>, "id">
 	usersBuffer: EntityTable<IBufferItem<IUser>, "id">
-	storyMessagesBuffer: EntityTable<IBufferItem<IMessage>, "id">
+	messagesBuffer: EntityTable<IBufferItem<IMessage>, "id">
 	subforumsBuffer: EntityTable<IBufferItem<ISubforum>, "id">
 }
 
-db.version(273).stores({
+db.version(274).stores({
 	posts: "id, author, subforum",
 	story: "++id",
 	users: "++id, nickname, savedStoryId",
 	subforums: "++id, name",
 	chats: "id, *owner",
-	storyMessages: "id,chatId",
+	messages: "id,chatId",
 	postsBuffer: "id, author, subforum",
 	chatsBuffer: "id, *owner",
 	usersBuffer: "++id, nickname, savedStoryId",
-	storyMessagesBuffer: "id,chatId",
+	messagesBuffer: "id,chatId",
 	subforumsBuffer: "++id, name"
 }).upgrade(async () => {
 	console.log("Upgrading database to new version");
@@ -296,8 +294,10 @@ db.version(273).stores({
 	await seedUsers();
 })
 
-async function fetchSeed<T>(name: string, nickname?: string) {
-	const response = await fetch(getJsonUrl(name));
+type IMessageSeed = Omit<IMessage, "timeSent" | "isVisible">;
+
+async function fetchSeed<T>(name: string, locale: TLocale, nickname?: string) {
+	const response = await fetch(getJsonUrl(name, locale));
 	const json = JSON.stringify(await response.json());
 	return JSON.parse(nickname == undefined ? json : json.replace(/#main_hero/g, nickname)) as T;
 }
@@ -309,30 +309,33 @@ function mapUsers(users: IUser[]): IUser[] {
 
 export async function seedUsers() {
 	await db.users.clear();
-	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json")));
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", "en")));
 }
 
 export function mapPosts(posts: IPost[], startNumber = 1): IPost[] {
 	const now = Date.now();
 	let n = startNumber;
-	return posts.map((v, i) => ({ ...v, id: v.id ?? `p${n++}`, dateCreated: new Date(now - i) }));
+	return posts.map((v, i) => ({ ...v, id: v.id ?? `p${n++}`, isVisible: v.isVisible ?? true, dateCreated: new Date(now - i) }));
 }
 
-export async function seedTables(nickname: string) {
+export async function seedTables(nickname: string, locale: TLocale) {
 	await db.story.clear();
-	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", nickname)));
+	await db.story.bulkAdd(withLastNavPos(await fetchSeed<IScriptLine[]>("script.json", locale, nickname)));
 	await db.users.clear();
-	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", nickname)));
+	await db.users.bulkAdd(mapUsers(await fetchSeed<IUser[]>("users.json", locale, nickname)));
 	await db.posts.clear();
-	await db.posts.bulkAdd(mapPosts(await fetchSeed<IPost[]>("posts.json", nickname)));
+	await db.posts.bulkAdd(mapPosts(await fetchSeed<IPost[]>("posts.json", locale, nickname)));
 	await db.subforums.clear();
-	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", nickname)).map((v, i) => ({ ...v, id: i + 1 })));
+	await db.subforums.bulkAdd((await fetchSeed<ISubforum[]>("subforums.json", locale, nickname)).map((v, i) => ({ ...v, id: i + 1 })));
 	await db.chats.clear();
-	await db.chats.bulkAdd(await fetchSeed<IChat[]>("chats.json", nickname));
+	await db.chats.bulkAdd(await fetchSeed<IChat[]>("chats.json", locale, nickname));
+	await db.messages.clear();
+	const messages = await fetchSeed<IMessageSeed[]>("messages.json", locale, nickname);
+	await db.messages.bulkAdd(messages.map((m) => ({ ...m, timeSent: new Date(0), isVisible: false })));
 }
 
 db.on("populate", async () => {
-	if (process.env.NODE_ENV == 'test') 
+	if (process.env.NODE_ENV == 'test')
 		return;
 	await seedUsers();
 })

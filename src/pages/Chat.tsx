@@ -93,7 +93,7 @@ const Message: FC<IMessageProps> = (props) => {
     );
     const isPinged = props.replyTo?.from == userState.userLoggedIn.current || props.message.content.includes(`@${userState.userLoggedIn.current}`);
     const timeSent = formatTime(props.message.timeSent);
-    const isLink = props.message.content.startsWith(window.location.origin);
+    const isLink = props.message.isLink;
 
     async function init() {
         let user = await db.users.where("nickname").equals(props.message.from).first();
@@ -142,7 +142,7 @@ const Message: FC<IMessageProps> = (props) => {
                 : ""}
             <p className={styles.message}>
                 {isLink
-                    ? <span className={styles.link}>{props.message.content}</span>
+                    ? <span className={styles.link}>{window.location.origin + props.message.content}</span>
                     : content}
             </p>
         </div>
@@ -173,11 +173,9 @@ export const Chat: FC<IChatProps> = () => {
         e.preventDefault();
         if (!inputRef.current || !inputRef.current.isStringTyped())
             return;
-        const data = new FormData(e.currentTarget);
-        const message = data.get("message");
         e.currentTarget.reset();
         inputRef.current.setStringToType("");
-        await story.addMessageFromUser(message as string);
+        await story.addMessageFromUser();
         story.resumeStoryFromHint("chat-send");
     }
 

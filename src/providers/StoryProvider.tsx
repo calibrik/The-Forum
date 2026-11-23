@@ -29,7 +29,7 @@ interface IStoryHook {
     setSubforumSettingsHandle(h: ISubforumSettingsHandle | undefined): void;
     setTerminalHandle(h: ITerminalHandle | undefined): void;
     setVimHandle(h: IVimHandle | undefined): void;
-    addMessageFromUser(content: string): Promise<void>
+    addMessageFromUser(): Promise<void>
     getMessages(chatId: string): Promise<IMessage[]>,
     login: (nickname: string, password: string) => Promise<{ nickname?: string; password?: string }>,
     logout: () => void,

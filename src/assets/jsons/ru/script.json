@@ -1,0 +1,6011 @@
+[
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/start",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Hi.",
+            "speed": "fast",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "Hello.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I am #main_hero.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "This feels fucking weird, ugh.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "I'm starting a fucking diary like a 14-year-old schoolgirl.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "And uhhhhh I don't even know why I am doing it tbh.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I guess, just to keep my thoughts somewhere.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "So anyway, uhhh where do I start?",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "I am a gamer with 10+ years of experience, especially in Cyberdivers.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "effect": {
+            "name": "NOTEPAD_FLASH"
+        },
+        "offset": "<+=1"
+    },
+    {
+        "storyline": {
+            "content": "I have more than 1000 hours in it, and, boy, lemme tell you, I am very good at this game.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I can show you.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ],
+                "persistOverNavigation": true
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "hint": "Go to your profile page",
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "cd-profile-text"
+                ]
+            }
+        },
+        "offset": ">",
+        "isActionAwait": true,
+        "hint": "Click 'My Cyberdivers profile' on your profile page"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "6%"
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "you know what, matchmaking in this game is unfair bullshit, I always play with weak ass teammates.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Also, enemies balance in this game is broken.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Also, I didn't unlock all the latest weapons.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "Also, the game is a bug-ridden mess.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "storyline": {
+            "content": "But usually, I play a lot better than this.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "6%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "It's just bad luck, is what it is, trust.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Anyway, I'm well respected in the cyberdivers community.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "People know my name.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Lemme show you.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Search for the cyberdivers subforum.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Search for 'cyberdivers' in the header and open the subforum",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I kinda forgot to explain what kind of game this is.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "right": "10%"
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "So, it’s a horde shooter where there are different applications like websites and whatnot that need to be protected from different threats, so companies hire cyberdivers, freelance cybersecurity agents, to deal with them.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "In the game, it’s represented as them actually shooting at one of three factions: AI bots, bugs or hackers in a match, or, as they call them here, contracts.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "10%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "We call hackers squids, cuz in the game they look like squids, and their tentacles can penetrate everything.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "And when I say everything, I mean everything.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Like walls.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I meant walls.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "My friends from here once challenged me to play a game with them, and I absolutely destroyed them.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "24%",
+                "right": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Even though we were on the same team.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I mean, my contribution to the game was essential.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "We lost anyway, but without me it wouldn't have been such a close fight.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "But oh well, what can u do with shit teammates, right?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Hold on, lemme hit them up in the chat, my mates will love to see me.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Go to the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 12
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "roast",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 10,
+                                "opacity": 0.15,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": "+=4.5"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 13,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 14,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 15,
+                                "timeToType": 2.8
+                            }
+                        },
+                        "offset": "+=0.7"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 16,
+                                "timeToType": 3.2
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 17,
+                                "timeToType": 3.5
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 18,
+                                "timeToType": 6
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 19,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 20,
+                                "timeToType": 5.5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 21,
+                                "timeToType": 5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 22,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=5.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They love me.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "50%",
+                                "right": "5%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I know it looks like they are grilling the fuck out of me and calling me bad at the game or something, but it’s actually fine, you just don’t get it.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "It’s how we show love and respect for each other, just friendly roasting.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They know I’m good at the game, they are just fucking with me.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "65%",
+                                "left": "5%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 23,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                "nar1"
+                            ]
+                        },
+                        "offset": "+=7"
+                    },
+                    {
+                        "storyline": {
+                            "content": "It’s all just jokes, trust me.",
+                            "speed": "slow",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=3",
+                            "style": {
+                                "width": "auto",
+                                "top": "86%",
+                                "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "zeroNews",
+            "branches": [
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 24,
+                                "timeToType": 3.5
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 25,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=4"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 26,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=2"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 27,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=3.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 28,
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 29,
+                                "timeToType": 5.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 30,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=6"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 31,
+                                "timeToType": 2.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 32,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 33,
+                                "timeToType": 7.5
+                            }
+                        },
+                        "offset": "+=3.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 34,
+                                "timeToType": 5.5
+                            }
+                        },
+                        "offset": "+=8"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 35,
+                                "timeToType": 5
+                            }
+                        },
+                        "offset": "+=6"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 36,
+                                "timeToType": 4
+                            }
+                        },
+                        "offset": "+=5.5"
+                    }
+                ],
+                [
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                "nar1"
+                            ]
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Ah yes, Zero.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "10%",
+                                "right": "5%"
+                            }
+                        },
+                        "offset": "+=18.8"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Made by the same developer, Spearhead Studios, as our game.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Instead of making content and patches for Cyberdivers, they decided to make some random ass spin-off in the same universe, and the game wasn't even that good.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And now they are working on the dlc for it, while cyberdivers is dying without new updates, fucking idiots.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "You know what, I wanna check how they're doing in their sub.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I bet they are complaining and crying over there, because of the delay.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Can’t wait to see it.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/dlc-moved",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3,
+                        "user": "#main_hero"
+                    },
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "hint": "Open the 'DLC is delayed' post in the f/zero subforum and read the post and comments",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/post/dlc-moved",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3,
+                        "user": "#main_hero"
+                    },
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Bruh what?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "42%",
+                "right": "5%"
+            }
+        },
+        "offset": "+=10"
+    },
+    {
+        "storyline": {
+            "content": "\"Let devs take as much time as they need\", bro wtf, they are so",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "so fucking lame.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Go back to the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Look at these posts bruh.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3",
+            "style": {
+                "top": "48%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So spineless, like \"our dlc got delayed? It's ok, better late than never\" tf is this.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "You absolutely should demand new content from the devs.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "They are working for you, not the other way around.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "You fucking paid them for the product.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Where is your rage?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/vault",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3,
+                        "user": "#main_hero"
+                    },
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Open the next post in the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "noobQuestions",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 10,
+                                "opacity": 0.2,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red",
+                                "persistOverNavigation": true
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like didn't u see the vent in there covered in yellow paint specifically for dumbasses like you?",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "24%",
+                                "right": "7%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Have you tried looking or do you just run to this subforum for help at any minor inconvenience?",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think for themselves.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "But they all allow them to remain stupid.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/post/spoilers",
+                    "from": {
+                        "where": "/subforum/zero",
+                        "level": 3,
+                        "user": "#main_hero"
+                    },
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Open the next post in the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "opinions",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "fromOpacity": 0.2,
+                                "duration": 2,
+                                "opacity": 0.4,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red",
+                                "persistOverNavigation": true
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Oh boy, look how nice everyone here is bruh.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "18%",
+                                "right": "15%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Look how everyone is being respectful to each other, like isn't it fucking pathetic?",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "There is either a right opinion or a wrong opinion, nothing in between.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "If y'all are being so polite and agreeing with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Go back to the f/zero subforum posts",
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "phonySub",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "fromOpacity": 0.4,
+                                "duration": 2,
+                                "opacity": 0.6,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red",
+                                "persistOverNavigation": true
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Nah, this sub is phony as fuck.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "20%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Everyone is being so nice, like we are gonna believe it.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "addParallelExec": {
+                            "name": "toxicGag",
+                            "branches": [
+                                [
+                                    {
+                                        "storyline": {
+                                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
+                                            "speed": "fast",
+                                            "delim": " ",
+                                            "typingBoxId": "nar1"
+                                        },
+                                        "offset": "+=0.5"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "effect": {
+                                            "name": "BLUR",
+                                            "options": {
+                                                "duration": 5,
+                                                "blurPx": 10,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "+=7.5"
+                                    },
+                                    {
+                                        "effect": {
+                                            "name": "COLOR_OVERLAY",
+                                            "options": {
+                                                "duration": 1,
+                                                "overlayNumber": [
+                                                    "2"
+                                                ],
+                                                "backgroundColor": "black",
+                                                "opacity": 1,
+                                                "zIndex": 21
+                                            }
+                                        },
+                                        "offset": "-=1"
+                                    },
+                                    {
+                                        "storyline": {
+                                            "content": "Some time later...",
+                                            "speed": "slow",
+                                            "delim": "",
+                                            "typingBoxId": "nar2",
+                                            "style": {
+                                                "width": "auto",
+                                                "top": "50%",
+                                                "z-index": 22
+                                            }
+                                        },
+                                        "offset": "+=1"
+                                    }
+                                ]
+                            ]
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "clearTypingTextBoxes": {
+                            "ids": [
+                                "nar2"
+                            ]
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "effect": {
+                            "name": "REVERSE_OVERLAY",
+                            "options": {
+                                "duration": 2,
+                                "overlayNumber": [
+                                    "2",
+                                    "Blur"
+                                ]
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
+                            "speed": "fast",
+                            "delim": ", ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "-=2"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Brutal, but honest.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Yes, we won't mince our words and we will grill your ass to the crust, but you will learn from it and be better.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "And these guys think they are helping anyone with this fake ass niceness.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "They are just delusional, aren't they?",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=2"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "subDown",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "POSTS_FALL"
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Nah, this sub is a fucking joke.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "It's full of fake weak dumbasses, who are just living in their nice play-pretend echo chamber.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Fuck them.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I wish I could just wipe them off this website.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Actually",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I mean, maybee",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "there is a way.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I remember back in school I took some programming classes and I learned smth about webdev and some cybersecurity stuff, like phishing.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Shit, it was ages ago.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I ended up dropping out, cuz my classmates were dickheads.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Like always with their patronizing bullshit \"ohhh #main_hero, we can help you out if you are struggling\", but I knew they were making fun of me behind my back.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Yeah, I saw right through them, those fake ass slimy fucks.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Kind of reminded me of this sub too.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "Well, whatever, who gives a shit, right?",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "postRise",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "POSTS_RISE",
+                            "options": {
+                                "duration": 2
+                            }
+                        },
+                        "offset": ">"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Anyway, what if I could phish the admin of this sub?",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I could create a fake website to steal the admin's account and take over the sub?",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "That'd show them what the real life is.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I should let my friends in cyberdivers chat know.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "storyline": {
+                            "content": "I'm sure they will be as excited as I am right now to destroy these dumbasses.",
+                            "speed": "fast",
+                            "delim": " ",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": "+=0.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Go to the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 37
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "hackerLaughs",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 1,
+                                "opacity": 0.15,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": "+=4"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 38,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 39,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 40,
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 41,
+                                "timeToType": 1.5
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 42,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 43,
+                                "timeToType": 3.5
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 44,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 45,
+                                "timeToType": 3
+                            }
+                        },
+                        "offset": "+=0.1"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 46,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=0.1"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 47
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=1.2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 48,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 49,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 50,
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 51,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 52,
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 53,
+                "timeToType": 5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No no, I know what it is, it's a language",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "50%",
+                "right": "5%"
+            }
+        },
+        "offset": "+=7"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "for hacking databases",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "or something.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "It doesn't matter, they'll see, I absolutely can do it.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "left": "5%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": "-=2"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ],
+                "persistOverNavigation": true
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Alright, I need a plan.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "10%",
+                "padding": "0 10px",
+                "box-sizing": "border-box",
+                "max-width": "1000px",
+                "width": "100%",
+                "background-color": "transparent",
+                "max-height": "85%",
+                "overflow-y": "auto",
+                "scrollbar-color": "white transparent",
+                "pointer-events": "all",
+                "z-index": 20
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "How am I gonna do that?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Brief search on phishing shows that hackers send fake login screens and people fall for them.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Why don't I do the same?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Admin will click on the link and",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "well yeah, he'll probably suspect something.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Well, ummm",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "maybee",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "uhhh",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I need to bait him!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Like, I'll tell him that he won $300 in the giveaway and all he needs to do to collect is to click on that link.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, that is fucking retarded.",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "This is definitely not gonna work.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "You won't be able to phish even your grandma with this.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Or what if",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I'll report a post to him that needs to be deleted, but it won't be an actual post.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "It will be a fake post!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Admin will click on the link to check it out.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/post/fake",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Then he'll try to delete it.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "22%",
+                "right": "6%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "post-menu-dots-text",
+                    "delete-post-button-text"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "isActionAwait": true,
+        "hint": "Click the three dots on the fake post and press 'Delete'",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/login?expired=true",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And suddenly it takes him to a fake login screen with a message like ur session is expired, sign in again.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "6%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So he will try to sign in.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "setShowPlaceholdersAction": {
+                "field": "nickname",
+                "show": false
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Sillygoose228",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nickname",
+            "hideCursorAfter": true
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setShowPlaceholdersAction": {
+                "field": "password",
+                "show": false
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "•••••••••••••",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "password",
+            "hideCursorAfter": true
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/post/deleted",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "And boom, his creds are mine.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "24%",
+                "left": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "He will see that the post was deleted.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "He won't even know that his creds were stolen!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ],
+                "persistOverNavigation": true
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I'm a genius!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "10%",
+                "padding": "0 10px",
+                "box-sizing": "border-box",
+                "max-width": "1000px",
+                "width": "100%",
+                "background-color": "transparent",
+                "max-height": "85%",
+                "overflow-y": "auto",
+                "scrollbar-color": "white transparent",
+                "pointer-events": "all",
+                "z-index": 20
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now I just need to figure out how to code all that.",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Alright, first I gotta open vim.",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Fuck IDEs, they are for pussies.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTerminalCommandAction": {
+                "command": "vim PostPage.tsx"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type 'vim PostPage.tsx' to open vim",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal/vim?file=PostPage.tsx",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "So uhhhhh, how do I create a page?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I think I still remember something.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "vimTypeAction": {
+                "content": "include { useState } from \"react\";\ninclude { useNavigate } from \"react-router\";\n\nexport const PostPage = () => {\n    const navigate = useNavigate();\n    const [isMenuOpen, setIsMenuOpen] = useState(false);\n\n    return (\n        <box class=\"postContainer\">\n            <box class=\"returnContainer\">\n                <button onclick={() => navigate(-1)}>← back</button>\n            </box>\n            <box class=\"authorContainer\">\n                <text class=\"username\">f/zero</text>\n                <text class=\"subforumName\">u/fake_op</text>\n            </box>\n            <box class=\"menuWrapper\">\n                <button onclick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {!isMenuOpen ? (\n                    <button onclick={navigate(\"/login?expired=true\")}>Delete</button>\n                ) : null}\n            </box>\n            <h1 class=\"postTitle\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</h1>\n            <paragraph class=\"postContent\">zero is the worst game oat</paragraph>\n            <box class=\"reactions\">\n                <text>3 likes</text>\n                <text>0 comments</text>\n                <text>0 views</text>\n            </box>\n        </box>\n    );\n};"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type the code for PostPage.tsx in vim",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Ok, I actually forgot everything.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "I don't think this even works.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Anyway, I think I'll just ask AI.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, not for vibe coding, I'll just ask it for",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "you know",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "general directions.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Some boilerplate code to start with, you know.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Aight",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "46%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "this goes here",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTypingBoxContentAction": {
+                "typingBoxId": "buffer",
+                "content": "// hey there! 👋 I read the code you sent and I found the problems - don't worry, we'll fix them together! 💪\n//\n// 1) include vs import: when we borrow a tool from another file we say import. include is from other languages and React doesn't know it 🙂\n// 2) class vs className: you wrote class on your boxes, but that's the old HTML way. React wants className instead! I changed them all 🙈\n// 3) onclick vs onClick: same idea - it's onClick with a big O in React. I fixed it everywhere (even on your Delete button)! 🙂\n// 4) pretend tags: you wrote <box>, <text> and <paragraph>, but those aren't real tags! the real ones are <div>, <span> and <p>. I swapped them back 🎯\n// 5) author header order: you had them swapped - the subforum name (f/zero) goes first and the username (u/fartsniffer69) after it. I flipped them back!\n// 6) title vs post text: you put the long text in the headline and the headline inside the paragraph. I moved them where they belong 🎯\n// 7) the Delete button: yours was always visible even when the menu was closed! now it only shows after you press the ⋯ button, like a real dropdown menu 😅\n// 8) the Delete click: you wrote navigate(...) right away, so the page was sending you to the login screen all by itself! I wrapped it in an arrow function, so it only happens when you actually click Delete 🙂\n// 9) the counters: you had 3 likes and 0 views, but it's 0 likes and 3 views. I fixed the numbers!\n//\n// and here's the corrected page, with little notes on what each part does so you can learn 🚀\n// just copy it into your file and save - you got this! 💪\nimport { useState } from \"react\"; // this lets the page remember things (like an open menu)\nimport { useNavigate } from \"react-router\"; // this helps us move between pages\n\nexport const PostPage = () => {\n    const navigate = useNavigate(); // a little helper that lets us jump to other pages\n    const [isMenuOpen, setIsMenuOpen] = useState(false); // remembers if the ⋯ menu is open (it starts closed)\n\n    return (\n        <div className=\"postContainer\"> {/* the box that holds the whole post page */}\n            {/* 👉 the back button - when you click it, you go back to the previous page */}\n            <div className=\"returnContainer\">\n                <button onClick={() => navigate(-1)}>← back</button>\n            </div>\n\n            {/* 👉 who wrote the post - click the forum name or the username to visit them */}\n            <div className=\"authorContainer\">\n                <span className=\"subforumName\" onClick={() => navigate(\"/subforum/zero\")}>f/zero</span>\n                <span className=\"username\" onClick={() => navigate(\"/user/fartsniffer69\")}>u/fartsniffer69</span>\n            </div>\n\n            {/* 👉 the ⋯ menu button - click it to make the Delete option appear */}\n            <div className=\"menuWrapper\">\n                <button onClick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {isMenuOpen && (\n                    /* 👉 Delete - clicking it takes you to the login page (this is the trick!) */\n                    <button className=\"deleteOption\" onClick={() => navigate(\"/login?expired=true\")}>Delete</button>\n                )}\n            </div>\n\n            {/* 👉 the post title (the headline of the post) */}\n            <h1 className=\"postTitle\">zero is the worst game oat</h1>\n\n            {/* 👉 the post text (the main body of the post) */}\n            <p className=\"postContent\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</p>\n\n            {/* 👉 the little counters below the post */}\n            <div className=\"reactions\">\n                <span>0 likes</span>\n                <span>0 comments</span>\n                <span>3 views</span>\n            </div>\n        </div>\n    );\n};"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "looks about right",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And first page done!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "addParallelExec": {
+            "name": "exit-attempts",
+            "branches": [
+                [
+                    {
+                        "storyline": {
+                            "content": ":q",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "command",
+                            "clearBefore": true,
+                            "hideCursorAfter": true
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "E37: No write since last change (add ! to override)",
+                                "typingBoxId": "command"
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "storyline": {
+                            "content": "exit",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "command",
+                            "clearBefore": true,
+                            "hideCursorAfter": true
+                        },
+                        "offset": "+=2.5"
+                    },
+                    {
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "Not an editor command: exit",
+                                "typingBoxId": "command"
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "storyline": {
+                            "content": ":quit",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "command",
+                            "clearBefore": true,
+                            "hideCursorAfter": true
+                        },
+                        "offset": "+=2.5"
+                    },
+                    {
+                        "action": {
+                            "setTypingBoxContentAction": {
+                                "content": "E37: No write since last change (add ! to override)",
+                                "typingBoxId": "command"
+                            }
+                        },
+                        "offset": "+=1"
+                    },
+                    {
+                        "storyline": {
+                            "content": ":wq",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "command",
+                            "clearBefore": true,
+                            "hideCursorAfter": true
+                        },
+                        "offset": "+=2.5"
+                    }
+                ],
+                [
+                    {
+                        "storyline": {
+                            "content": "Ok, how do I quit vim?",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "style": {
+                                "top": "70%",
+                                "left": "5%"
+                            }
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fuck, uhhh, I forgot again",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "fucking dumbass",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "uhhhh",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "...",
+                            "speed": "superSlow",
+                            "delim": "",
+                            "typingBoxId": "nar1"
+                        },
+                        "offset": ">"
+                    },
+                    {
+                        "storyline": {
+                            "content": "here it is.",
+                            "speed": "fast",
+                            "delim": "",
+                            "typingBoxId": "nar1",
+                            "clearAfter": "+=1.5"
+                        },
+                        "offset": ">"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/terminal",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim PostPage.tsx"
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Not too hard huh?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "22%",
+                "right": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now for the rest of them...",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "BLUR",
+            "options": {
+                "duration": 5,
+                "blurPx": 6,
+                "zIndex": 21
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Login.tsx"
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim PostDeleted.tsx"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.3"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim postPage.css"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.2"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim loginSignupPage.css"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.4"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim postDeleted.css"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.1"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim FakeForum.Backend.csproj"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.8"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Program.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.1"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim appsettings.json"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.6"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Models/User.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.4"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Data/AppDbContext.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.9"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Controllers/AuthController.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.2"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Controllers/UsersController.cs"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.7"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim Dockerfile"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "cmd",
+                        "text": "vim docker-compose.yaml"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.3"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now I just need to start the server.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "left": "8%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "setTerminalCommandAction": {
+                "command": "docker compose up --build"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type 'docker compose up --build' to run the server",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setPromptVisibilityAction": {
+                "visible": false
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "[+] Building 14s (16/16) FINISHED\n => [internal] load local bake definitions                                                                         0.0s\n => => reading from stdin 1.20kB                                                                                   0.0s\n => [webapp internal] load build definition from Dockerfile                                                        0.0s\n => => transferring dockerfile: 777B                                                                               0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp internal] load metadata for docker.io/library/node:24-alpine                                           1.0s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/sdk:9.0                                           0.3s\n => [webapp internal] load metadata for mcr.microsoft.com/dotnet/aspnet:9.0-alpine                                 0.3s\n => [webapp internal] load .dockerignore                                                                           0.0s\n => => transferring context: 246B                                                                                  0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp final 1/3] FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => => resolve mcr.microsoft.com/dotnet/aspnet:9.0-alpine@sha256:5dbc97def14ef05703726eb4ceaab4780700884c59b78f82  0.1s\n => [webapp frontend 1/6] FROM docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => => resolve docker.io/library/node:24-alpine@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9  0.1s\n => [webapp internal] load build context                                                                           0.0s\n => => transferring context: 18.75kB                                                                               0.0s\n => [webapp backend 1/7] FROM mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s\n => => resolve mcr.microsoft.com/dotnet/sdk:9.0@sha256:35048e3a81e6a07c316e7bbbd80d80d2ba705fe5f23a8ed42b6638c8f4  0.1s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp final 2/3] WORKDIR /app                                                                                0.0s\n => [webapp backend 2/7] WORKDIR /src/backend                                                                      0.0s\n => [webapp backend 3/7] COPY ./fake_forum.Backend/fake_forum.Backend/fake_forum.Backend.csproj .                 0.0s\n => [webapp backend 4/7] RUN dotnet restore \"fake_forum.Backend.csproj\"                                           1.5s\n => [webapp backend 5/7] COPY ./fake_forum.Backend .                                                              0.0s\n => [webapp backend 6/7] RUN dotnet publish \"/src/backend/fake_forum.Backend/fake_forum.Backend.csproj\"          2.5s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp frontend 2/6] WORKDIR /src/frontend                                                                    0.0s\n => [webapp frontend 3/6] COPY ./fake_forum-frontend/package*.json ./                                             0.0s\n => [webapp frontend 4/6] RUN npm install                                                                          2.0s\n => [webapp frontend 5/6] COPY ./fake_forum-frontend ./                                                           0.0s\n => [webapp frontend 6/6] RUN npm run build                                                                        3.0s\n => [webapp backend 7/7] COPY --from=frontend ./src/frontend/dist /app/wwwroot                                     0.0s\n => [webapp final 3/3] COPY --from=backend ./app .                                                                 0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": " => [webapp] exporting to image                                                                                    2.0s\n => => exporting layers                                                                                            0.0s\n => => exporting manifest sha256:6ef00b015f6a964a859fd8fdb36fca3e6d5d1ce0a64b43f7f168a7436686e268                  0.0s\n => => exporting config sha256:0587d35c29a73590b1b55b7c46925cd4503ab90c01be3ef0da9250e5cc0ab0db                    0.0s\n => => exporting attestation manifest sha256:8596439a208f4725bfdd96872bfcc977506fa8d9b552e09d5b3ca8ad1ca9ee72      0.0s\n => => exporting manifest list sha256:80d6a7b62bb91fc12a6afd76752d9efa2ef17b7673f54e31dec772ccc6606be2             0.0s\n => => naming to docker.io/library/fake_forum-webapp:latest                                                       0.0s\n => => unpacking to docker.io/library/fake_forum-webapp:latest                                                    0.0s\n => [webapp] resolving provenance for metadata file                                                                0.0s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "[+] Running 2/2\n ✔ fake_forum-webapp                 Built                                                                        0.0s\n ✔ Network fake_forum_app-network    Created                                                                      0.0s\n ✔ Container fake_forum-webapp-1     Started                                                                      0.8s"
+                    }
+                ]
+            }
+        },
+        "offset": "+=0.8"
+    },
+    {
+        "action": {
+            "addTerminalHistoryAction": {
+                "history": [
+                    {
+                        "type": "out",
+                        "text": "webapp-1     | warn: Microsoft.AspNetCore.Hosting.Diagnostics[15]\nwebapp-1     |       Overriding HTTP_PORTS '8080' and HTTPS_PORTS ''. Binding to values defined by URLS instead 'http://+:80'.\nwebapp-1     | info: Microsoft.Hosting.Lifetime[14]\nwebapp-1     |       Now listening on: http://[::]:80\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Application started. Press Ctrl+C to shut down.\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Hosting environment: Production\nwebapp-1     | info: Microsoft.Hosting.Lifetime[0]\nwebapp-1     |       Content root path: /app"
+                    }
+                ]
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Aaaand im done!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "right": "8%"
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "Now I just need to trick sillygoose228.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ],
+                "persistOverNavigation": true
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 2,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Search for 'sillygoose228' in the search bar",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "God, even his name is stupid.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "14%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Not like mine tho.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "#main_hero.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "You might not see this yet, but my nickname has at least 3 hidden meanings and 5 references to 3 different pieces of media.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I've spent like a whole day coming up with that.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "So anyway, now I need to shoot him a message.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "send-message"
+                ]
+            }
+        },
+        "hint": "Press 'Send message' on sillygoose228's profile page",
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "addNewChat": {
+                "id": "c14a5155-a221-447c-98ed-21b138f468d7",
+                "owner": [
+                    "#main_hero",
+                    "Sillygoose228"
+                ],
+                "type": "dm"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "hint": "Go to the chat with Sillygoose228",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Ok, so, it'll go like that, uhhh",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "\"Dear sillygoose228, it came to my attention that",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "deleteTextFromTypingBox": {
+            "typingBoxId": "nar1",
+            "symbolsCount": 50,
+            "speed": 30
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, who the fuck reports posts like that?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "\"Dear sillygoose228, there is a post I want you to look at\"",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "deleteTextFromTypingBox": {
+            "typingBoxId": "nar1",
+            "symbolsCount": 60,
+            "speed": 30
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Nah, it sounds so stupid, he'll definitely catch me.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, I need to go simple, like",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "\"Dear sillygoose228, look at this post\"",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "deleteTextFromTypingBox": {
+            "typingBoxId": "nar1",
+            "symbolsCount": 40,
+            "speed": 30
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Nooo, why \"dear\"?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "We haven't even met yet.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, I need to be plain and direct like",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "\"Look at this post\"",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "deleteTextFromTypingBox": {
+            "typingBoxId": "nar1",
+            "symbolsCount": 20,
+            "speed": 30
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "No, no, even simpler, just send him the link to the post.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.3 "
+    },
+    {
+        "storyline": {
+            "content": "Yeah, that will do, he definitely won't suspect anything!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 54
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 55,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "Shit, he knows, I'm done for.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 56
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 57
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 58
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, I think I saved it.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "He won't know what's coming.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 59,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "So now we wait.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "46%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "storyline": {
+            "content": "...............",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": ">",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I think it takes longer than it should, no?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "28%",
+                "right": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Fuck, I'm so cooked, it's fucking over.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar2",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "10%",
+                "left": "4%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Shit, he's probably reporting me already.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar3",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "16%",
+                "right": "5%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=2"
+    },
+    {
+        "storyline": {
+            "content": "What do I do?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar4",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "30%",
+                "left": "10%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
+        },
+        "offset": "-=2"
+    },
+    {
+        "storyline": {
+            "content": "Should I check in on the progress?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar5",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "34%",
+                "right": "14%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Or just let him do his thing?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar6",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "48%",
+                "left": "22%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "storyline": {
+            "content": "Or maybe block him and delete all evidence?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar7",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "64%",
+                "left": "4%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.1"
+    },
+    {
+        "storyline": {
+            "content": "He's probably already put admins on me, shit.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar8",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "62%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.6"
+    },
+    {
+        "storyline": {
+            "content": "I'm fucked, I'm definitely fucked.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar9",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "80%",
+                "right": "20%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.9"
+    },
+    {
+        "storyline": {
+            "content": "I need to bail.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar10",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "74%",
+                "left": "12%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
+        },
+        "offset": "-=1.7"
+    },
+    {
+        "storyline": {
+            "content": "Fuck, fuck, fuck, fuck.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=0.7"
+    },
+    {
+        "clearTypingTextBoxes": {
+            "ids": [
+                "nar2",
+                "nar3",
+                "nar4",
+                "nar5",
+                "nar6",
+                "nar7",
+                "nar8",
+                "nar9",
+                "nar10",
+                "nar1"
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I SHOULD BLOCK HIM.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "40%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,7rem)",
+                "text-align": "center"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "hintAction": {
+                "ids": [
+                    "chat-menu-dots-text",
+                    "block-user-text"
+                ]
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Block sillygoose228",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "WAIT!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1",
+            "style": {
+                "top": "40%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,7rem)",
+                "text-align": "center"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I GOT HIM!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "He logged in on my fake page!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "18%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Here his password!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "addPasswordFor": {
+                "nickname": "Sillygoose228",
+                "password": "ilovecats822"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "His password is ilovecats822?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "oh my god bruh",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "how cringe and corny can one man be?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 60,
+                "timeToType": 6
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "FUCK.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "40%",
+                "left": "0",
+                "width": "100cqw",
+                "padding": "0",
+                "background-color": "transparent",
+                "font-size": "clamp(2rem,7cqw,7rem)",
+                "text-align": "center"
+            }
+        },
+        "offset": "+=8"
+    },
+    {
+        "storyline": {
+            "content": "SHIT.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "FUCK.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=0.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I FUCKED UP.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=0.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/post/fake",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I forgot to change the author of the fake post from placeholder to someone real.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3",
+            "style": {
+                "top": "20%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Go to the chat with Sillygoose228",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Even tho I got his creds already, he might realize what's going on and change his password.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I need to convince him it's ok.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 61
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 62
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 63
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 64,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 65,
+                "timeToType": 5
+            }
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "storyline": {
+            "content": "Fucking clanker gave me shit code.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "28%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=5.5"
+    },
+    {
+        "storyline": {
+            "content": "I specifically asked it to make code as optimized as possible and make no mistakes.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Can't trust shit these days.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 66,
+                "timeToType": 27
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "....",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "38%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=6"
+    },
+    {
+        "storyline": {
+            "content": "What is he typing for so long?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "No way he's suspecting something, right?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar2",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "10%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Fuck, I might be burned here.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar3",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "26%",
+                "left": "8%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1"
+    },
+    {
+        "storyline": {
+            "content": "What if he asks me how I found this post?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar4",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "right": "14%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.3"
+    },
+    {
+        "storyline": {
+            "content": "Or why I'm reporting it even tho I'm not even a follower?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar5",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "64%",
+                "left": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.5"
+    },
+    {
+        "storyline": {
+            "content": "Shit, I even forgot to follow fucking zero sub!",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar6",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "78%",
+                "right": "20%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.6"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, I might be done for here.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar7",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "62%",
+                "left": "30%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.4"
+    },
+    {
+        "storyline": {
+            "content": "Maaan why the fuck did I start it all fuuuck.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar8",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "12%",
+                "left": "28%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.4"
+    },
+    {
+        "storyline": {
+            "content": "He knows, he knows, he knows.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar9",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "30%",
+                "right": "6%",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.6"
+    },
+    {
+        "storyline": {
+            "content": "He is gonna fucking ban me.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar10",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "82%",
+                "left": "32%",
+                "width": "clamp(150px,26cqw,300px)"
+            }
+        },
+        "offset": "-=1.3"
+    },
+    {
+        "storyline": {
+            "content": "Just say something ffs, what is taking you so long?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "42%",
+                "left": "50%",
+                "transform": "translateX(-50%)",
+                "width": "clamp(180px,32cqw,360px)"
+            }
+        },
+        "offset": "-=1.2"
+    },
+    {
+        "clearTypingTextBoxes": {
+            "ids": [
+                "nar2",
+                "nar3",
+                "nar4",
+                "nar5",
+                "nar6",
+                "nar7",
+                "nar8",
+                "nar9",
+                "nar10",
+                "nar1"
+            ]
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "...",
+            "speed": "superSlow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "jesus bro, I was losing my shit here and he was just taking his time to write THIS?",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 67
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "from": {
+                        "level": 1,
+                        "user": "#main_hero",
+                        "where": "/chat"
+                    },
+                    "where": "/chat/c14a5155-a221-447c-98ed-21b138f468d7",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now the fun part.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "16%",
+                "right": "7%"
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I need to log out and log in as him and take over the sub.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/user/Sillygoose228",
+                    "level": 2,
+                    "user": "Sillygoose228"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Log out and log in as sillygoose228",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Now I need to remove all the mods from the zero subforum and transfer the ownership to my account.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "18%",
+                "left": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero/settings",
+                    "level": 3,
+                    "user": "Sillygoose228"
+                }
+            }
+        },
+        "hint": "Open the f/zero subforum settings",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/subforum/zero/settings",
+                    "level": 3,
+                    "user": "Sillygoose228"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setModsToRemove": {
+                "subforum": "zero"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Demote all the mods of the f/zero subforum",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And now transfer ownership to me.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "26%",
+                "right": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "setTransferTo": {
+                "subforum": "zero",
+                "user": "#main_hero"
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Transfer the ownership of the f/zero subforum to your account",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero/members",
+                    "level": 3,
+                    "user": "Sillygoose228"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Open the f/zero members list",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "And I'm done lol.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "20%",
+                "left": "7%"
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "That's it, I fucking did it!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Now I gotta go back and tell cyberdivers I got the keys.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Log out and log in as #main_hero and open the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 68,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 69,
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 70,
+                "timeToType": 4
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 71,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=4.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 72
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 73
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 74,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 75,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 76,
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.2"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 77,
+                "timeToType": 3
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 78,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 79,
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=0.4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 80,
+                "timeToType": 2.8
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 81,
+                "timeToType": 1.5
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 82,
+                "timeToType": 4
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 83
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=4.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 84
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 85,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Fuck yeah, let’s burn this subforum to the ground.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=2.5",
+            "style": {
+                "top": "38%",
+                "left": "8%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 86,
+                "timeToType": 2
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 87,
+                "timeToType": 1.2
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 88,
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 89,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Let me check the zero sub now.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "top": "46%",
+                "right": "8%"
+            }
+        },
+        "offset": "+=2.5"
+    },
+    {
+        "action": {
+            "addPosts": {
+                "postRefs": [
+                    "p7",
+                    "p8",
+                    "p9",
+                    "p10",
+                    "p11",
+                    "p12",
+                    "p13",
+                    "p14",
+                    "p15",
+                    "p16"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/subforum/zero",
+                    "level": 3,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Search for 'zero' in the header and open the subforum",
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Yeah, fucking look at this.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "34%",
+                "left": "7%"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "I made it possible!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=3"
+    },
+    {
+        "storyline": {
+            "content": "Fucking ME!",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I feel like the coolest man alive right now.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "And now people see it too.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3"
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": false,
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "hint": "Go back to the 'cyberdivers' chat",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/chat/cyberdivers",
+                    "level": 2,
+                    "user": "#main_hero",
+                    "from": {
+                        "where": "/chat",
+                        "level": 1,
+                        "user": "#main_hero"
+                    }
+                }
+            }
+        },
+        "isActionAwait": true,
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 90,
+                "timeToType": 3
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 91
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 92
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 93,
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 94,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 95,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 96,
+                "timeToType": 6.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 97,
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=7"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 98,
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 99,
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 100,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 101,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 102,
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 103,
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 104,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 105,
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 106,
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "What the fuck?",
+            "speed": "slow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=1.5",
+            "style": {
+                "width": "auto",
+                "top": "86%",
+                "font-size": "clamp(0.5rem,2cqw,0.75rem)"
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 107
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 108
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 109
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 110,
+                "timeToType": 4.5
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 111,
+                "timeToType": 1.5
+            }
+        },
+        "offset": "+=5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 112,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 113
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 114,
+                "timeToType": 9
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 115,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=9.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 116,
+                "timeToType": 3.5
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 117,
+                "timeToType": 1.8
+            }
+        },
+        "offset": "+=4"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 118,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 119,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Man, fuck him and all these cunts.",
+            "speed": "slow",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=2"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 120
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 121,
+                "timeToType": 1
+            }
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 122,
+                "timeToType": 2.5
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 123,
+                "timeToType": 2.5
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 124,
+                "timeToType": 3
+            }
+        },
+        "offset": "+=3"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 125,
+                "timeToType": 2
+            }
+        },
+        "offset": "+=3.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 126,
+                "timeToType": 1
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 127,
+                "timeToType": 1
+            }
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 128
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": "+=1.5"
+    },
+    {
+        "addParallelExec": {
+            "name": "fuckUBarrage",
+            "branches": [
+                [
+                    {
+                        "effect": {
+                            "name": "COLOR_OVERLAY",
+                            "options": {
+                                "duration": 11,
+                                "opacity": 0.7,
+                                "overlayNumber": [
+                                    "1"
+                                ],
+                                "backgroundColor": "red"
+                            }
+                        },
+                        "offset": "+=9"
+                    },
+                    {
+                        "effect": {
+                            "name": "BLUR",
+                            "options": {
+                                "duration": 11,
+                                "blurPx": 10,
+                                "zIndex": 21
+                            }
+                        },
+                        "offset": "<"
+                    }
+                ],
+                [
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 129,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=0.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 130,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 131,
+                                "timeToType": 2
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 132,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=2.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 133,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 134,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 135,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 136,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 137,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 138,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 139,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 140,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 141,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    },
+                    {
+                        "action": {
+                            "sendMessageAction": {
+                                "messageRef": 142,
+                                "timeToType": 1
+                            }
+                        },
+                        "offset": "+=1.5"
+                    }
+                ]
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 0.5,
+                "opacity": 1,
+                "overlayNumber": [
+                    "3"
+                ],
+                "backgroundColor": "white",
+                "zIndex": 21
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "Man, this shit is fucking stupid.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "style": {
+                "top": "10%",
+                "padding": "0 10px",
+                "box-sizing": "border-box",
+                "max-width": "1000px",
+                "width": "100%",
+                "background-color": "transparent",
+                "z-index": 22,
+                "max-height": "85%",
+                "overflow-y": "auto",
+                "scrollbar-color": "black transparent",
+                "pointer-events": "all",
+                "color": "black"
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "storyline": {
+            "content": "The fuck am I even doing?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "I’ve sunk 1000h sweating in cyberdivers, I’ve hacked sillygoose228 and zero sub even though they did nothing wrong and why?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Because I wanted fucking validation from my friends.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "My only \"friends\" who don’t respect or value me, who confuse bullying with honesty and who are every bit as stupid as I am.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "And the only reason I’m trying to hang on to them is that I don’t have anyone else.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I’ve spent hours and hours trying to convince everyone around me and myself that I am more skillful than them, smarter than them and overall better than them, just to get that power.",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "That metaphorical crown that gives you status and no one can do anything about it.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "But how much safety am I willing to trade for it?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "I hacked a fucking subforum just to poke people where it hurts and show how \"dangerous\" I am.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "But other people want to be on top too, so they will poke back, and before you know it, you are surrounded with wounded egos that are trying to hide themselves to avoid the next poke.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "It’s a cycle that can’t be stopped.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "Or can it?",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1"
+    },
+    {
+        "storyline": {
+            "content": "And when I saw an alternative, real healthy relationships in the zero subforum, where respect and boundaries exist, I just thought they were faking it.",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "storyline": {
+            "content": "I’ve grown so used to these power games that I always wait for the other shoe to drop, and if it doesn’t, I drop it myself.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "So I decided to destroy them, based on the presumption that they are just weak.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "But let’s be real, I am the one who is weak.",
+            "speed": "fast",
+            "delim": " ",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=0.5"
+    },
+    {
+        "storyline": {
+            "content": "It’s fucking stupid, isn’t it?",
+            "speed": "fast",
+            "delim": "\n\n",
+            "typingBoxId": "nar1"
+        },
+        "offset": "+=1.5"
+    },
+    {
+        "effect": {
+            "name": "BLUR",
+            "options": {
+                "duration": 5,
+                "blurPx": 10,
+                "zIndex": 23
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "clearTypingTextBoxes": {
+            "ids": [
+                "nar1"
+            ]
+        },
+        "offset": ">"
+    },
+    {
+        "effect": {
+            "name": "REVERSE_OVERLAY",
+            "options": {
+                "duration": 3,
+                "overlayNumber": [
+                    "3",
+                    "1",
+                    "Blur"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "sendMessageAction": {
+                "messageRef": 143,
+                "timeToType": 6
+            }
+        },
+        "offset": "<"
+    },
+    {
+        "action": {
+            "promptMessageAction": {
+                "messageRef": 144
+            }
+        },
+        "isActionAwait": true,
+        "hint": "Type in the chat and press Send",
+        "offset": ">+=6.5"
+    },
+    {
+        "action": {
+            "banUser": {
+                "nickname": "#main_hero"
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "hint": "Go to your profile page",
+        "offset": ">"
+    },
+    {
+        "action": {
+            "saveAction": {
+                "dest": {
+                    "where": "/user/#main_hero",
+                    "level": 2,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "storyline": {
+            "content": "oh wow.",
+            "speed": "fast",
+            "delim": "",
+            "typingBoxId": "nar1",
+            "clearAfter": "+=3",
+            "hideCursorAfter": true,
+            "style": {
+                "top": "40%",
+                "width": "auto",
+                "font-size": "clamp(1.3rem,5.2cqw,1.7rem)"
+            }
+        },
+        "offset": "+=2"
+    },
+    {
+        "effect": {
+            "name": "COLOR_OVERLAY",
+            "options": {
+                "duration": 2,
+                "backgroundColor": "black",
+                "opacity": 1,
+                "overlayNumber": [
+                    "1"
+                ]
+            }
+        },
+        "offset": ">"
+    },
+    {
+        "action": {
+            "navigateAction": {
+                "navigate": true,
+                "dest": {
+                    "where": "/credits",
+                    "level": 1,
+                    "user": "#main_hero"
+                }
+            }
+        },
+        "offset": ">"
+    }
+]

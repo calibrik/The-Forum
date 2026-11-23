@@ -67,7 +67,7 @@ export const PostPage: FC<IPostPageProps> = (_) => {
         const post = isFake
             ? fakePost
             : await db.postsBuffer.where("id").equals(id??"").first() ?? await db.posts.where("id").equals(id??"").first();
-        if (!post) {
+        if (!post || post.isVisible === false) {
             navigate("/404",{replace:true})
             return;
         }

@@ -18,6 +18,8 @@ export const UserComments: FC<IUserCommentsProps> = (_) => {
         const postsPerm=await db.posts.toArray();
         const postsBuffer=await db.postsBuffer.toArray();
         for (const post of postsPerm){
+            if (post.isVisible === false)
+                continue;
             postsMap.set(post.id,post);
         }
         for (const post of postsBuffer){

@@ -68,7 +68,8 @@
                 "content": "For all those idiots who claim that ak is good against bugs, csharpshooter literally pisses on ak on the bugs front, no need to bring ak if u have that gun",
                 "likes": 5
             }
-        ]
+        ],
+        "id": "p1"
     },
     {
         "author": "pinchIt",
@@ -134,7 +135,8 @@
                 "content": "swarm is the whole gimmick of the AI faction, learn to use choke points\n\nistg average cyberdiver has a spatial awareness of a toddler",
                 "likes": 26
             }
-        ]
+        ],
+        "id": "p2"
     },
     {
         "author": "#main_hero",
@@ -205,7 +207,8 @@
                 "content": "hahaha bro is coping so hard",
                 "likes": 36
             }
-        ]
+        ],
+        "id": "p3"
     },
     {
         "author": "RageQuitter99",
@@ -266,7 +269,8 @@
                 "content": "no one cares",
                 "likes": 54
             }
-        ]
+        ],
+        "id": "p4"
     },
     {
         "author": "Cyber_Ghost",
@@ -332,7 +336,8 @@
                 "content": "op is a noob who watched one youtube guide and now thinks he's a pro",
                 "likes": 22
             }
-        ]
+        ],
+        "id": "p5"
     },
     {
         "id": "dlc-moved",
@@ -500,7 +505,8 @@
                 "content": "Absolute cinema.",
                 "likes": 27
             }
-        ]
+        ],
+        "id": "p6"
     },
     {
         "id": "vault",
@@ -615,5 +621,125 @@
                 "likes": 13
             }
         ]
+    },
+    {
+        "author": "Statue_of_a_Trash_Bin",
+        "subforum": "zero",
+        "title": "[ANNOUNCEMENT] This sub has been taken over.",
+        "content": "They demoted every single one of us and stole the sub from u/Sillygoose228 by supposedly stealing his account. We are working with The Forum support right now to regain control of the sub.\n\nDon't engage with the raiders, just report everything and wait for The Forum admins to step in.",
+        "likes": 812,
+        "comments": 96,
+        "views": 41233,
+        "id": "p7",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "ghost_in_the_submarine",
+        "subforum": "zero",
+        "title": "What the fuck is happening here??",
+        "content": "Why is the whole sub filled with spam all of a sudden? Did someone get hacked? Where did all the mods go?",
+        "likes": 344,
+        "comments": 58,
+        "views": 12890,
+        "id": "p8",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "pinchIt",
+        "subforum": "zero",
+        "title": "suck my dick",
+        "content": "zero sub is ours now",
+        "likes": 12,
+        "comments": 3,
+        "views": 642,
+        "id": "p9",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "MironYanch",
+        "subforum": "zero",
+        "title": "cyberdivers send their regards",
+        "content": "zero is a trash game, shouldn't have existed to begin with.",
+        "likes": 8,
+        "comments": 1,
+        "views": 511,
+        "id": "p10",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "musky_diver",
+        "subforum": "zero",
+        "title": "zero suck balls",
+        "content": "should've been playing cyberdivers",
+        "likes": 5,
+        "comments": 0,
+        "views": 402,
+        "id": "p11",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "do_not_the_dog",
+        "subforum": "zero",
+        "title": "DICK DICK DICK DICK DICK DICK DICK DICK DICK",
+        "content": "there are no mods left lmaooo",
+        "likes": 9,
+        "comments": 2,
+        "views": 388,
+        "id": "p12",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "ink_and_iron",
+        "subforum": "zero",
+        "title": "fuck zero, dogshit game, dogshit community, cyberdivers is so much better",
+        "content": "zero is a walking simulator with a story you can find in any mid ass anime, and you all cried at it",
+        "likes": 3,
+        "comments": 4,
+        "views": 355,
+        "id": "p13",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "Sinius",
+        "subforum": "zero",
+        "title": "ts is so funny",
+        "content": "never seen this sub in my life, just came here to witness the chaos",
+        "likes": 6,
+        "comments": 0,
+        "views": 298,
+        "id": "p14",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "clanker_oil_stain",
+        "subforum": "zero",
+        "title": "divers > zero",
+        "content": "change my mind",
+        "likes": 4,
+        "comments": 1,
+        "views": 274,
+        "id": "p15",
+        "commentsDetailed": [],
+        "isVisible": false
+    },
+    {
+        "author": "DarkSolace",
+        "subforum": "zero",
+        "title": "LMAO",
+        "content": "I've never seen a sub being destroyed like that, rip lol",
+        "likes": 20,
+        "comments": 0,
+        "views": 233,
+        "id": "p16",
+        "commentsDetailed": [],
+        "isVisible": false
     }
 ]

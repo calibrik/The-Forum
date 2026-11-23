@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { db, type IChat, type IMessage } from "../misc/db";
 import { delay } from "../misc/utils";
-import { useUserState } from "../providers/UserAuth";
 
 export interface IChatHandle {
     setStringToType: (string: string) => void;
@@ -14,8 +13,7 @@ export interface IChatHandle {
 
 export function useChat() {
     const chatHandle = useRef<IChatHandle>(undefined);
-    const userState = useUserState();
-    const lastId = useRef<number>(0);
+    const pendingPlayerMessage = useRef<number>(undefined);
 
     async function addChat(id: string, owner: string[], type: IChat["type"]) {
         const chat: IChat = {
@@ -29,54 +27,64 @@ export function useChat() {
         await db.chatsBuffer.put(chat);
     }
 
-    async function addMessageFromUser(content: string) {
-        const message: IMessage = {
-            id: lastId.current++,
-            from: userState.userLoggedIn.current,
-            content: content,
-            timeSent: new Date(),
-            chatId: chatHandle.current?.getId() ?? ""
+    async function addMessageFromUser() {
+        const messageRef = pendingPlayerMessage.current;
+        if (messageRef == undefined)
+            return;
+        pendingPlayerMessage.current = undefined;
+        const template = await db.messages.get(messageRef);
+        if (!template) {
+            console.error(`No message with id ${messageRef}.`);
+            return;
         }
-        await db.storyMessagesBuffer.put(message);
+        const message: IMessage = { ...template, timeSent: new Date(), isVisible: true };
+        await db.messagesBuffer.put(message);
         chatHandle.current?.addMessage(message);
     }
 
-    async function addMessageFromNPC(from: string, content: string, timeToType?: number, isReplyDiff?: number) {
-        const message: IMessage = {
-            id: lastId.current++,
-            from: from,
-            content: content,
-            chatId: chatHandle.current?.getId() ?? "",
-            timeSent: new Date()
+    async function addMessageFromNPC(messageRef: number, timeToType?: number) {
+        const template = await db.messages.get(messageRef);
+        if (!template) {
+            console.error(`No message with id ${messageRef}.`);
+            return;
         }
-        message.isReply = isReplyDiff ? message.id + isReplyDiff : undefined;
-        chatHandle.current?.addTypingUser(message.from);
+        chatHandle.current?.addTypingUser(template.from);
         if (timeToType)
             await delay(timeToType);
-        message.timeSent = new Date();
-        await db.storyMessagesBuffer.put(message);
-        chatHandle.current?.removeTypingUser(message.from);
+        const message: IMessage = { ...template, timeSent: new Date(), isVisible: true };
+        await db.messagesBuffer.put(message);
+        chatHandle.current?.removeTypingUser(template.from);
         chatHandle.current?.addMessage(message);
-    }
-
-    async function addMessagesToDb(msgs: IMessage[]) {
-        await db.storyMessages.bulkAdd(msgs);
     }
 
     async function setChatHandle(ch?: IChatHandle) {
         chatHandle.current = ch;
-        lastId.current = await db.storyMessages.count() + await db.storyMessagesBuffer.count() + 1;
+        if (!ch)
+            pendingPlayerMessage.current = undefined;
     }
 
     async function getMessages(chatId: string) {
-        const messages = await db.storyMessages.where("chatId").equals(chatId).toArray();
-        const bufferedMessages = await db.storyMessagesBuffer.where("chatId").equals(chatId).toArray();
-        return [...messages, ...bufferedMessages];
+        const messages = await db.messages.where("chatId").equals(chatId).toArray();
+        const bufferedMessages = await db.messagesBuffer.where("chatId").equals(chatId).toArray();
+        const merged = new Map<number, IMessage>();
+        for (const message of messages) {
+            if (message.isVisible)
+                merged.set(message.id, message);
+        }
+        for (const message of bufferedMessages)
+            merged.set(message.id, message);
+        return Array.from(merged.values()).sort((a, b) => a.id - b.id);
     }
 
-    function promptMessage(content: string) {
-        chatHandle.current?.setStringToType(content);
+    async function promptMessage(messageRef: number) {
+        const message = await db.messages.get(messageRef);
+        if (!message) {
+            console.error(`No message with id ${messageRef}.`);
+            return;
+        }
+        chatHandle.current?.setStringToType(message.isLink ? window.location.origin + message.content : message.content);
+        pendingPlayerMessage.current = messageRef;
     }
 
-    return { addMessageFromNPC, addMessageFromUser, addChat, setChatHandle, addMessagesToDb, getMessages, promptMessage }
+    return { addMessageFromNPC, addMessageFromUser, addChat, setChatHandle, getMessages, promptMessage }
 }

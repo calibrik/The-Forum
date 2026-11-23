@@ -1,0 +1,60 @@
+[
+    {
+        "id": "cyberdivers",
+        "owner": [
+            "#main_hero"
+        ],
+        "membersAmount": 215,
+        "type": "gc",
+        "imageName": "cyberdiversPfp.png",
+        "name": "Cyberdivers | Official Group Chat",
+        "initTimeDiff": -5,
+        "pregenMessages": [
+            {
+                "messageRef": 1,
+                "timeDiff": 0
+            },
+            {
+                "messageRef": 2,
+                "timeDiff": 0
+            },
+            {
+                "messageRef": 3,
+                "timeDiff": 1
+            },
+            {
+                "messageRef": 4,
+                "timeDiff": 1
+            },
+            {
+                "messageRef": 5,
+                "timeDiff": 1
+            },
+            {
+                "messageRef": 6,
+                "timeDiff": 2
+            },
+            {
+                "messageRef": 7,
+                "timeDiff": 2
+            },
+            {
+                "messageRef": 8,
+                "timeDiff": 3
+            },
+            {
+                "messageRef": 9,
+                "timeDiff": 4
+            },
+            {
+                "messageRef": 10,
+                "timeDiff": 4
+            },
+            {
+                "messageRef": 11,
+                "timeDiff": 5
+            }
+        ],
+        "isRead": false
+    }
+]

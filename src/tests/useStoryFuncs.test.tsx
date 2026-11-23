@@ -141,15 +141,16 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
+            await db.messages.put({ id: 2, from: "npc", content: "hello", chatId: "cyberdivers", timeSent: new Date(0), isVisible: false });
             await db.story.bulkAdd([
-                { id: 1, action: { sendMessageAction: { from: "npc", content: "hello", timeToType: 0 } }, offset: ">" },
+                { id: 1, action: { sendMessageAction: { messageRef: 2, timeToType: 0 } }, offset: ">" },
             ]);
             await result.current._showStory!(1);
-            await waitFor(async () => expect(await db.storyMessagesBuffer.count()).toBe(1));
+            await waitFor(async () => expect(await db.messagesBuffer.count()).toBe(1));
             vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"));
             result.current._getLastExecutedPath!().current = undefined;
             await result.current.resetAnims();
-            expect(await db.storyMessagesBuffer.count()).toBe(0);
+            expect(await db.messagesBuffer.count()).toBe(0);
         });
         test("reset anims keeps the buffers after a navigate false step", async () => {
             const { result } = renderHook(() => useStoryFuncs(), {
@@ -159,13 +160,13 @@ describe("useStoryFuncs", () => {
             await db.story.bulkAdd([
                 { id: 1, action: { navigateAction: { dest: { where: "/post/p4", level: 2, user: "", from: { level: 2, user: "", where: "/subforum/test" } }, navigate: false } }, offset: ">" },
             ]);
-            await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
+            await db.messagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current._showStory!(1);
             await waitFor(() => expect(result.current._getLocationRef!().current).toBeDefined());
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
             result.current._getLastExecutedPath!().current = undefined;
             await result.current.resetAnims();
-            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+            expect(await db.messagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
         });
         test("reset anims keeps the buffers after a navigate true step", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -175,26 +176,26 @@ describe("useStoryFuncs", () => {
             await db.story.bulkAdd([
                 { id: 1, action: { navigateAction: { dest: { where: "/user/penis", level: 2, user: "" }, navigate: true } }, offset: ">" },
             ]);
-            await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
+            await db.messagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current!._showStory!(1);
             await waitFor(() => expect(exposedMockRouter?.state.location.pathname).toEqual("/user/penis"));
-            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+            expect(await db.messagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
         });
         test("reset anims keeps only the buffers preserved by the navigate action", async () => {
             const { result } = renderHook(() => useStoryFuncs(), {
                 wrapper: AllTheProvidersForMock
             });
             vi.stubGlobal("location", new URL("http://localhost:3000/subforum/test"));
-            await db.storyMessagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
+            await db.messagesBuffer.put({ id: 1, from: "npc", content: "hello", timeSent: new Date(), chatId: "cyberdivers" });
             await result.current._processAction!({ navigateAction: { dest: { where: "/post/p4", level: 2, user: "" }, navigate: false } }, 10);
-            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
-            await db.storyMessagesBuffer.put({ id: 2, from: "npc", content: "bye", timeSent: new Date(), chatId: "cyberdivers" });
+            expect(await db.messagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, isPreserved: true })]);
+            await db.messagesBuffer.put({ id: 2, from: "npc", content: "bye", timeSent: new Date(), chatId: "cyberdivers" });
             vi.stubGlobal("location", new URL("http://localhost:3000/user/main_hero"));
             result.current._getLastExecutedPath!().current = undefined;
             await result.current.resetAnims();
-            expect(await db.storyMessagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, content: "hello", isPreserved: true })]);
+            expect(await db.messagesBuffer.toArray()).toEqual([expect.objectContaining({ id: 1, content: "hello", isPreserved: true })]);
             await result.current._getBuffersHook!().resetBuffers();
-            expect(await db.storyMessagesBuffer.count()).toBe(0);
+            expect(await db.messagesBuffer.count()).toBe(0);
         });
     });
 
@@ -389,9 +390,9 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             const addMessageSpy = vi.spyOn(result.current!._getChatHook!(), "addMessageFromNPC");
-            const action = { from: "npc", content: "hello", timeToType: 1 };
+            const action = { messageRef: 42, timeToType: 1 };
             await result.current!._processAction!({ sendMessageAction: action }, 10);
-            expect(addMessageSpy).toHaveBeenCalledWith("npc", "hello", 1, undefined);
+            expect(addMessageSpy).toHaveBeenCalledWith(42, 1);
         });
         test("promptMessage action", async () => {
             const { result } = renderHook(() => useStory()._getStoryHook!(), {
@@ -399,26 +400,9 @@ describe("useStoryFuncs", () => {
             });
             const storyHintSpy = vi.spyOn(result.current!._getHintHook!(), "setStoryHint");
             const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
-            await result.current!._processAction!({ promptMessageAction: { content: "test prompt" } }, 10);
+            await result.current!._processAction!({ promptMessageAction: { messageRef: 5 } }, 10);
             expect(storyHintSpy).toHaveBeenCalledWith(["chat-input", "chat-send"], false);
-            expect(promptSpy).toHaveBeenCalledWith("test prompt");
-        });
-        test("promptMessage action (isLink)", async () => {
-            const { result } = renderHook(() => useStory()._getStoryHook!(), {
-                wrapper: AllTheProvidersForMock
-            });
-            vi.stubGlobal("location", new URL("http://localhost:3000/post/p5"));
-            const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
-            await result.current!._processAction!({ promptMessageAction: { content: "/post/fake", isLink: true } }, 10);
-            expect(promptSpy).toHaveBeenCalledWith("http://localhost:3000/post/fake");
-        });
-        test("promptMessage action (isLink false)", async () => {
-            const { result } = renderHook(() => useStory()._getStoryHook!(), {
-                wrapper: AllTheProvidersForMock
-            });
-            const promptSpy = vi.spyOn(result.current!._getChatHook!(), "promptMessage");
-            await result.current!._processAction!({ promptMessageAction: { content: "test prompt", isLink: false } }, 10);
-            expect(promptSpy).toHaveBeenCalledWith("test prompt");
+            expect(promptSpy).toHaveBeenCalledWith(5);
         });
     });
 
@@ -874,7 +858,11 @@ describe("useStoryFuncs", () => {
             expect(scriptlinesAfter.find(s => s.storyline?.content === `I am ${newNick}.`)).toBeDefined();
             expect(scriptlinesAfter.find(s => s.action?.navigateAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
             expect(scriptlinesAfter.find(s => s.action?.saveAction?.dest?.where === `/user/${newNick}`)).toBeDefined();
-            expect(scriptlinesAfter.find(s => s.addParallelExec?.name === "zeroNews")?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.from).toBe("clanker_oil_stain");
+            expect(scriptlinesAfter.find(s => s.addParallelExec?.name === "zeroNews")?.addParallelExec?.branches[0][0]?.action?.sendMessageAction?.messageRef).toBeDefined();
+
+            const messagesAfter = await db.messages.toArray();
+            expect(messagesAfter.find(m => m.from === newNick && m.content === "what's up")).toBeDefined();
+            expect(messagesAfter.find(m => m.from === "#main_hero")).toBeUndefined();
 
             const usersAfter = await db.users.toArray();
             expect(usersAfter.find(u => u.savedStoryId != undefined)?.nickname).toBe(newNick);
@@ -882,7 +870,9 @@ describe("useStoryFuncs", () => {
 
             const chatsAfter = await db.chats.toArray();
             expect(chatsAfter.find(c => c.id === "cyberdivers")?.owner).toEqual([newNick]);
-            expect(chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0].from).toBe(`pinchIt`);
+            const pregen = chatsAfter.find(c => c.id === "cyberdivers")?.pregenMessages[0];
+            expect(pregen?.messageRef).toBe(1);
+            expect((await db.messages.get(pregen!.messageRef))?.from).toBe(`pinchIt`);
 
             const subforumsAfter = await db.subforums.toArray();
             expect(subforumsAfter.find(s => s.id === 1)?.admin).toBe("john_cyberdiverO7");
@@ -914,14 +904,15 @@ describe("useStoryFuncs", () => {
                 wrapper: AllTheProvidersForMock
             });
             await result.current!._customizeStory!("FirstHero");
-            const counts = await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count()]);
+            const counts = await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count(), db.messages.count()]);
 
             await Promise.all([
                 db.story.put({ id: 9999, offset: ">" }),
                 db.users.put({ id: 9999, nickname: "ghost" }),
                 db.posts.put({ id: "ghost", author: "ghost", subforum: "cyberdivers", title: "ghost", content: "ghost", likes: 0, comments: 0, views: 0, commentsDetailed: [], dateCreated: new Date() }),
                 db.subforums.put({ id: 9999, name: "ghost", followers: 0, description: "ghost", imageName: "ghost", admin: "ghost", mods: [], members: ["ghost"] }),
-                db.chats.put({ id: "ghost", owner: ["ghost"], type: "gc", pregenMessages: [], isRead: false, initTimeDiff: 0 })
+                db.chats.put({ id: "ghost", owner: ["ghost"], type: "gc", pregenMessages: [], isRead: false, initTimeDiff: 0 }),
+                db.messages.put({ id: 9999, from: "ghost", content: "ghost", chatId: "ghost", timeSent: new Date(), isVisible: false })
             ]);
             await result.current!._customizeStory!("SecondHero");
 
@@ -930,11 +921,12 @@ describe("useStoryFuncs", () => {
             expect(await db.posts.where("author").equals("ghost").count()).toBe(0);
             expect(await db.subforums.where("name").equals("ghost").count()).toBe(0);
             expect(await db.chats.where("owner").equals("ghost").count()).toBe(0);
-            expect(await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count()])).toEqual(counts);
+            expect(await db.messages.where("id").equals(9999).count()).toBe(0);
+            expect(await Promise.all([db.story.count(), db.users.count(), db.posts.count(), db.subforums.count(), db.chats.count(), db.messages.count()])).toEqual(counts);
         });
     });
     describe("createUser", () => {
-        test("createUser should update user, clear story messages, and populate chat messages", async () => {
+        test("createUser should update user, reset messages, and make pregen messages visible", async () => {
             const { result } = renderHook(() => ({
                 storyFuncs: useStory()._getStoryHook!(),
             }), {
@@ -947,23 +939,23 @@ describe("useStoryFuncs", () => {
             const customizeStorySpy = vi.spyOn(bridge, 'exec');
             const collectionProto = Object.getPrototypeOf(db.users.where("savedStoryId").aboveOrEqual(0));
             const dbUsersModifySpy = vi.spyOn(collectionProto, "modify");
-            const dbStoryMessagesClearSpy = vi.spyOn(db.storyMessages, "clear");
-            const chatAddMessagesToDbSpy = vi.spyOn(result.current.storyFuncs!._getChatHook!(), 'addMessagesToDb');
+            const dbMessagesClearSpy = vi.spyOn(db.messages, "clear");
 
             vi.useFakeTimers({ toFake: ['Date'] });
             const createdAt = new Date();
             await result.current.storyFuncs!.createUser(newNickname, newPassword);
             expect(customizeStorySpy).toHaveBeenCalledWith(result.current.storyFuncs!._customizeStory, newNickname);
-            expect(dbUsersModifySpy).toHaveBeenCalledWith({ password: newPassword, savedStoryId: 1 });
-            expect(dbStoryMessagesClearSpy).toHaveBeenCalled();
-            const chatsAmount = await db.chats.count();
-            expect(chatAddMessagesToDbSpy).toHaveBeenCalledTimes(chatsAmount);
+            expect(dbMessagesClearSpy).toHaveBeenCalled();
 
-            const message = await db.storyMessages.where("chatId").equals("cyberdivers").first();
             const chat = await db.chats.where("id").equals("cyberdivers").first();
+            const pregen = chat!.pregenMessages[0];
+            const message = await db.messages.get(pregen.messageRef);
             const expectedDate = new Date(createdAt)
-            expectedDate.setMinutes(createdAt.getMinutes() + chat!.initTimeDiff + chat!.pregenMessages[0].timeDiff);
+            expectedDate.setMinutes(createdAt.getMinutes() + chat!.initTimeDiff + pregen.timeDiff);
             expect(message!.timeSent).toEqual(expectedDate);
+            expect(message!.isVisible).toBe(true);
+            expect(await db.messages.filter((m) => !m.isVisible).count()).toBeGreaterThan(0);
+            expect(dbUsersModifySpy).toHaveBeenCalledWith({ password: newPassword, savedStoryId: 1 });
         });
     });
 });

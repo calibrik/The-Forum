@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useLocation, useNavigate } from "react-router";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, mapPosts, seedTables, type IAction, type IDestination, type IEffectsOptions, type IMessage, type IScriptLine } from "../misc/db";
+import { db, mapPosts, seedTables, type IAction, type IDestination, type IEffectsOptions, type IPost, type IScriptLine } from "../misc/db";
 import { bridge } from "../misc/utils";
 import { useUserState } from "../providers/UserAuth";
 import { useBuffers } from "./useBuffers";
@@ -244,14 +244,14 @@ export function useStoryFuncs() {
             hintFunc.setStoryHint(action.hintAction.ids)
         }
         if (action.sendMessageAction) {
-            chatFunc.addMessageFromNPC(action.sendMessageAction.from, action.sendMessageAction.content, action.sendMessageAction.timeToType, action.sendMessageAction.isReplyDiff);
+            chatFunc.addMessageFromNPC(action.sendMessageAction.messageRef, action.sendMessageAction.timeToType);
         }
         if (action.addNewChat) {
             await chatFunc.addChat(action.addNewChat.id, action.addNewChat.owner, action.addNewChat.type);
         }
         if (action.addPosts) {
-            const existing = [...(await db.postsBuffer.toArray()), ...(await db.posts.toArray())];
-            await db.postsBuffer.bulkPut(mapPosts(action.addPosts.posts, existing.length + 1));
+            const posts = (await db.posts.bulkGet(action.addPosts.postRefs)).filter((p): p is IPost => p != undefined);
+            await db.postsBuffer.bulkPut(mapPosts(posts.map((p) => ({ ...p, isVisible: true }))));
         }
         if (action.addPasswordFor) {
             const { nickname, password } = action.addPasswordFor;
@@ -273,8 +273,7 @@ export function useStoryFuncs() {
         }
         if (action.promptMessageAction) {
             hintFunc.setStoryHint(["chat-input", "chat-send"], false)
-            const { content, isLink } = action.promptMessageAction;
-            chatFunc.promptMessage(isLink ? window.location.origin + content : content);
+            await chatFunc.promptMessage(action.promptMessageAction.messageRef);
         }
         if (action.setShowPlaceholdersAction) {
             loginFunc.setShowPlaceholders(action.setShowPlaceholdersAction.field, action.setShowPlaceholdersAction.show);
@@ -384,7 +383,7 @@ export function useStoryFuncs() {
     }
 
     async function customizeStory(nickname: string) {
-        await seedTables(nickname);
+        await seedTables(nickname, locale);
     }
 
     function addScriptlineToTimeline(scl: IScriptLine, tl: gsap.core.Timeline) {
@@ -519,27 +518,20 @@ export function useStoryFuncs() {
 
     async function createUser(nickname: string, password: string) {
         await bridge.exec(customizeStory, nickname);
-        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 1 });//1 is orig
-        await db.storyMessages.clear();
+        await db.users.where("savedStoryId").aboveOrEqual(0).modify({ password: password, savedStoryId: 46 });//1 is orig
         const createdAt = new Date();
-        let chats = await db.chats.toArray();
-        for (let chat of chats) {
+        const chats = await db.chats.toArray();
+        for (const chat of chats) {
             const chatTime = new Date(createdAt);
             chatTime.setMinutes(chatTime.getMinutes() + chat.initTimeDiff);
-            let msgs: IMessage[] = [];
-            for (let i = 0; i < chat.pregenMessages.length; i++) {
-                const msg: IMessage = {
-                    id: i + 1,
-                    from: chat.pregenMessages[i].from,
-                    content: chat.pregenMessages[i].content,
-                    timeSent: new Date(chatTime),
-                    chatId: chat.id,
-                    isReply: chat.pregenMessages[i].isReply
-                }
-                msg.timeSent.setMinutes(msg.timeSent.getMinutes() + chat.pregenMessages[i].timeDiff);
-                msgs.push(msg);
+            for (const pregen of chat.pregenMessages) {
+                const message = await db.messages.get(pregen.messageRef);
+                if (!message)
+                    continue;
+                const timeSent = new Date(chatTime);
+                timeSent.setMinutes(timeSent.getMinutes() + pregen.timeDiff);
+                await db.messages.put({ ...message, timeSent: timeSent, isVisible: true });
             }
-            chatFunc.addMessagesToDb(msgs);
         }
     }
 

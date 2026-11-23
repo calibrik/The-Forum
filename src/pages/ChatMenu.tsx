@@ -36,6 +36,8 @@ const Dialog: FC<IDialogProps> = (props) => {
         init();
     }, []);
 
+    const lastMessageContent = lastMessage?.isLink ? window.location.origin + lastMessage.content : lastMessage?.content;
+
     return (
         <div onClick={onClick} id={props.chat.id} className={styles.dialog}>
             <img src={getImageUrl(props.chat.imageName ?? "placeholder.png")} alt="" className={styles.pfp} />
@@ -44,7 +46,7 @@ const Dialog: FC<IDialogProps> = (props) => {
                 {lastMessage ?
                     <div className={styles.lastMessageDiv}>
                         {props.chat.isRead ? "" : <Dot className={styles.dot} />}
-                        <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from ?? ""}: </span>{lastMessage?.content ?? ""}</p>
+                        <p className={`${styles.lastMessage} ${props.chat.isRead ? styles.read : ""}`}><span className={styles.from}>{lastMessage?.from ?? ""}: </span>{lastMessageContent ?? ""}</p>
                     </div>
                     : ""}
             </div>

@@ -18,7 +18,14 @@ export const UserPosts: FC<IUserPostsProps> = (_) => {
             db.postsBuffer.where("author").equals(username ?? "").toArray(),
             db.posts.where("author").equals(username ?? "").toArray()
         ]);
-        setPosts([...buffered, ...saved].sort((a, b) => b.dateCreated.getTime() - a.dateCreated.getTime()));
+        const postsMap = new Map<string, IPost>();
+        for (const post of saved) {
+            if (post.isVisible !== false)
+                postsMap.set(post.id, post);
+        }
+        for (const post of buffered)
+            postsMap.set(post.id, post);
+        setPosts(Array.from(postsMap.values()).sort((a, b) => b.dateCreated.getTime() - a.dateCreated.getTime()));
     }
 
     useEffect(()=>{

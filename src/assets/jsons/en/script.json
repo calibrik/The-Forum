@@ -497,7 +497,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "what's up"
+                "messageRef": 12
             }
         },
         "isActionAwait": true,
@@ -528,8 +528,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "pinchIt",
-                                "content": "bro it’s this mf again",
+                                "messageRef": 13,
                                 "timeToType": 2
                             }
                         },
@@ -538,8 +537,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "MironYanch",
-                                "content": "u dumb fuck, we lost a contract cuz of u",
+                                "messageRef": 14,
                                 "timeToType": 3
                             }
                         },
@@ -548,9 +546,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "caffeine_up_the_ass",
-                                "content": "did u finally learn how to play?",
-                                "isReplyDiff": -3,
+                                "messageRef": 15,
                                 "timeToType": 2.8
                             }
                         },
@@ -559,8 +555,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "musky_diver",
-                                "content": "go fuck urself, u killed me like 10 times, cunt",
+                                "messageRef": 16,
                                 "timeToType": 3.2
                             }
                         },
@@ -569,8 +564,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "do_not_the_dog",
-                                "content": "mf is acting like nothing happened, go fuck urself",
+                                "messageRef": 17,
                                 "timeToType": 3.5
                             }
                         },
@@ -579,8 +573,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "ink_and_iron",
-                                "content": "bro that last contract was painful to watch, u brought like the worst guns for bugs, shit wasn’t even close lmao",
+                                "messageRef": 18,
                                 "timeToType": 6
                             }
                         },
@@ -589,8 +582,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Sinius",
-                                "content": "bro was speedrunning the contract failure",
+                                "messageRef": 19,
                                 "timeToType": 3
                             }
                         },
@@ -599,8 +591,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "SmoothOperator",
-                                "content": "this noob ass was bragging about his skill so much and couldn’t even clear a squid repository, bruuuh",
+                                "messageRef": 20,
                                 "timeToType": 5.5
                             }
                         },
@@ -609,9 +600,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "DarkSolace",
-                                "content": "secondhand embarrassment from watching u play was insane, I’d actually kms if I were you",
-                                "isReplyDiff": -9,
+                                "messageRef": 21,
                                 "timeToType": 5
                             }
                         },
@@ -620,10 +609,8 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "clanker_oil_stain",
-                                "content": "that’s crazy lmao",
-                                "timeToType": 2,
-                                "isReplyDiff": -1
+                                "messageRef": 22,
+                                "timeToType": 2
                             }
                         },
                         "offset": "+=5.5"
@@ -676,8 +663,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "DarkSolace",
-                                "content": "ain’t no one fucking with this dude, kick his ass out of here",
+                                "messageRef": 23,
                                 "timeToType": 4
                             }
                         },
@@ -748,8 +734,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "clanker_oil_stain",
-                                "content": "yo, y'all seen the news about delayed zero dlc?",
+                                "messageRef": 24,
                                 "timeToType": 3.5
                             }
                         },
@@ -758,8 +743,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "MironYanch",
-                                "content": "yeah, Spearhead can't make the new content even for zero lol",
+                                "messageRef": 25,
                                 "timeToType": 4
                             }
                         },
@@ -768,8 +752,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "caffeine_up_the_ass",
-                                "content": "Zero the game? More like zero dlc",
+                                "messageRef": 26,
                                 "timeToType": 3
                             }
                         },
@@ -778,9 +761,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "musky_diver",
-                                "content": "I will pay u not to joke ever again",
-                                "isReplyDiff": -1,
+                                "messageRef": 27,
                                 "timeToType": 3
                             }
                         },
@@ -789,9 +770,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "do_not_the_dog",
-                                "content": "holy cornball",
-                                "isReplyDiff": -2,
+                                "messageRef": 28,
                                 "timeToType": 1.5
                             }
                         },
@@ -800,9 +779,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "ink_and_iron",
-                                "content": "fuck yeah, at least that means that finally spearhead heard us and making smth new for cyberdivers",
-                                "isReplyDiff": -4,
+                                "messageRef": 29,
                                 "timeToType": 5.5
                             }
                         },
@@ -811,9 +788,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Sinius",
-                                "content": "this absolutely does not mean that bruh, they just can't do shit",
-                                "isReplyDiff": -1,
+                                "messageRef": 30,
                                 "timeToType": 4
                             }
                         },
@@ -822,8 +797,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Three_Squids_In_A_Suit",
-                                "content": "zero fans are in shambles rn",
+                                "messageRef": 31,
                                 "timeToType": 2.5
                             }
                         },
@@ -832,9 +806,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "SmoothOperator",
-                                "content": "maybe we will finally get an ak 4.7.0 buff",
-                                "isReplyDiff": -3,
+                                "messageRef": 32,
                                 "timeToType": 3
                             }
                         },
@@ -843,9 +815,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buzzzzz09",
-                                "content": "ak 4.7.0 is already op, u just don't know how to play with it, I can easily clear bugs source solo with it, maybe with vibe strike stratagem.",
-                                "isReplyDiff": -1,
+                                "messageRef": 33,
                                 "timeToType": 7.5
                             }
                         },
@@ -854,8 +824,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "DarkSolace",
-                                "content": "vibe strike sets ur teammates on fire, it's the worst stratagem in the game, unless u r retarded ofc",
+                                "messageRef": 34,
                                 "timeToType": 5.5
                             }
                         },
@@ -864,8 +833,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buzzzzz09",
-                                "content": "maybe don’t be a moron and don’t stand right next to it next time, might help idk",
+                                "messageRef": 35,
                                 "timeToType": 5
                             }
                         },
@@ -874,9 +842,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buzzzzz09",
-                                "content": "point is, if u can’t use ak 4.7.0 properly, it’s still a skill issue",
-                                "isReplyDiff": -4,
+                                "messageRef": 36,
                                 "timeToType": 4
                             }
                         },
@@ -1798,7 +1764,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "I'm gonna hack zero sub"
+                "messageRef": 37
             }
         },
         "isActionAwait": true,
@@ -1829,8 +1795,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "caffeine_up_the_ass",
-                                "content": "lmao what",
+                                "messageRef": 38,
                                 "timeToType": 2
                             }
                         },
@@ -1839,8 +1804,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "musky_diver",
-                                "content": "AHAHAHAH",
+                                "messageRef": 39,
                                 "timeToType": 2
                             }
                         },
@@ -1849,8 +1813,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buggedFeature",
-                                "content": "AHAHAHAHAHAHA",
+                                "messageRef": 40,
                                 "timeToType": 1.5
                             }
                         },
@@ -1859,8 +1822,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buzzzzz09",
-                                "content": "ahahahah",
+                                "messageRef": 41,
                                 "timeToType": 1.5
                             }
                         },
@@ -1869,8 +1831,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "do_not_the_dog",
-                                "content": "calm down, Mr. Robot",
+                                "messageRef": 42,
                                 "timeToType": 3
                             }
                         },
@@ -1879,8 +1840,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "ink_and_iron",
-                                "content": "u can't even use a keyboard son fym hack",
+                                "messageRef": 43,
                                 "timeToType": 3.5
                             }
                         },
@@ -1889,8 +1849,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Sinius",
-                                "content": "r u 13?",
+                                "messageRef": 44,
                                 "timeToType": 2
                             }
                         },
@@ -1899,8 +1858,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "SmoothOperator",
-                                "content": "are we deadass lmao",
+                                "messageRef": 45,
                                 "timeToType": 3
                             }
                         },
@@ -1909,8 +1867,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "DarkSolace",
-                                "content": "AHAHAH",
+                                "messageRef": 46,
                                 "timeToType": 2
                             }
                         },
@@ -1924,7 +1881,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "nah y'all will see, I actually can do it"
+                "messageRef": 47
             }
         },
         "isActionAwait": true,
@@ -1934,8 +1891,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "musky_diver",
-                "content": "brochacho stfu",
+                "messageRef": 48,
                 "timeToType": 2
             }
         },
@@ -1944,8 +1900,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "ink_and_iron",
-                "content": "im crying wtf are u talking about lmaooo",
+                "messageRef": 49,
                 "timeToType": 3
             }
         },
@@ -1954,10 +1909,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "u r like in the top 10 worst cyberdivers oat and u r saying u can hack anything? Bruh wtf",
-                "timeToType": 4.5,
-                "isReplyDiff": -3
+                "messageRef": 50,
+                "timeToType": 4.5
             }
         },
         "offset": "+=0.5"
@@ -1965,8 +1918,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "instant cyberdivers classic",
+                "messageRef": 51,
                 "timeToType": 2.5
             }
         },
@@ -1975,10 +1927,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "buzzzzz09",
-                "content": "son",
-                "timeToType": 1.5,
-                "isReplyDiff": -5
+                "messageRef": 52,
+                "timeToType": 1.5
             }
         },
         "offset": "+=0.1"
@@ -1986,10 +1936,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "bro is a poser lmao, proly doesn't even know what sqli is lol",
-                "timeToType": 5,
-                "isReplyDiff": -6
+                "messageRef": 53,
+                "timeToType": 5
             }
         },
         "offset": "+=0.5"
@@ -3749,8 +3697,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "/post/fake",
-                "isLink": true
+                "messageRef": 54
             }
         },
         "isActionAwait": true,
@@ -3760,8 +3707,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "?",
+                "messageRef": 55,
                 "timeToType": 2
             }
         },
@@ -3784,7 +3730,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "it's the post from ur sub"
+                "messageRef": 56
             }
         },
         "isActionAwait": true,
@@ -3794,7 +3740,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "I'm reporting it"
+                "messageRef": 57
             }
         },
         "isActionAwait": true,
@@ -3804,7 +3750,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "like a good forumer"
+                "messageRef": 58
             }
         },
         "isActionAwait": true,
@@ -3837,8 +3783,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "uhhh ok, let me look at it",
+                "messageRef": 59,
                 "timeToType": 3
             }
         },
@@ -4195,8 +4140,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "yeah, I deleted the post, but something weird is going on, I can't even find the \"fake_op\" on The Forum to ban him from the sub.",
+                "messageRef": 60,
                 "timeToType": 6
             }
         },
@@ -4321,7 +4265,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "uhhh idk, this user shows as deleted to me already."
+                "messageRef": 61
             }
         },
         "isActionAwait": true,
@@ -4331,7 +4275,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "maybe The Forum admins already banned this guy, but website cache doesn't reflect it yet."
+                "messageRef": 62
             }
         },
         "isActionAwait": true,
@@ -4341,7 +4285,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "yk the forum is really buggy sometimes."
+                "messageRef": 63
             }
         },
         "isActionAwait": true,
@@ -4351,8 +4295,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "yeah, right",
+                "messageRef": 64,
                 "timeToType": 2
             }
         },
@@ -4361,8 +4304,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "strangely enough, website was super laggy, when I was deleting that post",
+                "messageRef": 65,
                 "timeToType": 5
             }
         },
@@ -4403,8 +4345,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sillygoose228",
-                "content": "yeah, it's probably nothing",
+                "messageRef": 66,
                 "timeToType": 27
             }
         },
@@ -4627,7 +4568,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "for sure"
+                "messageRef": 67
             }
         },
         "isActionAwait": true,
@@ -4852,8 +4793,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "musky_diver",
-                "content": "bro ts is just too funny",
+                "messageRef": 68,
                 "timeToType": 2.5
             }
         },
@@ -4862,8 +4802,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "can we ban this mom's hacker bro",
+                "messageRef": 69,
                 "timeToType": 3.5
             }
         },
@@ -4872,10 +4811,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sinius",
-                "content": "just stop giving attention to his clown ass",
-                "timeToType": 4,
-                "isReplyDiff": -1
+                "messageRef": 70,
+                "timeToType": 4
             }
         },
         "offset": "+=4"
@@ -4883,8 +4820,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sinius",
-                "content": "he is actually retarded idk",
+                "messageRef": 71,
                 "timeToType": 2
             }
         },
@@ -4893,7 +4829,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "I hacked the zero sub"
+                "messageRef": 72
             }
         },
         "isActionAwait": true,
@@ -4903,7 +4839,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "check the admins"
+                "messageRef": 73
             }
         },
         "isActionAwait": true,
@@ -4913,8 +4849,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "pinchIt",
-                "content": "what the fuck, it’s real",
+                "messageRef": 74,
                 "timeToType": 2.5
             }
         },
@@ -4923,8 +4858,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "MironYanch",
-                "content": "no fucking way",
+                "messageRef": 75,
                 "timeToType": 2
             }
         },
@@ -4933,8 +4867,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "caffeine_up_the_ass",
-                "content": "no way",
+                "messageRef": 76,
                 "timeToType": 1.5
             }
         },
@@ -4943,8 +4876,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "musky_diver",
-                "content": "you’re crazy son of a bitch, you actually did it",
+                "messageRef": 77,
                 "timeToType": 3
             }
         },
@@ -4953,8 +4885,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "what the fuck? How",
+                "messageRef": 78,
                 "timeToType": 2.5
             }
         },
@@ -4963,8 +4894,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "ink_and_iron",
-                "content": "fucking legend",
+                "messageRef": 79,
                 "timeToType": 1.8
             }
         },
@@ -4973,8 +4903,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "DarkSolace",
-                "content": "how the fuck did u do that",
+                "messageRef": 80,
                 "timeToType": 2.8
             }
         },
@@ -4983,8 +4912,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sinius",
-                "content": "lmao what",
+                "messageRef": 81,
                 "timeToType": 1.5
             }
         },
@@ -4993,8 +4921,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "SmoothOperator",
-                "content": "of all people it’s @#main_hero who did that lmaooo",
+                "messageRef": 82,
                 "timeToType": 4
             }
         },
@@ -5003,7 +4930,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "fuck yeah, it was me, just simple phishing and social engineering"
+                "messageRef": 83
             }
         },
         "isActionAwait": true,
@@ -5013,7 +4940,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "we can do whatever we want with it now, cuz I own the sub"
+                "messageRef": 84
             }
         },
         "isActionAwait": true,
@@ -5023,8 +4950,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "musky_diver",
-                "content": "imma start posting there lol",
+                "messageRef": 85,
                 "timeToType": 3
             }
         },
@@ -5047,8 +4973,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "fuck yeah, join in",
+                "messageRef": 86,
                 "timeToType": 2
             }
         },
@@ -5057,8 +4982,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "ink_and_iron",
-                "content": "omw",
+                "messageRef": 87,
                 "timeToType": 1.2
             }
         },
@@ -5067,8 +4991,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Sinius",
-                "content": "alr why not",
+                "messageRef": 88,
                 "timeToType": 1.8
             }
         },
@@ -5077,8 +5000,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "DarkSolace",
-                "content": "hell yeah lmao",
+                "messageRef": 89,
                 "timeToType": 2
             }
         },
@@ -5101,97 +5023,17 @@
     {
         "action": {
             "addPosts": {
-                "posts": [
-                    {
-                        "author": "Statue_of_a_Trash_Bin",
-                        "subforum": "zero",
-                        "title": "[ANNOUNCEMENT] This sub has been taken over.",
-                        "content": "They demoted every single one of us and stole the sub from u/Sillygoose228 by supposedly stealing his account. We are working with The Forum support right now to regain control of the sub.\n\nDon't engage with the raiders, just report everything and wait for The Forum admins to step in.",
-                        "likes": 812,
-                        "comments": 96,
-                        "views": 41233
-                    },
-                    {
-                        "author": "ghost_in_the_submarine",
-                        "subforum": "zero",
-                        "title": "What the fuck is happening here??",
-                        "content": "Why is the whole sub filled with spam all of a sudden? Did someone get hacked? Where did all the mods go?",
-                        "likes": 344,
-                        "comments": 58,
-                        "views": 12890
-                    },
-                    {
-                        "author": "pinchIt",
-                        "subforum": "zero",
-                        "title": "suck my dick",
-                        "content": "zero sub is ours now",
-                        "likes": 12,
-                        "comments": 3,
-                        "views": 642
-                    },
-                    {
-                        "author": "MironYanch",
-                        "subforum": "zero",
-                        "title": "cyberdivers send their regards",
-                        "content": "zero is a trash game, shouldn't have existed to begin with.",
-                        "likes": 8,
-                        "comments": 1,
-                        "views": 511
-                    },
-                    {
-                        "author": "musky_diver",
-                        "subforum": "zero",
-                        "title": "zero suck balls",
-                        "content": "should've been playing cyberdivers",
-                        "likes": 5,
-                        "comments": 0,
-                        "views": 402
-                    },
-                    {
-                        "author": "do_not_the_dog",
-                        "subforum": "zero",
-                        "title": "DICK DICK DICK DICK DICK DICK DICK DICK DICK",
-                        "content": "there are no mods left lmaooo",
-                        "likes": 9,
-                        "comments": 2,
-                        "views": 388
-                    },
-                    {
-                        "author": "ink_and_iron",
-                        "subforum": "zero",
-                        "title": "fuck zero, dogshit game, dogshit community, cyberdivers is so much better",
-                        "content": "zero is a walking simulator with a story you can find in any mid ass anime, and you all cried at it",
-                        "likes": 3,
-                        "comments": 4,
-                        "views": 355
-                    },
-                    {
-                        "author": "Sinius",
-                        "subforum": "zero",
-                        "title": "ts is so funny",
-                        "content": "never seen this sub in my life, just came here to witness the chaos",
-                        "likes": 6,
-                        "comments": 0,
-                        "views": 298
-                    },
-                    {
-                        "author": "clanker_oil_stain",
-                        "subforum": "zero",
-                        "title": "divers > zero",
-                        "content": "change my mind",
-                        "likes": 4,
-                        "comments": 1,
-                        "views": 274
-                    },
-                    {
-                        "author": "DarkSolace",
-                        "subforum": "zero",
-                        "title": "LMAO",
-                        "content": "I've never seen a sub being destroyed like that, rip lol",
-                        "likes": 20,
-                        "comments": 0,
-                        "views": 233
-                    }
+                "postRefs": [
+                    "p7",
+                    "p8",
+                    "p9",
+                    "p10",
+                    "p11",
+                    "p12",
+                    "p13",
+                    "p14",
+                    "p15",
+                    "p16"
                 ]
             }
         },
@@ -5302,8 +5144,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "nah ts is instant cyberdivers classic",
+                "messageRef": 90,
                 "timeToType": 3
             }
         },
@@ -5312,7 +5153,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "Ikr?"
+                "messageRef": 91
             }
         },
         "isActionAwait": true,
@@ -5322,7 +5163,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "Im fucking legendary for ts, idc what y’all say"
+                "messageRef": 92
             }
         },
         "isActionAwait": true,
@@ -5332,8 +5173,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "MironYanch",
-                "content": "lowk yeah",
+                "messageRef": 93,
                 "timeToType": 1.5
             }
         },
@@ -5342,8 +5182,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "caffeine_up_the_ass",
-                "content": "inducted in cyberdivers hall of fame",
+                "messageRef": 94,
                 "timeToType": 3
             }
         },
@@ -5352,8 +5191,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "musky_diver",
-                "content": "can we make him a mod please mods?",
+                "messageRef": 95,
                 "timeToType": 3
             }
         },
@@ -5362,8 +5200,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "bruh, all he did is just vibe coded some slop and somehow tricked sillygoose228 into clicking on his bullshit",
+                "messageRef": 96,
                 "timeToType": 6.5
             }
         },
@@ -5372,8 +5209,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "and now he yaps around how it is his big accomplishment",
+                "messageRef": 97,
                 "timeToType": 4.5
             }
         },
@@ -5382,8 +5218,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "like we get it bro, u r hot shit now, but like calm down, shit is not that deep",
+                "messageRef": 98,
                 "timeToType": 4.5
             }
         },
@@ -5392,10 +5227,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "ain't no one gonna give him a mod for this, get a grip, and a life optionally",
-                "timeToType": 4.5,
-                "isReplyDiff": -4
+                "messageRef": 99,
+                "timeToType": 4.5
             }
         },
         "offset": "+=5"
@@ -5403,8 +5236,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Three_Squids_In_A_Suit",
-                "content": "yeah, can we get a move on from this?",
+                "messageRef": 100,
                 "timeToType": 3
             }
         },
@@ -5413,8 +5245,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "MironYanch",
-                "content": "dude he stole an entire subreddit",
+                "messageRef": 101,
                 "timeToType": 3
             }
         },
@@ -5423,8 +5254,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Three_Squids_In_A_Suit",
-                "content": "so what? I need to suck his dick for it?",
+                "messageRef": 102,
                 "timeToType": 3.5
             }
         },
@@ -5433,8 +5263,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Three_Squids_In_A_Suit",
-                "content": "hacking was cringe back when I was 12",
+                "messageRef": 103,
                 "timeToType": 3.5
             }
         },
@@ -5443,8 +5272,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "MironYanch",
-                "content": "big deal, u r like 13 now",
+                "messageRef": 104,
                 "timeToType": 2.5
             }
         },
@@ -5453,8 +5281,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Three_Squids_In_A_Suit",
-                "content": "eat shit",
+                "messageRef": 105,
                 "timeToType": 1.5
             }
         },
@@ -5463,8 +5290,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "SmoothOperator",
-                "content": "yeah, it was fun, but it’s lowk cringe now",
+                "messageRef": 106,
                 "timeToType": 3.5
             }
         },
@@ -5488,7 +5314,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "go fuck yourselves. Y'all were mocking me and now I singlehandedly took over an entire subforum and what did you do?"
+                "messageRef": 107
             }
         },
         "isActionAwait": true,
@@ -5498,7 +5324,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "absolutely fucking nothing, except bitching and moaning"
+                "messageRef": 108
             }
         },
         "isActionAwait": true,
@@ -5508,7 +5334,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "y'all r just jealous of me because I actually managed to pull this off"
+                "messageRef": 109
             }
         },
         "isActionAwait": true,
@@ -5518,8 +5344,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "buzzzzz09",
-                "content": "oh wow, u hacked a subforum, so we can spam some bs on it",
+                "messageRef": 110,
                 "timeToType": 4.5
             }
         },
@@ -5528,8 +5353,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "buzzzzz09",
-                "content": "big hooray",
+                "messageRef": 111,
                 "timeToType": 1.5
             }
         },
@@ -5538,8 +5362,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "buzzzzz09",
-                "content": "are we supposed to be impressed by this?",
+                "messageRef": 112,
                 "timeToType": 3
             }
         },
@@ -5548,7 +5371,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "well yeah"
+                "messageRef": 113
             }
         },
         "isActionAwait": true,
@@ -5558,8 +5381,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "bruh u r just an unemployed friendless cringe loser who couldn’t play cyberdivers to save his life, and then suddenly u hacked some subforum and everyone is supposed to kiss the ground underneath u",
+                "messageRef": 114,
                 "timeToType": 9
             }
         },
@@ -5568,8 +5390,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "well guess what, it’s not happening",
+                "messageRef": 115,
                 "timeToType": 3
             }
         },
@@ -5578,8 +5399,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "no matter what u do, u always will be cringe",
+                "messageRef": 116,
                 "timeToType": 3.5
             }
         },
@@ -5588,8 +5408,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "pinchIt",
-                "content": "gadayum bro",
+                "messageRef": 117,
                 "timeToType": 1.8
             }
         },
@@ -5598,8 +5417,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "MironYanch",
-                "content": "that was brutal",
+                "messageRef": 118,
                 "timeToType": 2
             }
         },
@@ -5608,10 +5426,8 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "caffeine_up_the_ass",
-                "content": "holy shit, bro got roasted so hard",
-                "timeToType": 3,
-                "isReplyDiff": -5
+                "messageRef": 119,
+                "timeToType": 3
             }
         },
         "offset": "+=0.5"
@@ -5629,7 +5445,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "fuck u"
+                "messageRef": 120
             }
         },
         "isActionAwait": true,
@@ -5639,8 +5455,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "caffeine_up_the_ass",
-                "content": "me?",
+                "messageRef": 121,
                 "timeToType": 1
             }
         },
@@ -5649,8 +5464,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "fuck u, u delusional fuckwit",
+                "messageRef": 122,
                 "timeToType": 2.5
             }
         },
@@ -5659,8 +5473,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "no fuck u, u fucking twat",
+                "messageRef": 123,
                 "timeToType": 2.5
             }
         },
@@ -5669,8 +5482,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "clanker_oil_stain",
-                "content": "u called me twat? I never felt less insulted",
+                "messageRef": 124,
                 "timeToType": 3
             }
         },
@@ -5679,8 +5491,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "caffeine_up_the_ass",
-                "content": "bro wtf did I do?",
+                "messageRef": 125,
                 "timeToType": 2
             }
         },
@@ -5689,8 +5500,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "do_not_the_dog",
-                "content": "fuck u",
+                "messageRef": 126,
                 "timeToType": 1
             }
         },
@@ -5699,8 +5509,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "Roman_Roy218",
-                "content": "fuck u",
+                "messageRef": 127,
                 "timeToType": 1
             }
         },
@@ -5709,7 +5518,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "fuck u"
+                "messageRef": 128
             }
         },
         "isActionAwait": true,
@@ -5751,8 +5560,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Three_Squids_In_A_Suit",
-                                "content": "fuck u",
+                                "messageRef": 129,
                                 "timeToType": 1
                             }
                         },
@@ -5761,8 +5569,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Roman_Roy218",
-                                "content": "fuck u",
+                                "messageRef": 130,
                                 "timeToType": 1
                             }
                         },
@@ -5771,8 +5578,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "caffeine_up_the_ass",
-                                "content": "what is everyone saying fuck me for?",
+                                "messageRef": 131,
                                 "timeToType": 2
                             }
                         },
@@ -5781,8 +5587,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "clanker_oil_stain",
-                                "content": "fuck u",
+                                "messageRef": 132,
                                 "timeToType": 1
                             }
                         },
@@ -5791,8 +5596,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "MironYanch",
-                                "content": "fuck u",
+                                "messageRef": 133,
                                 "timeToType": 1
                             }
                         },
@@ -5801,8 +5605,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "musky_diver",
-                                "content": "fuck u",
+                                "messageRef": 134,
                                 "timeToType": 1
                             }
                         },
@@ -5811,8 +5614,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "do_not_the_dog",
-                                "content": "fuck u",
+                                "messageRef": 135,
                                 "timeToType": 1
                             }
                         },
@@ -5821,8 +5623,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "pinchIt",
-                                "content": "fuck u",
+                                "messageRef": 136,
                                 "timeToType": 1
                             }
                         },
@@ -5831,8 +5632,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "ink_and_iron",
-                                "content": "fuck u",
+                                "messageRef": 137,
                                 "timeToType": 1
                             }
                         },
@@ -5841,8 +5641,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "Sinius",
-                                "content": "fuck u",
+                                "messageRef": 138,
                                 "timeToType": 1
                             }
                         },
@@ -5851,8 +5650,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "SmoothOperator",
-                                "content": "fuck u",
+                                "messageRef": 139,
                                 "timeToType": 1
                             }
                         },
@@ -5861,8 +5659,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "DarkSolace",
-                                "content": "fuck u",
+                                "messageRef": 140,
                                 "timeToType": 1
                             }
                         },
@@ -5871,8 +5668,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "buzzzzz09",
-                                "content": "fuck u",
+                                "messageRef": 141,
                                 "timeToType": 1
                             }
                         },
@@ -5881,8 +5677,7 @@
                     {
                         "action": {
                             "sendMessageAction": {
-                                "from": "do_not_the_dog",
-                                "content": "fuck u",
+                                "messageRef": 142,
                                 "timeToType": 1
                             }
                         },
@@ -6120,8 +5915,7 @@
     {
         "action": {
             "sendMessageAction": {
-                "from": "john_cyberdiverO7",
-                "content": "yo @#main_hero, u do know that u can get urself banned for stealing other users accounts right?",
+                "messageRef": 143,
                 "timeToType": 6
             }
         },
@@ -6130,7 +5924,7 @@
     {
         "action": {
             "promptMessageAction": {
-                "content": "yeah of course I know"
+                "messageRef": 144
             }
         },
         "isActionAwait": true,

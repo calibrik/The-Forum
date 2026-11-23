@@ -1,11 +1,12 @@
 import { db, type IChat } from "./db";
+import type { TLocale } from "./locales";
 
 export function getImageUrl(name: string): string {
     return new URL(`../assets/images/${name}`, import.meta.url).href;
 };
 
-export function getJsonUrl(name: string): string {
-    return new URL(`../assets/jsons/${name}`, import.meta.url).href;
+export function getJsonUrl(name: string,locale:TLocale): string {
+    return new URL(`../assets/jsons/${locale}/${name}`, import.meta.url).href;
 };
 
 export function getSoundUrl(name: string): string {

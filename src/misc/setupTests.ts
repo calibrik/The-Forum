@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
 import "fake-indexeddb/auto";
 // import { indexedDB, IDBKeyRange } from 'fake-indexeddb';
-import mockUsers from "../assets/jsons/users.json";
-import mockChats from "../assets/jsons/chats.json";
-import mockPosts from "../assets/jsons/posts.json";
-import mockScript from "../assets/jsons/script.json";
-import mockSubforums from "../assets/jsons/subforums.json";
+import mockUsers from "../assets/jsons/en/users.json";
+import mockChats from "../assets/jsons/en/chats.json";
+import mockPosts from "../assets/jsons/en/posts.json";
+import mockScript from "../assets/jsons/en/script.json";
+import mockMessages from "../assets/jsons/en/messages.json";
+import mockSubforums from "../assets/jsons/en/subforums.json";
 import { afterEach, vi } from 'vitest';
 import { db } from './db.ts';
 
@@ -42,6 +43,12 @@ const globalFetchMock = vi.fn(async (url: string) => {
             ok: true,
             status: 200,
             json: async () => mockScript,
+        } as Response;
+    else if (url == "messages.json")
+        return {
+            ok: true,
+            status: 200,
+            json: async () => mockMessages,
         } as Response;
     else if (url == "subforums.json")
         return {
