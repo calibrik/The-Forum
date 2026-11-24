@@ -93,7 +93,7 @@ export const User: FC<IUserPageProps> = (_) => {
     const { setTypingBox, getTypingBoxes } = useTypingBoxes();
     const accInfoRef = useRef<IAccInfoHandle>(null);
     const { transferHints, setHintHolder } = useHintHolders();
-    const { t } = story;
+    const { t, locale } = story;
 
     function onAccLinkClick(e: React.MouseEvent) {
         e.preventDefault();
@@ -127,7 +127,7 @@ export const User: FC<IUserPageProps> = (_) => {
 
     useEffect(() => {
         bridge.exec(storyInit, 2, getTypingBoxes(), init);
-    }, [location.pathname])
+    }, [location.pathname, locale])
 
     useEffect(() => {
         if (!user)

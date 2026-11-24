@@ -3,7 +3,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useLocation, useNavigate } from "react-router";
 import type { ITypingTextBoxHandle } from "../components/TypingTextBox";
-import { db, mapPosts, seedTables, type IAction, type IDestination, type IEffectsOptions, type IPost, type IScriptLine } from "../misc/db";
+import { db, mapPosts, retranslateTables, seedTables, type IAction, type IDestination, type IEffectsOptions, type IPost, type IScriptLine } from "../misc/db";
+import { translate, type TLocale } from "../misc/locales";
 import { bridge } from "../misc/utils";
 import { useUserState } from "../providers/UserAuth";
 import { useBuffers } from "./useBuffers";
@@ -591,6 +592,30 @@ export function useStoryFuncs() {
         return locationRef.current?.user;
     }
 
+    async function changeLocale(next: TLocale) {
+        const player = await db.users.where("savedStoryId").above(0).first();
+        if (!player) {
+            setLocale(next);
+            return;
+        }
+        window.dispatchEvent(new Event("translationStart"));
+        try {
+            await retranslateTables(next, player.nickname);
+            if (userState.isRealLoggedIn.current) {
+                const scl = await db.story.get(pageStoryId.current - 1);
+                let navScl=scl;
+                if (scl?.action?.saveAction?.lastNavPos)
+                    navScl=await db.story.get(scl.id+scl.action.saveAction.lastNavPos)
+                objectiveHints.setNavHint(navScl?.hint ?? translate(next, "story.navHintFallback"));
+                objectiveHints.showNavHint();
+            }
+        }
+        finally {
+            window.dispatchEvent(new Event("translationEnd"));
+        }
+        setLocale(next);
+    }
+
     useEffect(() => {
         isMounted.current = true;
         return () => {
@@ -642,7 +667,7 @@ export function useStoryFuncs() {
         goForwardHint: hintFunc.goForwardHint,
         setHeaderSearch: hintFunc.setHeaderSearch,
         locale,
-        setLocale,
+        setLocale: changeLocale,
         t,
         _processAction,
         _getLocationRef,

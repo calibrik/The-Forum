@@ -1,8 +1,8 @@
-import { describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { db, seedUsers } from '../misc/db';
 import { StoryProvider, useStory } from '../providers/StoryProvider';
 import { useStoryFuncs } from '../hooks/useStoryFuncs';
-import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { AllTheProvidersForMock, exposedMockRouter } from '../App';
 import type { ITypingTextBoxHandle } from '../components/TypingTextBox';
 import gsap from 'gsap';
@@ -11,6 +11,13 @@ import { bridge } from '../misc/utils';
 import { ModalsProvider } from '../providers/Modals';
 import { Signup } from '../pages/Signup';
 import { createMemoryRouter, RouterProvider } from 'react-router';
+import mockUsers from "../assets/jsons/en/users.json";
+import mockChats from "../assets/jsons/en/chats.json";
+import mockPosts from "../assets/jsons/en/posts.json";
+import mockScript from "../assets/jsons/en/script.json";
+import mockMessages from "../assets/jsons/en/messages.json";
+import mockSubforums from "../assets/jsons/en/subforums.json";
+import { translate } from '../misc/locales';
 
 const mockTypingBox = {
     getTypingTimeline: () => gsap.timeline(),
@@ -956,6 +963,179 @@ describe("useStoryFuncs", () => {
             expect(message!.isVisible).toBe(true);
             expect(await db.messages.filter((m) => !m.isVisible).count()).toBeGreaterThan(0);
             expect(dbUsersModifySpy).toHaveBeenCalledWith({ password: newPassword, savedStoryId: 1 });
+        });
+    });
+    describe("setLocale", () => {
+        afterEach(() => {
+            localStorage.removeItem("locale");
+        });
+
+        test("changes only the locale when no user has savedStoryId > 0", async () => {
+            localStorage.removeItem("locale");
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            await db.story.put({ id: 1, storyline: { content: "custom", speed: "fast", typingBoxId: "nar1" }, offset: ">" });
+            const dispatchSpy = vi.spyOn(window, "dispatchEvent");
+
+            await act(async () => {
+                await result.current!.setLocale("ru");
+            });
+
+            expect(localStorage.getItem("locale")).toBe("ru");
+            expect(result.current!.locale).toBe("ru");
+            expect((await db.story.get(1))?.storyline?.content).toBe("custom");
+            expect(dispatchSpy.mock.calls.some((c) => (c[0] as Event).type === "translationStart")).toBe(false);
+            expect(dispatchSpy.mock.calls.some((c) => (c[0] as Event).type === "translationEnd")).toBe(false);
+        });
+
+        test("retranslates the tables, keeps runtime data and replaces the hero nickname", async () => {
+            localStorage.removeItem("locale");
+            const { result } = renderHook(() => useStory()._getStoryHook!(), {
+                wrapper: AllTheProvidersForMock
+            });
+            const nickname = "TestHero";
+            await result.current!._customizeStory!(nickname);
+
+            const markerDate = new Date("2020-01-02T03:04:05.000Z");
+            const staleScript = (await db.story.filter((s) => s.storyline?.typingBoxId === "nar1").first())!;
+            const expectedStoryContent = (mockScript as { storyline?: { content: string } }[])[staleScript.id - 1].storyline!.content;
+            const expectedMessageContent = mockMessages[0].content;
+            const expectedBufferMessageContent = mockMessages[1].content;
+            const expectedHeroDescription = (mockUsers as { nickname: string; description?: string }[]).find((u) => u.nickname === "#main_hero")!.description;
+            const expectedChatName = mockChats[0].name;
+            const expectedSubforumDescription = mockSubforums[0].description;
+            const hero = (await db.users.where("nickname").equals(nickname).first())!;
+
+            await db.users.where("nickname").equals(nickname).modify({ savedStoryId: 46, password: "pw", description: "STALE" });
+            await db.story.put({ ...staleScript, storyline: { ...staleScript.storyline!, content: "STALE" } });
+            await db.messages.put({ ...(await db.messages.get(1))!, content: "STALE", timeSent: markerDate, isVisible: true, isReply: 3 });
+            await db.posts.put({ ...(await db.posts.get("p1"))!, title: "STALE", content: "STALE", isVisible: false, dateCreated: markerDate, likes: 777 });
+            await db.subforums.put({ ...(await db.subforums.get(1))!, description: "STALE", members: ["marker"] });
+            await db.chats.put({ ...(await db.chats.get("cyberdivers"))!, name: "STALE", isRead: true });
+            await db.messagesBuffer.put({ ...(await db.messages.get(2))!, content: "STALE", timeSent: markerDate, isVisible: true });
+            await db.usersBuffer.put({ ...hero, description: "STALE", password: "pw", savedStoryId: 46 });
+
+            const dispatchSpy = vi.spyOn(window, "dispatchEvent");
+            await act(async () => {
+                await result.current!.setLocale("ru");
+            });
+
+            expect(localStorage.getItem("locale")).toBe("ru");
+            expect(result.current!.locale).toBe("ru");
+            expect(dispatchSpy.mock.calls.some((c) => (c[0] as Event).type === "translationStart")).toBe(true);
+            expect(dispatchSpy.mock.calls.some((c) => (c[0] as Event).type === "translationEnd")).toBe(true);
+            expect(dispatchSpy.mock.calls.some((c) => (c[0] as Event).type === "storyHintText")).toBe(false);
+            expect(await db.story.count()).toBe(mockScript.length);
+            expect((await db.story.get(staleScript.id))?.storyline?.content).toBe(expectedStoryContent);
+            expect((await db.story.toArray()).find((s) => s.storyline?.content === `I am ${nickname}.`)).toBeDefined();
+
+            const translatedMessage = (await db.messages.get(1))!;
+            expect(translatedMessage.content).toBe(expectedMessageContent);
+            expect(translatedMessage.timeSent).toEqual(markerDate);
+            expect(translatedMessage.isVisible).toBe(true);
+            expect(translatedMessage.isReply).toBe(3);
+
+            const translatedBufferMessage = (await db.messagesBuffer.get(2))!;
+            expect(translatedBufferMessage.content).toBe(expectedBufferMessageContent);
+            expect(translatedBufferMessage.timeSent).toEqual(markerDate);
+            expect(translatedBufferMessage.isVisible).toBe(true);
+
+            const translatedPost = (await db.posts.get("p1"))!;
+            expect(translatedPost.title).toBe(mockPosts[0].title);
+            expect(translatedPost.content).toBe(mockPosts[0].content);
+            expect(translatedPost.isVisible).toBe(false);
+            expect(translatedPost.dateCreated).toEqual(markerDate);
+            expect(translatedPost.likes).toBe(777);
+
+            const translatedUser = (await db.users.get(hero.id))!;
+            expect(translatedUser.description).toBe(expectedHeroDescription);
+            expect(translatedUser.nickname).toBe(nickname);
+            expect(translatedUser.password).toBe("pw");
+            expect(translatedUser.savedStoryId).toBe(46);
+
+            const bufferedUser = (await db.usersBuffer.get(hero.id))!;
+            expect(bufferedUser.description).toBe(expectedHeroDescription);
+            expect(bufferedUser.password).toBe("pw");
+            expect(bufferedUser.savedStoryId).toBe(46);
+
+            const translatedSubforum = (await db.subforums.get(1))!;
+            expect(translatedSubforum.description).toBe(expectedSubforumDescription);
+            expect(translatedSubforum.members).toEqual(["marker"]);
+
+            const translatedChat = (await db.chats.get("cyberdivers"))!;
+            expect(translatedChat.name).toBe(expectedChatName);
+            expect(translatedChat.isRead).toBe(true);
+        });
+
+        test("refreshes the displayed nav hint from the retranslated story for a real logged-in player", async () => {
+            localStorage.removeItem("locale");
+            const { result } = renderHook(() => ({
+                storyHook: useStory()._getStoryHook!(),
+                userState: useUserState(),
+            }), {
+                wrapper: AllTheProvidersForMock
+            });
+            const nickname = "TestHero";
+            await result.current.storyHook!._customizeStory!(nickname);
+            await db.users.where("nickname").equals(nickname).modify({ savedStoryId: 46 });
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.userState.userLoggedIn.current = nickname;
+
+            const navIndex = (mockScript as { action?: { navigateAction?: unknown }; hint?: string }[])
+                .findIndex((s) => s.action?.navigateAction && s.hint && !s.hint.includes("#main_hero"));
+            const navId = navIndex + 1;
+            result.current.storyHook!._getPageStoryIdRef!().current = navId + 1;
+            await db.story.put({ ...(await db.story.get(navId))!, hint: "STALE HINT" });
+
+            const setNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "setNavHint");
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
+
+            await act(async () => {
+                await result.current.storyHook!.setLocale("ru");
+            });
+
+            const expectedHint = (mockScript as { hint?: string }[])[navIndex].hint;
+            expect(setNavHintSpy).toHaveBeenCalledWith(expectedHint);
+            expect(hintDetails).toContain(expectedHint);
+            expect(hintDetails).not.toContain("STALE HINT");
+
+            window.removeEventListener("storyHintText", onHintText);
+        });
+
+        test("uses the translated nav hint fallback when the current line has no hint", async () => {
+            localStorage.removeItem("locale");
+            const { result } = renderHook(() => ({
+                storyHook: useStory()._getStoryHook!(),
+                userState: useUserState(),
+            }), {
+                wrapper: AllTheProvidersForMock
+            });
+            const nickname = "TestHero";
+            await result.current.storyHook!._customizeStory!(nickname);
+            await db.users.where("nickname").equals(nickname).modify({ savedStoryId: 46 });
+            result.current.userState.isRealLoggedIn.current = true;
+            result.current.userState.userLoggedIn.current = nickname;
+
+            const noHintIndex = (mockScript as { hint?: string }[]).findIndex((s) => !s.hint);
+            result.current.storyHook!._getPageStoryIdRef!().current = noHintIndex + 2;
+
+            const setNavHintSpy = vi.spyOn(result.current.storyHook!._getObjectiveHintsHook!(), "setNavHint");
+            const hintDetails: string[] = [];
+            const onHintText = (e: Event) => hintDetails.push((e as CustomEvent<string>).detail);
+            window.addEventListener("storyHintText", onHintText);
+
+            await act(async () => {
+                await result.current.storyHook!.setLocale("ru");
+            });
+
+            const fallback = translate("ru", "story.navHintFallback");
+            expect(setNavHintSpy).toHaveBeenCalledWith(fallback);
+            expect(hintDetails).toContain(fallback);
+
+            window.removeEventListener("storyHintText", onHintText);
         });
     });
 });

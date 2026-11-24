@@ -334,6 +334,66 @@ export async function seedTables(nickname: string, locale: TLocale) {
 	await db.messages.bulkAdd(messages.map((m) => ({ ...m, timeSent: new Date(0), isVisible: false })));
 }
 
+export async function retranslateTables(locale: TLocale, nickname: string) {
+	const [script, users, posts, subforums, chats, messages] = await Promise.all([
+		fetchSeed<IScriptLine[]>("script.json", locale, nickname),
+		fetchSeed<IUser[]>("users.json", locale, nickname),
+		fetchSeed<IPost[]>("posts.json", locale, nickname),
+		fetchSeed<ISubforum[]>("subforums.json", locale, nickname),
+		fetchSeed<IChat[]>("chats.json", locale, nickname),
+		fetchSeed<IMessageSeed[]>("messages.json", locale, nickname),
+	]);
+	const usersById = new Map(users.map((u, i) => [i + 1, u.description]));
+	const postsById = new Map(mapPosts(posts).map((p) => [p.id, p]));
+	const subforumsById = new Map(subforums.map((s, i) => [i + 1, s.description]));
+	const chatsById = new Map(chats.map((c) => [c.id, c.name]));
+	const messagesById = new Map(messages.map((m) => [m.id, m]));
+
+	await db.story.clear();
+	await db.story.bulkAdd(withLastNavPos(script));
+	const updateUsers = (u: IUser) => {
+		const description = usersById.get(u.id);
+		if (description != undefined)
+			u.description = description;
+	};
+	await db.users.toCollection().modify(updateUsers);
+	await db.usersBuffer.toCollection().modify(updateUsers);
+	const updatePosts = (p: IPost) => {
+		const translated = postsById.get(p.id);
+		if (!translated)
+			return;
+		p.title = translated.title;
+		p.content = translated.content;
+		p.commentsDetailed = translated.commentsDetailed;
+	};
+	await db.posts.toCollection().modify(updatePosts);
+	await db.postsBuffer.toCollection().modify(updatePosts);
+	const updateSubforums = (s: ISubforum) => {
+		const description = subforumsById.get(s.id);
+		if (description != undefined)
+			s.description = description;
+	};
+	await db.subforums.toCollection().modify(updateSubforums);
+	await db.subforumsBuffer.toCollection().modify(updateSubforums);
+	const updateChats = (c: IChat) => {
+		const name = chatsById.get(c.id);
+		if (name != undefined)
+			c.name = name;
+	};
+	await db.chats.toCollection().modify(updateChats);
+	await db.chatsBuffer.toCollection().modify(updateChats);
+	const updateMessages = (m: IMessage) => {
+		const translated = messagesById.get(m.id);
+		if (!translated)
+			return;
+		m.content = translated.content;
+		// if (translated.isLink != undefined)
+		// 	m.isLink = translated.isLink;
+	};
+	await db.messages.toCollection().modify(updateMessages);
+	await db.messagesBuffer.toCollection().modify(updateMessages);
+}
+
 db.on("populate", async () => {
 	if (process.env.NODE_ENV == 'test')
 		return;

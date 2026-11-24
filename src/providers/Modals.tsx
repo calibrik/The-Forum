@@ -1,8 +1,9 @@
-import { createContext, forwardRef, useContext, useImperativeHandle, useRef, useState, type FC, type ReactNode } from "react";
+import { createContext, forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState, type FC, type ReactNode } from "react";
 import styles from "../scss/modals.module.scss";
 import buttonStyles from "../scss/baseButton.module.scss";
 import { BaseButton } from "../components/BaseButton";
 import { X } from "../components/Icons";
+import { Spinner } from "../components/Spinner";
 import { useStory } from "./StoryProvider";
 
 interface IInvincibleModalProps { };
@@ -72,10 +73,23 @@ const ModalsContext = createContext<IModals | undefined>(undefined)
 
 export const ModalsProvider: FC<IModalsProviderProps> = (props) => {
     const invincibleModal = useRef<IInvincibleModalHandle>(null);
+    const [isTranslating, setIsTranslating] = useState<boolean>(false);
+
+    useEffect(() => {
+        const onTranslationStart = () => setIsTranslating(true);
+        const onTranslationEnd = () => setIsTranslating(false);
+        window.addEventListener("translationStart", onTranslationStart);
+        window.addEventListener("translationEnd", onTranslationEnd);
+        return () => {
+            window.removeEventListener("translationStart", onTranslationStart);
+            window.removeEventListener("translationEnd", onTranslationEnd);
+        };
+    }, []);
 
     return (
         <ModalsContext.Provider value={{ invincibleModal }}>
             <InvincibleModal ref={invincibleModal} />
+            {isTranslating && <div className={`${styles.overlay} ${styles.loading}`}><Spinner /></div>}
             {props.children}
         </ModalsContext.Provider>
     );

@@ -13,7 +13,7 @@
     },
     {
         "storyline": {
-            "content": "Hi.",
+            "content": "Привет.",
             "speed": "fast",
             "typingBoxId": "nar1"
         },
@@ -21,7 +21,7 @@
     },
     {
         "storyline": {
-            "content": "Hello.",
+            "content": "Здравствуйте.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -30,7 +30,7 @@
     },
     {
         "storyline": {
-            "content": "I am #main_hero.",
+            "content": "Я #main_hero.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -39,7 +39,7 @@
     },
     {
         "storyline": {
-            "content": "This feels fucking weird, ugh.",
+            "content": "Это пиздец как странно, блин.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -48,7 +48,7 @@
     },
     {
         "storyline": {
-            "content": "I'm starting a fucking diary like a 14-year-old schoolgirl.",
+            "content": "Я, блять, начинаю вести дневник, как четырнадцатилетняя школьница.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -57,7 +57,7 @@
     },
     {
         "storyline": {
-            "content": "And uhhhhh I don't even know why I am doing it tbh.",
+            "content": "И эээээ, если честно, я даже не знаю, зачем я это делаю.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -66,7 +66,7 @@
     },
     {
         "storyline": {
-            "content": "I guess, just to keep my thoughts somewhere.",
+            "content": "Наверное, просто чтобы хранить где-то свои мысли.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -75,7 +75,7 @@
     },
     {
         "storyline": {
-            "content": "So anyway, uhhh where do I start?",
+            "content": "Так вот, эээ, с чего начать?",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -84,7 +84,7 @@
     },
     {
         "storyline": {
-            "content": "I am a gamer with 10+ years of experience, especially in Cyberdivers.",
+            "content": "Я геймер с опытом 10+ лет, особенно в Cyberdivers.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -99,7 +99,7 @@
     },
     {
         "storyline": {
-            "content": "I have more than 1000 hours in it, and, boy, lemme tell you, I am very good at this game.",
+            "content": "У меня больше 1000 часов в ней, и, чувак, поверь мне, я очень хорош в этой игре.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -108,7 +108,7 @@
     },
     {
         "storyline": {
-            "content": "I can show you.",
+            "content": "Я могу показать.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -141,7 +141,7 @@
                 }
             }
         },
-        "hint": "Go to your profile page",
+        "hint": "Перейдите на свою страницу профиля",
         "offset": ">"
     },
     {
@@ -178,7 +178,7 @@
         },
         "offset": ">",
         "isActionAwait": true,
-        "hint": "Click 'My Cyberdivers profile' on your profile page"
+        "hint": "Нажмите «Мой профиль Cyberdivers» на своей странице профиля"
     },
     {
         "storyline": {
@@ -194,7 +194,7 @@
     },
     {
         "storyline": {
-            "content": "you know what, matchmaking in this game is unfair bullshit, I always play with weak ass teammates.",
+            "content": "знаешь что, матчмейкинг в этой игре — несправедливое дерьмо, мне всегда попадаются слабые тиммейты.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -203,7 +203,7 @@
     },
     {
         "storyline": {
-            "content": "Also, enemies balance in this game is broken.",
+            "content": "Ещё баланс врагов в этой игре сломан.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -212,7 +212,7 @@
     },
     {
         "storyline": {
-            "content": "Also, I didn't unlock all the latest weapons.",
+            "content": "Ещё я не открыл всё новейшее оружие.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -221,7 +221,7 @@
     },
     {
         "storyline": {
-            "content": "Also, the game is a bug-ridden mess.",
+            "content": "Ещё игра — это сплошной багованный бардак.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -231,7 +231,7 @@
     },
     {
         "storyline": {
-            "content": "But usually, I play a lot better than this.",
+            "content": "Но обычно я играю намного лучше.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -244,7 +244,7 @@
     },
     {
         "storyline": {
-            "content": "It's just bad luck, is what it is, trust.",
+            "content": "Это просто невезение, вот и всё, поверь.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -254,7 +254,7 @@
     },
     {
         "storyline": {
-            "content": "Anyway, I'm well respected in the cyberdivers community.",
+            "content": "В общем, меня уважают в сообществе cyberdivers.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -267,7 +267,7 @@
     },
     {
         "storyline": {
-            "content": "People know my name.",
+            "content": "Люди знают моё имя.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -276,7 +276,7 @@
     },
     {
         "storyline": {
-            "content": "Lemme show you.",
+            "content": "Сейчас покажу.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -286,7 +286,7 @@
     },
     {
         "storyline": {
-            "content": "Search for the cyberdivers subforum.",
+            "content": "Найди сабфорум cyberdivers.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -309,12 +309,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Search for 'cyberdivers' in the header and open the subforum",
+        "hint": "Найдите 'cyberdivers' в поиске в шапке и откройте сабфорум",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "I kinda forgot to explain what kind of game this is.",
+            "content": "Я как-то забыл объяснить, что это за игра.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -327,7 +327,7 @@
     },
     {
         "storyline": {
-            "content": "So, it’s a horde shooter where there are different applications like websites and whatnot that need to be protected from different threats, so companies hire cyberdivers, freelance cybersecurity agents, to deal with them.",
+            "content": "То есть это хорд-шутер, где есть разные приложения вроде сайтов и всё такое, которые нужно защищать от разных угроз, поэтому компании нанимают кибердайверов, внештатных спецов по кибербезопасности, чтобы разбирались с ними.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -336,7 +336,7 @@
     },
     {
         "storyline": {
-            "content": "In the game, it’s represented as them actually shooting at one of three factions: AI bots, bugs or hackers in a match, or, as they call them here, contracts.",
+            "content": "В игре это представлено тем, что они реально стреляют в одну из трёх фракций: ИИ-ботов, жуков или хакеров, в матче, или, как здесь их называют, контракте.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -346,7 +346,7 @@
     },
     {
         "storyline": {
-            "content": "Naturally, we have nicknames for all three, clankers, bugs and squids.",
+            "content": "Само собой, у всех трёх есть прозвища: кланкеры, жуки и кальмары.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -359,7 +359,7 @@
     },
     {
         "storyline": {
-            "content": "We call hackers squids, cuz in the game they look like squids, and their tentacles can penetrate everything.",
+            "content": "Хакеров мы называем кальмарами, потому что в игре они выглядят как кальмары, а их щупальца могут проникнуть куда угодно.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -368,7 +368,7 @@
     },
     {
         "storyline": {
-            "content": "And when I say everything, I mean everything.",
+            "content": "И когда я говорю куда угодно, я имею в виду куда угодно.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -377,7 +377,7 @@
     },
     {
         "storyline": {
-            "content": "Like walls.",
+            "content": "Например, в стены.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -386,7 +386,7 @@
     },
     {
         "storyline": {
-            "content": "I meant walls.",
+            "content": "Я имел в виду стены.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -396,7 +396,7 @@
     },
     {
         "storyline": {
-            "content": "My friends from here once challenged me to play a game with them, and I absolutely destroyed them.",
+            "content": "Мои здешние друзья как-то позвали меня поиграть с ними, и я их абсолютно уничтожил.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -409,7 +409,7 @@
     },
     {
         "storyline": {
-            "content": "Even though we were on the same team.",
+            "content": "Хотя мы были в одной команде.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -418,7 +418,7 @@
     },
     {
         "storyline": {
-            "content": "I mean, my contribution to the game was essential.",
+            "content": "То есть мой вклад в игру был жизненно важен.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -427,7 +427,7 @@
     },
     {
         "storyline": {
-            "content": "We lost anyway, but without me it wouldn't have been such a close fight.",
+            "content": "Мы всё равно проиграли, но без меня бой не был бы таким близким.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -436,7 +436,7 @@
     },
     {
         "storyline": {
-            "content": "But oh well, what can u do with shit teammates, right?",
+            "content": "Но что поделать с дерьмовыми тиммейтами, верно?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -446,7 +446,7 @@
     },
     {
         "storyline": {
-            "content": "Hold on, lemme hit them up in the chat, my mates will love to see me.",
+            "content": "Погодите, напишу им в чат, мои кореша будут рады меня увидеть.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -473,7 +473,7 @@
                 }
             }
         },
-        "hint": "Go to the 'cyberdivers' chat",
+        "hint": "Перейдите в чат 'cyberdivers'",
         "offset": ">"
     },
     {
@@ -501,7 +501,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -617,7 +617,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "They love me.",
+                            "content": "Они меня любят.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -630,7 +630,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I know it looks like they are grilling the fuck out of me and calling me bad at the game or something, but it’s actually fine, you just don’t get it.",
+                            "content": "Я знаю, выглядит так, будто они меня полоскают по полной и называют плохим игроком или типа того, но на самом деле всё нормально, вы просто не понимаете.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -639,7 +639,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "It’s how we show love and respect for each other, just friendly roasting.",
+                            "content": "Так мы показываем любовь и уважение друг к другу, просто дружеский роастинг.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -649,7 +649,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "They know I’m good at the game, they are just fucking with me.",
+                            "content": "Они знают, что я хорош в игре, они просто стебаются надо мной.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -679,7 +679,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "It’s all just jokes, trust me.",
+                            "content": "Это всё шутки, поверьте.",
                             "speed": "slow",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -860,7 +860,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Ah yes, Zero.",
+                            "content": "А, да, Zero.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -873,7 +873,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Made by the same developer, Spearhead Studios, as our game.",
+                            "content": "Сделана тем же разработчиком, Spearhead Studios, что и наша игра.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -882,7 +882,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Instead of making content and patches for Cyberdivers, they decided to make some random ass spin-off in the same universe, and the game wasn't even that good.",
+                            "content": "Вместо того чтобы делать контент и патчи для Cyberdivers, они решили сделать какой-то рандомный спин-офф в той же вселенной, и игра даже не была настолько хороша.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -891,7 +891,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "And now they are working on the dlc for it, while cyberdivers is dying without new updates, fucking idiots.",
+                            "content": "А теперь они работают над DLC для неё, пока Cyberdivers умирает без новых обновлений, ебанутые идиоты.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -906,7 +906,7 @@
     },
     {
         "storyline": {
-            "content": "You know what, I wanna check how they're doing in their sub.",
+            "content": "Знаете что, хочу проверить, как у них дела в их сабе.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -919,7 +919,7 @@
     },
     {
         "storyline": {
-            "content": "I bet they are complaining and crying over there, because of the delay.",
+            "content": "Спорю, они там жалуются и плачут из-за задержки.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -928,7 +928,7 @@
     },
     {
         "storyline": {
-            "content": "Can’t wait to see it.",
+            "content": "Не могу дождаться, когда это увижу.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -951,7 +951,7 @@
                 }
             }
         },
-        "hint": "Open the 'DLC is delayed' post in the f/zero subforum and read the post and comments",
+        "hint": "Откройте пост про задержку DLC в сабфоруме f/zero и прочитайте пост и комментарии",
         "offset": ">"
     },
     {
@@ -974,7 +974,7 @@
     },
     {
         "storyline": {
-            "content": "Bruh what?",
+            "content": "Бро, чё?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -987,7 +987,7 @@
     },
     {
         "storyline": {
-            "content": "\"Let devs take as much time as they need\", bro wtf, they are so",
+            "content": "«Пусть разработчики берут столько времени, сколько нужно», бро, чё за хуйня, они такие",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -1005,7 +1005,7 @@
     },
     {
         "storyline": {
-            "content": "so",
+            "content": "такие",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -1023,7 +1023,7 @@
     },
     {
         "storyline": {
-            "content": "so fucking lame.",
+            "content": "такие пиздец убогие.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -1043,12 +1043,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Go back to the f/zero subforum",
+        "hint": "Вернитесь в сабфорум f/zero",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Look at these posts bruh.",
+            "content": "Глянь на эти посты, бро.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -1062,7 +1062,7 @@
     },
     {
         "storyline": {
-            "content": "So spineless, like \"our dlc got delayed? It's ok, better late than never\" tf is this.",
+            "content": "Такие бесхребетные, типа «наше dlc задержали? Ничего, лучше поздно, чем никогда» — что это вообще за хуйня.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -1075,7 +1075,7 @@
     },
     {
         "storyline": {
-            "content": "You absolutely should demand new content from the devs.",
+            "content": "Вы просто обязаны требовать новый контент у разработчиков.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -1084,7 +1084,7 @@
     },
     {
         "storyline": {
-            "content": "They are working for you, not the other way around.",
+            "content": "Они работают на вас, а не наоборот.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -1093,7 +1093,7 @@
     },
     {
         "storyline": {
-            "content": "You fucking paid them for the product.",
+            "content": "Вы, блять, заплатили им за продукт.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -1102,7 +1102,7 @@
     },
     {
         "storyline": {
-            "content": "Where is your rage?",
+            "content": "Где ваша ярость?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -1127,7 +1127,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Open the next post in the f/zero subforum",
+        "hint": "Откройте следующий пост в сабфоруме f/zero",
         "offset": ">"
     },
     {
@@ -1154,7 +1154,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "And these stupid ass questions like this one \"uhhhhh how do u get in that room\" like didn't u see the vent in there covered in yellow paint specifically for dumbasses like you?",
+                            "content": "И эти тупые вопросы вроде «эээээ, как попасть в ту комнату» — типа ты не увидел там вентиляцию, покрашенную в жёлтый специально для таких даунов, как ты?",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -1167,7 +1167,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Have you tried looking or do you just run to this subforum for help at any minor inconvenience?",
+                            "content": "Ты хоть пытался посмотреть или сразу бежишь на этот сабфорум за помощью при малейшей неудобке?",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1176,7 +1176,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "This is why noobs should be mocked for their stupidity, they'll learn how to think for themselves.",
+                            "content": "Вот почему нубам надо стебаться над их тупостью, тогда они научатся думать своей головой.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1185,7 +1185,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "But they all allow them to remain stupid.",
+                            "content": "Но они все позволяют им оставаться тупыми.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1215,7 +1215,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Open the next post in the f/zero subforum",
+        "hint": "Откройте следующий пост в сабфоруме f/zero",
         "offset": ">"
     },
     {
@@ -1243,7 +1243,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "Oh boy, look how nice everyone here is bruh.",
+                            "content": "О боже, гляньте, какие все здесь милые, бро.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -1256,7 +1256,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Look how everyone is being respectful to each other, like isn't it fucking pathetic?",
+                            "content": "Смотрите, как все друг к другу уважительно относятся, разве это не пиздец как жалко?",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1265,7 +1265,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "There is either a right opinion or a wrong opinion, nothing in between.",
+                            "content": "Есть либо правильное мнение, либо неправильное, ничего между.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1274,7 +1274,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "If y'all are being so polite and agreeing with each other instead of arguing, how tf are you gonna figure out what's wrong and what's right?",
+                            "content": "Если вы все такие вежливые и со всем соглашаетесь вместо спора, как, блять, вы поймёте, что правильно, а что нет?",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1299,7 +1299,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Go back to the f/zero subforum posts",
+        "hint": "Вернитесь к постам сабфорума f/zero",
         "offset": ">"
     },
     {
@@ -1327,7 +1327,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "Nah, this sub is phony as fuck.",
+                            "content": "Не, этот саб фальшивый пиздец.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -1339,7 +1339,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Everyone is being so nice, like we are gonna believe it.",
+                            "content": "Все такие милые, типа мы в это поверим.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1353,7 +1353,7 @@
                                 [
                                     {
                                         "storyline": {
-                                            "content": "Maybe cyberdivers are rude, maybe we are toxic, maybe we can call u names, like noob, cunt, asshole, moron, retard, fuckwit, dumbass, braindead, stupid, dickhead, room temperature iq imbecile, motherfucker, fatherfucker, product of the incest, incel, degenerate, window licker, cognitively challenged, dimwit",
+                                            "content": "Может, кибердайверы грубые, может, мы токсичные, может, мы можем обозвать тебя как угодно: нуб, пизда, мудак, дебил, даун, уёбок, тупица, мозгоклюй, кретин, долбоёб, пидорас, выблядок, инцел, дегенерат, облизыватель окон, когнитивно одарённый, недоумок",
                                             "speed": "fast",
                                             "delim": " ",
                                             "typingBoxId": "nar1"
@@ -1390,7 +1390,7 @@
                                     },
                                     {
                                         "storyline": {
-                                            "content": "Some time later...",
+                                            "content": "Спустя некоторое время...",
                                             "speed": "slow",
                                             "delim": "",
                                             "typingBoxId": "nar2",
@@ -1430,7 +1430,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "fuckface, shitfuck, fuckfuck but at least we are honest.",
+                            "content": "ебаная рожа, хуеплёт, ебаный ёб — но зато мы честные.",
                             "speed": "fast",
                             "delim": ", ",
                             "typingBoxId": "nar1"
@@ -1439,7 +1439,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Brutal, but honest.",
+                            "content": "Жёстко, но честно.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1449,7 +1449,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Yes, we won't mince our words and we will grill your ass to the crust, but you will learn from it and be better.",
+                            "content": "Да, мы не будем выбирать выражения и прожарим твою задницу до корочки, но ты из этого научишься и станешь лучше.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -1458,7 +1458,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "And these guys think they are helping anyone with this fake ass niceness.",
+                            "content": "А эти ребята думают, что кому-то помогают этой фальшивой милотой.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1468,7 +1468,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "They are just delusional, aren't they?",
+                            "content": "Они просто заблуждаются, разве нет?",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -1508,7 +1508,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "Nah, this sub is a fucking joke.",
+                            "content": "Не, этот саб — ебаная шутка.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -1517,7 +1517,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "It's full of fake weak dumbasses, who are just living in their nice play-pretend echo chamber.",
+                            "content": "Он полон фальшивых слабых тупиц, которые просто живут в своей милой эхо-камере понарошку.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1526,7 +1526,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Fuck them.",
+                            "content": "Пошли они нахуй.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1535,7 +1535,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I wish I could just wipe them off this website.",
+                            "content": "Хотел бы я просто стереть их с этого сайта.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1544,7 +1544,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Actually",
+                            "content": "Вообще",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1562,7 +1562,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I mean, maybee",
+                            "content": "То есть, может быть",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -1580,7 +1580,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "there is a way.",
+                            "content": "есть способ.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -1590,7 +1590,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I remember back in school I took some programming classes and I learned smth about webdev and some cybersecurity stuff, like phishing.",
+                            "content": "Помню, в школе я ходил на пару уроков программирования и узнал кое-что о вебдеве и немного о кибербезопасности, вроде фишинга.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -1599,7 +1599,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Shit, it was ages ago.",
+                            "content": "Блин, это было сто лет назад.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1608,7 +1608,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I ended up dropping out, cuz my classmates were dickheads.",
+                            "content": "В итоге я бросил, потому что мои одноклассники были мудаками.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1617,7 +1617,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Like always with their patronizing bullshit \"ohhh #main_hero, we can help you out if you are struggling\", but I knew they were making fun of me behind my back.",
+                            "content": "Как всегда со своим покровительственным дерьмом: «ооо, #main_hero, мы можем помочь, если тебе тяжело», но я знал, что они за моей спиной надо мной ржут.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1626,7 +1626,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Yeah, I saw right through them, those fake ass slimy fucks.",
+                            "content": "Да, я их видел насквозь, этих фальшивых скользких уёбков.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1635,7 +1635,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Kind of reminded me of this sub too.",
+                            "content": "Чем-то напомнило мне и этот саб.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1644,7 +1644,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "Well, whatever, who gives a shit, right?",
+                            "content": "Ну да похуй, кому какая разница, верно?",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1675,7 +1675,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "Anyway, what if I could phish the admin of this sub?",
+                            "content": "В общем, что если я смогу зафишить админа этого саба?",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -1684,7 +1684,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I could create a fake website to steal the admin's account and take over the sub?",
+                            "content": "Могу создать фейковый сайт, украсть аккаунт админа и забрать саб себе?",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1693,7 +1693,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "That'd show them what the real life is.",
+                            "content": "Вот тогда они узнают, что такое реальная жизнь.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1702,7 +1702,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I should let my friends in cyberdivers chat know.",
+                            "content": "Надо рассказать друзьям в чате cyberdivers.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1"
@@ -1711,7 +1711,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I'm sure they will be as excited as I am right now to destroy these dumbasses.",
+                            "content": "Уверен, они будут так же в восторге, как и я сейчас, от идеи уничтожить этих тупиц.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1740,7 +1740,7 @@
                 }
             }
         },
-        "hint": "Go to the 'cyberdivers' chat",
+        "hint": "Перейдите в чат 'cyberdivers'",
         "offset": ">"
     },
     {
@@ -1768,7 +1768,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -1885,7 +1885,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=1.2"
     },
     {
@@ -1944,7 +1944,7 @@
     },
     {
         "storyline": {
-            "content": "No no, I know what it is, it's a language",
+            "content": "Нет-нет, я знаю, что это, это язык",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -1966,7 +1966,7 @@
     },
     {
         "storyline": {
-            "content": "for hacking databases",
+            "content": "для взлома баз данных",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -1984,7 +1984,7 @@
     },
     {
         "storyline": {
-            "content": "or something.",
+            "content": "или типа того.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -1994,7 +1994,7 @@
     },
     {
         "storyline": {
-            "content": "It doesn't matter, they'll see, I absolutely can do it.",
+            "content": "Неважно, они увидят, я абсолютно точно смогу это сделать.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2065,7 +2065,7 @@
     },
     {
         "storyline": {
-            "content": "Alright, I need a plan.",
+            "content": "Так, мне нужен план.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2087,7 +2087,7 @@
     },
     {
         "storyline": {
-            "content": "How am I gonna do that?",
+            "content": "Как я это сделаю?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2096,7 +2096,7 @@
     },
     {
         "storyline": {
-            "content": "Brief search on phishing shows that hackers send fake login screens and people fall for them.",
+            "content": "Быстрый поиск по фишингу показывает, что хакеры присылают фейковые экраны входа, и люди ведутся.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2105,7 +2105,7 @@
     },
     {
         "storyline": {
-            "content": "Why don't I do the same?",
+            "content": "Почему бы мне не сделать так же?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2114,7 +2114,7 @@
     },
     {
         "storyline": {
-            "content": "Admin will click on the link and",
+            "content": "Админ кликнет по ссылке и",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2132,7 +2132,7 @@
     },
     {
         "storyline": {
-            "content": "well yeah, he'll probably suspect something.",
+            "content": "ну да, он, наверное, что-то заподозрит.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2141,7 +2141,7 @@
     },
     {
         "storyline": {
-            "content": "Well, ummm",
+            "content": "Ну, эээм",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -2159,7 +2159,7 @@
     },
     {
         "storyline": {
-            "content": "maybee",
+            "content": "может быть",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2177,7 +2177,7 @@
     },
     {
         "storyline": {
-            "content": "uhhh",
+            "content": "эээ",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2195,7 +2195,7 @@
     },
     {
         "storyline": {
-            "content": "I need to bait him!",
+            "content": "Мне нужно его подловить!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2204,7 +2204,7 @@
     },
     {
         "storyline": {
-            "content": "Like, I'll tell him that he won $300 in the giveaway and all he needs to do to collect is to click on that link.",
+            "content": "Типа, скажу ему, что он выиграл 300 баксов в розыгрыше, и чтобы получить их, ему нужно всего лишь кликнуть по ссылке.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2213,7 +2213,7 @@
     },
     {
         "storyline": {
-            "content": "Yeah, that is fucking retarded.",
+            "content": "Да, это пиздец как тупо.",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -2222,7 +2222,7 @@
     },
     {
         "storyline": {
-            "content": "This is definitely not gonna work.",
+            "content": "Это точно не сработает.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2231,7 +2231,7 @@
     },
     {
         "storyline": {
-            "content": "You won't be able to phish even your grandma with this.",
+            "content": "Ты этой хуйнёй даже бабушку не зафишишь.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2240,7 +2240,7 @@
     },
     {
         "storyline": {
-            "content": "Or what if",
+            "content": "Или что если",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -2258,7 +2258,7 @@
     },
     {
         "storyline": {
-            "content": "I'll report a post to him that needs to be deleted, but it won't be an actual post.",
+            "content": "Я пожалуюсь ему на пост, который нужно удалить, но это будет не настоящий пост.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2267,7 +2267,7 @@
     },
     {
         "storyline": {
-            "content": "It will be a fake post!",
+            "content": "Это будет фейковый пост!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2276,7 +2276,7 @@
     },
     {
         "storyline": {
-            "content": "Admin will click on the link to check it out.",
+            "content": "Админ кликнет по ссылке, чтобы проверить.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2310,7 +2310,7 @@
     },
     {
         "storyline": {
-            "content": "Then he'll try to delete it.",
+            "content": "Потом попробует его удалить.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2335,7 +2335,7 @@
     },
     {
         "isActionAwait": true,
-        "hint": "Click the three dots on the fake post and press 'Delete'",
+        "hint": "Нажмите на три точки у фейкового поста и выберите «Удалить»",
         "offset": ">"
     },
     {
@@ -2353,7 +2353,7 @@
     },
     {
         "storyline": {
-            "content": "And suddenly it takes him to a fake login screen with a message like ur session is expired, sign in again.",
+            "content": "И вдруг его перекинет на фейковый экран входа с сообщением вроде «ваша сессия истекла, войдите снова».",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2366,7 +2366,7 @@
     },
     {
         "storyline": {
-            "content": "So he will try to sign in.",
+            "content": "И он попробует войти.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2427,7 +2427,7 @@
     },
     {
         "storyline": {
-            "content": "And boom, his creds are mine.",
+            "content": "И бум, его данные у меня.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2440,7 +2440,7 @@
     },
     {
         "storyline": {
-            "content": "He will see that the post was deleted.",
+            "content": "Он увидит, что пост удалён.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2449,7 +2449,7 @@
     },
     {
         "storyline": {
-            "content": "He won't even know that his creds were stolen!",
+            "content": "Он даже не поймёт, что его данные украли!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2487,7 +2487,7 @@
     },
     {
         "storyline": {
-            "content": "I'm a genius!",
+            "content": "Я гений!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2509,7 +2509,7 @@
     },
     {
         "storyline": {
-            "content": "Now I just need to figure out how to code all that.",
+            "content": "Теперь осталось понять, как всё это закодить.",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -2518,7 +2518,7 @@
     },
     {
         "storyline": {
-            "content": "Alright, first I gotta open vim.",
+            "content": "Так, сначала надо открыть vim.",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -2527,7 +2527,7 @@
     },
     {
         "storyline": {
-            "content": "Fuck IDEs, they are for pussies.",
+            "content": "Нахуй IDE, они для слабаков.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2566,7 +2566,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type 'vim PostPage.tsx' to open vim",
+        "hint": "Введите 'vim PostPage.tsx', чтобы открыть vim",
         "offset": ">"
     },
     {
@@ -2584,7 +2584,7 @@
     },
     {
         "storyline": {
-            "content": "So uhhhhh, how do I create a page?",
+            "content": "Эээээ, как мне создать страницу?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2597,7 +2597,7 @@
     },
     {
         "storyline": {
-            "content": "I think I still remember something.",
+            "content": "Кажется, я что-то ещё помню.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2612,12 +2612,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type the code for PostPage.tsx in vim",
+        "hint": "Введите код для PostPage.tsx в vim",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Ok, I actually forgot everything.",
+            "content": "Ок, я реально всё забыл.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2630,7 +2630,7 @@
     },
     {
         "storyline": {
-            "content": "I don't think this even works.",
+            "content": "Не думаю, что это вообще работает.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2640,7 +2640,7 @@
     },
     {
         "storyline": {
-            "content": "Anyway, I think I'll just ask AI.",
+            "content": "Ладно, думаю, я просто спрошу у ИИ.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2653,7 +2653,7 @@
     },
     {
         "storyline": {
-            "content": "No, not for vibe coding, I'll just ask it for",
+            "content": "Нет, не для вайб-кодинга, я просто спрошу у него",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -2671,7 +2671,7 @@
     },
     {
         "storyline": {
-            "content": "you know",
+            "content": "ну ты понял",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2689,7 +2689,7 @@
     },
     {
         "storyline": {
-            "content": "general directions.",
+            "content": "общие указания.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2698,7 +2698,7 @@
     },
     {
         "storyline": {
-            "content": "Some boilerplate code to start with, you know.",
+            "content": "Какой-нибудь шаблонный код для начала, типа того.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -2708,7 +2708,7 @@
     },
     {
         "storyline": {
-            "content": "Aight",
+            "content": "Лады",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2730,7 +2730,7 @@
     },
     {
         "storyline": {
-            "content": "this goes here",
+            "content": "это сюда",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2741,7 +2741,7 @@
         "action": {
             "setTypingBoxContentAction": {
                 "typingBoxId": "buffer",
-                "content": "// hey there! 👋 I read the code you sent and I found the problems - don't worry, we'll fix them together! 💪\n//\n// 1) include vs import: when we borrow a tool from another file we say import. include is from other languages and React doesn't know it 🙂\n// 2) class vs className: you wrote class on your boxes, but that's the old HTML way. React wants className instead! I changed them all 🙈\n// 3) onclick vs onClick: same idea - it's onClick with a big O in React. I fixed it everywhere (even on your Delete button)! 🙂\n// 4) pretend tags: you wrote <box>, <text> and <paragraph>, but those aren't real tags! the real ones are <div>, <span> and <p>. I swapped them back 🎯\n// 5) author header order: you had them swapped - the subforum name (f/zero) goes first and the username (u/fartsniffer69) after it. I flipped them back!\n// 6) title vs post text: you put the long text in the headline and the headline inside the paragraph. I moved them where they belong 🎯\n// 7) the Delete button: yours was always visible even when the menu was closed! now it only shows after you press the ⋯ button, like a real dropdown menu 😅\n// 8) the Delete click: you wrote navigate(...) right away, so the page was sending you to the login screen all by itself! I wrapped it in an arrow function, so it only happens when you actually click Delete 🙂\n// 9) the counters: you had 3 likes and 0 views, but it's 0 likes and 3 views. I fixed the numbers!\n//\n// and here's the corrected page, with little notes on what each part does so you can learn 🚀\n// just copy it into your file and save - you got this! 💪\nimport { useState } from \"react\"; // this lets the page remember things (like an open menu)\nimport { useNavigate } from \"react-router\"; // this helps us move between pages\n\nexport const PostPage = () => {\n    const navigate = useNavigate(); // a little helper that lets us jump to other pages\n    const [isMenuOpen, setIsMenuOpen] = useState(false); // remembers if the ⋯ menu is open (it starts closed)\n\n    return (\n        <div className=\"postContainer\"> {/* the box that holds the whole post page */}\n            {/* 👉 the back button - when you click it, you go back to the previous page */}\n            <div className=\"returnContainer\">\n                <button onClick={() => navigate(-1)}>← back</button>\n            </div>\n\n            {/* 👉 who wrote the post - click the forum name or the username to visit them */}\n            <div className=\"authorContainer\">\n                <span className=\"subforumName\" onClick={() => navigate(\"/subforum/zero\")}>f/zero</span>\n                <span className=\"username\" onClick={() => navigate(\"/user/fartsniffer69\")}>u/fartsniffer69</span>\n            </div>\n\n            {/* 👉 the ⋯ menu button - click it to make the Delete option appear */}\n            <div className=\"menuWrapper\">\n                <button onClick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {isMenuOpen && (\n                    /* 👉 Delete - clicking it takes you to the login page (this is the trick!) */\n                    <button className=\"deleteOption\" onClick={() => navigate(\"/login?expired=true\")}>Delete</button>\n                )}\n            </div>\n\n            {/* 👉 the post title (the headline of the post) */}\n            <h1 className=\"postTitle\">zero is the worst game oat</h1>\n\n            {/* 👉 the post text (the main body of the post) */}\n            <p className=\"postContent\">zero is mid af, spearhead should've stuck to the cyberdivers. anyone who likes zero should play other games to acquire a better taste.\n\nmods are gonna delete this post, because they are powertripping losers who ban anyone with an opinion. delete this post, i dare u, prove me right.</p>\n\n            {/* 👉 the little counters below the post */}\n            <div className=\"reactions\">\n                <span>0 likes</span>\n                <span>0 comments</span>\n                <span>3 views</span>\n            </div>\n        </div>\n    );\n};"
+                "content": "// привет! 👋 Я прочитал код, который ты прислал, и нашёл проблемы — не переживай, мы их исправим вместе! 💪\n//\n// 1) include vs import: когда мы берём инструмент из другого файла, мы говорим import. include — из других языков, и React его не понимает 🙂\n// 2) class vs className: ты написал class у своих блоков, но это старый HTML-способ. React хочет className! Я поменял их все 🙈\n// 3) onclick vs onClick: та же идея — в React это onClick с большой O. Я исправил везде (даже на твоей кнопке Delete)! 🙂\n// 4) фейковые теги: ты написал <box>, <text> и <paragraph>, но это не настоящие теги! настоящие — <div>, <span> и <p>. Я вернул их обратно 🎯\n// 5) порядок в шапке автора: у тебя они были перепутаны — сначала идёт имя сабфорума (f/zero), а потом имя пользователя (u/fartsniffer69). Я поменял их обратно!\n// 6) заголовок vs текст поста: ты запихнул длинный текст в заголовок, а заголовок — в параграф. Я переместил их туда, где они должны быть 🎯\n// 7) кнопка Delete: у тебя она была всегда видна, даже когда меню закрыто! теперь она показывается только после нажатия на кнопку ⋯, как в настоящем выпадающем меню 😅\n// 8) клик по Delete: ты сразу написал navigate(...), поэтому страница сама отправляла тебя на экран входа! Я обернул это в стрелочную функцию, так что это происходит, только когда ты реально нажимаешь Delete 🙂\n// 9) счётчики: у тебя было 3 лайка и 0 просмотров, а надо 0 лайков и 3 просмотра. Я исправил числа!\n//\n// и вот исправленная страница, с маленькими заметками о том, что делает каждая часть, чтобы ты учился 🚀\n// просто скопируй её в свой файл и сохрани — у тебя всё получится! 💪\nimport { useState } from \"react\"; // это позволяет странице запоминать вещи (например, открыто ли меню)\nimport { useNavigate } from \"react-router\"; // это помогает нам перемещаться между страницами\n\nexport const PostPage = () => {\n    const navigate = useNavigate(); // маленький помощник, который позволяет прыгать на другие страницы\n    const [isMenuOpen, setIsMenuOpen] = useState(false); // запоминает, открыто ли меню ⋯ (изначально закрыто)\n\n    return (\n        <div className=\"postContainer\"> {/* блок, который содержит всю страницу поста */}\n            {/* 👉 кнопка назад — когда ты нажимаешь, ты возвращаешься на предыдущую страницу */}\n            <div className=\"returnContainer\">\n                <button onClick={() => navigate(-1)}>← назад</button>\n            </div>\n\n            {/* 👉 кто написал пост — нажми на имя форума или имя пользователя, чтобы перейти к ним */}\n            <div className=\"authorContainer\">\n                <span className=\"subforumName\" onClick={() => navigate(\"/subforum/zero\")}>f/zero</span>\n                <span className=\"username\" onClick={() => navigate(\"/user/fartsniffer69\")}>u/fartsniffer69</span>\n            </div>\n\n            {/* 👉 кнопка меню ⋯ — нажми на неё, чтобы появилась опция Delete */}\n            <div className=\"menuWrapper\">\n                <button onClick={() => setIsMenuOpen(prev => !prev)}>⋯</button>\n                {isMenuOpen && (\n                    /* 👉 Delete — нажатие отправляет тебя на страницу входа (в этом и трюк!) */\n                    <button className=\"deleteOption\" onClick={() => navigate(\"/login?expired=true\")}>Удалить</button>\n                )}\n            </div>\n\n            {/* 👉 заголовок поста (шапка поста) */}\n            <h1 className=\"postTitle\">zero — худшая игра за все время</h1>\n\n            {/* 👉 текст поста (основное тело поста) */}\n            <p className=\"postContent\">zero — полное хуйня, spearhead не должны были бросать cyberdivers. всем, кому нравится zero, стоит поиграть в другие игры, чтобы обзавестись нормальным вкусом.\n\nмодеры удалят этот пост, потому что они долбаебы с синдромом вахтера, которые банят всех с собственным мнением. удалите этот пост, я вас вызываю, докажите, что я прав.</p>\n\n            {/* 👉 маленькие счётчики под постом */}\n            <div className=\"reactions\">\n                <span>0 лайков</span>\n                <span>0 комментариев</span>\n                <span>3 просмотра</span>\n            </div>\n        </div>\n    );\n};"
             }
         },
         "offset": ">"
@@ -2757,7 +2757,7 @@
     },
     {
         "storyline": {
-            "content": "looks about right",
+            "content": "вроде правильно",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -2776,7 +2776,7 @@
     },
     {
         "storyline": {
-            "content": "And first page done!",
+            "content": "И первая страница готова!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2868,7 +2868,7 @@
                 [
                     {
                         "storyline": {
-                            "content": "Ok, how do I quit vim?",
+                            "content": "Ок, как выйти из vim?",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -2890,7 +2890,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "fuck, uhhh, I forgot again",
+                            "content": "блять, ээээ, я опять забыл",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -2908,7 +2908,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "fucking dumbass",
+                            "content": "ёбаный даун",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -2926,7 +2926,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "uhhhh",
+                            "content": "эээээ",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
@@ -2944,7 +2944,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "here it is.",
+                            "content": "вот оно.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1",
@@ -2985,7 +2985,7 @@
     },
     {
         "storyline": {
-            "content": "Not too hard huh?",
+            "content": "Не так уж сложно, а?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -2998,7 +2998,7 @@
     },
     {
         "storyline": {
-            "content": "Now for the rest of them...",
+            "content": "Теперь остальные...",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -3213,7 +3213,7 @@
     },
     {
         "storyline": {
-            "content": "Now I just need to start the server.",
+            "content": "Теперь надо просто запустить сервер.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3232,7 +3232,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type 'docker compose up --build' to run the server",
+        "hint": "Введите 'docker compose up --build', чтобы запустить сервер",
         "offset": ">"
     },
     {
@@ -3349,7 +3349,7 @@
     },
     {
         "storyline": {
-            "content": "Aaaand im done!",
+            "content": "Иии готово!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3362,7 +3362,7 @@
     },
     {
         "storyline": {
-            "content": "Now I just need to trick sillygoose228.",
+            "content": "Теперь надо просто обмануть sillygoose228.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -3434,12 +3434,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Search for 'sillygoose228' in the search bar",
+        "hint": "Найдите 'sillygoose228' через поиск",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "God, even his name is stupid.",
+            "content": "Господи, даже его имя тупое.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3452,7 +3452,7 @@
     },
     {
         "storyline": {
-            "content": "Not like mine tho.",
+            "content": "Не то что моё, конечно.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3470,7 +3470,7 @@
     },
     {
         "storyline": {
-            "content": "You might not see this yet, but my nickname has at least 3 hidden meanings and 5 references to 3 different pieces of media.",
+            "content": "Ты, может, пока не видишь, но в моём никнейме минимум 3 скрытых смысла и 5 отсылок к 3 разным произведениям.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3479,7 +3479,7 @@
     },
     {
         "storyline": {
-            "content": "I've spent like a whole day coming up with that.",
+            "content": "Я потратил на это, наверное, целый день.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -3489,7 +3489,7 @@
     },
     {
         "storyline": {
-            "content": "So anyway, now I need to shoot him a message.",
+            "content": "В общем, теперь надо отправить ему сообщение.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3509,7 +3509,7 @@
                 ]
             }
         },
-        "hint": "Press 'Send message' on sillygoose228's profile page",
+        "hint": "Нажмите «Сообщение» на странице профиля sillygoose228",
         "isActionAwait": true,
         "offset": ">"
     },
@@ -3537,12 +3537,12 @@
                 }
             }
         },
-        "hint": "Go to the chat with Sillygoose228",
+        "hint": "Перейдите в чат с Sillygoose228",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Ok, so, it'll go like that, uhhh",
+            "content": "Ок, значит, будет так, эээ",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3555,7 +3555,7 @@
     },
     {
         "storyline": {
-            "content": "\"Dear sillygoose228, it came to my attention that",
+            "content": "«Уважаемый sillygoose228, до меня дошло, что",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3572,7 +3572,7 @@
     },
     {
         "storyline": {
-            "content": "No, who the fuck reports posts like that?",
+            "content": "Нет, кто, блять, так жалуется на посты?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3581,7 +3581,7 @@
     },
     {
         "storyline": {
-            "content": "\"Dear sillygoose228, there is a post I want you to look at\"",
+            "content": "«Уважаемый sillygoose228, есть пост, на который я хочу, чтобы вы взглянули»",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3598,7 +3598,7 @@
     },
     {
         "storyline": {
-            "content": "Nah, it sounds so stupid, he'll definitely catch me.",
+            "content": "Нет, звучит так тупо, он точно меня раскусит.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3607,7 +3607,7 @@
     },
     {
         "storyline": {
-            "content": "No, I need to go simple, like",
+            "content": "Нет, надо просто, типа",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3616,7 +3616,7 @@
     },
     {
         "storyline": {
-            "content": "\"Dear sillygoose228, look at this post\"",
+            "content": "«Уважаемый sillygoose228, посмотрите на этот пост»",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3633,7 +3633,7 @@
     },
     {
         "storyline": {
-            "content": "Nooo, why \"dear\"?",
+            "content": "Неееет, зачем «уважаемый»?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3642,7 +3642,7 @@
     },
     {
         "storyline": {
-            "content": "We haven't even met yet.",
+            "content": "Мы же даже не знакомы.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3651,7 +3651,7 @@
     },
     {
         "storyline": {
-            "content": "No, I need to be plain and direct like",
+            "content": "Нет, надо просто и прямо, типа",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3660,7 +3660,7 @@
     },
     {
         "storyline": {
-            "content": "\"Look at this post\"",
+            "content": "«Посмотри на этот пост»",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3677,7 +3677,7 @@
     },
     {
         "storyline": {
-            "content": "No, no, even simpler, just send him the link to the post.",
+            "content": "Нет, нет, ещё проще, просто отправлю ему ссылку на пост.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -3686,7 +3686,7 @@
     },
     {
         "storyline": {
-            "content": "Yeah, that will do, he definitely won't suspect anything!",
+            "content": "Да, так пойдёт, он точно ничего не заподозрит!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -3701,7 +3701,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -3715,7 +3715,7 @@
     },
     {
         "storyline": {
-            "content": "Shit, he knows, I'm done for.",
+            "content": "Блин, он знает, мне конец.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3734,7 +3734,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -3744,7 +3744,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -3754,12 +3754,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Yeah, I think I saved it.",
+            "content": "Да, кажется, я сохранил.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3772,7 +3772,7 @@
     },
     {
         "storyline": {
-            "content": "He won't know what's coming.",
+            "content": "Он не узнает, что его ждёт.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -3791,7 +3791,7 @@
     },
     {
         "storyline": {
-            "content": "So now we wait.",
+            "content": "Теперь ждём.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3819,7 +3819,7 @@
     },
     {
         "storyline": {
-            "content": "I think it takes longer than it should, no?",
+            "content": "Кажется, это занимает больше времени, чем должно, нет?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -3833,7 +3833,7 @@
     },
     {
         "storyline": {
-            "content": "Fuck, I'm so cooked, it's fucking over.",
+            "content": "Блять, я в полной жопе, всё кончено.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar2",
@@ -3848,7 +3848,7 @@
     },
     {
         "storyline": {
-            "content": "Shit, he's probably reporting me already.",
+            "content": "Блин, он наверняка уже на меня жалуется.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar3",
@@ -3863,7 +3863,7 @@
     },
     {
         "storyline": {
-            "content": "What do I do?",
+            "content": "Что делать?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar4",
@@ -3878,7 +3878,7 @@
     },
     {
         "storyline": {
-            "content": "Should I check in on the progress?",
+            "content": "Проверить, как там продвижение?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar5",
@@ -3893,7 +3893,7 @@
     },
     {
         "storyline": {
-            "content": "Or just let him do his thing?",
+            "content": "Или просто дать ему сделать своё дело?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar6",
@@ -3908,7 +3908,7 @@
     },
     {
         "storyline": {
-            "content": "Or maybe block him and delete all evidence?",
+            "content": "Или, может, заблокировать его и удалить все следы?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar7",
@@ -3923,7 +3923,7 @@
     },
     {
         "storyline": {
-            "content": "He's probably already put admins on me, shit.",
+            "content": "Он, наверное, уже натравил на меня админов, блин.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar8",
@@ -3938,7 +3938,7 @@
     },
     {
         "storyline": {
-            "content": "I'm fucked, I'm definitely fucked.",
+            "content": "Мне пиздец, мне точно пиздец.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar9",
@@ -3953,7 +3953,7 @@
     },
     {
         "storyline": {
-            "content": "I need to bail.",
+            "content": "Надо сваливать.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar10",
@@ -3968,7 +3968,7 @@
     },
     {
         "storyline": {
-            "content": "Fuck, fuck, fuck, fuck.",
+            "content": "Блять, блять, блять, блять.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4001,7 +4001,7 @@
     },
     {
         "storyline": {
-            "content": "I SHOULD BLOCK HIM.",
+            "content": "МНЕ НАДО ЕГО ЗАБЛОКИРОВАТЬ.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4028,12 +4028,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Block sillygoose228",
+        "hint": "Заблокируйте sillygoose228",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "WAIT!",
+            "content": "ПОГОДИ!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4052,7 +4052,7 @@
     },
     {
         "storyline": {
-            "content": "I GOT HIM!",
+            "content": "Я ЕГО ПОЙМАЛ!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4062,7 +4062,7 @@
     },
     {
         "storyline": {
-            "content": "He logged in on my fake page!",
+            "content": "Он залогинился на моей фейковой странице!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4075,7 +4075,7 @@
     },
     {
         "storyline": {
-            "content": "Here his password!",
+            "content": "Вот его пароль!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -4093,7 +4093,7 @@
     },
     {
         "storyline": {
-            "content": "His password is ilovecats822?",
+            "content": "Его пароль ilovecats822?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -4111,7 +4111,7 @@
     },
     {
         "storyline": {
-            "content": "oh my god bruh",
+            "content": "о боже, бро",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -4129,7 +4129,7 @@
     },
     {
         "storyline": {
-            "content": "how cringe and corny can one man be?",
+            "content": "насколько жалким и тупым может быть один человек?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4148,7 +4148,7 @@
     },
     {
         "storyline": {
-            "content": "FUCK.",
+            "content": "БЛЯТЬ.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4166,7 +4166,7 @@
     },
     {
         "storyline": {
-            "content": "SHIT.",
+            "content": "БЛИН.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1"
@@ -4175,7 +4175,7 @@
     },
     {
         "storyline": {
-            "content": "FUCK.",
+            "content": "БЛЯТЬ.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4185,7 +4185,7 @@
     },
     {
         "storyline": {
-            "content": "I FUCKED UP.",
+            "content": "Я ВСЁ ПРОСРАЛ.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4208,7 +4208,7 @@
     },
     {
         "storyline": {
-            "content": "I forgot to change the author of the fake post from placeholder to someone real.",
+            "content": "Я забыл поменять автора фейкового поста с заглушки на кого-то реального.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4236,12 +4236,12 @@
                 }
             }
         },
-        "hint": "Go to the chat with Sillygoose228",
+        "hint": "Перейдите в чат с Sillygoose228",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Even tho I got his creds already, he might realize what's going on and change his password.",
+            "content": "Хотя у меня уже есть его данные, он может понять, что происходит, и сменить пароль.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4254,7 +4254,7 @@
     },
     {
         "storyline": {
-            "content": "I need to convince him it's ok.",
+            "content": "Надо убедить его, что всё в порядке.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -4269,7 +4269,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4279,7 +4279,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4289,7 +4289,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4312,7 +4312,7 @@
     },
     {
         "storyline": {
-            "content": "Fucking clanker gave me shit code.",
+            "content": "Ебаный кланкер дал мне дерьмовый код.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4325,7 +4325,7 @@
     },
     {
         "storyline": {
-            "content": "I specifically asked it to make code as optimized as possible and make no mistakes.",
+            "content": "Я специально попросил его сделать код максимально оптимизированным и без ошибок.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -4334,7 +4334,7 @@
     },
     {
         "storyline": {
-            "content": "Can't trust shit these days.",
+            "content": "Ни на что нельзя положиться в наши дни.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -4366,7 +4366,7 @@
     },
     {
         "storyline": {
-            "content": "What is he typing for so long?",
+            "content": "Что он так долго печатает?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4376,7 +4376,7 @@
     },
     {
         "storyline": {
-            "content": "No way he's suspecting something, right?",
+            "content": "Не может быть, что он что-то подозревает, да?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar2",
@@ -4391,7 +4391,7 @@
     },
     {
         "storyline": {
-            "content": "Fuck, I might be burned here.",
+            "content": "Блять, похоже, меня тут вычислили.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar3",
@@ -4406,7 +4406,7 @@
     },
     {
         "storyline": {
-            "content": "What if he asks me how I found this post?",
+            "content": "А если он спросит, как я нашёл этот пост?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar4",
@@ -4421,7 +4421,7 @@
     },
     {
         "storyline": {
-            "content": "Or why I'm reporting it even tho I'm not even a follower?",
+            "content": "Или почему я жалуюсь, хотя даже не подписан?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar5",
@@ -4436,7 +4436,7 @@
     },
     {
         "storyline": {
-            "content": "Shit, I even forgot to follow fucking zero sub!",
+            "content": "Блин, я даже забыл подписаться на ебаный саб zero!",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar6",
@@ -4451,7 +4451,7 @@
     },
     {
         "storyline": {
-            "content": "Yeah, I might be done for here.",
+            "content": "Да, похоже, мне здесь конец.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar7",
@@ -4466,7 +4466,7 @@
     },
     {
         "storyline": {
-            "content": "Maaan why the fuck did I start it all fuuuck.",
+            "content": "Мужик, какого хуя я вообще всё это начал, бляяя.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar8",
@@ -4481,7 +4481,7 @@
     },
     {
         "storyline": {
-            "content": "He knows, he knows, he knows.",
+            "content": "Он знает, он знает, он знает.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar9",
@@ -4496,7 +4496,7 @@
     },
     {
         "storyline": {
-            "content": "He is gonna fucking ban me.",
+            "content": "Он меня, блять, забанит.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar10",
@@ -4511,7 +4511,7 @@
     },
     {
         "storyline": {
-            "content": "Just say something ffs, what is taking you so long?",
+            "content": "Просто скажи что-нибудь, блин, почему так долго?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4557,7 +4557,7 @@
     },
     {
         "storyline": {
-            "content": "jesus bro, I was losing my shit here and he was just taking his time to write THIS?",
+            "content": "господи, бро, я тут с ума сходил, а он просто не спеша писал ЭТО?",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4572,7 +4572,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4594,7 +4594,7 @@
     },
     {
         "storyline": {
-            "content": "Now the fun part.",
+            "content": "Теперь весёлая часть.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4607,7 +4607,7 @@
     },
     {
         "storyline": {
-            "content": "I need to log out and log in as him and take over the sub.",
+            "content": "Мне надо выйти и войти как он, а потом забрать саб.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -4627,12 +4627,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Log out and log in as sillygoose228",
+        "hint": "Выйдите из аккаунта и войдите как sillygoose228",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Now I need to remove all the mods from the zero subforum and transfer the ownership to my account.",
+            "content": "Теперь надо снять всех модераторов с сабфорума zero и передать права на мой аккаунт.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4655,7 +4655,7 @@
                 }
             }
         },
-        "hint": "Open the f/zero subforum settings",
+        "hint": "Откройте настройки сабфорума f/zero",
         "offset": ">"
     },
     {
@@ -4678,12 +4678,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Demote all the mods of the f/zero subforum",
+        "hint": "Понизьте всех модераторов сабфорума f/zero",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "And now transfer ownership to me.",
+            "content": "А теперь передать права мне.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4703,7 +4703,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Transfer the ownership of the f/zero subforum to your account",
+        "hint": "Передайте права владельца сабфорума f/zero своему аккаунту",
         "offset": ">"
     },
     {
@@ -4718,12 +4718,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Open the f/zero members list",
+        "hint": "Откройте список участников f/zero",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "And I'm done lol.",
+            "content": "И готово, лол.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -4736,7 +4736,7 @@
     },
     {
         "storyline": {
-            "content": "That's it, I fucking did it!",
+            "content": "Вот и всё, я, блять, сделал это!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -4745,7 +4745,7 @@
     },
     {
         "storyline": {
-            "content": "Now I gotta go back and tell cyberdivers I got the keys.",
+            "content": "Теперь надо вернуться и рассказать cyberdivers, что ключи у меня.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -4769,7 +4769,7 @@
                 }
             }
         },
-        "hint": "Log out and log in as #main_hero and open the 'cyberdivers' chat",
+        "hint": "Выйдите из аккаунта, войдите как #main_hero и откройте чат 'cyberdivers'",
         "offset": ">"
     },
     {
@@ -4833,7 +4833,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=2.5"
     },
     {
@@ -4843,7 +4843,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4934,7 +4934,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=4.5"
     },
     {
@@ -4944,7 +4944,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -4958,7 +4958,7 @@
     },
     {
         "storyline": {
-            "content": "Fuck yeah, let’s burn this subforum to the ground.",
+            "content": "Ага, блять, сожжём этот сабфорум дотла.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5008,7 +5008,7 @@
     },
     {
         "storyline": {
-            "content": "Let me check the zero sub now.",
+            "content": "Дай-ка гляну саб zero.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5051,12 +5051,12 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Search for 'zero' in the header and open the subforum",
+        "hint": "Найдите 'zero' в поиске в шапке и откройте сабфорум",
         "offset": ">"
     },
     {
         "storyline": {
-            "content": "Yeah, fucking look at this.",
+            "content": "Ага, блять, полюбуйтесь.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5069,7 +5069,7 @@
     },
     {
         "storyline": {
-            "content": "I made it possible!",
+            "content": "Я это сделал возможным!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5078,7 +5078,7 @@
     },
     {
         "storyline": {
-            "content": "Fucking ME!",
+            "content": "Я, блять!",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5087,7 +5087,7 @@
     },
     {
         "storyline": {
-            "content": "I feel like the coolest man alive right now.",
+            "content": "Чувствую себя самым крутым человеком на свете.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5096,7 +5096,7 @@
     },
     {
         "storyline": {
-            "content": "And now people see it too.",
+            "content": "И теперь люди тоже это видят.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1",
@@ -5120,7 +5120,7 @@
                 }
             }
         },
-        "hint": "Go back to the 'cyberdivers' chat",
+        "hint": "Вернитесь в чат 'cyberdivers'",
         "offset": ">"
     },
     {
@@ -5157,7 +5157,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=3.5"
     },
     {
@@ -5167,7 +5167,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -5298,7 +5298,7 @@
     },
     {
         "storyline": {
-            "content": "What the fuck?",
+            "content": "Что за хуйня?",
             "speed": "slow",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5318,7 +5318,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -5328,7 +5328,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -5338,7 +5338,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -5375,7 +5375,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=3.5"
     },
     {
@@ -5434,7 +5434,7 @@
     },
     {
         "storyline": {
-            "content": "Man, fuck him and all these cunts.",
+            "content": "Мужик, пошли они все нахуй, эти пизды.",
             "speed": "slow",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5449,7 +5449,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">"
     },
     {
@@ -5522,7 +5522,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": "+=1.5"
     },
     {
@@ -5705,7 +5705,7 @@
     },
     {
         "storyline": {
-            "content": "Man, this shit is fucking stupid.",
+            "content": "Мужик, это дерьмо пиздец тупое.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
@@ -5728,7 +5728,7 @@
     },
     {
         "storyline": {
-            "content": "The fuck am I even doing?",
+            "content": "Какого хуя я вообще делаю?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5737,7 +5737,7 @@
     },
     {
         "storyline": {
-            "content": "I’ve sunk 1000h sweating in cyberdivers, I’ve hacked sillygoose228 and zero sub even though they did nothing wrong and why?",
+            "content": "Я вложил 1000 часов пота в cyberdivers, взломал sillygoose228 и саб zero, хотя они ничего плохого не сделали, и зачем?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5746,7 +5746,7 @@
     },
     {
         "storyline": {
-            "content": "Because I wanted fucking validation from my friends.",
+            "content": "Потому что я хотел, блять, признания от друзей.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5755,7 +5755,7 @@
     },
     {
         "storyline": {
-            "content": "My only \"friends\" who don’t respect or value me, who confuse bullying with honesty and who are every bit as stupid as I am.",
+            "content": "Моих единственных «друзей», которые меня не уважают и не ценят, которые путают травлю с честностью и которые так же тупы, как и я.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5764,7 +5764,7 @@
     },
     {
         "storyline": {
-            "content": "And the only reason I’m trying to hang on to them is that I don’t have anyone else.",
+            "content": "И единственная причина, по которой я пытаюсь за них держаться, — у меня больше никого нет.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5773,7 +5773,7 @@
     },
     {
         "storyline": {
-            "content": "I’ve spent hours and hours trying to convince everyone around me and myself that I am more skillful than them, smarter than them and overall better than them, just to get that power.",
+            "content": "Я потратил часы и часы, пытаясь убедить всех вокруг и себя самого, что я умелее их, умнее их и в целом лучше их, только чтобы получить эту власть.",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -5782,7 +5782,7 @@
     },
     {
         "storyline": {
-            "content": "That metaphorical crown that gives you status and no one can do anything about it.",
+            "content": "Ту самую метафорическую корону, которая даёт статус и с которой никто ничего не может сделать.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5791,7 +5791,7 @@
     },
     {
         "storyline": {
-            "content": "But how much safety am I willing to trade for it?",
+            "content": "Но сколько безопасности я готов за неё отдать?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5800,7 +5800,7 @@
     },
     {
         "storyline": {
-            "content": "I hacked a fucking subforum just to poke people where it hurts and show how \"dangerous\" I am.",
+            "content": "Я взломал ебаный сабфорум просто чтобы ткнуть людей туда, где больно, и показать, какой я «опасный».",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5809,7 +5809,7 @@
     },
     {
         "storyline": {
-            "content": "But other people want to be on top too, so they will poke back, and before you know it, you are surrounded with wounded egos that are trying to hide themselves to avoid the next poke.",
+            "content": "Но другие тоже хотят быть сверху, поэтому они ткнут в ответ, и не успеешь оглянуться, как ты окружён раненными эго, которые прячутся, чтобы избежать следующего тычка.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5818,7 +5818,7 @@
     },
     {
         "storyline": {
-            "content": "It’s a cycle that can’t be stopped.",
+            "content": "Это цикл, который невозможно остановить.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5827,7 +5827,7 @@
     },
     {
         "storyline": {
-            "content": "Or can it?",
+            "content": "Или можно?",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5836,7 +5836,7 @@
     },
     {
         "storyline": {
-            "content": "And when I saw an alternative, real healthy relationships in the zero subforum, where respect and boundaries exist, I just thought they were faking it.",
+            "content": "И когда я увидел альтернативу — настоящие здоровые отношения на сабфоруме zero, где есть уважение и границы, — я просто подумал, что они притворяются.",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -5845,7 +5845,7 @@
     },
     {
         "storyline": {
-            "content": "I’ve grown so used to these power games that I always wait for the other shoe to drop, and if it doesn’t, I drop it myself.",
+            "content": "Я так привык к этим играм власти, что всегда жду, когда упадёт вторая туфля, а если она не падает, я роняю её сам.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5854,7 +5854,7 @@
     },
     {
         "storyline": {
-            "content": "So I decided to destroy them, based on the presumption that they are just weak.",
+            "content": "Поэтому я решил их уничтожить, исходя из предположения, что они просто слабые.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5863,7 +5863,7 @@
     },
     {
         "storyline": {
-            "content": "But let’s be real, I am the one who is weak.",
+            "content": "Но если честно, слабый здесь я.",
             "speed": "fast",
             "delim": " ",
             "typingBoxId": "nar1"
@@ -5872,7 +5872,7 @@
     },
     {
         "storyline": {
-            "content": "It’s fucking stupid, isn’t it?",
+            "content": "Это пиздец как тупо, разве нет?",
             "speed": "fast",
             "delim": "\n\n",
             "typingBoxId": "nar1"
@@ -5928,7 +5928,7 @@
             }
         },
         "isActionAwait": true,
-        "hint": "Type in the chat and press Send",
+        "hint": "Напишите в чат и нажмите «Отправить»",
         "offset": ">+=6.5"
     },
     {
@@ -5950,7 +5950,7 @@
                 }
             }
         },
-        "hint": "Go to your profile page",
+        "hint": "Перейдите на свою страницу профиля",
         "offset": ">"
     },
     {
@@ -5967,7 +5967,7 @@
     },
     {
         "storyline": {
-            "content": "oh wow.",
+            "content": "оу, вау.",
             "speed": "fast",
             "delim": "",
             "typingBoxId": "nar1",
