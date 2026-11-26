@@ -1185,7 +1185,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "But they all allow them to remain stupid.",
+                            "content": "But zero fans allow them to remain stupid.",
                             "speed": "fast",
                             "delim": " ",
                             "typingBoxId": "nar1",
@@ -1590,7 +1590,7 @@
                     },
                     {
                         "storyline": {
-                            "content": "I remember back in school I took some programming classes and I learned smth about webdev and some cybersecurity stuff, like phishing.",
+                            "content": "I remember back in school I took some programming classes and I learned smth about webdev and some cyberattacks, like phishing.",
                             "speed": "fast",
                             "delim": "",
                             "typingBoxId": "nar1"
